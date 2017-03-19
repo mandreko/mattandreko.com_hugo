@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Fogbugz VIM Scrolling"
 date: "2011-11-30T06:24:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - userscript
  - vim

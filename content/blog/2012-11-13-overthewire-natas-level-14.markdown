@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Natas Level 14"
 date: "2012-11-13T05:08:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -18,7 +18,7 @@ The next level of the [OverTheWire](http://www.overthewire.org) Natas wargame is
 
 The level starts out with a login dialog.
 
-{% img /images/natas14_1.png %}
+{{% figure class="img-responsive" src="/img/natas14_1.png" %}}
 
 The source code is fairly straight forward. It's doing a basic authentication query. It however, does have a handy "debug" flag, that if set, will print the query used to the screen. 
 
@@ -61,8 +61,8 @@ Password: <input name="password"><br>
 
 I simply appended the URL with the parameters I wanted. I set the "debug" flag to a true value, and put in a junk username and password.
 
-{% img /images/natas14_2.png %}
+{{% figure class="img-responsive" src="/img/natas14_2.png" %}}
 
 Since that showed me what query was being ran, I modified it to inject some code (" or 1=1 -- ) to return all rows in the table, guaranteeing that at least one entry would show up. This ends up changing the SQL query to do a comparison based on username, OR where 1=1, which is always true. After that, the "-- " simply comments out the rest of the query, so that no issues arise from stuff later on. Make sure to have a space after the dashes, else it may not work. Once everything was completed, it showed me the password to the next level.
 
-{% img /images/natas14_3.png %}
+{{% figure class="img-responsive" src="/img/natas14_3.png" %}}

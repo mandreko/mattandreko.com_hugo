@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Sprint iPhone 4S pre-order fiasco"
 date: "2011-10-07T08:09:00-04:00"
 comments: true
@@ -13,7 +12,7 @@ categories:
 
 So like many people, I wanted the new iPhone 4S.  Since the wife unit is on Sprint, and I'm on AT&T, we started looking at plans.  Sprint offers a nicer family plan and lets her upgrade to a smartphone, while letting me have the iPhone.  So we decided to make the switch, and do the pre-order.  I called last night to verify the ordering process, and make sure that I could still get the $200 price while not using her upgrade credit.  I was told that the phone would become available at 12:01 AM PST.  I woke up at 5 AM (No way am I waking up at 3 AM) to put in the pre-order.  I tried clicking the massive preorder button: 
 
-{% img /images/sprint_1.png %}
+{{% figure class="img-responsive" src="/img/sprint_1.png" %}}
 
 <!-- more -->
 
@@ -29,13 +28,13 @@ I give the representative the pin, and he lets me access her account. I tell him
 
 So I go to work, and quickly start to pre-order the phone, as to not waste a bunch of work time. I get to ordering under the individual plan, and they ask about porting the number. The representative said they wouldn't need it, but I figured since they ask, I'll enter it, and have it ready. Awesome for me! Then I see this:
 
-{% img /images/sprint_security.png %}
+{{% figure class="img-responsive" src="/img/sprint_security.png" %}}
 
 I've highlighted the parts that worry me. Firstly, notice that for some reason now, my browser is warning me that there's an issue with the security. I'm smart enough to figure out what it is luckily, since I work in the IT field. The encryption is working, they just have an HTTPS page that has images on it referencing HTTP. This is considered a no-no in web programming. Then the more alarming issue: They want my account number, password, and SSN for AT&T. I could see using my account number as a reference for talking with AT&T, no problem. However why do they need my password? We have always taught users to NEVER give out your password to anyone, especially on a page that the HTTPS isn't working properly. Since the representative said they could assign it the new number and port on delivery, I opted for the option to assign me a new number instead of filling out this form.
 
 Eventually I get to this point:
 
-{% img /images/sprint_complete.png %}
+{{% figure class="img-responsive" src="/img/sprint_complete.png" %}}
 
 Let's hope that Sprint can actually deliver on their promise of fixing everything. Everyone likes to complain about AT&T being incompetent, but so far, I'm not really having that much confidence in Sprint either. We'll just have to see what happens.
 

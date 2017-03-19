@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Poor UI Experience"
 date: "2011-08-17T08:23:00-04:00"
 comments: true
@@ -11,7 +10,7 @@ categories:
 
 I was recently signing up for [about.me](http://about.me) because it sounded like a neat little simple blurb about yourself. When trying to sign up, after entering my email address, and password, I was brought to a page asking for some basic info. However, I couldn't figure out how to submit it. I was given this error:
 
-{% img /images/about.me_validation_error.png %}
+{{% figure class="img-responsive" src="/img/about.me_validation_error.png" %}}
 
 <!-- more -->
 

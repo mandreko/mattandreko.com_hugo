@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Natas Level 15"
 date: "2012-11-14T06:29:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -18,7 +18,7 @@ Up until now, none of the OverTheWire Natas challenges really gave me that much 
 
 It starts out with a username check dialog, which pretty much only gives you a binary value as to if a username exists or not.
 
-{% img /images/natas15_1.png %}
+{{% figure class="img-responsive" src="/img/natas15_1.png" %}}
 
 I looked at the source code, and couldn't see any way to inject some SQL to get it to retrieve the password for me. 
 
@@ -74,11 +74,11 @@ Username: <input name="username"><br>
 
 I did notice though, that it would verify that a row was returned, so I could inject SQL to brute-force the password. Assuming that the password was 32 digits long (like the previous ones), this could take some time however, since the character set was uppercase, lowercase, and digits. That's up to 62 attempts per digit of the password. I started doing this manually to verify that this was a possibility. With the "debug" flag on, you can see the query, and that the first digit of the password is not "b".
 
-{% img /images/natas15_1.png %}
+{{% figure class="img-responsive" src="/img/natas15_1.png" %}}
 
 I cycled through manually all the lowercase and upper case letters. Once I got partially through the numbers, I got a successful hit! This means that the password starts with a "3".
 
-{% img /images/natas15_1.png %}
+{{% figure class="img-responsive" src="/img/natas15_1.png" %}}
 
 The next step for me, was to automate this process. I decided to write some ruby to accomplish it. This code seems to do the job: 
 

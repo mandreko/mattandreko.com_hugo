@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Sysax Multi Server 6.10 SSH DoS"
 date: "2013-04-08T08:27:00-04:00"
 comments: true
+highlight: "true"
 categories:
  - ssh
  - DoS
@@ -24,12 +24,12 @@ The vulnerable version can be downloaded [here](https://www.dropbox.com/s/d6js8u
 
 I found that during the key exchange, where the SSH client and SSH server negotiate which ciphers to use, if you messed up just a single specific byte, the server would crash. I started reading through the [RFC](https://tools.ietf.org/html/rfc4253#section-7.1) for SSH keyexchange, and found the key exchange to be mostly ASCII.
 
-{% img /images/sysax_ssh_hex.png %}
+{{% figure class="img-responsive" src="/img/sysax_ssh_hex.png" %}}
 
 
 I started playing with the byte that caused the crash, and it seemed that it was some sort of control character, or separator. I'm still unsure. However, changing it would cause a crash every time.
 
-{% img /images/sysax_ssh_hex2.png %}
+{{% figure class="img-responsive" src="/img/sysax_ssh_hex2.png" %}}
 
 I wasn't able to figure out any way to get remote code execution, although someone smarter than me, may be able to do it. For now, I'll settle with a DoS exploit.
 

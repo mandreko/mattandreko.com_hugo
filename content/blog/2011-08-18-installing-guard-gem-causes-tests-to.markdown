@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Installing Guard gem causes tests to fail - Solved"
 date: "2011-08-18T09:14:00-04:00"
 comments: true
+highlight: "true"
 categories:
  - rspec
  - rails

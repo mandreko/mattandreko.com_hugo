@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "PWB Conclusions and the Future"
 date: "2012-06-24T17:41:00-04:00"
 comments: true
@@ -17,7 +16,7 @@ The results
 
 As I posted previously, I was taking the [PWB](http://www.offensive-security.com/information-security-training/penetration-testing-with-backtrack/) course from [Offensive Security](http://www.offensive-security.com). I am happy to report that I passed with flying colors (100%)! This is the best email I've ever received: 
 
-{% img /images/pwb_course_pass.png %}
+{{% figure class="img-responsive" src="/img/pwb_course_pass.png" %}}
 
 <!-- more -->
 
@@ -39,7 +38,7 @@ Metasploit Post modules, such as iPhone enumeration
 
 Thanks g0tmi1k for the idea! All the phone numbers are blacked out, for the protection of my friends and family. 
 
-{% img /images/iphone_screenshot_2.png %}
+{{% figure class="img-responsive" src="/img/iphone_screenshot_2.png" %}}
 
 Password Cracking Web GUI
 -------------------------

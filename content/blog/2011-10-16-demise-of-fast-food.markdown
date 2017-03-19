@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "The demise of \"Fast Food\""
 date: "2011-10-16T10:22:00-04:00"
 comments: true

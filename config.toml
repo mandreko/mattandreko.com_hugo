@@ -11,7 +11,7 @@ theme = "hugo-sustain"
   post = "/:year/:month/:day/:slug"
 
 [params]
-  avatar = "profile.png"
+  avatar = "profile.jpg"
   author = "Matt Andreko"
   description = "Describe your website"
 
@@ -23,8 +23,8 @@ theme = "hugo-sustain"
   Github        = "mandreko"
   Email         = "mandreko@gmail.com"
   Twitter       = "mandreko"
-  LinkedIn      = "mandreko"
-  Stackoverflow = "mandreko"
+  LinkedIn      = "mattandreko"
+  Stackoverflow = "mattandreko"
 
 ## Main Menu
 [[menu.main]]

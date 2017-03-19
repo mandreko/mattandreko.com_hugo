@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Backdoor Modules for Netgear, Linksys, and Other Routers"
 date: "2014-01-13"
 comments: true
+highlight: "true"
 categories: 
  - security
  - hacking
@@ -12,7 +12,7 @@ categories:
  - mips
 ---
 
-{% img left /images/backdoor_all_the_routers.jpg %}
+{{% figure class="img-responsive" src="/img/backdoor_all_the_routers.jpg#left" %}}
 
 A week or so ago, I read the news of a new backdoor on several devices, including those made by [Belkin](http://www.belkin.com/), [Cisco](http://www.cisco.com/), [NetGear](http://www.netgear.com), [Linksys](http://www.linksys.com), and several others. A list of what seems to be affected devices can be found [here](http://wikidevi.com/w/index.php?title=Special%3AAsk&q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&eq=yes&p%5Bformat%5D=broadtable&sort_num=&order_num=ASC&p%5Blimit%5D=500&p%5Boffset%5D=&p%5Blink%5D=all&p%5Bsort%5D=&p%5Bheaders%5D=show&p%5Bmainlabel%5D=&p%5Bintro%5D=&p%5Boutro%5D=&p%5Bsearchlabel%5D=%25E). [Eloi Vanderbeken](https://twitter.com/elvanderb), who posted his findings on [GitHub](https://github.com/elvanderb/TCP-32764) made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted [Metasploit](http://www.metasploit.com) integration.
 

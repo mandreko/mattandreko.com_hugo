@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "HSTS Metasploit Module"
 date: "2013-02-21T13:20:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - http
  - security

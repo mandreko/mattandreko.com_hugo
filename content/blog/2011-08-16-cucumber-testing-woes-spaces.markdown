@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Cucumber testing woes - spaces"
 date: "2011-08-16T22:47:00-04:00"
 comments: true
@@ -13,7 +12,7 @@ categories:
 
 So I'm working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:
 
-{% img /images/cucumber_fail.png %}
+{{% figure class="img-responsive" src="/img/cucumber_fail.png" %}}
 
 <!-- more -->
 

@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Buffer Overflow in HexChat 2.9.4"
 date: "2013-04-06T14:55:00-04:00"
 comments: true
+highlight: "true"
 categories:
  - windows
  - hexchat
@@ -24,25 +24,23 @@ This exploit was a little more complicated than many I've had to do previously. 
 
 First thing's first, when developing an exploit, you need to have the offset of the buffer so you know where to put executable statements. By using the pattern_create functionality of Mona.py, I made a 25,000 line unique string, and ran it into the program while attached to a debugger.
 
-{% img /images/hexchat_pc.png %}
+{{% figure class="img-responsive" src="/img/hexchat_pc.png" %}}
 
 I then took this long pattern, and pasted it into HexChat's textbox, after a "/server " string:
 
-{% img /images/hexchat_pattern.png %}
+{{% figure class="img-responsive" src="/img/hexchat_pattern.png" %}}
 
 Once I hit enter, the debugger stated:
 
-{% blockquote %}
-Access violation when writing to [00130000] - use Shift+F7/F8/F9 to pass the exception to the program
-{% endblockquote %}
+>Access violation when writing to [00130000] - use Shift+F7/F8/F9 to pass the exception to the program
 
 Since an exception was raised, I checked the SEH window, to see if I had overwritten the SEH handler.
 
-{% img /images/hexchat_seh.png %}
+{{% figure class="img-responsive" src="/img/hexchat_seh.png" %}}
 
 Indeed, I had overwritten the SEH handler with "37635236". I then ran mona's pattern_offset to find the offset of the string that would overwrite the SEH handler.
 
-{% img /images/hexchat_po.png %}
+{{% figure class="img-responsive" src="/img/hexchat_po.png" %}}
 
 Based on this knowledge, I knew the offset would be somewhere around 13340 bytes in. Since this was an SEH exploit, the next step was to find an instruction that did a pop-pop-ret.
 
@@ -50,13 +48,11 @@ Based on this knowledge, I knew the offset would be somewhere around 13340 bytes
 
 Finding a valid pop-pop-ret instruction became a bit difficult, because I started to find out that HexChat would pretty much only use ASCII characters. Luckily, Mona.py had me covered, and can search for filtered characters:
 
-{% img /images/hexchat_mona_seh.png %}
+{{% figure class="img-responsive" src="/img/hexchat_mona_seh.png" %}}
 
 I went through the seh.txt file that had all the addresses, and found one that I liked:
 
-{% blockquote %}
-0x68626463 : pop ebx # pop ebp # ret | asciiprint,ascii,lower {PAGE_EXECUTE_READ} [libglib-2.0-0.dll] ASLR: False, Rebase: False, SafeSEH: False, OS: False, v2.26.1.0 (C:\Program Files\HexChat\libglib-2.0-0.dll)
-{% endblockquote %}
+>0x68626463 : pop ebx # pop ebp # ret | asciiprint,ascii,lower {PAGE_EXECUTE_READ} [libglib-2.0-0.dll] ASLR: False, Rebase: False, SafeSEH: False, OS: False, v2.26.1.0 (C:\Program Files\HexChat\libglib-2.0-0.dll)
 
 This string was all lowercase letters, had no ASLR or SafeSEH, so it seemed like a fairly good address to use.
 
@@ -70,11 +66,11 @@ mandreko$ perl -e 'print "A"x13340 . "\x63\x64\x62\x68" . "C"x11656'
 
 I pasted it into HexChat, and saw the same Access Violation. I checked the SEH window to make sure I overwrote properly:
 
-{% img /images/hexchat_seh2.png %}
+{{% figure class="img-responsive" src="/img/hexchat_seh2.png" %}}
 
 You can see there, that the SEH is now pointing to the address of the pop-pop-ret. I created a breakpoint for 0x68626463 and hit Shift-F9. I hit the breakpoint, and F7 3 times to step through the pop-pop-ret.
 
-{% img /images/hexchat_after_ppr.png %}
+{{% figure class="img-responsive" src="/img/hexchat_after_ppr.png" %}}
 
 Typically, in an SEH exploit, right before the PPR instruction, you'd put the next instruction that you want to execute, the nseh (more details at [Corelan's excellent blog](https://www.corelan.be/index.php/2009/07/28/seh-based-exploit-writing-tutorial-continued-just-another-example-part-3b/)). This instruction is typically a jump. Due to our ascii issue, I found it was possible to do a 21 byte jump, by using a conditional "JA" jump (see [here](http://www.unixwiz.net/techtips/x86-jumps.html) for jump details) instruction. I had to prepend 2 "DEC ESP" instructions to make the conditional jump work, by setting the proper flags. This left my exploit stub looking like:
 
@@ -94,17 +90,17 @@ mandreko$ perl -e 'print "A"x13336 . "\x4c\x4c\x77\x21" . "\x63\x64\x62\x68" . "
 
 When I ran it through the debugger, it worked out perfectly.
 
-{% img /images/hexchat_after_popad.png %}
+{{% figure class="img-responsive" src="/img/hexchat_after_popad.png" %}}
 
 ## Finding the jump via corruption
 
 With only 5 bytes remaining, and ASCII encoding requirements, I pondered a bit. I couldn't see any way to get a "JMP ESP". I found a JMP ESP in one of the loaded libraries, but I didn't have enough space to push it into memory and then RETN. For some reason, during testing, I found that some of my non-ASCII characters were bad-characters, and would get translated to RETN statements. I thought perhaps I could use a "PUSH ESP" instruction which was ASCII, and then use a bad-character to convert into a "RETN" instruction, since it typically would not be ASCII (\xc3). It ended up working. I put a "\xE9", and it converted it to "RETN" and then an "\x88". Since I'd never be hitting the "\x88" I figured this would work. I tried it, and miraculously it did! Using a corrupted character actually let it jump!
 
-{% img /images/hexchat_push_esp.png %}
+{{% figure class="img-responsive" src="/img/hexchat_push_esp.png" %}}
 
 After taking the "RETN", it placed me in an area with thousands of bytes for shellcode.
 
-{% img /images/hexchat_after_push_esp.png %}
+{{% figure class="img-responsive" src="/img/hexchat_after_push_esp.png" %}}
 
 From this point, it was just as easy as inserting some alpha-numeric encoded shellcode, and changing some lengths of junk strings.
 
@@ -176,7 +172,7 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
 ## Demo time!
 
 Here is a video demo of the exploit working with a simple messagebox payload.
-{% youtube izmMjz_g-84 %}
+{{< youtube izmMjz_g-84 >}}
 
 ## Remediation
 

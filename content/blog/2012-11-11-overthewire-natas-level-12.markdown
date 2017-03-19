@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Natas Level 12"
 date: "2012-11-11T06:27:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -17,7 +17,7 @@ The next level to attack in the [OverTheWire](http://www.overthewire.org) Natas 
 
 It starts out giving you the option to upload a <1KB file to the server.
 
-{% img /images/natas12_1.png %}
+{{% figure class="img-responsive" src="/img/natas12_1.png" %}}
 
 As with any other challenge, I viewed the source, to analyze it. 
 
@@ -116,12 +116,12 @@ echo $file;
 ?>
 ```
 
-{% img /images/natas12_2.png %}
+{{% figure class="img-responsive" src="/img/natas12_2.png" %}}
 
 Once that uploaded, it gave me a link to the newly uploaded file.
 
-{% img /images/natas12_3.png %}
+{{% figure class="img-responsive" src="/img/natas12_3.png" %}}
 
 Once the newly uploaded file executed, it wrote out the contents of the next level's password.
 
-{% img /images/natas12_4.png %}
+{{% figure class="img-responsive" src="/img/natas12_4.png" %}}

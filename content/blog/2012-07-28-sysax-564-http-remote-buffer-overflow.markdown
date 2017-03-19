@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Sysax 5.64 HTTP Remote Buffer Overflow"
 date: "2012-07-28T22:56:00-04:00"
 comments: true
+highlight: "true"
 categories:
  - rop
  - windows
@@ -18,23 +18,23 @@ I have discovered a bug in the [Sysax Multi-Server application](http://sysax.com
 
 In the Sysax service, the configuration would look like this:
 
-{% img /images/sysax_5.64_protocols.png %}
+{{% figure class="img-responsive" src="/img/sysax_5.64_protocols.png" %}}
 
 To trigger this vulnerability is pretty simple. Log into the HTTP File Server:
 
-{% img /images/sysax_5.64_login.png %}
+{{% figure class="img-responsive" src="/img/sysax_5.64_login.png" %}}
 
 After logging in, click the "Create Folder" link:
 
-{% img /images/sysax_5.64_main.png %}
+{{% figure class="img-responsive" src="/img/sysax_5.64_main.png" %}}
 
 In the "Folder Name" textbox, enter 1000 "A"s:
 
-{% img /images/sysax_5.64_create_folder.png %}
+{{% figure class="img-responsive" src="/img/sysax_5.64_create_folder.png" %}}
 
 The service will then crash, and have the EIP address overwritten:
 
-{% img /images/sysax_5.64_crash.png %}
+{{% figure class="img-responsive" src="/img/sysax_5.64_crash.png" %}}
 
 I reported this vulnerability to CodeOrigin, the creators of the Sysax Multi-Server on July 26 17:24 PM EDT. Surprisingly, they got back to me at July 27 04:28 AM PDT with a new version available (5.65).  Unfortunately this version had the same vulnerability, although the EIP offset was different. After reporting this, they got back to me again at July 28 06:59 AM PDT, stating that a new version was available (5.66). This new version appears to have the vulnerability fixed.
 

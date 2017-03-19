@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Monxla Part 3"
 date: "2012-11-26T05:58:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -16,7 +16,7 @@ Continuing from the last post, we are now logged in as a user. The next step on 
 
 I started analyzing the source code, and noticed that the text that says "yes" or "no" in the table is actually an image being rendered from the hasnotes.php file. I started tinkering with that file, and found that it was vulnerable to SQL injection.
 
-{% img /images/monxla3_1.png %}
+{{% figure class="img-responsive" src="/img/monxla3_1.png" %}}
 
 I used [SQLMap](http://sqlmap.org) to automate the [SQL Injection Attack](https://en.wikipedia.org/wiki/SQL_injection) for me. I was pretty much able to just point it at the URL and go:
 

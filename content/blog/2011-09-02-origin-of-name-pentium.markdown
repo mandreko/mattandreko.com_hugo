@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Origin of the name \"Pentium\""
 date: "2011-09-02T09:35:00-04:00"
 comments: true

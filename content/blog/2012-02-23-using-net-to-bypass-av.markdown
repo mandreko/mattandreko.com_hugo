@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Using .net to bypass AV"
 date: "2012-02-23T18:19:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - antivirus
  - windows
@@ -120,6 +120,6 @@ namespace Wrapper
 ```
 
 Once this is compiled, it seems to currently be completely undetectable. 
-{% img /images/virustotal_wrapper.png %}
+{{% figure class="img-responsive" src="/img/virustotal_wrapper.png" %}}
 
 <b>Update:</b>Due to several questions, I have uploaded this to [GitHub](https://github.com/mandreko/DotNetAVBypass)

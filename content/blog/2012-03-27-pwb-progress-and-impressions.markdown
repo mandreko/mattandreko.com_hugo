@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "PWB Progress and Impressions"
 date: "2012-03-27T16:45:00-04:00"
 comments: true

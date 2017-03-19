@@ -5,7 +5,7 @@ title: Compiling SSLScan with SSLv2 support on OSX
 highlight: "true"
 ---
 
-{% img left /images/sslscan_apple.png %}
+{{% figure class="img-responsive" src="/img/sslscan_apple.png#left" %}}
 
 SSLScan is a tool that I often use when validating SSL findings on
 penetration tests. I had recently seen a new version come out, with
@@ -114,4 +114,4 @@ $ sudo cp sslscan /usr/bin/
 After following these steps, it should now be possible to run SSLScan
 successfully. To test it, simply run:
 
-{% img center /images/sslscan_syncoutlook.png %}
+{{% figure class="img-responsive" src="/img/sslscan_syncoutlook.png#center)

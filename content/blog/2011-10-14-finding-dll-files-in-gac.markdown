@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Finding DLL files in the GAC"
 date: "2011-10-14T07:20:00-04:00"
 comments: true
@@ -16,9 +15,7 @@ So last night I was working on a project where I needed a specific version of a 
 
 I stumbled upon an [article](http://stackoverflow.com/questions/714907/how-to-extract-an-assembly-from-the-gac/714919#714919) that mentioned being able to go to:
 
-{% blockquote %}
-C:\Windows\Assembly\GAC_msil
-{% endblockquote %}
+>C:\Windows\Assembly\GAC_msil
 
 This worked out perfectly. I found the assembly, sorted through the version numbers, and copied the dll files that I needed. My app now works marvelously.
 

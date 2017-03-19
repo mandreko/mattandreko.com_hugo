@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "Brainpan2"
 date: "2013-11-20"
 comments: true
+highlight: true
 categories: 
  - security
  - hacking
@@ -10,7 +10,7 @@ categories:
  - brainpan
 ---
 
-{% img left /images/brainpan.jpg %}
+{{% figure class="img-responsive" src="/img/brainpan.jpg#left" %}}
 
 Over on #vulnhub, there has been quite a chatter about [Brainpan2](http://vulnhub.com/entry/brainpan_2,56/), a "sequel" to Brainpan, by [superkojiman](https://twitter.com/@superkojiman). They're even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn't cheat to win.
 
@@ -22,7 +22,7 @@ Over on #vulnhub, there has been quite a chatter about [Brainpan2](http://vulnhu
 
 I imported the VM into VMWare Fusion, and started finding the host.
 
-{% img /images/brainpan2_vmware_booted.png %}
+{{% figure class="img-responsive" src="/img/brainpan2_vmware_booted.png" %}}
 
 The first thing I had to do, was find it's IP. Many people use 'netdiscover', but I typically prefer just ping sweeping often. It can sometimes miss, but it works well for me.
 
@@ -87,7 +87,7 @@ DOWNLOADED: 4217 - FOUND: 2
 
 Again, just like the previous challenge, there was a 'bin' folder. I browsed to it, and saw a 'brainpan.exe'. I had to double-check that I had downloaded the proper boot2root again!
 
-{% img /images/brainpan2_firefox_bin_directory.png %}
+{{% figure class="img-responsive" src="/img/brainpan2_firefox_bin_directory.png" %}}
 
 I downloaded the file, and looked to see if it was still a Portable Executable, only to discover it was actually a JPEG.
 
@@ -109,7 +109,7 @@ brainpan.exe: JPEG image data, JFIF standard 1.01, comment: "CREATOR: gd-jpeg v1
 
 I renamed the file to have a JPEG extension, and opened it, only to see that I'd been trolled. I can sense a theme for this challenge...
 
-{% img /images/brainpan2_preview.png %}
+{{% figure class="img-responsive" src="/img/brainpan2_preview.png" %}}
 
 ## Getting down to business
 

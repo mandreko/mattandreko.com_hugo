@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Natas Level 13"
 date: "2012-11-12T06:44:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -18,7 +18,7 @@ categories:
 
 It starts out with a similar upload prompt as last time.
 
-{% img /images/natas13_1.png %}
+{{% figure class="img-responsive" src="/img/natas13_1.png" %}}
 
 The source code is super similar to last time.
 
@@ -137,8 +137,8 @@ mandreko$ cat jpeg_magic upload.php > upload2.php
 
 I then uploaded "upload2.php" using my local HTML form that I created.
 
-{% img /images/natas13_2.png %}
+{{% figure class="img-responsive" src="/img/natas13_2.png" %}}
 
 Just like that, it let me past the logic to verify it was an image type. Once I clicked on the link to the uploaded file, it showed me the magic-bytes, followed by the password to the next level.
 
-{% img /images/natas13_3.png %}
+{{% figure class="img-responsive" src="/img/natas13_3.png" %}}

@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Monxla Part 1"
 date: "2012-11-24T15:54:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -51,7 +51,7 @@ PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; STATE SERVICE VERSION
 
 Based on the clue on the [Monxla page](http://www.overthewire.org/wargames/monxla), "Hint: how big is the page you are looking at?", I connected to the webserver.
 
-{% img /images/monxla1_1.png %}
+{{% figure class="img-responsive" src="/img/monxla1_1.png" %}}
 
 It looked like a fairly generic page, but I viewed the source, and found a huge amount of text commented out. &nbsp;Since it was all alpha-numeric other than ending with a single "=", I figured it was probably [Base64](https://en.wikipedia.org/wiki/Base64).
 

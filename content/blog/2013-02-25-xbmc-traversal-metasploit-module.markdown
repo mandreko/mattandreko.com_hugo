@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "XBMC Traversal Metasploit Module"
 date: "2013-02-25T15:32:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - directorytraversal
  - metasploit

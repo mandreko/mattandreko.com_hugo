@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Monxla Part 2"
 date: "2012-11-25T05:05:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -23,8 +23,8 @@ Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine.
 
 There are 2 sites immediately available to you:
 
-* The HoneyLink site is, so far, just a convenience for the wargame, so you don't have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. {% img /images/monxla2_2.png %}
-* The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. {% img /images/monxla2_1.png %}
+* The HoneyLink site is, so far, just a convenience for the wargame, so you don't have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. {{% figure class="img-responsive" src="/img/monxla2_2.png" %}}
+* The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. {{% figure class="img-responsive" src="/img/monxla2_1.png" %}}
 
 After poking around a bit, I found that you are unable to access the Notes service, since you're not logged in. Per the blog article on the main page, login attempts are disabled. On the Bookmarks page, it says that the submitted bookmarks are being visited routinely. These two statements combined immediately made me think of using a [Session Hijacking](https://en.wikipedia.org/wiki/Session_hijacking) attack to steal the session of the user already logged in, checking the submitted bookmarks. 
 
@@ -32,7 +32,7 @@ To get started with my attack, I tried submitting several bookmarks, which were 
 
 After searching for a bit, I found a Cross-Site Scripting vulnerability in the User Info page.  It wasn't cleanly filtering user input, so I was able to inject javascript into the "username" parameter. 
 
-{% img /images/monxla2_3.png %}
+{{% figure class="img-responsive" src="/img/monxla2_3.png" %}}
 
 To combine these two attacks, I crafted a URL that would use the Cross-Site Scripting attack to allow me to submit it from the proper host, as well as stealing the user's cookie: 
 
@@ -48,12 +48,12 @@ http://nasenko.otw/userinfo.php?username=%3c%73%63%72%69%70%74%3e%64%6f%63%75%6d
 
 I submitted the URL to the Bookmark Service, and it gladly accepted it.  I then switched to the HoneyLink page, and clicked the "Refresh" button, and saw that my click had indeed been registered.  And lucky for me, it had the cookie listed:
 
-{% img /images/monxla2_4.png %}
+{{% figure class="img-responsive" src="/img/monxla2_4.png" %}}
 
 I then added a cookie with the stolen value. 
 
-{% img /images/monxla2_5.png %}
+{{% figure class="img-responsive" src="/img/monxla2_5.png" %}}
 
 When I then went to the Notes Service, which previously denied me access, I was able to view them. This meant it was successful. We successfully stole a valid user's session.
 
-{% img /images/monxla2_6.png %}
+{{% figure class="img-responsive" src="/img/monxla2_6.png" %}}

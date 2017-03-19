@@ -1,8 +1,8 @@
 ---
-layout: post
 title: "OverTheWire Natas Level 11"
 date: "2012-11-10T05:34:00-05:00"
 comments: true
+highlight: "true"
 categories:
  - overthewire
  - wargames
@@ -18,7 +18,7 @@ categories:
 
 It started with a dialog to set the background color. When you click the "Set Color" button, it sets a cookie in your browser. But as the dialog says, the cookie is protected.
 
-{% img /images/natas11_1.png %}
+{{% figure class="img-responsive" src="/img/natas11_1.png" %}}
 
 I looked at the source code, as I always do. It was a little more lengthy than previous levels.
 
@@ -100,7 +100,7 @@ Background&nbsp;color:&nbsp;&lt;input&nbsp;name=bgcolor&nbsp;value="&lt;?=$data[
 
 I viewed my cookie, using the amazing, [Edit This Cookie](https://chrome.google.com/webstore/detail/edit-this-cookie/fngmhnnpilhplaeedifhccceomclgfbg), Chrome extension. Note that the last character is a "=", but it's encoded in the cookie as "%3D" due to encoding.
 
-{% img /images/natas11_2.png %}
+{{% figure class="img-responsive" src="/img/natas11_2.png" %}}
 
 I then took this cookie value and figured that maybe I could decode it. XOR encryption is reversible if you know 2/3 parts. You have A XOR KEY = C, for example. If you know A and C, you can derive KEY by XORing A and C together the same way. I ended up writing some code in PHP (since the original was in PHP)
 
@@ -171,4 +171,4 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 I then pasted that cookie value into my Edit This Cookie extension, and refreshed the page.  It then presented me with the password to the next level. 
 
-{% img /images/natas11_3.png %}
+{{% figure class="img-responsive" src="/img/natas11_3.png" %}}
