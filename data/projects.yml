@@ -1,0 +1,21 @@
+name: Projects
+source:
+  - icon: fa fa-globe
+    name: Area 31 Enrollment
+    description: Custom MeteorJS enrollment application for a local career center. Reduces paperwork and manual data entry for school employees, resulting in cost savings for the school. Currently working on a 2.0 version, to address all the wonderful feedback received in version 1.0, including making it generic enough that new instances can be spun up on the fly for individual schools.
+    url: https://www.area31enrollment.com
+
+  - icon: fa fa-github
+    name: SlickGuns Gunnit Bot
+    description: Python bot written to watch https://www.reddit.com/r/gundeals for posts linking to http://www.slickguns.com. Users of the subreddit were annoyed by not having direct links, and this bot acts as an intermediary for them.
+    url: https://github.com/mandreko/SlickGunsGunnitBot
+
+  - icon: fa fa-cog
+    name: Twitter Mass Blocker
+    description: NodeJS application used to view your Twitter followers, and allow mass blocking. While it sounds like an odd use-case, it's quite useful when someone trolls you by buying you over 9000 followers in a day.
+    url: https://github.com/mandreko/twitter_mass_blocker
+
+  - icon: fa fa-github
+    name: NessusGo
+    description: In a foray to learn Go-Lang, I started writing a Nessus client to automate tasks while working for Accuvant LABS.
+    url: https://github.com/mandreko/nessusgo

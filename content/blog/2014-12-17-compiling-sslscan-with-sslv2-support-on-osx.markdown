@@ -114,4 +114,4 @@ $ sudo cp sslscan /usr/bin/
 After following these steps, it should now be possible to run SSLScan
 successfully. To test it, simply run:
 
-{{% figure class="img-responsive" src="/img/sslscan_syncoutlook.png#center)
+{{% figure class="img-responsive" src="/img/sslscan_syncoutlook.png#center" %}}

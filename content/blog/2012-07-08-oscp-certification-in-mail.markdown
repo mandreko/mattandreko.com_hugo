@@ -16,15 +16,15 @@ So previously, I had blogged about recently getting [OSCP certified](http://www.
 After getting settled down, I opened the package and found some my certificate, wrapped in a nice folder, that I have filed away to keep forever. 
 
 Here is the front: 
-{{% figure class="img-responsive" src="/img/oscp_folder_front.jpg %}
+{{% figure class="img-responsive" src="/img/oscp_folder_front.jpg" %}}
 
 The back of the folder had me laughing for several minutes. Throughout the entire class, you get to learn a certain phrase, "Try Harder", quite well. The admins, the docs, and even some of the machines you attempt to break into, will all taunt you with these words. Here is the back: 
 
-{{% figure class="img-responsive" src="/img/oscp_folder_back.jpg %}
+{{% figure class="img-responsive" src="/img/oscp_folder_back.jpg" %}}
 
 Lastly, inside I found my certification.  I don't know if will just file this away for safe-keeping, or frame it, as a start to one of many certifications I hope to attain. 
 
-{{% figure class="img-responsive" src="/img/oscp_cert.jpg %}
+{{% figure class="img-responsive" src="/img/oscp_cert.jpg" %}}
 
 Thanks again to [Offensive Security](http://www.offensive-security.com) for such a fun course. I plan on doing [CTP (Cracking the Perimeter)](http://www.offensive-security.com/information-security-training/cracking-the-perimeter/) next, once the wife unit gets used to seeing me on a nightly basis again. 
 
