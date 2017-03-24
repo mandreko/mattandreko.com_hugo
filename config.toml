@@ -2,8 +2,9 @@ baseurl = "https://www.mattandreko.com/"
 languageCode = "en-US"
 title = "Matt Andreko"
 disqusShortname = "mattandreko"
-googleAnalytics = "UA-25280110-1"
+
 theme = "hugo-pixel"
+Paginate = 6
 
 [permalinks]
   post = "/:year/:month/:day/:slug"
@@ -12,6 +13,8 @@ theme = "hugo-pixel"
   avatar = "mattandreko_photo.jpg"
   author = "Matt Andreko"
   author_description = "Security Consultant"
+  disqusShortname = "mattandreko"
+  googleAnalytics = "UA-25280110-1"
 
   # Custom assets can be linked with their paths relative to static/
   custom_css = []

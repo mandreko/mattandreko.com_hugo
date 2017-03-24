@@ -2,7 +2,14 @@
 	<div class='main section' id='main'>
 		<div class='widget Blog' data-version='1' id='Blog1'>
 			<div class='blog-posts hfeed'>
-				<div class="date-outer">
+
+
+				{{ $paginator := .Paginate (where .Data.Pages "Type" "blog") }}
+				{{ range $paginator.Pages }}
+
+				{{ partial "post_preview.html" . }}
+
+				<!-- <div class="date-outer">
 					<h2 class='date-header'><span>Friday, 6 March 2015</span></h2>
 					<div class="date-posts">
 						{{ partial "post_01_love_writing.html" . }}
@@ -12,7 +19,10 @@
 						{{ partial "post_05_music_moral_law.html" . }}
 						{{ partial "post_06_fashion_fades.html" . }}
 					</div>
-				</div>
+				</div> -->
+
+				{{ end }}
+				{{ template "_internal/pagination.html" . }}
 			</div>
 			{{ partial "main_posts_pager.html" . }} <!-- even -->
 			<div class='clear'></div>

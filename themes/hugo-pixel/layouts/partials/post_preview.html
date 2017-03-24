@@ -1,0 +1,51 @@
+<div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='block-image'>
+			<div class='thumb'>
+				<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
+			</div>
+		</div>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>{{ .Title}}</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					{{ if not .Site.Params.disableReadingTime }}{{ .ReadingTime }} minute read {{ end }}
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>{{ .Date.Format "Jan 2, 2006" }}</abbr>
+					<span class='post-comment-link'>
+						<i class='fa fa-comment'></i>
+						<a class='comment-link' href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html#comment-form' onclick=''>
+							{{ if .Site.Params.disqusShortname }} # <a href="{{ .Permalink }}#disqus_thread">Comments</a>{{ end }}
+						</a>
+					</span>
+				</div>
+				<div class='resumo'>
+					<span>
+					{{ if .Description }}
+        				{{ .Description }}
+					{{ else }}
+						{{ .Summary }}
+					{{ end }}
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="{{ .Permalink }}">Read more <i class='fa fa-chevron-right'></i></a>
+				{{ if isset .Params "categories" }}
+				<span class='post-labels'>
+					{{ range .Params.categories }}
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="{{ "/categories/" | absURL }}{{ . | urlize | lower }}/">{{ . }} </a>
+					{{ end }}
+				</span>
+				{{ end }}
+			</div>
+		</article>
+	</div>
+</div>
