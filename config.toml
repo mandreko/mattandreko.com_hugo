@@ -1,30 +1,31 @@
 baseurl = "https://www.mattandreko.com/"
 languageCode = "en-US"
 title = "Matt Andreko"
-# Enable comments by entering your Disqus shortname
 disqusShortname = "mattandreko"
-# Enable Google Analytics by entering your tracking code
 googleAnalytics = "UA-25280110-1"
-theme = "hugo-sustain"
+theme = "hugo-pixel"
 
 [permalinks]
   post = "/:year/:month/:day/:slug"
 
 [params]
-  avatar = "profile.jpg"
+  avatar = "mattandreko_photo.jpg"
   author = "Matt Andreko"
-  description = "Describe your website"
+  author_description = "Security Consultant"
 
   # Custom assets can be linked with their paths relative to static/
   custom_css = []
   custom_js  = []
 
 [params.social]
-  Github        = "mandreko"
-  Email         = "mandreko@gmail.com"
+  Facebook      = "mattandreko"
   Twitter       = "mandreko"
+  GooglePlus    = "mandreko"
   LinkedIn      = "mattandreko"
-  Stackoverflow = "mattandreko"
+  StackOverflow = "mattandreko"
+  Github        = "mandreko"
+  Instagram     = "mandreko"
+  Email         = "mandreko@gmail.com"
 
 ## Main Menu
 [[menu.main]]

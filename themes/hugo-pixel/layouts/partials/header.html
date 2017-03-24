@@ -1,0 +1,82 @@
+<div class='head-wrap'>
+	<div class='row' id='header-wrappers'>
+		<div class='headerleft'>
+			<div class='headerleft section' id='headerleft'>
+				<div class='widget Header' data-version='1' id='Header1'>
+					<div id='header-inner'>
+						<a href='/' style='display: block'><h1 style='display:none'></h1>
+							<img alt="Logo" height="55px; " id="Header1_headerimg" src="/img/logo.png" style="display: block" width="311px; ">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style='clear: both;'></div>
+	</div>
+</div>
+<div class='navi-menu'>
+	<div class='nav-menu section' id='Navigation Menu' name='Navigation Menu'>
+		<div class='widget LinkList' data-version='1' id='LinkList100'>
+			<div class='widget-content'>
+				<ul id='nav' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
+					<li itemprop='name'><a href='{{ .Site.BaseURL }}' itemprop='url'>Home</a></li>
+					<li itemprop='name'><a href='#' itemprop='url'>Blog</a></li>
+					<li itemprop='name'><a href='#' itemprop='url'>_Categories</a></li>
+					<li itemprop='name'><a href='#' itemprop='url'>_Archive</a></li>
+					<li itemprop='name'><a href='#' itemprop='url'>Projects</a></li>
+					<li itemprop='name'><a href='#' itemprop='url'>Resume</a></li>
+				</ul>
+				<script type='text/javascript'>
+				//<![CDATA[
+				$("#LinkList100").each(function(){
+					var e="<ul id='nav'><li><ul id='sub-menu'>";
+					$("#LinkList100 li").each(function(){
+						var t=$(this).text(),n=t.substr(0,1),r=t.substr(1);
+						"_"==n?(n=$(this).find("a").attr("href"),e+='<li><a href="'+n+'">'+r+"</a></li>"):(n=$(this).find("a").attr("href"),e+='</ul></li><li><a href="'+n+'">'+t+"</a><ul id='sub-menu'>")
+					});
+					e+="</ul></li></ul>";
+					$(this).html(e);
+					$("#LinkList100 ul").each(function(){
+						var e=$(this);if(e.html().replace(/\s|&nbsp;/g,"").length==0)e.remove()
+					});
+					$("#LinkList100 li").each(function(){
+						var e=$(this);
+						if(e.html().replace(/\s|&nbsp;/g,"").length==0)e.remove()
+					})
+				});
+				//]]>
+				</script>
+			</div>
+		</div>
+	</div>
+	<div class='top-bar-social blue section' id='header social widget' name='Top Social Widget'>
+		<div class='widget LinkList' data-version='1' id='LinkList230'>
+			<div class='widget-content'>
+				<ul id='social'>
+					{{ if .Site.Params.Social.Facebook }}
+						<li><a class='facebook' href='https://www.facebook.com/{{ .Site.Params.Social.Facebook }}' title='facebook'></a></li>
+					{{ end }}
+					{{ if .Site.Params.Social.Twitter }}
+						<li><a class='twitter' href='https://www.twitter.com/{{ .Site.Params.Social.Twitter }}' title='twitter'></a></li>
+					{{ end }}
+					{{ if .Site.Params.Social.GooglePlus }}
+						<li><a class='gplus' href='https://plus.google.com/{{ .Site.Params.Social.GooglePlus }}' title='gplus'></a></li>
+					{{ end }}
+					{{ if .Site.Params.Social.LinkedIn }}
+						<li><a class='linkedin' href='https://www.linkedin.com/{{ .Site.Params.Social.LinkedIn }}' title='linkedin'></a></li>
+					{{ end }}
+					{{ if .Site.Params.Social.StackOverflow }}
+						<li><a class='stack-overflow' href='http://stackoverflow.com/story/{{ .Site.Params.Social.StackOverflow }}' title='stack-overflow'></a></li>
+					{{ end }}
+					{{ if .Site.Params.Social.Github }}
+						<li><a class='github' href='https://www.github.com/{{ .Site.Params.Social.Github }}' title='github'></a></li>
+					{{ end }}
+					{{ if .Site.Params.Social.Instagram }}
+						<li><a class='instagram' href='https://www.instagram.com/{{ .Site.Params.Social.Instagram }}' title='instagram'></a></li>
+					{{ end }}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div style='clear: both;'></div>
+</div>
