@@ -1,6 +1,52 @@
-<div class='blog-pager' id='blog-pager'>
-	<span id='blog-pager-older-link'>
-		<a class='blog-pager-older-link' href='https://pixel-way2themes.blogspot.in/search?updated-max=2015-03-06T23:03:00-08:00&amp;max-results=6' id='Blog1_blog-pager-older-link' title='Older Posts'>Older Posts</a>
-	</span>
-	<a class='home-link' href='https://pixel-way2themes.blogspot.in/'>Home</a>
-</div>
+{{ $pag := $.Paginator }}
+{{ if gt $pag.TotalPages 1 }}
+
+	<div class='blog-pager' id='blog-pager'>
+		
+		<span class="showpageOf">Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}</span>
+
+			{{ with $pag.First }}
+				<span class="displaypageNum">
+					<a href="{{ .URL }}" aria-label="First">
+						<i class="fa fa-angle-double-left fa-lg"></i>
+					</a>
+				</span>		        
+    		{{ end }}
+
+    		{{ if $pag.HasPrev }}
+		    	<span class="displaypageNum">
+		    		<a href="{{ if $pag.HasPrev }}{{ $pag.Prev.URL }}{{ end }}" aria-label="Previous">
+		    			<i class="fa fa-angle-left fa-lg"></i>
+		    		</a>
+		    	</span>
+		    {{ end }}
+
+		    {{ range $pag.Pagers }}
+		    	{{ if eq . $pag }}
+		    		<span class="pagecurrent">
+		    			{{ .PageNumber }}
+		    		</span>
+		    	{{ else }}
+		    		<span class="displaypageNum">
+			    		<a href="{{ .URL }}">{{ .PageNumber }}</a>
+		    		</span>
+		    	{{ end }}		    	
+		    {{ end }}
+
+		    {{ if $pag.HasNext }}
+		    	<span class="displaypageNum">
+		    		<a href="{{ if $pag.HasNext }}{{ $pag.Next.URL }}{{ end }}" aria-label="Next">
+		    			<i class="fa fa-angle-right fa-lg"></i>
+		    		</a>
+	    		</span>
+		    {{ end }}
+
+		    {{ with $pag.Last }}
+		    	<span class="displaypageNum">
+		    		<a href="{{ .URL }}">
+		    			<i class="fa fa-angle-double-right fa-lg"></i>
+		    		</a>
+	    		</span>
+		    {{ end }}
+	</div>
+{{ end }}
