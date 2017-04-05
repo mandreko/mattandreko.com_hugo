@@ -9,7 +9,7 @@ Paginate = 6
 publishDir = "docs"
 
 [permalinks]
-  post = "/:year/:month/:day/:slug"
+  blog = "/:year/:month/:day/:slug/"
 
 [params]
   avatar = "mattandreko_photo.jpg"
