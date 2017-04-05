@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Browsers on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/browsers/index.xml</link>
+    <description>Recent content in Browsers on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/browsers/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Poor UI Experience</title>
+      <link>https://www.mattandreko.com/blog/2011-08-17-poor-ui-experience/</link>
+      <pubDate>Wed, 17 Aug 2011 08:23:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2011-08-17-poor-ui-experience/</guid>
+      <description>&lt;p&gt;I was recently signing up for &lt;a href=&#34;http://about.me&#34;&gt;about.me&lt;/a&gt; because it sounded like a neat little simple blurb about yourself. When trying to sign up, after entering my email address, and password, I was brought to a page asking for some basic info. However, I couldn&amp;rsquo;t figure out how to submit it. I was given this error:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/about.me_validation_error.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I filled out all the required data, and left the optional parts empty. However, it wouldn&amp;rsquo;t submit. So then, I tried entering a short bit of information in the optional parts, and still got the same error. I tried multiple times, I even shut down my browser and went back to the site. Eventually, I switched from Chrome to Internet Explorer, and it let me continue.&lt;/p&gt;
+
+&lt;p&gt;Now when you look at this experience, you see that it&amp;rsquo;s fairly trivial. However, the audience that they are targeting, may not be the mostsavvy when it comes to computers. Half the non-technical people I talk to, don&amp;rsquo;t even know what their browser is, and surely wouldn&amp;rsquo;t know that this error was an issue with one browser over another.&lt;/p&gt;
+
+&lt;p&gt;I run into this issue quite often in development, and I know that I have to test it in all major browsers. All browsers need to work, or I won&amp;rsquo;t succeed. Had I not switched browsers, I would have not been able to finish signing up for an account. While this is just a social site, what if it were a bank, or something important? You absolutely have to test for this sort of thing.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

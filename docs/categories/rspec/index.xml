@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rspec on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/rspec/index.xml</link>
+    <description>Recent content in Rspec on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/rspec/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Installing Guard gem causes tests to fail - Solved</title>
+      <link>https://www.mattandreko.com/blog/2011-08-18-installing-guard-gem-causes-tests-to/</link>
+      <pubDate>Thu, 18 Aug 2011 09:14:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2011-08-18-installing-guard-gem-causes-tests-to/</guid>
+      <description>&lt;p&gt;I was tinkering with a new rails application, using &lt;a href=&#34;http://relishapp.com/rspec&#34;&gt;RSpec2&lt;/a&gt; and &lt;a href=&#34;http://cukes.info&#34;&gt;Cucumber&lt;/a&gt; for my testing. I was able to run all my tests by typing:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rake spec
+rake cucumber
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This worked perfectly, but every time I&amp;rsquo;d make a change, I&amp;rsquo;d have to run both commands.  So I looked into the &lt;a href=&#34;https://github.com/guard/guard&#34;&gt;Guard&lt;/a&gt; gem, after watching the excellent &lt;a href=&#34;http://railscasts.com/episodes/264-guard&#34;&gt;RailsCast&lt;/a&gt; by Ryan Bates.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I started by adding to my gemfile:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gem &#39;guard-spork&#39;
+gem &#39;guard-rspec&#39;
+gem &#39;guard-cucumber&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then to configure guard, I ran:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bundle
+guard init rspec
+guard init cucumber
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So I went and ran the guard executable, only to see failures in both RSpec and Cucumber!&lt;br /&gt;&lt;br /&gt;After much research, I found that my data was persisting between tests for some reason.  I had the &lt;a href=&#34;https://github.com/bmabey/database_cleaner&#34;&gt;database_cleaner&lt;/a&gt; gem, so I didn&amp;rsquo;t understand why.  I eventually found a line in both /spec/spec_helper.rb and /features/support/env.rb showing:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;DatabaseCleaner.strategy = :transaction
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Everything seemed to work correctly when I changed it to (in both places):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;DatabaseCleaner.clean_with :truncation
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I&amp;rsquo;m not exactly sure why this works. Maybe the transaction method doesn&amp;rsquo;t work well with sqlite, but it did manage to fix me up.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

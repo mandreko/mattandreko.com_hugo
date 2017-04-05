@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Commandinjection on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/commandinjection/index.xml</link>
+    <description>Recent content in Commandinjection on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/commandinjection/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>OverTheWire Natas Level 10</title>
+      <link>https://www.mattandreko.com/blog/2012-11-09-overthewire-natas-level-10/</link>
+      <pubDate>Fri, 09 Nov 2012 07:28:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-09-overthewire-natas-level-10/</guid>
+      <description>&lt;p&gt;On to &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas10.shtml&#34;&gt;Level 10&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out just like the last level, with a search dialog.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Again, as always, I review the code since it&amp;rsquo;s available. You can see that it&amp;rsquo;s using a &amp;ldquo;preg_match&amp;rdquo; to try to filter out bad characters. This however is flawed still. Instead of a blacklist, it should be a whitelist of only certain values.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Because I can&amp;rsquo;t complete the command using a semicolon or ampersand, and start a new one, I instead go with the approach of having &amp;ldquo;grep&amp;rdquo; just return me the password file as well as the dictionary. I enter, &amp;lsquo;&amp;ldquo;$&amp;rdquo; /etc/natas_webpass/natas11&amp;rsquo;, and it is fairly successful. The &amp;ldquo;$&amp;rdquo; tells grep to search for any line that contains a &amp;ldquo;end of line&amp;rdquo;. Since pretty much every line will have that, it outputs the entire file. I then include the password file as well as the dictionary, so it reads me both back. This then provides the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 9</title>
+      <link>https://www.mattandreko.com/blog/2012-11-08-overthewire-natas-level-9/</link>
+      <pubDate>Thu, 08 Nov 2012 06:12:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-08-overthewire-natas-level-9/</guid>
+      <description>&lt;p&gt;The next level of &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&amp;rsquo;s&lt;/a&gt; Nata challenge is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas9.shtml&#34;&gt;Level 9&lt;/a&gt;. This is a command injection vulnerability.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Initially, you are given a search box.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Just like in previous levels, I looked at the available source code. You can see the vulnerability is that the user input is not sanitized. Due to this, you can inject code into the &amp;ldquo;grep&amp;rdquo; command it is running to do the search.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I simply put in the search box, &amp;ldquo;; cat /etc/natas_webpass/natas10&amp;rdquo;, since that is where the password file is located. The command it ends up running is &amp;ldquo;grep -i; cat /etc/natas_webpass/natas10dictionary.txt&amp;rdquo;. The semi-colon terminates the &amp;ldquo;grep&amp;rdquo; command, and allows the &amp;ldquo;cat&amp;rdquo; to then run next. I end up passing in the password file, as well as the dictionary. In some cases, you may need to end the line with a comment, to keep it from executing, by putting in a &amp;ldquo;#&amp;rdquo;. Regardless, after running, you get the password to the next level.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>

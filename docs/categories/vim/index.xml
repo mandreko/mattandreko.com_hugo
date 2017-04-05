@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/vim/index.xml</link>
+    <description>Recent content in Vim on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/vim/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Fogbugz VIM Scrolling</title>
+      <link>https://www.mattandreko.com/blog/2011-11-30-fogbugz-vim-scrolling/</link>
+      <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2011-11-30-fogbugz-vim-scrolling/</guid>
+      <description>&lt;p&gt;At &lt;a href=&#34;http://www.leafsoftwaresolutions.com&#34;&gt;work&lt;/a&gt;, we use &lt;a href=&#34;http://www.fogcreek.com/fogbugz&#34;&gt;FogBugz&lt;/a&gt; for our trouble tickets, and internal tracking. We sometimes have some really long cases, so to make it easier to navigate through them, we wanted to be able to push a button to go to the next action event on the ticket.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I started writing a &lt;a href=&#34;http://en.wikipedia.org/wiki/Greasemonkey&#34;&gt;GreaseMonkey&lt;/a&gt; userscript, and with some suggestions from coworkers, made one that used the vim up and down navigation keys (j and k) to navigate and highlight through all the action events.&lt;/p&gt;
+
+&lt;p&gt;If you&amp;rsquo;d like to try it out for yourself, you should be able to install it from &lt;a href=&#34;https://userscripts.org/scripts/review/120404&#34;&gt;here&lt;/a&gt;. (note that you must have GreaseMonkey support in your browser. I use &lt;a href=&#34;https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo&#34;&gt;TamperMonkey&lt;/a&gt; in Chrome.)&lt;/p&gt;
+
+&lt;p&gt;[UPDATE 2011-12-13]
+I made a fix to make it work when a case had changesets committed, which would previously make the scrolling mess up.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

