@@ -16,9 +16,15 @@ Paginate = 6
   disqusShortname = "mattandreko"
   googleAnalytics = "UA-25280110-1"
 
+  generateTaxonomyList = true
+  sortTaxonomyAlphabetical = true
+
   # Custom assets can be linked with their paths relative to static/
   custom_css = []
   custom_js  = []
+
+[indexes]
+  category = "categories"
 
 [params.social]
   Facebook      = "mattandreko"
@@ -46,3 +52,12 @@ Paginate = 6
   identifier = "resume"
   weight = 300
   url = "/resume/"
+
+[[menu.sidebar]]
+  Name = "Google"
+  URL = "https://www.google.com"
+  weight = 0
+[[menu.sidebar]]
+  Name = "Hugo"
+  URL = "/categories/hugo/"
+  weight = 1
