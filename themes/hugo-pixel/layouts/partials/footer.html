@@ -1,12 +1,21 @@
-<div id='w2t_footer'>
-	<div class='w2t-copy-container row'>
-		<div class='w2t_footer_copyright'>
-			Copyright &copy;
-			<script type='text/javascript'>
-				var creditsyear = new Date();
-				document.write(creditsyear.getFullYear());
-			</script>
-			Matt Andreko. All Rights Reserved
+		<!-- Start of footer -->
+		<div id='w2t_footer'>
+			<div class='w2t-copy-container row'>
+				<div class='w2t_footer_copyright'>
+					Copyright &copy;
+					<script type='text/javascript'>
+						var creditsyear = new Date();
+						document.write(creditsyear.getFullYear());
+					</script>
+					Matt Andreko. All Rights Reserved
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
+		<!-- End of footer -->
+		{{ if .Site.Params.disqusShortname }}
+			{{ if not (eq .Params.comments false) }}
+				{{ partial "disqus_count.html" . }}
+			{{ end }}
+		{{ end }}
+	</body>
+</html>
