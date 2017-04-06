@@ -91,96 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
-
-        <div class="entry-content">
-          
-          
-          
-          <p>I have discovered a bug in the <a href="http://sysax.com/server/index.htm">Sysax Multi-Server application</a>. More specifically, it&rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.</p>
-
-<!-- more -->
-
-<p>In the Sysax service, the configuration would look like this:</p>
 
 
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_5.64_protocols.png" />
-    
-    
-</figure>
-
-
-<p>To trigger this vulnerability is pretty simple. Log into the HTTP File Server:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_5.64_login.png" />
-    
-    
-</figure>
-
-
-<p>After logging in, click the &ldquo;Create Folder&rdquo; link:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_5.64_main.png" />
-    
-    
-</figure>
-
-
-<p>In the &ldquo;Folder Name&rdquo; textbox, enter 1000 &ldquo;A&rdquo;s:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_5.64_create_folder.png" />
-    
-    
-</figure>
-
-
-<p>The service will then crash, and have the EIP address overwritten:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_5.64_crash.png" />
-    
-    
-</figure>
-
-
-<p>I reported this vulnerability to CodeOrigin, the creators of the Sysax Multi-Server on July 26 17:24 PM EDT. Surprisingly, they got back to me at July 27 04:28 AM PDT with a new version available (5.65).  Unfortunately this version had the same vulnerability, although the EIP offset was different. After reporting this, they got back to me again at July 28 06:59 AM PDT, stating that a new version was available (5.66). This new version appears to have the vulnerability fixed.</p>
-
-<p>If you&rsquo;re using Sysax Multi-Server, please upgrade, to prevent attackers from infiltrating your systems.</p>
-
-<p>The exploit can now be found on exploit-db, <a href="http://www.exploit-db.com/exploits/20676">here</a>, where you can also download the vulnerable version of the software.</p>
-
-<p>Thanks a bunch to <a href="https://twitter.com/cd1zz">@cd1zz</a> and <a href="https://twitter.com/iMulitia">@iMulitia</a> for pointing me to this app!</p>
-
-<p>UPDATE (2012-08-19): The original exploit had an issue with a variable EIP offset, due to the fact that the root folder for the user was part of the stack.  I was able to discover a second vulnerability to get the server to disclose the path.  This has been incorporated into the new exploit, and works much better.  Sysax has released an updated version that is no longer vulnerable to this.</p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>

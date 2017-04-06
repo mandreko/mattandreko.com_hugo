@@ -1,24 +1,21 @@
 {{ partial "header.html" . }}
-		
-		<div style='clear: both;'></div>
-		
-		<div id="outer-wrapper" class="index home">
-			<div class='row' id='content-wrapper'>
-
+	<div class='row' id='content-wrapper'>
+		<div id='main-wrapper'>
+			<div class='main section' id='main'>
 				{{ partial "main_posts.html" . }}
-				<!-- Sidebar -->
-				<div id='sidebar-wrapper'>
-					<div class='sidebar ready-widget section' id='sidebar'>
-						{{ partial "sidebar_about_me.html" . }}
-						{{ partial "sidebar_popular_articles.html" . }}
-						{{ partial "sidebar_featured.html" . }}
-						{{ partial "sidebar_categories.html" . }}
-					</div>
-				</div>
-				<div style='clear: both;'></div>
 			</div>
-			<!-- end content-wrapper -->
-			{{ partial "lower_navigation.html" . }}
 		</div>
-
+		<!-- Sidebar -->
+		<div id='sidebar-wrapper'>
+			<div class='sidebar ready-widget section' id='sidebar'>
+				{{ partial "sidebar_about_me.html" . }}
+				{{ partial "sidebar_popular_articles.html" . }}
+				{{ partial "sidebar_featured.html" . }}
+				{{ partial "sidebar_categories.html" . }}
+			</div>
+		</div>
+		<div style='clear: both;'></div>
+	</div>
+	<!-- end content-wrapper -->
+{{ partial "lower_navigation.html" . }}
 {{ partial "footer.html" . }}

