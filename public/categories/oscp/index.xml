@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oscp on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/oscp/index.xml</link>
+    <description>Recent content in Oscp on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/oscp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>OSCP Certification in the mail</title>
+      <link>https://www.mattandreko.com/blog/2012-07-08-oscp-certification-in-mail/</link>
+      <pubDate>Sun, 08 Jul 2012 17:27:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-07-08-oscp-certification-in-mail/</guid>
+      <description>&lt;p&gt;So previously, I had blogged about recently getting &lt;a href=&#34;http://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional&#34;&gt;OSCP certified&lt;/a&gt;. I came home from my vacation to find a package from Offensive Security in my mailbox all the way from Israel.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;After getting settled down, I opened the package and found some my certificate, wrapped in a nice folder, that I have filed away to keep forever.&lt;/p&gt;
+
+&lt;p&gt;Here is the front:
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/oscp_folder_front.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The back of the folder had me laughing for several minutes. Throughout the entire class, you get to learn a certain phrase, &amp;ldquo;Try Harder&amp;rdquo;, quite well. The admins, the docs, and even some of the machines you attempt to break into, will all taunt you with these words. Here is the back:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/oscp_folder_back.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Lastly, inside I found my certification.  I don&amp;rsquo;t know if will just file this away for safe-keeping, or frame it, as a start to one of many certifications I hope to attain.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/oscp_cert.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Thanks again to &lt;a href=&#34;http://www.offensive-security.com&#34;&gt;Offensive Security&lt;/a&gt; for such a fun course. I plan on doing &lt;a href=&#34;http://www.offensive-security.com/information-security-training/cracking-the-perimeter/&#34;&gt;CTP (Cracking the Perimeter)&lt;/a&gt; next, once the wife unit gets used to seeing me on a nightly basis again.&lt;/p&gt;
+
+&lt;p&gt;I get no kickbacks or referral bonuses for sending people over, but if you enjoy security, I very much urge you to try this class.  It was extremely fun.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

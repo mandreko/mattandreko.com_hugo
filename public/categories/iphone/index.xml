@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Iphone on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/iphone/index.xml</link>
+    <description>Recent content in Iphone on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/iphone/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sprint iPhone 4S pre-order fiasco</title>
+      <link>https://www.mattandreko.com/blog/2011-10-07-sprint-iphone-4s-pre-order-fiasco/</link>
+      <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2011-10-07-sprint-iphone-4s-pre-order-fiasco/</guid>
+      <description>&lt;p&gt;So like many people, I wanted the new iPhone 4S.  Since the wife unit is on Sprint, and I&amp;rsquo;m on AT&amp;amp;T, we started looking at plans.  Sprint offers a nicer family plan and lets her upgrade to a smartphone, while letting me have the iPhone.  So we decided to make the switch, and do the pre-order.  I called last night to verify the ordering process, and make sure that I could still get the $200 price while not using her upgrade credit.  I was told that the phone would become available at 12:01 AM PST.  I woke up at 5 AM (No way am I waking up at 3 AM) to put in the pre-order.  I tried clicking the massive preorder button:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/sprint_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;When I did this though, it was trying to replace my wife&amp;rsquo;s phone with the iPhone. This was not cool.&lt;/p&gt;
+
+&lt;p&gt;I log out, close my browser and try again. This time I go to &amp;ldquo;My Account&amp;rdquo;, and select &amp;ldquo;Add a new phone to share minutes&amp;rdquo;. When I did this, I could add a new phone, but we couldn&amp;rsquo;t seem to get it with the family plan setup.&lt;/p&gt;
+
+&lt;p&gt;I log out, close my browser and try again. This time I go to &amp;ldquo;Shop&amp;rdquo;, and select &amp;ldquo;Plans&amp;rdquo;. I select the family plan that we want. It instructs me to add a phone, so I select the iPhone 4S. It then tells me that I need to add a second plan. It doesn&amp;rsquo;t let me use her existing phone anywhere.&lt;/p&gt;
+
+&lt;p&gt;I decide that maybe I&amp;rsquo;ll stop trying to be such a technology zealot and try using an actual phone. I call them up, and their callcenters aren&amp;rsquo;t open. Apparently they don&amp;rsquo;t open until 6 AM CST. I wait until then in my car, and then call them. After finding out that my wife didn&amp;rsquo;t know her correct security pin or security answer, I had them send it to her email. I checked her email from my phone (something I won&amp;rsquo;t be able to do with the Sprint iPhone unfortunately), and found the answers. The security pin was way off, but the security answer was pretty much what I told the Sprint representative. I just gave an unabbreviated version. Unfortunately they don&amp;rsquo;t get to see the security answer to compare to, they type in what you tell them, and the computer compares it. So if it&amp;rsquo;s off by just a little bit, it&amp;rsquo;s not letting you in. Awesome.&lt;/p&gt;
+
+&lt;p&gt;I give the representative the pin, and he lets me access her account. I tell him about wanting to pre-order the iPhone 4S, and my problems with the website. He asks me to try again, which unfortunately I can&amp;rsquo;t do, since I&amp;rsquo;m in my car. He puts me on hold for a few minutes, and tells me that there&amp;rsquo;s some sort of problem, that they can&amp;rsquo;t order the iPhone 4S yet, and maybe I should &amp;ldquo;try back in a few hours&amp;rdquo;. I explain that I&amp;rsquo;ll be at work, and not able to just spend all day calling until their ordering system decides to work. He says, &amp;ldquo;Well, maybe too many people are ordering right now, so I can&amp;rsquo;t order. Try it online again.&amp;rdquo; He tells me because of my issues with the website, to just order the phone under my wife&amp;rsquo;s account, but under an individual plan. I ask about number porting, and he said that Sprint could assign it a number, and then when it&amp;rsquo;s delivered, and I open the box, they can port my AT&amp;amp;T number over. They could then fix the plan to be a family plan. I asked, and he confirmed that there would be no cost penalty for this.&lt;/p&gt;
+
+&lt;p&gt;So I go to work, and quickly start to pre-order the phone, as to not waste a bunch of work time. I get to ordering under the individual plan, and they ask about porting the number. The representative said they wouldn&amp;rsquo;t need it, but I figured since they ask, I&amp;rsquo;ll enter it, and have it ready. Awesome for me! Then I see this:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/sprint_security.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I&amp;rsquo;ve highlighted the parts that worry me. Firstly, notice that for some reason now, my browser is warning me that there&amp;rsquo;s an issue with the security. I&amp;rsquo;m smart enough to figure out what it is luckily, since I work in the IT field. The encryption is working, they just have an HTTPS page that has images on it referencing HTTP. This is considered a no-no in web programming. Then the more alarming issue: They want my account number, password, and SSN for AT&amp;amp;T. I could see using my account number as a reference for talking with AT&amp;amp;T, no problem. However why do they need my password? We have always taught users to NEVER give out your password to anyone, especially on a page that the HTTPS isn&amp;rsquo;t working properly. Since the representative said they could assign it the new number and port on delivery, I opted for the option to assign me a new number instead of filling out this form.&lt;/p&gt;
+
+&lt;p&gt;Eventually I get to this point:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/sprint_complete.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Let&amp;rsquo;s hope that Sprint can actually deliver on their promise of fixing everything. Everyone likes to complain about AT&amp;amp;T being incompetent, but so far, I&amp;rsquo;m not really having that much confidence in Sprint either. We&amp;rsquo;ll just have to see what happens.&lt;/p&gt;
+
+&lt;p&gt;As for the security issues on their page, Sprint should know better. Or at least the techs they paid to do the work should know better. There&amp;rsquo;s no reason that shouldn&amp;rsquo;t have been caught in testing.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

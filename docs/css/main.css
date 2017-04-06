@@ -49,14 +49,14 @@ background-color: #faebbc;
 border-top: 1px solid #e1cc89;
 border-bottom: 1px solid #e1cc89;
 margin: 5px;
-background-image: url(//1.bp.blogspot.com/-siy6EKYCLtM/U6X4AdKrr0I/AAAAAAAANDs/HCjRvuedDro/s1600/openquote1.gif);
+background-image: url(/img/openquote1.gif);
 background-position: top left;
 background-repeat: no-repeat;
 text-indent: 23px;
 }
 blockquote p{
 display: block;
-background-image: url(//3.bp.blogspot.com/-UjppXQI-ww0/U6X4IpheNiI/AAAAAAAAND0/PJhRvvhAWGU/s1600/closequote1.gif);
+background-image: url(/img/closequote1.gif);
 background-repeat: no-repeat;
 background-position: bottom right;
 }
@@ -440,7 +440,7 @@ content: no-close-quote;
 position: absolute;
 bottom: -5px;
 width: 100%;
-background: url(//2.bp.blogspot.com/-_IyTmlpHtg8/Vmi5pkn5ZAI/AAAAAAAACVI/G4Kylbm3CDo/s1600-r/gradient.png) repeat-x 0 -1px;
+background: url(/img/gradient.png) repeat-x 0 -1px;
 opacity: .8;
 left: 0;
 opacity: .9;
@@ -1106,7 +1106,7 @@ left: 0;
 bottom: 0;
 width: 100%;
 height: 120px;
-background: url(//3.bp.blogspot.com/-LnvazGBvKh8/VskckSkmzxI/AAAAAAAAC4s/erEgI6A_ih4/s1600-r/metabg.png) repeat-x;
+background: url(/img/metabg.png) repeat-x;
 background-size: 100% 100%;
 opacity: .8;
 }

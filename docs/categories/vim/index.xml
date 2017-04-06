@@ -10,10 +10,10 @@
     
     <item>
       <title>Fogbugz VIM Scrolling</title>
-      <link>https://www.mattandreko.com/blog/2011-11-30-fogbugz-vim-scrolling/</link>
+      <link>https://www.mattandreko.com/2011/11/30/fogbugz-vim-scrolling/</link>
       <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-11-30-fogbugz-vim-scrolling/</guid>
+      <guid>https://www.mattandreko.com/2011/11/30/fogbugz-vim-scrolling/</guid>
       <description>&lt;p&gt;At &lt;a href=&#34;http://www.leafsoftwaresolutions.com&#34;&gt;work&lt;/a&gt;, we use &lt;a href=&#34;http://www.fogcreek.com/fogbugz&#34;&gt;FogBugz&lt;/a&gt; for our trouble tickets, and internal tracking. We sometimes have some really long cases, so to make it easier to navigate through them, we wanted to be able to push a button to go to the next action event on the ticket.&lt;/p&gt;
 
 &lt;!-- more --&gt;

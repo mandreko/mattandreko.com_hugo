@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Future on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/future/index.xml</link>
+    <description>Recent content in Future on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/future/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PWB Conclusions and the Future</title>
+      <link>https://www.mattandreko.com/blog/2012-06-24-pwb-conclusions-and-future/</link>
+      <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2012-06-24-pwb-conclusions-and-future/</guid>
+      <description>
+
+&lt;h2 id=&#34;the-results&#34;&gt;The results&lt;/h2&gt;
+
+&lt;p&gt;As I posted previously, I was taking the &lt;a href=&#34;http://www.offensive-security.com/information-security-training/penetration-testing-with-backtrack/&#34;&gt;PWB&lt;/a&gt; course from &lt;a href=&#34;http://www.offensive-security.com&#34;&gt;Offensive Security&lt;/a&gt;. I am happy to report that I passed with flying colors (100%)! This is the best email I&amp;rsquo;ve ever received:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/pwb_course_pass.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;advice-for-new-students&#34;&gt;Advice for new students&lt;/h2&gt;
+
+&lt;p&gt;During the course, I learned several things, including many things about myself.
+* Do the PDF/Video work first. If you wait until the end, you will hate your life. It&amp;rsquo;s so droll and boring. At least if you do it as you go, it won&amp;rsquo;t be as bad.
+* If you&amp;rsquo;ve never done pentest reports before, as I hadn&amp;rsquo;t, leave plenty of time. They do take a while more than you think.&lt;/li&gt;&lt;li&gt;As you&amp;rsquo;re breaking into machines, take screenshots as you go. I unfortunately captured the text on the screens as I went along, and because the report requires screenshots, you&amp;rsquo;ll find yourself hacking every machine a second time.
+* During the course and the exam, it&amp;rsquo;s super important to take breaks. For example, after hacking all the machines in the lab, I took 1-2 weeks off of the class, to spend time with my wife.  During the exam, I worked for the first 18 hours, then slept for 4, and woke up in time to finish the last machine.  A refreshed mind is &lt;b&gt;super&lt;/b&gt; important!&lt;/p&gt;
+
+&lt;h2 id=&#34;what-s-next&#34;&gt;What&amp;rsquo;s next?&lt;/h2&gt;
+
+&lt;p&gt;I was super lucky.  I talked to my employer, &lt;a href=&#34;http://www.leafsoftwaresolutions.com&#34;&gt;Leaf Software Solutions&lt;/a&gt;, who reimbursed me for the PWB class.  I was originally just doing it for the fun.  Now my work is paying for me to have fun! Next on the list for me, will be the &lt;a href=&#34;http://www.offensive-security.com/information-security-training/cracking-the-perimeter/&#34;&gt;CTP&lt;/a&gt; course (for the OSCE certification).  However, this probably won&amp;rsquo;t be for a bit, maybe not until next year. This is simply due to the patience of my wife, who waited on me for 3 months to finish the last course, spending every evening alone. We&amp;rsquo;re in no hurry to do that again, but eventually will.  In the meantime, I&amp;rsquo;ve been working on a few fun projects:&lt;/p&gt;
+
+&lt;h2 id=&#34;metasploit-post-modules-such-as-iphone-enumeration&#34;&gt;Metasploit Post modules, such as iPhone enumeration&lt;/h2&gt;
+
+&lt;p&gt;Thanks g0tmi1k for the idea! All the phone numbers are blacked out, for the protection of my friends and family.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/iphone_screenshot_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;password-cracking-web-gui&#34;&gt;Password Cracking Web GUI&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/mandreko/pwcrack-webgui&#34;&gt;https://github.com/mandreko/pwcrack-webgui&lt;/a&gt;
+This is a project for me to tinker more with Ruby on Rails and password cracking.  The main idea, is to take all of the leaks that I&amp;rsquo;ve been archiving for some time now, and crack them all at once, instead of running the same wordlists and rules through every one in serial. I plan on storing all all the hashes in a MongoDB database, and then I can, for example, dump all MD5 hashes that are currently uncracked, making one big super-leak. Then, once complete, it&amp;rsquo;ll update the MongoDB database.
+I have tons of fun ideas on this project, but development is slow, as rails is not my primary language. It&amp;rsquo;s more of my tinker project.  Feel free to fork it if you want to make it better.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

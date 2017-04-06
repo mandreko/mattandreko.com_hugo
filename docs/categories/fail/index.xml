@@ -10,10 +10,10 @@
     
     <item>
       <title>Sprint iPhone 4S pre-order fiasco</title>
-      <link>https://www.mattandreko.com/blog/2011-10-07-sprint-iphone-4s-pre-order-fiasco/</link>
+      <link>https://www.mattandreko.com/2011/10/07/sprint-iphone-4s-pre-order-fiasco/</link>
       <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-10-07-sprint-iphone-4s-pre-order-fiasco/</guid>
+      <guid>https://www.mattandreko.com/2011/10/07/sprint-iphone-4s-pre-order-fiasco/</guid>
       <description>&lt;p&gt;So like many people, I wanted the new iPhone 4S.  Since the wife unit is on Sprint, and I&amp;rsquo;m on AT&amp;amp;T, we started looking at plans.  Sprint offers a nicer family plan and lets her upgrade to a smartphone, while letting me have the iPhone.  So we decided to make the switch, and do the pre-order.  I called last night to verify the ordering process, and make sure that I could still get the $200 price while not using her upgrade credit.  I was told that the phone would become available at 12:01 AM PST.  I woke up at 5 AM (No way am I waking up at 3 AM) to put in the pre-order.  I tried clicking the massive preorder button:&lt;/p&gt;
 
 
@@ -69,10 +69,10 @@
     
     <item>
       <title>Cucumber testing woes - spaces</title>
-      <link>https://www.mattandreko.com/blog/2011-08-16-cucumber-testing-woes-spaces/</link>
+      <link>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</link>
       <pubDate>Tue, 16 Aug 2011 22:47:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-08-16-cucumber-testing-woes-spaces/</guid>
+      <guid>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</guid>
       <description>&lt;p&gt;So I&amp;rsquo;m working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:&lt;/p&gt;
 
 

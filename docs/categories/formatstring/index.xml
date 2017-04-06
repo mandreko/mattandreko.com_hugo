@@ -10,10 +10,10 @@
     
     <item>
       <title>Exploit Exercises - Protostar Final 1</title>
-      <link>https://www.mattandreko.com/blog/2012-02-05-exploit-exercises-protostar-final-1/</link>
+      <link>https://www.mattandreko.com/2012/02/05/exploit-exercises---protostar-final-1/</link>
       <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-02-05-exploit-exercises-protostar-final-1/</guid>
+      <guid>https://www.mattandreko.com/2012/02/05/exploit-exercises---protostar-final-1/</guid>
       <description>&lt;p&gt;Since I&amp;rsquo;ve been doing a lot of the format string exploits lately, I decided to do the &lt;a href=&#34;http://exploit-exercises.com/protostar/final1&#34;&gt;Final 1&lt;/a&gt; challenge.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -437,10 +437,10 @@ if __name__ == &amp;quot;__main__&amp;quot;:
     
     <item>
       <title>Exploit Exercises - Protostar Format 4</title>
-      <link>https://www.mattandreko.com/blog/2012-02-02-exploit-exercises-protostar-format-4/</link>
+      <link>https://www.mattandreko.com/2012/02/02/exploit-exercises---protostar-format-4/</link>
       <pubDate>Thu, 02 Feb 2012 05:15:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-02-02-exploit-exercises-protostar-format-4/</guid>
+      <guid>https://www.mattandreko.com/2012/02/02/exploit-exercises---protostar-format-4/</guid>
       <description>&lt;p&gt;Next up is the last challenge in the Format String series, &lt;a href=&#34;http://exploit-exercises.com/protostar/format4&#34;&gt;Format 4&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -619,10 +619,10 @@ redirected! you win
     
     <item>
       <title>Exploit Exercises - Protostar Format 3</title>
-      <link>https://www.mattandreko.com/blog/2012-02-01-exploit-exercises-protostar-format-3/</link>
+      <link>https://www.mattandreko.com/2012/02/01/exploit-exercises---protostar-format-3/</link>
       <pubDate>Wed, 01 Feb 2012 05:33:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-02-01-exploit-exercises-protostar-format-3/</guid>
+      <guid>https://www.mattandreko.com/2012/02/01/exploit-exercises---protostar-format-3/</guid>
       <description>&lt;p&gt;Continuing in the String Format section, the next challenge we run across is &lt;a href=&#34;http://exploit-exercises.com/protostar/format3&#34;&gt;Format 3&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -768,10 +768,10 @@ you have modified the target :)
     
     <item>
       <title>Exploit Exercises - Protostar Format 2</title>
-      <link>https://www.mattandreko.com/blog/2012-01-31-exploit-exercises-protostar-format-2/</link>
+      <link>https://www.mattandreko.com/2012/01/31/exploit-exercises---protostar-format-2/</link>
       <pubDate>Tue, 31 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-01-31-exploit-exercises-protostar-format-2/</guid>
+      <guid>https://www.mattandreko.com/2012/01/31/exploit-exercises---protostar-format-2/</guid>
       <description>&lt;p&gt;Continuing from where we left off, we arrive at &lt;a href=&#34;http://exploit-exercises.com/protostar/format2&#34;&gt;Format 2&lt;/a&gt;.  It presents us with the following code:&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -865,10 +865,10 @@ you have modified the target :)
     
     <item>
       <title>Exploit Exercises - Protostar Format 1</title>
-      <link>https://www.mattandreko.com/blog/2012-01-30-exploit-exercises-protostar-format-1/</link>
+      <link>https://www.mattandreko.com/2012/01/30/exploit-exercises---protostar-format-1/</link>
       <pubDate>Mon, 30 Jan 2012 18:12:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-01-30-exploit-exercises-protostar-format-1/</guid>
+      <guid>https://www.mattandreko.com/2012/01/30/exploit-exercises---protostar-format-1/</guid>
       <description>&lt;p&gt;Following the Format 0 challenge, I&amp;rsquo;ve had to do a bunch of reading on how format string exploits work on a very low level.&lt;/p&gt;
 
 &lt;p&gt;Some resources that I&amp;rsquo;ve found greatly useful:&lt;/p&gt;
@@ -956,10 +956,10 @@ AAAA804960c.bffff668.8048469.b7fd8304.b7fd7ff4.bffff668.8048435.bffff834.b7ff104
     
     <item>
       <title>Exploit Exercises - Protostar Format 0</title>
-      <link>https://www.mattandreko.com/blog/2012-01-24-exploit-exercises-protostar-format-0/</link>
+      <link>https://www.mattandreko.com/2012/01/24/exploit-exercises---protostar-format-0/</link>
       <pubDate>Tue, 24 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-01-24-exploit-exercises-protostar-format-0/</guid>
+      <guid>https://www.mattandreko.com/2012/01/24/exploit-exercises---protostar-format-0/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ll be honest, I&amp;rsquo;m new to format string exploits.  I&amp;rsquo;ve been more experienced with stack overflows, and a little with heap overflows.  So hopefully this information is correct, as it&amp;rsquo;s from my current understanding.&lt;/p&gt;
 
 &lt;!-- more --&gt;

