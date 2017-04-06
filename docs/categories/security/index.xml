@@ -10,10 +10,10 @@
     
     <item>
       <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
-      <link>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <link>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
       <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2014-01-13-backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <guid>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>
 
 
@@ -238,10 +238,10 @@ drwxr-xr-x   13 0        0             119 .
     
     <item>
       <title>Brainpan2</title>
-      <link>https://www.mattandreko.com/blog/2013-11-20-brainpan2/</link>
+      <link>https://www.mattandreko.com/2013/11/20/brainpan2/</link>
       <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-11-20-brainpan2/</guid>
+      <guid>https://www.mattandreko.com/2013/11/20/brainpan2/</guid>
       <description>
 
 
@@ -911,10 +911,10 @@ uid=0(root ) gid=0(root ) groups=0(root )
     
     <item>
       <title>Canon, Y U NO Security?</title>
-      <link>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</link>
+      <link>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</link>
       <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-06-18-canon-y-u-no-security/</guid>
+      <guid>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</guid>
       <description>
 
 
@@ -1070,10 +1070,10 @@ customer@cits.canon.com
     
     <item>
       <title>Buffer Overflow in HexChat 2.9.4</title>
-      <link>https://www.mattandreko.com/blog/2013-04-06-buffer-overflow-in-hexchat-294/</link>
+      <link>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
       <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-04-06-buffer-overflow-in-hexchat-294/</guid>
+      <guid>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
       <description>
 
 &lt;p&gt;A buddy of mine, &lt;a href=&#34;https://twitter.com/imulitia&#34;&gt;Mulitia&lt;/a&gt;, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.&lt;/p&gt;
@@ -1322,10 +1322,10 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
     
     <item>
       <title>Multiple Hover.com Security Issues</title>
-      <link>https://www.mattandreko.com/blog/2013-02-28-multiple-hovercom-security-issues/</link>
+      <link>https://www.mattandreko.com/2013/02/28/multiple-hover.com-security-issues/</link>
       <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-02-28-multiple-hovercom-security-issues/</guid>
+      <guid>https://www.mattandreko.com/2013/02/28/multiple-hover.com-security-issues/</guid>
       <description>
 
 &lt;p&gt;I&amp;rsquo;m a customer of &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; for my domain name needs. However, that will be changing because I don&amp;rsquo;t believe that they take issues seriously.&lt;/p&gt;
@@ -1435,10 +1435,10 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
     
     <item>
       <title>HSTS Metasploit Module</title>
-      <link>https://www.mattandreko.com/blog/2013-02-21-hsts-metasploit-module/</link>
+      <link>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</link>
       <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-02-21-hsts-metasploit-module/</guid>
+      <guid>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</guid>
       <description>
 
 &lt;p&gt;I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an &lt;a href=&#34;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&#34;&gt;HSTS (HTTP Strict Transport Security)&lt;/a&gt; implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at &lt;a href=&#34;http://www.accuvant.com&#34;&gt;Accuvant&lt;/a&gt;, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it. As of the time of this post, &lt;a href=&#34;https://www.rapid7.com/products/nexpose&#34;&gt;Nexpose&lt;/a&gt; does not have a finding for this item, but I believe &lt;a href=&#34;http://www.tenable.com/products/nessus&#34;&gt;Nessus&lt;/a&gt; does. To report on this finding, and provide a screenshot evidence to customers, we were often resorting to manually looking at the headers, or implementing home-made scripts to do it.&lt;/p&gt;

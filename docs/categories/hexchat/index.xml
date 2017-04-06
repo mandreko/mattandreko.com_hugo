@@ -10,10 +10,10 @@
     
     <item>
       <title>Buffer Overflow in HexChat 2.9.4</title>
-      <link>https://www.mattandreko.com/blog/2013-04-06-buffer-overflow-in-hexchat-294/</link>
+      <link>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
       <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-04-06-buffer-overflow-in-hexchat-294/</guid>
+      <guid>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
       <description>
 
 &lt;p&gt;A buddy of mine, &lt;a href=&#34;https://twitter.com/imulitia&#34;&gt;Mulitia&lt;/a&gt;, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.&lt;/p&gt;

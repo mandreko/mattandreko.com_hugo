@@ -10,10 +10,10 @@
     
     <item>
       <title>Finding DLL files in the GAC</title>
-      <link>https://www.mattandreko.com/blog/2011-10-14-finding-dll-files-in-gac/</link>
+      <link>https://www.mattandreko.com/2011/10/14/finding-dll-files-in-the-gac/</link>
       <pubDate>Fri, 14 Oct 2011 07:20:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-10-14-finding-dll-files-in-gac/</guid>
+      <guid>https://www.mattandreko.com/2011/10/14/finding-dll-files-in-the-gac/</guid>
       <description>&lt;p&gt;So last night I was working on a project where I needed a specific version of a .net assembly that was installed somewhere on my system, but I could not locate it by a common search. Whenever I would open up C:\Windows\Assembly\ I could see the file and the multiple versions that I had installed. However, from that window, you can not copy the files out. All I wanted, was to copy the file to my local source branch, and include it in source control.&lt;/p&gt;
 
 &lt;!-- more --&gt;

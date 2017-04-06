@@ -10,10 +10,10 @@
     
     <item>
       <title>Kioptrix 4</title>
-      <link>https://www.mattandreko.com/blog/2012-02-12-kioptrix-4/</link>
+      <link>https://www.mattandreko.com/2012/02/12/kioptrix-4/</link>
       <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-02-12-kioptrix-4/</guid>
+      <guid>https://www.mattandreko.com/2012/02/12/kioptrix-4/</guid>
       <description>&lt;p&gt;I know there are a few different methods to the new &lt;a href=&#34;http://www.kioptrix.com/blog/?p=604&#34;&gt;Kioptrix 4&lt;/a&gt; boot2root.  Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -612,10 +612,10 @@ root
     
     <item>
       <title>Exploit Exercises - Protostar Stack 7</title>
-      <link>https://www.mattandreko.com/blog/2012-01-09-exploit-exercises-protostar-stack-7/</link>
+      <link>https://www.mattandreko.com/2012/01/09/exploit-exercises---protostar-stack-7/</link>
       <pubDate>Mon, 09 Jan 2012 18:36:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-01-09-exploit-exercises-protostar-stack-7/</guid>
+      <guid>https://www.mattandreko.com/2012/01/09/exploit-exercises---protostar-stack-7/</guid>
       <description>&lt;p&gt;Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://exploit-exercises.com/protostar/stack7&#34;&gt;This challenge&lt;/a&gt; was very interesting to me.  I figured it would build off of the previous one.  However, it was its own standalone challenge.&lt;/p&gt;
@@ -774,10 +774,10 @@ uid=1001(user) gid=1001(user) euid=0(root) groups=0(root),1001(user)
     
     <item>
       <title>Exploit Exercises - Protostar Stack 6</title>
-      <link>https://www.mattandreko.com/blog/2011-12-22-exploit-exercises-protostar-stack-6/</link>
+      <link>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</link>
       <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-12-22-exploit-exercises-protostar-stack-6/</guid>
+      <guid>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
       <description>&lt;p&gt;The &lt;a href=&#34;http://exploit-exercises.com/protostar/stack6&#34;&gt;Stack6&lt;/a&gt; challenge was definitely a learning   experience for me.  This actually went beyond my existing skills, and made me learn some new stuff.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1061,10 +1061,10 @@ uid=1001(user) gid=1001(user) euid=0(root) groups=0(root),1001(user)
     
     <item>
       <title>Exploit Exercises - Protostar Stack 5</title>
-      <link>https://www.mattandreko.com/blog/2011-12-17-exploit-exercises-protostar-stack-5/</link>
+      <link>https://www.mattandreko.com/2011/12/17/exploit-exercises---protostar-stack-5/</link>
       <pubDate>Sat, 17 Dec 2011 12:23:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-12-17-exploit-exercises-protostar-stack-5/</guid>
+      <guid>https://www.mattandreko.com/2011/12/17/exploit-exercises---protostar-stack-5/</guid>
       <description>&lt;p&gt;Wow, this challenge was a tough one for me.  I ran into some huge problems that I had to work out.  Considering this is a &amp;ldquo;standard buffer overflow&amp;rdquo;, I figured it&amp;rsquo;d be as easy as some of the others I&amp;rsquo;ve done in the past.  I&amp;rsquo;ll explain my frustrations inline.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1182,10 +1182,10 @@ uid=1001(user) gid=1001(user) euid=0(root) groups=0(root),1001(user)
     
     <item>
       <title>Exploit Exercises - Nebula 09</title>
-      <link>https://www.mattandreko.com/blog/2011-12-10-exploit-exercises-nebula-09/</link>
+      <link>https://www.mattandreko.com/2011/12/10/exploit-exercises---nebula-09/</link>
       <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-12-10-exploit-exercises-nebula-09/</guid>
+      <guid>https://www.mattandreko.com/2011/12/10/exploit-exercises---nebula-09/</guid>
       <description>&lt;p&gt;Challenge 09 gave me the most issues out of any other challenge so far.  This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out.  However, it is based on a dangerous function, known as &lt;a href=&#34;http://php.net/manual/en/function.preg-replace.php&#34;&gt;preg_replace()&lt;/a&gt;.  There are several more dangerous functions, some of which can be seen &lt;a href=&#34;http://stackoverflow.com/questions/3115559/exploitable-php-functions&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1278,10 +1278,10 @@ You have successfully executed getflag on a target account
     
     <item>
       <title>Exploit Exercises - Nebula 07</title>
-      <link>https://www.mattandreko.com/blog/2011-12-08-exploit-exercises-nebula-07/</link>
+      <link>https://www.mattandreko.com/2011/12/08/exploit-exercises---nebula-07/</link>
       <pubDate>Thu, 08 Dec 2011 06:10:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-12-08-exploit-exercises-nebula-07/</guid>
+      <guid>https://www.mattandreko.com/2011/12/08/exploit-exercises---nebula-07/</guid>
       <description>&lt;p&gt;This &lt;a href=&#34;http://exploit-exercises.com/nebula/level07&#34;&gt;next challenge&lt;/a&gt; is a little bit more tricky than some of the previous ones.  There&amp;rsquo;s a lot more code involved, but it&amp;rsquo;s not too bad.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1377,10 +1377,10 @@ You have successfully executed getflag on a target account
     
     <item>
       <title>Exploit Exercises - Nebula 03</title>
-      <link>https://www.mattandreko.com/blog/2011-12-04-exploit-exercises-nebula-03/</link>
+      <link>https://www.mattandreko.com/2011/12/04/exploit-exercises---nebula-03/</link>
       <pubDate>Sun, 04 Dec 2011 15:22:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-12-04-exploit-exercises-nebula-03/</guid>
+      <guid>https://www.mattandreko.com/2011/12/04/exploit-exercises---nebula-03/</guid>
       <description>&lt;p&gt;In &lt;a href=&#34;http://exploit-exercises.com/nebula/level03&#34;&gt;this&lt;/a&gt; challenge, we can see that there&amp;rsquo;s no code for us to exploit, it&amp;rsquo;s something in the system.
 I log in to the system, and look in the /home/flag03 folder, as all the other challenges have started.  I see there&amp;rsquo;s a writable.sh script, which I was guessing was the script getting called on a crontab every couple minutes.&lt;/p&gt;
 
@@ -1435,10 +1435,10 @@ You have successfully executed getflag on a target account
     
     <item>
       <title>Exploit Exercises - Nebula 00</title>
-      <link>https://www.mattandreko.com/blog/2011-12-01-exploit-exercises-nebula-00/</link>
+      <link>https://www.mattandreko.com/2011/12/01/exploit-exercises---nebula-00/</link>
       <pubDate>Thu, 01 Dec 2011 06:40:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-12-01-exploit-exercises-nebula-00/</guid>
+      <guid>https://www.mattandreko.com/2011/12/01/exploit-exercises---nebula-00/</guid>
       <description>&lt;p&gt;Recently, I&amp;rsquo;ve been getting more and more back into computer security, one of my favorite topics. Part of this is research, and part is more practical, such as wargames or labs. One newer wargame that I&amp;rsquo;ve been playing is called &amp;ldquo;Nebula&amp;rdquo;, from the guys over at &lt;a href=&#34;http://exploit-exercises.com&#34;&gt;Exploit-Exercises&lt;/a&gt;. If you&amp;rsquo;re interested in security, please check out their site, as well as many other wargames. If this goes successfully, perhaps I&amp;rsquo;ll start going through my notes of otherwargames, publishing them as well.&lt;/p&gt;
 
 &lt;!-- more --&gt;

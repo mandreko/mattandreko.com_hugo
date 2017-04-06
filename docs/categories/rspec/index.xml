@@ -10,10 +10,10 @@
     
     <item>
       <title>Installing Guard gem causes tests to fail - Solved</title>
-      <link>https://www.mattandreko.com/blog/2011-08-18-installing-guard-gem-causes-tests-to/</link>
+      <link>https://www.mattandreko.com/2011/08/18/installing-guard-gem-causes-tests-to-fail---solved/</link>
       <pubDate>Thu, 18 Aug 2011 09:14:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-08-18-installing-guard-gem-causes-tests-to/</guid>
+      <guid>https://www.mattandreko.com/2011/08/18/installing-guard-gem-causes-tests-to-fail---solved/</guid>
       <description>&lt;p&gt;I was tinkering with a new rails application, using &lt;a href=&#34;http://relishapp.com/rspec&#34;&gt;RSpec2&lt;/a&gt; and &lt;a href=&#34;http://cukes.info&#34;&gt;Cucumber&lt;/a&gt; for my testing. I was able to run all my tests by typing:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;rake spec

@@ -10,10 +10,10 @@
     
     <item>
       <title>OverTheWire Monxla Part 3</title>
-      <link>https://www.mattandreko.com/blog/2012-11-26-overthewire-monxla-part-3/</link>
+      <link>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</link>
       <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-11-26-overthewire-monxla-part-3/</guid>
+      <guid>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</guid>
       <description>&lt;p&gt;Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -250,10 +250,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 2</title>
-      <link>https://www.mattandreko.com/blog/2012-11-25-overthewire-monxla-part-2/</link>
+      <link>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</link>
       <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-11-25-overthewire-monxla-part-2/</guid>
+      <guid>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</guid>
       <description>&lt;p&gt;In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -347,10 +347,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 1</title>
-      <link>https://www.mattandreko.com/blog/2012-11-24-overthewire-monxla-part-1/</link>
+      <link>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</link>
       <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-11-24-overthewire-monxla-part-1/</guid>
+      <guid>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</guid>
       <description>&lt;p&gt;I had a twitter &lt;a href=&#34;https://twitter.com/Mito125twit&#34;&gt;follower&lt;/a&gt; recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.&lt;/p&gt;
 
 &lt;!-- more --&gt;

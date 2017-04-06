@@ -10,10 +10,10 @@
     
     <item>
       <title>Cucumber testing woes - spaces</title>
-      <link>https://www.mattandreko.com/blog/2011-08-16-cucumber-testing-woes-spaces/</link>
+      <link>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</link>
       <pubDate>Tue, 16 Aug 2011 22:47:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2011-08-16-cucumber-testing-woes-spaces/</guid>
+      <guid>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</guid>
       <description>&lt;p&gt;So I&amp;rsquo;m working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:&lt;/p&gt;
 
 

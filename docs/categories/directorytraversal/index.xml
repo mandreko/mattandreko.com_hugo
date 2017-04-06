@@ -10,10 +10,10 @@
     
     <item>
       <title>XBMC Traversal Metasploit Module</title>
-      <link>https://www.mattandreko.com/blog/2013-02-25-xbmc-traversal-metasploit-module/</link>
+      <link>https://www.mattandreko.com/2013/02/25/xbmc-traversal-metasploit-module/</link>
       <pubDate>Mon, 25 Feb 2013 15:32:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2013-02-25-xbmc-traversal-metasploit-module/</guid>
+      <guid>https://www.mattandreko.com/2013/02/25/xbmc-traversal-metasploit-module/</guid>
       <description>
 
 &lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
@@ -117,10 +117,10 @@ msf  auxiliary(xbmc_traversal) &amp;gt;
     
     <item>
       <title>OverTheWire Natas Level 7</title>
-      <link>https://www.mattandreko.com/blog/2012-11-06-overthewire-natas-level-7/</link>
+      <link>https://www.mattandreko.com/2012/11/06/overthewire-natas-level-7/</link>
       <pubDate>Tue, 06 Nov 2012 05:32:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/blog/2012-11-06-overthewire-natas-level-7/</guid>
+      <guid>https://www.mattandreko.com/2012/11/06/overthewire-natas-level-7/</guid>
       <description>&lt;p&gt;Finally, with level 7 of OverTheWire&amp;rsquo;s Natas wargame, we start to get to more &amp;ldquo;real world&amp;rdquo; vulnerabilities. It&amp;rsquo;s still very easy, but it&amp;rsquo;s at least getting better.&lt;/p&gt;
 
 &lt;!-- more --&gt;
