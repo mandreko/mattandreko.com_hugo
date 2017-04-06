@@ -100,7 +100,73 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p><a href="http://www.overthewire.org/wargames/natas/natas8.shtml">Level 8</a> of the <a href="http://www.overthewire.org">OverTheWires</a> Natas wargame was pretty simple, as a developer, but could prove more difficult if you don&rsquo;t have similar background.</p>
+
+<!-- more -->
+
+<p>It starts out with a secret password input.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas8_1.png" />
+    
+    
+</figure>
+
+
+<p>Like other levels, I looked at the source code to see what was going on in the background.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas8_2.png" />
+    
+    
+</figure>
+
+
+<p>Based on this code, you can see that it has a stored secret value, that is base64 encoded, then reversed, and then converted to a hex string. That value is then compared to the stored secret value, and if it&rsquo;s a match, it will give you the next level&rsquo;s password.</p>
+
+<p>I decided to write a reversal program in php, since it was super easy. The only problem it gave me, was that there is no built-in hex2bin method until a newer version of PHP than I had on my machine. Luckily, on the <a href="http://www.php.net/manual/en/function.bin2hex.php">bin2hex</a> documentation page, someone kindly wrote a reversal function that I stole.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas8_3.png" />
+    
+    
+</figure>
+
+
+<p>Once I executed that program in php, it gave me the decoded password. Once I entered it into the page, it gave me the password to the next level.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas8_4.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +250,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +696,4 @@
 		
 	</body>
 </html>
+

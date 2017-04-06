@@ -100,7 +100,140 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/sslscan_apple.png#left" />
+    
+    
+</figure>
+
+
+<p>SSLScan is a tool that I often use when validating SSL findings on
+penetration tests. I had recently seen a new version come out, with
+color highlighting and more fanciness, but wanted it for OSX. When I
+tried to compile it, I noticed that it did not support SSLv2, which is
+something I often screenshot, so I dived into getting it all working.</p>
+
+<!-- more -->
+
+<p>This guide will outline how to compile the newer versions of SSLScan
+with color highlighting, on OSX while retaining SSLv2 capabilities.
+It has so far only been tested against OSX Yosemite.</p>
+
+<h3 id="downloading-the-source-code">Downloading the source code</h3>
+
+<p>For this example, the project will be built in a folder on the Desktop.
+This folder can be deleted after the process, or stored in a more
+convenient location. I typically use &lsquo;~/Development/&lsquo;.</p>
+
+<pre><code class="language-sh">$ mkdir ~/Desktop/tmp
+$ cd ~/Desktop/tmp
+</code></pre>
+
+<p>Then download the SSLScan code using &lsquo;git&rsquo;</p>
+
+<pre><code class="language-sh">$ git clone https://github.com/rbsec/sslscan.git
+</code></pre>
+
+<p>Go into the newly downloaded folder, and download OpenSSL</p>
+
+<pre><code class="language-sh">$ cd sslscan
+$ wget https://www.openssl.org/source/openssl-1.0.1j.tar.gz
+</code></pre>
+
+<p>Extract the tarball, and move the folder to &lsquo;openssl&rsquo;. This step is
+important, as the Makefile for SSLScan later on will utilize this folder
+when it looks for OpenSSL.</p>
+
+<pre><code class="language-sh">$ tar -xzvf openssl-1.0.1j.tar.gz
+$ mv openssl-1.0.1j openssl
+</code></pre>
+
+<h3 id="compiling-openssl">Compiling OpenSSL</h3>
+
+<p>To build these applications, you must have XCode installed with the
+command line tools. One easy way to do this, is to run the following
+line:</p>
+
+<pre><code class="language-sh">$ xcode-select --install
+</code></pre>
+
+<p>Then change to the OpenSSL directory to prepare for compilation.</p>
+
+<pre><code class="language-sh">$ cd openssl
+</code></pre>
+
+<p>Run the configuration script with options that define MacOSX 64-bit.</p>
+
+<pre><code class="language-sh">$ ./Configure darwin64-x86_64-cc
+</code></pre>
+
+<p>Once that is complete, run the &lsquo;make&rsquo; command to build OpenSSL.  This
+step may take a while.</p>
+
+<pre><code class="language-sh">$ make
+</code></pre>
+
+<h3 id="compiling-sslscan-with-new-openssl">Compiling SSLScan with new OpenSSL</h3>
+
+<p>Now that OpenSSL is built, go back to the SSLScan directory.</p>
+
+<pre><code class="language-sh">$ cd ..
+</code></pre>
+
+<p>To build SSLScan using the custom version of OpenSSL, the easiest way is
+to use the Makefile&rsquo;s build target, which is already configured:</p>
+
+<pre><code class="language-sh">$ make static
+</code></pre>
+
+<p>The only side effect this will have, is that the &lsquo;sslscan&rsquo; file will be
+a bit large, as OpenSSL has been statically linked to the executable. In
+most cases this will be the intended outcome, when compiling on OSX.</p>
+
+<p>The next step is optional. If you want to be able to run &lsquo;sslscan&rsquo;
+without using the full path, you need to install it to your system. The
+Makefile failed for me, so I had to manually do it. Note that you will
+need to run this with sudo, as your user probably can not write to
+/usr/bin/:</p>
+
+<pre><code class="language-sh">$ sudo cp sslscan /usr/bin/
+</code></pre>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>After following these steps, it should now be possible to run SSLScan
+successfully. To test it, simply run:</p>
+
+<p>
+<figure class="img-responsive">
+    
+        <img src="/img/sslscan_syncoutlook.png#center" />
+    
+    
+</figure>
+</p>
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +317,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +763,4 @@
 		
 	</body>
 </html>
+

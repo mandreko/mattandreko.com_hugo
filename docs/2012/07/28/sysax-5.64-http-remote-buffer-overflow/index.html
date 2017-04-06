@@ -100,7 +100,92 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>I have discovered a bug in the <a href="http://sysax.com/server/index.htm">Sysax Multi-Server application</a>. More specifically, it&rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.</p>
+
+<!-- more -->
+
+<p>In the Sysax service, the configuration would look like this:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/sysax_5.64_protocols.png" />
+    
+    
+</figure>
+
+
+<p>To trigger this vulnerability is pretty simple. Log into the HTTP File Server:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/sysax_5.64_login.png" />
+    
+    
+</figure>
+
+
+<p>After logging in, click the &ldquo;Create Folder&rdquo; link:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/sysax_5.64_main.png" />
+    
+    
+</figure>
+
+
+<p>In the &ldquo;Folder Name&rdquo; textbox, enter 1000 &ldquo;A&rdquo;s:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/sysax_5.64_create_folder.png" />
+    
+    
+</figure>
+
+
+<p>The service will then crash, and have the EIP address overwritten:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/sysax_5.64_crash.png" />
+    
+    
+</figure>
+
+
+<p>I reported this vulnerability to CodeOrigin, the creators of the Sysax Multi-Server on July 26 17:24 PM EDT. Surprisingly, they got back to me at July 27 04:28 AM PDT with a new version available (5.65).  Unfortunately this version had the same vulnerability, although the EIP offset was different. After reporting this, they got back to me again at July 28 06:59 AM PDT, stating that a new version was available (5.66). This new version appears to have the vulnerability fixed.</p>
+
+<p>If you&rsquo;re using Sysax Multi-Server, please upgrade, to prevent attackers from infiltrating your systems.</p>
+
+<p>The exploit can now be found on exploit-db, <a href="http://www.exploit-db.com/exploits/20676">here</a>, where you can also download the vulnerable version of the software.</p>
+
+<p>Thanks a bunch to <a href="https://twitter.com/cd1zz">@cd1zz</a> and <a href="https://twitter.com/iMulitia">@iMulitia</a> for pointing me to this app!</p>
+
+<p>UPDATE (2012-08-19): The original exploit had an issue with a variable EIP offset, due to the fact that the root folder for the user was part of the stack.  I was able to discover a second vulnerability to get the server to disclose the path.  This has been incorporated into the new exploit, and works much better.  Sysax has released an updated version that is no longer vulnerable to this.</p>
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +269,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +715,4 @@
 		
 	</body>
 </html>
+

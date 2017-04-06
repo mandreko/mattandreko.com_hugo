@@ -100,7 +100,98 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>The next level of the <a href="http://www.overthewire.org">OverTheWire</a> Natas wargame is <a href="http://www.overthewire.org/wargames/natas/natas14.shtml">Level 14</a>, which introduces <a href="https://www.owasp.org/index.php/SQL_Injection">SQL Injection</a>, a very popular subject as of late.</p>
+
+<!-- more -->
+
+<p>The level starts out with a login dialog.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas14_1.png" />
+    
+    
+</figure>
+
+
+<p>The source code is fairly straight forward. It&rsquo;s doing a basic authentication query. It however, does have a handy &ldquo;debug&rdquo; flag, that if set, will print the query used to the screen.</p>
+
+<pre><code>&lt;html&gt; 
+&lt;head&gt;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&gt;&lt;/head&gt; 
+&lt;body&gt; 
+&lt;h1&gt;natas14&lt;/h1&gt; 
+&lt;div id=&quot;content&quot;&gt; 
+&lt;? 
+if(array_key_exists(&quot;username&quot;, $_REQUEST)) { 
+    $link = mysql_connect('localhost', 'natas14', '&lt;censored&gt;'); 
+    mysql_select_db('natas14', $link); 
+     
+    $query = &quot;SELECT * from users where username=\&quot;&quot;.$_REQUEST[&quot;username&quot;].&quot;\&quot; and password=\&quot;&quot;.$_REQUEST[&quot;password&quot;].&quot;\&quot;&quot;;
+    if(array_key_exists(&quot;debug&quot;, $_GET)) { 
+        echo &quot;Executing query: $query&lt;br&gt;&quot;; 
+    } 
+
+    if(mysql_num_rows(mysql_query($query, $link)) &gt; 0) { 
+            echo &quot;Successful login! The password for natas15 is &lt;censored&gt;&lt;br&gt;&quot;; 
+    } else { 
+            echo &quot;Access denied!&lt;br&gt;&quot;; 
+    } 
+    mysql_close($link); 
+} else { 
+?&gt; 
+
+&lt;form action=&quot;index.php&quot; method=&quot;POST&quot;&gt; 
+Username: &lt;input name=&quot;username&quot;&gt;&lt;br&gt; 
+Password: &lt;input name=&quot;password&quot;&gt;&lt;br&gt; 
+&lt;input type=&quot;submit&quot; value=&quot;Login&quot; /&gt; 
+&lt;/form&gt; 
+&lt;? } ?&gt; 
+&lt;div id=&quot;viewsource&quot;&gt;&lt;a href=&quot;index-source.html&quot;&gt;View sourcecode&lt;/a&gt;&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;/body&gt; 
+&lt;/html&gt; 
+</code></pre>
+
+<p>I simply appended the URL with the parameters I wanted. I set the &ldquo;debug&rdquo; flag to a true value, and put in a junk username and password.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas14_2.png" />
+    
+    
+</figure>
+
+
+<p>Since that showed me what query was being ran, I modified it to inject some code (&rdquo; or 1=1 &ndash; ) to return all rows in the table, guaranteeing that at least one entry would show up. This ends up changing the SQL query to do a comparison based on username, OR where 1=1, which is always true. After that, the &ldquo;&ndash; &rdquo; simply comments out the rest of the query, so that no issues arise from stuff later on. Make sure to have a space after the dashes, else it may not work. Once everything was completed, it showed me the password to the next level.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas14_3.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +275,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +721,4 @@
 		
 	</body>
 </html>
+

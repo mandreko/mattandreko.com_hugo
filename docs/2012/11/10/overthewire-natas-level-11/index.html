@@ -100,7 +100,200 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p><a href="http://www.overthewire.org/wargames/natas/natas11.shtml">Level 11</a> of the <a href="http://www.overthewire.org">OverTheWire</a> Natas wargames is a good one. It wasn&rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!</p>
+
+<!-- more -->
+
+<p>It started with a dialog to set the background color. When you click the &ldquo;Set Color&rdquo; button, it sets a cookie in your browser. But as the dialog says, the cookie is protected.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas11_1.png" />
+    
+    
+</figure>
+
+
+<p>I looked at the source code, as I always do. It was a little more lengthy than previous levels.</p>
+
+<pre><code>&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;&amp;lt;link&amp;nbsp;rel=&quot;stylesheet&quot;&amp;nbsp;type=&quot;text/css&quot;&amp;nbsp;href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&amp;gt;&amp;lt;/head&amp;gt;
+&amp;lt;?
+
+$defaultdata&amp;nbsp;=&amp;nbsp;array(&amp;nbsp;&quot;showpassword&quot;=&amp;gt;&quot;no&quot;,&amp;nbsp;&quot;bgcolor&quot;=&amp;gt;&quot;#ffffff&quot;);
+
+function&amp;nbsp;xor_encrypt($in)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$key&amp;nbsp;=&amp;nbsp;'&amp;lt;censored&amp;gt;';
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$text&amp;nbsp;=&amp;nbsp;$in;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;=&amp;nbsp;'';
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;//&amp;nbsp;Iterate&amp;nbsp;through&amp;nbsp;each&amp;nbsp;character
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;for($i=0;$i&amp;lt;strlen($text);$i++)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;.=&amp;nbsp;$text[$i]&amp;nbsp;^&amp;nbsp;$key[$i&amp;nbsp;%&amp;nbsp;strlen($key)];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;return&amp;nbsp;$outText;
+}
+
+function&amp;nbsp;loadData($def)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;global&amp;nbsp;$_COOKIE;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$mydata&amp;nbsp;=&amp;nbsp;$def;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if(array_key_exists(&quot;data&quot;,&amp;nbsp;$_COOKIE))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$tempdata&amp;nbsp;=&amp;nbsp;json_decode(xor_encrypt(base64_decode($_COOKIE[&quot;data&quot;])),&amp;nbsp;true);
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if(is_array($tempdata)&amp;nbsp;&amp;amp;&amp;amp;&amp;nbsp;array_key_exists(&quot;showpassword&quot;,&amp;nbsp;$tempdata)&amp;nbsp;&amp;amp;&amp;amp;&amp;nbsp;array_key_exists(&quot;bgcolor&quot;,&amp;nbsp;$tempdata))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if&amp;nbsp;(preg_match('/^#(?:[a-f\d]{6})$/i',&amp;nbsp;$tempdata['bgcolor']))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$mydata['showpassword']&amp;nbsp;=&amp;nbsp;$tempdata['showpassword'];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$mydata['bgcolor']&amp;nbsp;=&amp;nbsp;$tempdata['bgcolor'];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;return&amp;nbsp;$mydata;
+}
+
+function&amp;nbsp;saveData($d)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;setcookie(&quot;data&quot;,&amp;nbsp;base64_encode(xor_encrypt(json_encode($d))));
+}
+
+$data&amp;nbsp;=&amp;nbsp;loadData($defaultdata);
+
+if(array_key_exists(&quot;bgcolor&quot;,$_REQUEST))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if&amp;nbsp;(preg_match('/^#(?:[a-f\d]{6})$/i',&amp;nbsp;$_REQUEST['bgcolor']))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$data['bgcolor']&amp;nbsp;=&amp;nbsp;$_REQUEST['bgcolor'];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+}
+
+saveData($data);
+
+
+
+?&amp;gt;
+
+&amp;lt;h1&amp;gt;natas11&amp;lt;/h1&amp;gt;
+&amp;lt;div&amp;nbsp;id=&quot;content&quot;&amp;gt;
+&amp;lt;body&amp;nbsp;style=&quot;background:&amp;nbsp;&amp;lt;?=$data['bgcolor']?&amp;gt;;&quot;&amp;gt;
+Cookies&amp;nbsp;are&amp;nbsp;protected&amp;nbsp;with&amp;nbsp;XOR&amp;nbsp;encryption&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+
+&amp;lt;?
+if($data[&quot;showpassword&quot;]&amp;nbsp;==&amp;nbsp;&quot;yes&quot;)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;print&amp;nbsp;&quot;The&amp;nbsp;password&amp;nbsp;for&amp;nbsp;natas12&amp;nbsp;is&amp;nbsp;&amp;lt;censored&amp;gt;&amp;lt;br&amp;gt;&quot;;
+}
+
+?&amp;gt;
+
+&amp;lt;form&amp;gt;
+Background&amp;nbsp;color:&amp;nbsp;&amp;lt;input&amp;nbsp;name=bgcolor&amp;nbsp;value=&quot;&amp;lt;?=$data['bgcolor']?&amp;gt;&quot;&amp;gt;
+&amp;lt;input&amp;nbsp;type=submit&amp;nbsp;value=&quot;Set&amp;nbsp;color&quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+
+&amp;lt;div&amp;nbsp;id=&quot;viewsource&quot;&amp;gt;&amp;lt;a&amp;nbsp;href=&quot;index-source.html&quot;&amp;gt;View&amp;nbsp;sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+</code></pre>
+
+<p>I viewed my cookie, using the amazing, <a href="https://chrome.google.com/webstore/detail/edit-this-cookie/fngmhnnpilhplaeedifhccceomclgfbg">Edit This Cookie</a>, Chrome extension. Note that the last character is a &ldquo;=&rdquo;, but it&rsquo;s encoded in the cookie as &ldquo;%3D&rdquo; due to encoding.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas11_2.png" />
+    
+    
+</figure>
+
+
+<p>I then took this cookie value and figured that maybe I could decode it. XOR encryption is reversible if you know <sup>2</sup>&frasl;<sub>3</sub> parts. You have A XOR KEY = C, for example. If you know A and C, you can derive KEY by XORing A and C together the same way. I ended up writing some code in PHP (since the original was in PHP)</p>
+
+<pre><code>&amp;lt;?php
+
+function find_xor_key($decrypted, $encrypted) {
+ // This value should be the return of xor_encrypt with a base64 decode
+ $base64_decoded = base64_decode($encrypted);
+
+ // Before xoring, get the decrypted value into the same state it was
+ $json_encoded = json_encode($decrypted);
+
+ $outText = '';
+
+ for($i=0; $i &amp;lt; strlen($json_encoded); $i++) {
+  $outText .= $json_encoded[$i] ^ $base64_decoded[$i % strlen($base64_decoded)];
+ } 
+
+ return $outText;
+}
+
+$cookie = array(&quot;showpassword&quot;=&amp;gt;&quot;no&quot;, &quot;bgcolor&quot;=&amp;gt;&quot;#ffffff&quot;);
+
+$key = find_xor_key($cookie, &quot;ClVLIh4ASCsCBE8lAxMacFMZV2hdVVotEhhUJQNVAmhSEV4sFxFeaAw=&quot;) . &quot;\n&quot;;
+
+print &quot;XOR Key: &quot; . $key . &quot;\n&quot;;
+
+?&amp;gt;
+</code></pre>
+
+<p>When ran, this produces the following.</p>
+
+<pre><code>mandreko$ php natas11_decode.php 
+XOR Key: qw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jq
+</code></pre>
+
+<p>So now I know that the XOR key is &ldquo;qw8J&rdquo;.  It&rsquo;s repeated over and over, because the string it&rsquo;s encoding is longer than the key, so it gets repeated, otherwise it&rsquo;d be XOR to nothing.</p>
+
+<p>I then took this XOR key and tried to use it to encode a new cookie value, so that I could switch the &ldquo;showpassword&rdquo; value to &ldquo;yes&rdquo;.  I wrote the following script to do so.</p>
+
+<pre><code>&amp;lt;?php
+
+function&amp;nbsp;custom_xor($key,&amp;nbsp;$in)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;=&amp;nbsp;'';
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;for($i&amp;nbsp;=&amp;nbsp;0;&amp;nbsp;$i&amp;nbsp;&amp;lt;&amp;nbsp;strlen($in);&amp;nbsp;$i++)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;.=&amp;nbsp;$in[$i]&amp;nbsp;^&amp;nbsp;$key[$i&amp;nbsp;%&amp;nbsp;strlen($key)];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;return&amp;nbsp;$outText;
+}
+
+$cookie&amp;nbsp;=&amp;nbsp;array(&quot;showpassword&quot;=&amp;gt;&quot;yes&quot;,&amp;nbsp;&quot;bgcolor&quot;=&amp;gt;&quot;#ffffff&quot;);
+$key&amp;nbsp;=&amp;nbsp;&quot;qw8J&quot;;
+
+print&amp;nbsp;&quot;New&amp;nbsp;Cookie&amp;nbsp;Value:&amp;nbsp;&quot;&amp;nbsp;.&amp;nbsp;base64_encode(custom_xor($key,&amp;nbsp;json_encode($cookie)))&amp;nbsp;.&amp;nbsp;&quot;\n&quot;;
+
+?&amp;gt;
+</code></pre>
+
+<p>When ran, it produced the following.</p>
+
+<pre><code>mandreko$ php natas11_encode.php 
+New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
+</code></pre>
+
+<p>I then pasted that cookie value into my Edit This Cookie extension, and refreshed the page.  It then presented me with the password to the next level.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas11_3.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +377,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +823,4 @@
 		
 	</body>
 </html>
+

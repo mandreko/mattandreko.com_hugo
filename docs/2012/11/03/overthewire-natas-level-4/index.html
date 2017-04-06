@@ -100,7 +100,58 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p><a href="http://www.overthewire.org/wargames/natas/natas4.shtml">Level 4</a> of <a href="http://www.overthewire.org">OverTheWire&rsquo;s</a> Natas wargame starts a little different than the previous levels. It immediately presents you with an error message.</p>
+
+<!-- more -->
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas4_1.png" />
+    
+    
+</figure>
+
+
+<p>I figured this was going to be due to the HTTP Referer. I guessed that one could solve this by using a proxy or a browser addon, such as <a href="https://chrome.google.com/webstore/detail/referer-control/hnkcfpcejkafcihlgbojoidoihckciin/related">Referer Control</a>, but I simply didn&rsquo;t want to install anything new. I opened a bash window, and simulated my original HTTP GET.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas4_2.png" />
+    
+    
+</figure>
+
+
+<p>Since I was then able to reproduce the error, I changed the HTTP Referer, and got the level 5 password.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas4_3.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +235,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +681,4 @@
 		
 	</body>
 </html>
+

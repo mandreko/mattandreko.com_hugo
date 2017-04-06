@@ -100,7 +100,73 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>The <a href="http://www.overthewire.org/wargames/natas/natas6.shtml">6th level</a> of the <a href="http://www.overthewire.org">OverTheWire</a> Natas wargame starts introducing us to PHP and server configuration issues.</p>
+
+<!-- more -->
+
+<p>It starts out with a secret password prompt.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas6_1.png" />
+    
+    
+</figure>
+
+
+<p>I took a look at the sourcecode, via the link provided.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas6_2.png" />
+    
+    
+</figure>
+
+
+<p>I decided I would try and see if I could request the &ldquo;secret.inc&rdquo; file, and it worked perfectly.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas6_3.png" />
+    
+    
+</figure>
+
+
+<p>After I put in the secret value into the input box, it showed me the password for the next level.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas6_4.png" />
+    
+    
+</figure>
+
+
+<p>This level teaches that files that contain secrets should never be publicly accessible. Either put them in server-side code so that they&rsquo;re not rendered, or put them out of the webroot.</p>
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +250,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +696,4 @@
 		
 	</body>
 </html>
+

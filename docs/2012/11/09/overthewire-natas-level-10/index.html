@@ -100,7 +100,60 @@
       
 
 
-        
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p>On to <a href="http://www.overthewire.org/wargames/natas/natas10.shtml">Level 10</a> of the <a href="http://www.overthewire.org">OverTheWire</a> Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.</p>
+
+<!-- more -->
+
+<p>It starts out just like the last level, with a search dialog.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas10_1.png" />
+    
+    
+</figure>
+
+
+<p>Again, as always, I review the code since it&rsquo;s available. You can see that it&rsquo;s using a &ldquo;preg_match&rdquo; to try to filter out bad characters. This however is flawed still. Instead of a blacklist, it should be a whitelist of only certain values.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas10_2.png" />
+    
+    
+</figure>
+
+
+<p>Because I can&rsquo;t complete the command using a semicolon or ampersand, and start a new one, I instead go with the approach of having &ldquo;grep&rdquo; just return me the password file as well as the dictionary. I enter, &lsquo;&ldquo;$&rdquo; /etc/natas_webpass/natas11&rsquo;, and it is fairly successful. The &ldquo;$&rdquo; tells grep to search for any line that contains a &ldquo;end of line&rdquo;. Since pretty much every line will have that, it outputs the entire file. I then include the password file as well as the dictionary, so it reads me both back. This then provides the password to the next level.</p>
+
+
+<figure class="img-responsive">
+    
+        <img src="/img/natas10_3.png" />
+    
+    
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
 
 
       
@@ -184,15 +237,8 @@
 		<span class="labelpost" data-label="Magazine" data-no="4"></span>
 	</div>
 	<div class='clear'></div>
-	<span class='widget-item-control'>
-		<span class='item-control blog-admin'>
-			<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3868080948025121998&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML2"));' target='configHTML2' title='Edit'>
-				<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
-			</a>
-		</span>
-	</span>
-	<div class='clear'></div>
 </div>
+
         <div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
@@ -637,3 +683,4 @@
 		
 	</body>
 </html>
+
