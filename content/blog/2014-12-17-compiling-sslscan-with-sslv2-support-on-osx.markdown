@@ -3,9 +3,8 @@ date: "2014-12-17"
 linktitle: Compiling SSLScan with SSLv2 support on OSX
 title: Compiling SSLScan with SSLv2 support on OSX
 highlight: "true"
+featured_image: sslscan_apple.png
 ---
-
-{{% figure class="img-responsive" src="/img/sslscan_apple.png#left" %}}
 
 SSLScan is a tool that I often use when validating SSL findings on
 penetration tests. I had recently seen a new version come out, with

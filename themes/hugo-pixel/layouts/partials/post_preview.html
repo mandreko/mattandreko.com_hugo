@@ -1,10 +1,5 @@
 <div class='post-outer'>
 	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='{{ .Permalink }}' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
 		<div class='post-header'></div>
 		<article>
 			<font class='retitle'>
@@ -24,6 +19,13 @@
 						</span>
 					{{ end }}
 				</div>
+				{{ if isset .Params "featured_image" }}
+					<div class='block-image'>
+						<div class='thumb'>
+							<a href='{{ .Permalink }}' style="background:url('{{ .Site.BaseURL }}img/{{ .Params.featured_image }}') no-repeat center center;background-size:cover"></a>
+						</div>
+					</div>
+				{{ end }}
 				<div class='resumo'>
 					<span>
 					{{ if .Description }}

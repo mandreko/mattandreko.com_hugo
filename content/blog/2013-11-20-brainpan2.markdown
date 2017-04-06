@@ -8,9 +8,8 @@ categories:
  - hacking
  - wargames
  - brainpan
+featured_image: brainpan.jpg
 ---
-
-{{% figure class="img-responsive" src="/img/brainpan.jpg#left" %}}
 
 Over on #vulnhub, there has been quite a chatter about [Brainpan2](http://vulnhub.com/entry/brainpan_2,56/), a "sequel" to Brainpan, by [superkojiman](https://twitter.com/@superkojiman). They're even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn't cheat to win.
 

@@ -9,9 +9,8 @@ categories:
  - canon
  - security
  - hacking
+featured_image: y-u-no-guy.jpg
 ---
-
-{{% figure class="img-responsive" src="/img/y-u-no-guy.jpg#left" %}}
 
 I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don't support network printers). I ended up picking up a [Canon MX922](https://www.amazon.com/dp/B00AVWKUJS/ref=as_li_ss_til?tag=mattandcom-20&camp=0&creative=0&linkCode=as4&creativeASIN=B00AVWKUJS&adid=07S04SQ3X3C73H5QDS7T&). It works awesome for her, and is connected over WiFi, so any device in the house can print to it. This got me thinking though, about how secure it was.
 

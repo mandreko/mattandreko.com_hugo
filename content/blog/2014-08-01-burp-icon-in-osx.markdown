@@ -6,9 +6,8 @@ highlight: "true"
 categories:
 - burp
 - osx
+featured_image: automator_burp.png
 ---
-
-{{% figure class="img-responsive" src="/img/automator_burp.png#left" %}}
 
 Recently, I on a Google Hangout with a coworker and saw him using the [Burp Suite](http://portswigger.net/burp/). I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google. I wanted a more 'native' feeling to launching the [Burp Suite](http://portswigger.net/burp/), and this post should document the process I found that worked for me.
 
