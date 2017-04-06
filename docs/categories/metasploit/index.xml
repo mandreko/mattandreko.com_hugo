@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Metasploit on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/metasploit/index.xml</link>
+    <link>http://test.andreko.net/categories/metasploit/index.xml</link>
     <description>Recent content in Metasploit on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/metasploit/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/metasploit/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
-      <link>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <link>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
       <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -238,10 +238,10 @@ drwxr-xr-x   13 0        0             119 .
     
     <item>
       <title>Sysax Multi Server 6.10 SSH DoS</title>
-      <link>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
+      <link>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
       <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
+      <guid>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
       <description>
 
 &lt;p&gt;I was recently fuzzing a bunch of SSH servers, hoping to find some remote code execution in a non-mainstream server. I ended up finding no code execution in the several that I tried, but I did find one pre-auth denial of service in Syax Multi Server 6.10.&lt;/p&gt;
@@ -259,7 +259,7 @@ drwxr-xr-x   13 0        0             119 .
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_ssh_hex.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_ssh_hex.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -270,7 +270,7 @@ drwxr-xr-x   13 0        0             119 .
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_ssh_hex2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_ssh_hex2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -420,10 +420,10 @@ sock.close()
     
     <item>
       <title>XBMC Traversal Metasploit Module</title>
-      <link>https://www.mattandreko.com/2013/02/25/xbmc-traversal-metasploit-module/</link>
+      <link>http://test.andreko.net/2013/02/25/xbmc-traversal-metasploit-module/</link>
       <pubDate>Mon, 25 Feb 2013 15:32:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/02/25/xbmc-traversal-metasploit-module/</guid>
+      <guid>http://test.andreko.net/2013/02/25/xbmc-traversal-metasploit-module/</guid>
       <description>
 
 &lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
@@ -527,10 +527,10 @@ msf  auxiliary(xbmc_traversal) &amp;gt;
     
     <item>
       <title>HSTS Metasploit Module</title>
-      <link>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</link>
+      <link>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</link>
       <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</guid>
+      <guid>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</guid>
       <description>
 
 &lt;p&gt;I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an &lt;a href=&#34;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&#34;&gt;HSTS (HTTP Strict Transport Security)&lt;/a&gt; implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at &lt;a href=&#34;http://www.accuvant.com&#34;&gt;Accuvant&lt;/a&gt;, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it. As of the time of this post, &lt;a href=&#34;https://www.rapid7.com/products/nexpose&#34;&gt;Nexpose&lt;/a&gt; does not have a finding for this item, but I believe &lt;a href=&#34;http://www.tenable.com/products/nessus&#34;&gt;Nessus&lt;/a&gt; does. To report on this finding, and provide a screenshot evidence to customers, we were often resorting to manually looking at the headers, or implementing home-made scripts to do it.&lt;/p&gt;
@@ -650,10 +650,10 @@ msf  auxiliary(http_hsts) &amp;gt;
     
     <item>
       <title>Sysax 5.64 HTTP Remote Buffer Overflow</title>
-      <link>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
+      <link>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
       <pubDate>Sat, 28 Jul 2012 22:56:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
+      <guid>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
       <description>&lt;p&gt;I have discovered a bug in the &lt;a href=&#34;http://sysax.com/server/index.htm&#34;&gt;Sysax Multi-Server application&lt;/a&gt;. More specifically, it&amp;rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -663,7 +663,7 @@ msf  auxiliary(http_hsts) &amp;gt;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_protocols.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_protocols.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -674,7 +674,7 @@ msf  auxiliary(http_hsts) &amp;gt;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_login.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_login.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -685,7 +685,7 @@ msf  auxiliary(http_hsts) &amp;gt;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_main.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_main.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -696,7 +696,7 @@ msf  auxiliary(http_hsts) &amp;gt;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_create_folder.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_create_folder.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -707,7 +707,7 @@ msf  auxiliary(http_hsts) &amp;gt;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_crash.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_crash.png&#34; /&gt;
     
     
 &lt;/figure&gt;

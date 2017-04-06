@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Testing on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/testing/index.xml</link>
+    <link>http://test.andreko.net/categories/testing/index.xml</link>
     <description>Recent content in Testing on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/testing/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/testing/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Poor UI Experience</title>
-      <link>https://www.mattandreko.com/2011/08/17/poor-ui-experience/</link>
+      <link>http://test.andreko.net/2011/08/17/poor-ui-experience/</link>
       <pubDate>Wed, 17 Aug 2011 08:23:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/08/17/poor-ui-experience/</guid>
+      <guid>http://test.andreko.net/2011/08/17/poor-ui-experience/</guid>
       <description>&lt;p&gt;I was recently signing up for &lt;a href=&#34;http://about.me&#34;&gt;about.me&lt;/a&gt; because it sounded like a neat little simple blurb about yourself. When trying to sign up, after entering my email address, and password, I was brought to a page asking for some basic info. However, I couldn&amp;rsquo;t figure out how to submit it. I was given this error:&lt;/p&gt;
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/about.me_validation_error.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/about.me_validation_error.png&#34; /&gt;
     
     
 &lt;/figure&gt;

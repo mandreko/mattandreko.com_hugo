@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tdd on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/tdd/index.xml</link>
+    <link>http://test.andreko.net/categories/tdd/index.xml</link>
     <description>Recent content in Tdd on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/tdd/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/tdd/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Cucumber testing woes - spaces</title>
-      <link>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</link>
+      <link>http://test.andreko.net/2011/08/16/cucumber-testing-woes---spaces/</link>
       <pubDate>Tue, 16 Aug 2011 22:47:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</guid>
+      <guid>http://test.andreko.net/2011/08/16/cucumber-testing-woes---spaces/</guid>
       <description>&lt;p&gt;So I&amp;rsquo;m working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:&lt;/p&gt;
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/cucumber_fail.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/cucumber_fail.png&#34; /&gt;
     
     
 &lt;/figure&gt;

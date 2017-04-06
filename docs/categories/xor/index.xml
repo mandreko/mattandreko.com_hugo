@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Xor on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/xor/index.xml</link>
+    <link>http://test.andreko.net/categories/xor/index.xml</link>
     <description>Recent content in Xor on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/xor/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/xor/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>OverTheWire Natas Level 11</title>
-      <link>https://www.mattandreko.com/2012/11/10/overthewire-natas-level-11/</link>
+      <link>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</link>
       <pubDate>Sat, 10 Nov 2012 05:34:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/10/overthewire-natas-level-11/</guid>
+      <guid>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas11.shtml&#34;&gt;Level 11&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargames is a good one. It wasn&amp;rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas11_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -111,7 +111,7 @@ Background&amp;amp;nbsp;color:&amp;amp;nbsp;&amp;amp;lt;input&amp;amp;nbsp;name=
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas11_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -185,7 +185,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas11_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;

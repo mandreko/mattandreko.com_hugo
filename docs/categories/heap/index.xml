@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Heap on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/heap/index.xml</link>
+    <link>http://test.andreko.net/categories/heap/index.xml</link>
     <description>Recent content in Heap on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/heap/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/heap/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Exploit Exercises - Protostar Heap 1</title>
-      <link>https://www.mattandreko.com/2012/01/12/exploit-exercises---protostar-heap-1/</link>
+      <link>http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/</link>
       <pubDate>Thu, 12 Jan 2012 18:28:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/12/exploit-exercises---protostar-heap-1/</guid>
+      <guid>http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://exploit-exercises.com/protostar/heap1&#34;&gt;This&lt;/a&gt; challenge was different for me. The previous heap challenge was easy to pretend it was just a simple stack overflow.  This one worked very different, and brought some different challenges with it.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -187,10 +187,10 @@ Segmentation fault
     
     <item>
       <title>Exploit Exercises - Protostar Heap 0</title>
-      <link>https://www.mattandreko.com/2012/01/10/exploit-exercises---protostar-heap-0/</link>
+      <link>http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/</link>
       <pubDate>Tue, 10 Jan 2012 05:34:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/10/exploit-exercises---protostar-heap-0/</guid>
+      <guid>http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/</guid>
       <description>&lt;p&gt;Now that I&amp;rsquo;ve completed all of the Stack section of protostar, I&amp;rsquo;ve started to move onto Heap.  The first of these challenges, is &lt;a href=&#34;http://exploit-exercises.com/protostar/heap0&#34;&gt;Heap 0&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;

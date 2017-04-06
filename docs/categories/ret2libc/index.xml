@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ret2libc on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/ret2libc/index.xml</link>
+    <link>http://test.andreko.net/categories/ret2libc/index.xml</link>
     <description>Recent content in Ret2libc on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/ret2libc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/ret2libc/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Exploit Exercises - Protostar Stack 6</title>
-      <link>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</link>
+      <link>http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/</link>
       <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
+      <guid>http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
       <description>&lt;p&gt;The &lt;a href=&#34;http://exploit-exercises.com/protostar/stack6&#34;&gt;Stack6&lt;/a&gt; challenge was definitely a learning   experience for me.  This actually went beyond my existing skills, and made me learn some new stuff.&lt;/p&gt;
 
 &lt;!-- more --&gt;

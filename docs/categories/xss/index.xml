@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Xss on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/xss/index.xml</link>
+    <link>http://test.andreko.net/categories/xss/index.xml</link>
     <description>Recent content in Xss on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/xss/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/xss/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Multiple Hover.com Security Issues</title>
-      <link>https://www.mattandreko.com/2013/02/28/multiple-hover.com-security-issues/</link>
+      <link>http://test.andreko.net/2013/02/28/multiple-hover.com-security-issues/</link>
       <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/02/28/multiple-hover.com-security-issues/</guid>
+      <guid>http://test.andreko.net/2013/02/28/multiple-hover.com-security-issues/</guid>
       <description>
 
 &lt;p&gt;I&amp;rsquo;m a customer of &lt;a href=&#34;http://www.hover.com&#34;&gt;Hover&lt;/a&gt; for my domain name needs. However, that will be changing because I don&amp;rsquo;t believe that they take issues seriously.&lt;/p&gt;
@@ -33,7 +33,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hover_original_xss.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hover_original_xss.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -54,7 +54,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hover_second_xss.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hover_second_xss.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -73,7 +73,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hover_fraud.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hover_fraud.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -99,7 +99,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hover_persistent_xss.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hover_persistent_xss.png&#34; /&gt;
     
     
 &lt;/figure&gt;

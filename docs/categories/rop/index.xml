@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rop on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/rop/index.xml</link>
+    <link>http://test.andreko.net/categories/rop/index.xml</link>
     <description>Recent content in Rop on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/rop/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/rop/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Sysax 5.64 HTTP Remote Buffer Overflow</title>
-      <link>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
+      <link>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
       <pubDate>Sat, 28 Jul 2012 22:56:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
+      <guid>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
       <description>&lt;p&gt;I have discovered a bug in the &lt;a href=&#34;http://sysax.com/server/index.htm&#34;&gt;Sysax Multi-Server application&lt;/a&gt;. More specifically, it&amp;rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_protocols.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_protocols.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -34,7 +34,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_login.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_login.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -45,7 +45,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_main.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_main.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -56,7 +56,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_create_folder.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_create_folder.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -67,7 +67,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_crash.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_crash.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -87,10 +87,10 @@
     
     <item>
       <title>Exploit Exercises - Protostar Stack 6</title>
-      <link>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</link>
+      <link>http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/</link>
       <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
+      <guid>http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
       <description>&lt;p&gt;The &lt;a href=&#34;http://exploit-exercises.com/protostar/stack6&#34;&gt;Stack6&lt;/a&gt; challenge was definitely a learning   experience for me.  This actually went beyond my existing skills, and made me learn some new stuff.&lt;/p&gt;
 
 &lt;!-- more --&gt;

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rails on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/rails/index.xml</link>
+    <link>http://test.andreko.net/categories/rails/index.xml</link>
     <description>Recent content in Rails on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/rails/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/rails/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>PWB Conclusions and the Future</title>
-      <link>https://www.mattandreko.com/2012/06/24/pwb-conclusions-and-the-future/</link>
+      <link>http://test.andreko.net/2012/06/24/pwb-conclusions-and-the-future/</link>
       <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/06/24/pwb-conclusions-and-the-future/</guid>
+      <guid>http://test.andreko.net/2012/06/24/pwb-conclusions-and-the-future/</guid>
       <description>
 
 &lt;h2 id=&#34;the-results&#34;&gt;The results&lt;/h2&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/pwb_course_pass.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/pwb_course_pass.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -49,7 +49,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/iphone_screenshot_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/iphone_screenshot_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -65,10 +65,10 @@ I have tons of fun ideas on this project, but development is slow, as rails is n
     
     <item>
       <title>Installing Guard gem causes tests to fail - Solved</title>
-      <link>https://www.mattandreko.com/2011/08/18/installing-guard-gem-causes-tests-to-fail---solved/</link>
+      <link>http://test.andreko.net/2011/08/18/installing-guard-gem-causes-tests-to-fail---solved/</link>
       <pubDate>Thu, 18 Aug 2011 09:14:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/08/18/installing-guard-gem-causes-tests-to-fail---solved/</guid>
+      <guid>http://test.andreko.net/2011/08/18/installing-guard-gem-causes-tests-to-fail---solved/</guid>
       <description>&lt;p&gt;I was tinkering with a new rails application, using &lt;a href=&#34;http://relishapp.com/rspec&#34;&gt;RSpec2&lt;/a&gt; and &lt;a href=&#34;http://cukes.info&#34;&gt;Cucumber&lt;/a&gt; for my testing. I was able to run all my tests by typing:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;rake spec
@@ -109,16 +109,16 @@ guard init cucumber
     
     <item>
       <title>Cucumber testing woes - spaces</title>
-      <link>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</link>
+      <link>http://test.andreko.net/2011/08/16/cucumber-testing-woes---spaces/</link>
       <pubDate>Tue, 16 Aug 2011 22:47:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes---spaces/</guid>
+      <guid>http://test.andreko.net/2011/08/16/cucumber-testing-woes---spaces/</guid>
       <description>&lt;p&gt;So I&amp;rsquo;m working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:&lt;/p&gt;
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/cucumber_fail.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/cucumber_fail.png&#34; /&gt;
     
     
 &lt;/figure&gt;

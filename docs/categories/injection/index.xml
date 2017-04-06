@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Injection on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/injection/index.xml</link>
+    <link>http://test.andreko.net/categories/injection/index.xml</link>
     <description>Recent content in Injection on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/injection/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/injection/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Exploit Exercises - Nebula 09</title>
-      <link>https://www.mattandreko.com/2011/12/10/exploit-exercises---nebula-09/</link>
+      <link>http://test.andreko.net/2011/12/10/exploit-exercises---nebula-09/</link>
       <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/12/10/exploit-exercises---nebula-09/</guid>
+      <guid>http://test.andreko.net/2011/12/10/exploit-exercises---nebula-09/</guid>
       <description>&lt;p&gt;Challenge 09 gave me the most issues out of any other challenge so far.  This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out.  However, it is based on a dangerous function, known as &lt;a href=&#34;http://php.net/manual/en/function.preg-replace.php&#34;&gt;preg_replace()&lt;/a&gt;.  There are several more dangerous functions, some of which can be seen &lt;a href=&#34;http://stackoverflow.com/questions/3115559/exploitable-php-functions&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;

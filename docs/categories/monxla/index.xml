@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Monxla on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/monxla/index.xml</link>
+    <link>http://test.andreko.net/categories/monxla/index.xml</link>
     <description>Recent content in Monxla on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/monxla/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/monxla/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>OverTheWire Monxla Part 3</title>
-      <link>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</link>
+      <link>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</link>
       <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</guid>
+      <guid>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</guid>
       <description>&lt;p&gt;Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla3_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla3_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -250,10 +250,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 2</title>
-      <link>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</link>
+      <link>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</link>
       <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</guid>
+      <guid>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</guid>
       <description>&lt;p&gt;In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -270,7 +270,7 @@ boris@monxla:~$
 &lt;li&gt;The HoneyLink site is, so far, just a convenience for the wargame, so you don&amp;rsquo;t have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -278,7 +278,7 @@ boris@monxla:~$
 &lt;li&gt;The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -294,7 +294,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -315,7 +315,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -326,7 +326,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_5.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_5.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -337,7 +337,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_6.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_6.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -347,10 +347,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 1</title>
-      <link>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</link>
+      <link>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</link>
       <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</guid>
+      <guid>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</guid>
       <description>&lt;p&gt;I had a twitter &lt;a href=&#34;https://twitter.com/Mito125twit&#34;&gt;follower&lt;/a&gt; recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -394,7 +394,7 @@ PORT&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; STATE
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla1_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla1_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;

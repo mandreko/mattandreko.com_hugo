@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Windows on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/windows/index.xml</link>
+    <link>http://test.andreko.net/categories/windows/index.xml</link>
     <description>Recent content in Windows on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/windows/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/windows/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Sysax Multi Server 6.10 SSH DoS</title>
-      <link>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
+      <link>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
       <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
+      <guid>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
       <description>
 
 &lt;p&gt;I was recently fuzzing a bunch of SSH servers, hoping to find some remote code execution in a non-mainstream server. I ended up finding no code execution in the several that I tried, but I did find one pre-auth denial of service in Syax Multi Server 6.10.&lt;/p&gt;
@@ -31,7 +31,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_ssh_hex.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_ssh_hex.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -42,7 +42,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_ssh_hex2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_ssh_hex2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -192,10 +192,10 @@ sock.close()
     
     <item>
       <title>Buffer Overflow in HexChat 2.9.4</title>
-      <link>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
+      <link>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
       <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
+      <guid>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
       <description>
 
 &lt;p&gt;A buddy of mine, &lt;a href=&#34;https://twitter.com/imulitia&#34;&gt;Mulitia&lt;/a&gt;, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.&lt;/p&gt;
@@ -215,7 +215,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_pc.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_pc.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -226,7 +226,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_pattern.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_pattern.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -243,7 +243,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_seh.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_seh.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -254,7 +254,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_po.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_po.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -269,7 +269,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_mona_seh.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_mona_seh.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -295,7 +295,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_seh2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_seh2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -306,7 +306,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_ppr.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_after_ppr.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -331,7 +331,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_popad.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_after_popad.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -344,7 +344,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_push_esp.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_push_esp.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -355,7 +355,7 @@ sock.close()
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_push_esp.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_after_push_esp.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -444,10 +444,10 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
     
     <item>
       <title>Sysax 5.64 HTTP Remote Buffer Overflow</title>
-      <link>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
+      <link>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
       <pubDate>Sat, 28 Jul 2012 22:56:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
+      <guid>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
       <description>&lt;p&gt;I have discovered a bug in the &lt;a href=&#34;http://sysax.com/server/index.htm&#34;&gt;Sysax Multi-Server application&lt;/a&gt;. More specifically, it&amp;rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -457,7 +457,7 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_protocols.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_protocols.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -468,7 +468,7 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_login.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_login.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -479,7 +479,7 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_main.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_main.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -490,7 +490,7 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_create_folder.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_create_folder.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -501,7 +501,7 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_5.64_crash.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_5.64_crash.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -521,10 +521,10 @@ print junk1 + shellcode + junk2 + stage1 + ret + junk3 + stage2 + junk4
     
     <item>
       <title>Using .net to bypass AV</title>
-      <link>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</link>
+      <link>http://test.andreko.net/2012/02/23/using-.net-to-bypass-av/</link>
       <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</guid>
+      <guid>http://test.andreko.net/2012/02/23/using-.net-to-bypass-av/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve read a ton of articles on bypassing Antivirus software when trying to run shellcode on machines.  There&amp;rsquo;s just a ton available.  These are just a few examples:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -637,7 +637,7 @@ namespace Wrapper
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/virustotal_wrapper.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/virustotal_wrapper.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -649,10 +649,10 @@ namespace Wrapper
     
     <item>
       <title>Finding DLL files in the GAC</title>
-      <link>https://www.mattandreko.com/2011/10/14/finding-dll-files-in-the-gac/</link>
+      <link>http://test.andreko.net/2011/10/14/finding-dll-files-in-the-gac/</link>
       <pubDate>Fri, 14 Oct 2011 07:20:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/10/14/finding-dll-files-in-the-gac/</guid>
+      <guid>http://test.andreko.net/2011/10/14/finding-dll-files-in-the-gac/</guid>
       <description>&lt;p&gt;So last night I was working on a project where I needed a specific version of a .net assembly that was installed somewhere on my system, but I could not locate it by a common search. Whenever I would open up C:\Windows\Assembly\ I could see the file and the multiple versions that I had installed. However, from that window, you can not copy the files out. All I wanted, was to copy the file to my local source branch, and include it in source control.&lt;/p&gt;
 
 &lt;!-- more --&gt;

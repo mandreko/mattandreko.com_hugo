@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sqlinjection on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/sqlinjection/index.xml</link>
+    <link>http://test.andreko.net/categories/sqlinjection/index.xml</link>
     <description>Recent content in Sqlinjection on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/sqlinjection/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/sqlinjection/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>OverTheWire Natas Level 15</title>
-      <link>https://www.mattandreko.com/2012/11/14/overthewire-natas-level-15/</link>
+      <link>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</link>
       <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/14/overthewire-natas-level-15/</guid>
+      <guid>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</guid>
       <description>&lt;p&gt;Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas15_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -85,7 +85,7 @@ Username: &amp;lt;input name=&amp;quot;username&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas15_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -96,7 +96,7 @@ Username: &amp;lt;input name=&amp;quot;username&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas15_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -180,10 +180,10 @@ Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
     
     <item>
       <title>OverTheWire Natas Level 14</title>
-      <link>https://www.mattandreko.com/2012/11/13/overthewire-natas-level-14/</link>
+      <link>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</link>
       <pubDate>Tue, 13 Nov 2012 05:08:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/13/overthewire-natas-level-14/</guid>
+      <guid>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</guid>
       <description>&lt;p&gt;The next level of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas14.shtml&#34;&gt;Level 14&lt;/a&gt;, which introduces &lt;a href=&#34;https://www.owasp.org/index.php/SQL_Injection&#34;&gt;SQL Injection&lt;/a&gt;, a very popular subject as of late.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -193,7 +193,7 @@ Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas14_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -242,7 +242,7 @@ Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas14_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -253,7 +253,7 @@ Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas14_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;

@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Http on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/http/index.xml</link>
+    <link>http://test.andreko.net/categories/http/index.xml</link>
     <description>Recent content in Http on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/http/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/http/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Canon, Y U NO Security?</title>
-      <link>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</link>
+      <link>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</link>
       <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</guid>
+      <guid>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</guid>
       <description>
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/y-u-no-guy.jpg#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/y-u-no-guy.jpg#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -38,7 +38,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -55,7 +55,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -66,7 +66,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -77,7 +77,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -90,7 +90,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_5.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_5.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -136,7 +136,7 @@ end
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_6.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_6.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -169,10 +169,10 @@ customer@cits.canon.com
     
     <item>
       <title>HSTS Metasploit Module</title>
-      <link>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</link>
+      <link>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</link>
       <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</guid>
+      <guid>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</guid>
       <description>
 
 &lt;p&gt;I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an &lt;a href=&#34;https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security&#34;&gt;HSTS (HTTP Strict Transport Security)&lt;/a&gt; implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at &lt;a href=&#34;http://www.accuvant.com&#34;&gt;Accuvant&lt;/a&gt;, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it. As of the time of this post, &lt;a href=&#34;https://www.rapid7.com/products/nexpose&#34;&gt;Nexpose&lt;/a&gt; does not have a finding for this item, but I believe &lt;a href=&#34;http://www.tenable.com/products/nessus&#34;&gt;Nessus&lt;/a&gt; does. To report on this finding, and provide a screenshot evidence to customers, we were often resorting to manually looking at the headers, or implementing home-made scripts to do it.&lt;/p&gt;

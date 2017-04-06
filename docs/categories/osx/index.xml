@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Osx on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/osx/index.xml</link>
+    <link>http://test.andreko.net/categories/osx/index.xml</link>
     <description>Recent content in Osx on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/osx/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/osx/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Burp Icon in OSX</title>
-      <link>https://www.mattandreko.com/2014/08/01/burp-icon-in-osx/</link>
+      <link>http://test.andreko.net/2014/08/01/burp-icon-in-osx/</link>
       <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/2014/08/01/burp-icon-in-osx/</guid>
+      <guid>http://test.andreko.net/2014/08/01/burp-icon-in-osx/</guid>
       <description>
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/automator_burp.png#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/automator_burp.png#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -32,7 +32,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_001_downloads.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_001_downloads.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -45,7 +45,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_002_automator_launch_application.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_002_automator_launch_application.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -56,7 +56,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_003_click_run_shell.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_003_click_run_shell.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -75,7 +75,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_004_jva_load_jar_options.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_004_jva_load_jar_options.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -86,7 +86,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_005_save_application.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_005_save_application.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -97,7 +97,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_006_download_icon.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_006_download_icon.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -108,7 +108,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_007_copy_icon.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_007_copy_icon.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -119,7 +119,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_008_paste_icon.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_008_paste_icon.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -130,7 +130,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/burp_009_drag_to_dock.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/burp_009_drag_to_dock.png&#34; /&gt;
     
     
 &lt;/figure&gt;

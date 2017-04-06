@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Exif on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/exif/index.xml</link>
+    <link>http://test.andreko.net/categories/exif/index.xml</link>
     <description>Recent content in Exif on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/exif/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/exif/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>OverTheWire Natas Level 13</title>
-      <link>https://www.mattandreko.com/2012/11/12/overthewire-natas-level-13/</link>
+      <link>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</link>
       <pubDate>Mon, 12 Nov 2012 06:44:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/12/overthewire-natas-level-13/</guid>
+      <guid>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas13.shtml&#34;&gt;Level 13&lt;/a&gt; of &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&amp;rsquo;s&lt;/a&gt; Natas wargame is extremely similar to Level 12. The only difference now, is that it&amp;rsquo;s validating that the file is in fact an image. This however is flawed, as exif data can be faked.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas13_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -144,7 +144,7 @@ echo &amp;quot;\n&amp;quot; . $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas13_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -155,7 +155,7 @@ echo &amp;quot;\n&amp;quot; . $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas13_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;

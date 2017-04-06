@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kioptrix on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/kioptrix/index.xml</link>
+    <link>http://test.andreko.net/categories/kioptrix/index.xml</link>
     <description>Recent content in Kioptrix on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/kioptrix/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/kioptrix/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Kioptrix 4</title>
-      <link>https://www.mattandreko.com/2012/02/12/kioptrix-4/</link>
+      <link>http://test.andreko.net/2012/02/12/kioptrix-4/</link>
       <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/12/kioptrix-4/</guid>
+      <guid>http://test.andreko.net/2012/02/12/kioptrix-4/</guid>
       <description>&lt;p&gt;I know there are a few different methods to the new &lt;a href=&#34;http://www.kioptrix.com/blog/?p=604&#34;&gt;Kioptrix 4&lt;/a&gt; boot2root.  Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.&lt;/p&gt;
 
 &lt;!-- more --&gt;

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ssh on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/ssh/index.xml</link>
+    <link>http://test.andreko.net/categories/ssh/index.xml</link>
     <description>Recent content in Ssh on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/ssh/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Sysax Multi Server 6.10 SSH DoS</title>
-      <link>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
+      <link>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
       <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
+      <guid>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
       <description>
 
 &lt;p&gt;I was recently fuzzing a bunch of SSH servers, hoping to find some remote code execution in a non-mainstream server. I ended up finding no code execution in the several that I tried, but I did find one pre-auth denial of service in Syax Multi Server 6.10.&lt;/p&gt;
@@ -31,7 +31,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_ssh_hex.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_ssh_hex.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -42,7 +42,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/sysax_ssh_hex2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/sysax_ssh_hex2.png&#34; /&gt;
     
     
 &lt;/figure&gt;

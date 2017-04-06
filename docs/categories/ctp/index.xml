@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ctp on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/ctp/index.xml</link>
+    <link>http://test.andreko.net/categories/ctp/index.xml</link>
     <description>Recent content in Ctp on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/ctp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/ctp/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>PWB Conclusions and the Future</title>
-      <link>https://www.mattandreko.com/2012/06/24/pwb-conclusions-and-the-future/</link>
+      <link>http://test.andreko.net/2012/06/24/pwb-conclusions-and-the-future/</link>
       <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/06/24/pwb-conclusions-and-the-future/</guid>
+      <guid>http://test.andreko.net/2012/06/24/pwb-conclusions-and-the-future/</guid>
       <description>
 
 &lt;h2 id=&#34;the-results&#34;&gt;The results&lt;/h2&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/pwb_course_pass.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/pwb_course_pass.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -49,7 +49,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/iphone_screenshot_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/iphone_screenshot_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;

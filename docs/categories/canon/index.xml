@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Canon on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/canon/index.xml</link>
+    <link>http://test.andreko.net/categories/canon/index.xml</link>
     <description>Recent content in Canon on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/canon/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/canon/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Canon, Y U NO Security?</title>
-      <link>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</link>
+      <link>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</link>
       <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</guid>
+      <guid>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</guid>
       <description>
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/y-u-no-guy.jpg#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/y-u-no-guy.jpg#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -38,7 +38,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -55,7 +55,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -66,7 +66,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -77,7 +77,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -90,7 +90,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_5.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_5.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -136,7 +136,7 @@ end
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/printer_6.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/printer_6.png&#34; /&gt;
     
     
 &lt;/figure&gt;

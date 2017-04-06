@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Protostar on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/protostar/index.xml</link>
+    <link>http://test.andreko.net/categories/protostar/index.xml</link>
     <description>Recent content in Protostar on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/protostar/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/protostar/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Exploit Exercises - Protostar Net 3</title>
-      <link>https://www.mattandreko.com/2012/02/11/exploit-exercises---protostar-net-3/</link>
+      <link>http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/</link>
       <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/11/exploit-exercises---protostar-net-3/</guid>
+      <guid>http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/</guid>
       <description>&lt;p&gt;The last in the Net series of &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt; is &lt;a href=&#34;http://exploit-exercises.com/protostar/net3&#34;&gt;Net 3&lt;/a&gt;.  It was of course the most difficult of all of them.  However, it still wasn&amp;rsquo;t too bad.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -297,10 +297,10 @@ if __name__ == &amp;quot;__main__&amp;quot;:
     
     <item>
       <title>Exploit Exercises - Protostar Net 2</title>
-      <link>https://www.mattandreko.com/2012/02/10/exploit-exercises---protostar-net-2/</link>
+      <link>http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/</link>
       <pubDate>Fri, 10 Feb 2012 05:19:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/10/exploit-exercises---protostar-net-2/</guid>
+      <guid>http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/</guid>
       <description>&lt;p&gt;So far, these Net challenges in &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt; have been pretty easy.  This challenge, &lt;a href=&#34;http://exploit-exercises.com/protostar/net2&#34;&gt;Net 2&lt;/a&gt; got a small bit tougher.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -432,10 +432,10 @@ you added them correctly
     
     <item>
       <title>Exploit Exercises - Protostar Net 1</title>
-      <link>https://www.mattandreko.com/2012/02/09/exploit-exercises---protostar-net-1/</link>
+      <link>http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/</link>
       <pubDate>Thu, 09 Feb 2012 05:43:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/09/exploit-exercises---protostar-net-1/</guid>
+      <guid>http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/</guid>
       <description>&lt;p&gt;Continuing with the &amp;ldquo;Net&amp;rdquo; series of &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt;, is Net 1.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -561,10 +561,10 @@ you correctly sent the data
     
     <item>
       <title>Exploit Exercises - Protostar Net 0</title>
-      <link>https://www.mattandreko.com/2012/02/08/exploit-exercises---protostar-net-0/</link>
+      <link>http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/</link>
       <pubDate>Wed, 08 Feb 2012 18:31:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/08/exploit-exercises---protostar-net-0/</guid>
+      <guid>http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/</guid>
       <description>&lt;p&gt;I recently started looking at the &amp;ldquo;Net&amp;rdquo; problems in &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt;, and found them to be quite a fun change in pace.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -685,10 +685,10 @@ Thank you sir/madam
     
     <item>
       <title>Exploit Exercises - Protostar Final 1</title>
-      <link>https://www.mattandreko.com/2012/02/05/exploit-exercises---protostar-final-1/</link>
+      <link>http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/</link>
       <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/05/exploit-exercises---protostar-final-1/</guid>
+      <guid>http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/</guid>
       <description>&lt;p&gt;Since I&amp;rsquo;ve been doing a lot of the format string exploits lately, I decided to do the &lt;a href=&#34;http://exploit-exercises.com/protostar/final1&#34;&gt;Final 1&lt;/a&gt; challenge.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1112,10 +1112,10 @@ if __name__ == &amp;quot;__main__&amp;quot;:
     
     <item>
       <title>Exploit Exercises - Protostar Format 4</title>
-      <link>https://www.mattandreko.com/2012/02/02/exploit-exercises---protostar-format-4/</link>
+      <link>http://test.andreko.net/2012/02/02/exploit-exercises---protostar-format-4/</link>
       <pubDate>Thu, 02 Feb 2012 05:15:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/02/exploit-exercises---protostar-format-4/</guid>
+      <guid>http://test.andreko.net/2012/02/02/exploit-exercises---protostar-format-4/</guid>
       <description>&lt;p&gt;Next up is the last challenge in the Format String series, &lt;a href=&#34;http://exploit-exercises.com/protostar/format4&#34;&gt;Format 4&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1294,10 +1294,10 @@ redirected! you win
     
     <item>
       <title>Exploit Exercises - Protostar Format 3</title>
-      <link>https://www.mattandreko.com/2012/02/01/exploit-exercises---protostar-format-3/</link>
+      <link>http://test.andreko.net/2012/02/01/exploit-exercises---protostar-format-3/</link>
       <pubDate>Wed, 01 Feb 2012 05:33:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/01/exploit-exercises---protostar-format-3/</guid>
+      <guid>http://test.andreko.net/2012/02/01/exploit-exercises---protostar-format-3/</guid>
       <description>&lt;p&gt;Continuing in the String Format section, the next challenge we run across is &lt;a href=&#34;http://exploit-exercises.com/protostar/format3&#34;&gt;Format 3&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1443,10 +1443,10 @@ you have modified the target :)
     
     <item>
       <title>Exploit Exercises - Protostar Format 2</title>
-      <link>https://www.mattandreko.com/2012/01/31/exploit-exercises---protostar-format-2/</link>
+      <link>http://test.andreko.net/2012/01/31/exploit-exercises---protostar-format-2/</link>
       <pubDate>Tue, 31 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/31/exploit-exercises---protostar-format-2/</guid>
+      <guid>http://test.andreko.net/2012/01/31/exploit-exercises---protostar-format-2/</guid>
       <description>&lt;p&gt;Continuing from where we left off, we arrive at &lt;a href=&#34;http://exploit-exercises.com/protostar/format2&#34;&gt;Format 2&lt;/a&gt;.  It presents us with the following code:&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1540,10 +1540,10 @@ you have modified the target :)
     
     <item>
       <title>Exploit Exercises - Protostar Format 1</title>
-      <link>https://www.mattandreko.com/2012/01/30/exploit-exercises---protostar-format-1/</link>
+      <link>http://test.andreko.net/2012/01/30/exploit-exercises---protostar-format-1/</link>
       <pubDate>Mon, 30 Jan 2012 18:12:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/30/exploit-exercises---protostar-format-1/</guid>
+      <guid>http://test.andreko.net/2012/01/30/exploit-exercises---protostar-format-1/</guid>
       <description>&lt;p&gt;Following the Format 0 challenge, I&amp;rsquo;ve had to do a bunch of reading on how format string exploits work on a very low level.&lt;/p&gt;
 
 &lt;p&gt;Some resources that I&amp;rsquo;ve found greatly useful:&lt;/p&gt;
@@ -1631,10 +1631,10 @@ AAAA804960c.bffff668.8048469.b7fd8304.b7fd7ff4.bffff668.8048435.bffff834.b7ff104
     
     <item>
       <title>Exploit Exercises - Protostar Format 0</title>
-      <link>https://www.mattandreko.com/2012/01/24/exploit-exercises---protostar-format-0/</link>
+      <link>http://test.andreko.net/2012/01/24/exploit-exercises---protostar-format-0/</link>
       <pubDate>Tue, 24 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/24/exploit-exercises---protostar-format-0/</guid>
+      <guid>http://test.andreko.net/2012/01/24/exploit-exercises---protostar-format-0/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ll be honest, I&amp;rsquo;m new to format string exploits.  I&amp;rsquo;ve been more experienced with stack overflows, and a little with heap overflows.  So hopefully this information is correct, as it&amp;rsquo;s from my current understanding.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1754,10 +1754,10 @@ you have hit the target correctly :)
     
     <item>
       <title>Exploit Exercises - Protostar Final 0</title>
-      <link>https://www.mattandreko.com/2012/01/22/exploit-exercises---protostar-final-0/</link>
+      <link>http://test.andreko.net/2012/01/22/exploit-exercises---protostar-final-0/</link>
       <pubDate>Sun, 22 Jan 2012 22:08:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/22/exploit-exercises---protostar-final-0/</guid>
+      <guid>http://test.andreko.net/2012/01/22/exploit-exercises---protostar-final-0/</guid>
       <description>
 
 &lt;p&gt;I for some reason decided to look at the set of &amp;ldquo;final&amp;rdquo; challenges, and found the &lt;a href=&#34;http://exploit-exercises.com/protostar/final0&#34;&gt;first one&lt;/a&gt; to be not too difficult.&lt;/p&gt;
@@ -2067,10 +2067,10 @@ uid=0(root) gid=0(root) groups=0(root)
     
     <item>
       <title>Exploit Exercises - Protostar Heap 1</title>
-      <link>https://www.mattandreko.com/2012/01/12/exploit-exercises---protostar-heap-1/</link>
+      <link>http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/</link>
       <pubDate>Thu, 12 Jan 2012 18:28:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/12/exploit-exercises---protostar-heap-1/</guid>
+      <guid>http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://exploit-exercises.com/protostar/heap1&#34;&gt;This&lt;/a&gt; challenge was different for me. The previous heap challenge was easy to pretend it was just a simple stack overflow.  This one worked very different, and brought some different challenges with it.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2244,10 +2244,10 @@ Segmentation fault
     
     <item>
       <title>Exploit Exercises - Protostar Heap 0</title>
-      <link>https://www.mattandreko.com/2012/01/10/exploit-exercises---protostar-heap-0/</link>
+      <link>http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/</link>
       <pubDate>Tue, 10 Jan 2012 05:34:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/10/exploit-exercises---protostar-heap-0/</guid>
+      <guid>http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/</guid>
       <description>&lt;p&gt;Now that I&amp;rsquo;ve completed all of the Stack section of protostar, I&amp;rsquo;ve started to move onto Heap.  The first of these challenges, is &lt;a href=&#34;http://exploit-exercises.com/protostar/heap0&#34;&gt;Heap 0&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2335,10 +2335,10 @@ level passed
     
     <item>
       <title>Exploit Exercises - Protostar Stack 7</title>
-      <link>https://www.mattandreko.com/2012/01/09/exploit-exercises---protostar-stack-7/</link>
+      <link>http://test.andreko.net/2012/01/09/exploit-exercises---protostar-stack-7/</link>
       <pubDate>Mon, 09 Jan 2012 18:36:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/09/exploit-exercises---protostar-stack-7/</guid>
+      <guid>http://test.andreko.net/2012/01/09/exploit-exercises---protostar-stack-7/</guid>
       <description>&lt;p&gt;Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://exploit-exercises.com/protostar/stack7&#34;&gt;This challenge&lt;/a&gt; was very interesting to me.  I figured it would build off of the previous one.  However, it was its own standalone challenge.&lt;/p&gt;
@@ -2497,10 +2497,10 @@ uid=1001(user) gid=1001(user) euid=0(root) groups=0(root),1001(user)
     
     <item>
       <title>Exploit Exercises - Protostar Stack 6</title>
-      <link>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</link>
+      <link>http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/</link>
       <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
+      <guid>http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/</guid>
       <description>&lt;p&gt;The &lt;a href=&#34;http://exploit-exercises.com/protostar/stack6&#34;&gt;Stack6&lt;/a&gt; challenge was definitely a learning   experience for me.  This actually went beyond my existing skills, and made me learn some new stuff.&lt;/p&gt;
 
 &lt;!-- more --&gt;

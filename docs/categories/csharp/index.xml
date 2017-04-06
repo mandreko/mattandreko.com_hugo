@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Csharp on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/csharp/index.xml</link>
+    <link>http://test.andreko.net/categories/csharp/index.xml</link>
     <description>Recent content in Csharp on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/csharp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/csharp/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Using .net to bypass AV</title>
-      <link>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</link>
+      <link>http://test.andreko.net/2012/02/23/using-.net-to-bypass-av/</link>
       <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</guid>
+      <guid>http://test.andreko.net/2012/02/23/using-.net-to-bypass-av/</guid>
       <description>&lt;p&gt;I&amp;rsquo;ve read a ton of articles on bypassing Antivirus software when trying to run shellcode on machines.  There&amp;rsquo;s just a ton available.  These are just a few examples:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -126,7 +126,7 @@ namespace Wrapper
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/virustotal_wrapper.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/virustotal_wrapper.png&#34; /&gt;
     
     
 &lt;/figure&gt;

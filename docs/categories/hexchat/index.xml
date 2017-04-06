@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hexchat on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/hexchat/index.xml</link>
+    <link>http://test.andreko.net/categories/hexchat/index.xml</link>
     <description>Recent content in Hexchat on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/hexchat/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/hexchat/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Buffer Overflow in HexChat 2.9.4</title>
-      <link>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
+      <link>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
       <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
+      <guid>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
       <description>
 
 &lt;p&gt;A buddy of mine, &lt;a href=&#34;https://twitter.com/imulitia&#34;&gt;Mulitia&lt;/a&gt;, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.&lt;/p&gt;
@@ -33,7 +33,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_pc.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_pc.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -44,7 +44,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_pattern.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_pattern.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -61,7 +61,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_seh.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_seh.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -72,7 +72,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_po.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_po.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -87,7 +87,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_mona_seh.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_mona_seh.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -113,7 +113,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_seh2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_seh2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -124,7 +124,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_ppr.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_after_ppr.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -149,7 +149,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_popad.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_after_popad.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -162,7 +162,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_push_esp.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_push_esp.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -173,7 +173,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/hexchat_after_push_esp.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/hexchat_after_push_esp.png&#34; /&gt;
     
     
 &lt;/figure&gt;

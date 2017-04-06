@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Encoding on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/encoding/index.xml</link>
+    <link>http://test.andreko.net/categories/encoding/index.xml</link>
     <description>Recent content in Encoding on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/encoding/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/encoding/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>OverTheWire Natas Level 8</title>
-      <link>https://www.mattandreko.com/2012/11/07/overthewire-natas-level-8/</link>
+      <link>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</link>
       <pubDate>Wed, 07 Nov 2012 05:56:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/07/overthewire-natas-level-8/</guid>
+      <guid>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas8.shtml&#34;&gt;Level 8&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWires&lt;/a&gt; Natas wargame was pretty simple, as a developer, but could prove more difficult if you don&amp;rsquo;t have similar background.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -23,7 +23,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -34,7 +34,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -47,7 +47,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -58,7 +58,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;

@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Wargames on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/wargames/index.xml</link>
+    <link>http://test.andreko.net/categories/wargames/index.xml</link>
     <description>Recent content in Wargames on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/wargames/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/wargames/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Brainpan2</title>
-      <link>https://www.mattandreko.com/2013/11/20/brainpan2/</link>
+      <link>http://test.andreko.net/2013/11/20/brainpan2/</link>
       <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/11/20/brainpan2/</guid>
+      <guid>http://test.andreko.net/2013/11/20/brainpan2/</guid>
       <description>
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan.jpg#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan.jpg#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -38,7 +38,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_vmware_booted.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan2_vmware_booted.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -107,7 +107,7 @@ DOWNLOADED: 4217 - FOUND: 2
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_firefox_bin_directory.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan2_firefox_bin_directory.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -135,7 +135,7 @@ brainpan.exe: JPEG image data, JFIF standard 1.01, comment: &amp;quot;CREATOR: g
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_preview.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan2_preview.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -683,10 +683,10 @@ uid=0(root ) gid=0(root ) groups=0(root )
     
     <item>
       <title>OverTheWire Monxla Part 3</title>
-      <link>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</link>
+      <link>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</link>
       <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</guid>
+      <guid>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</guid>
       <description>&lt;p&gt;Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -696,7 +696,7 @@ uid=0(root ) gid=0(root ) groups=0(root )
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla3_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla3_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -923,10 +923,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 2</title>
-      <link>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</link>
+      <link>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</link>
       <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</guid>
+      <guid>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</guid>
       <description>&lt;p&gt;In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -943,7 +943,7 @@ boris@monxla:~$
 &lt;li&gt;The HoneyLink site is, so far, just a convenience for the wargame, so you don&amp;rsquo;t have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -951,7 +951,7 @@ boris@monxla:~$
 &lt;li&gt;The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -967,7 +967,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -988,7 +988,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -999,7 +999,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_5.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_5.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1010,7 +1010,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_6.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_6.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1020,10 +1020,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 1</title>
-      <link>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</link>
+      <link>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</link>
       <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</guid>
+      <guid>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</guid>
       <description>&lt;p&gt;I had a twitter &lt;a href=&#34;https://twitter.com/Mito125twit&#34;&gt;follower&lt;/a&gt; recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1067,7 +1067,7 @@ PORT&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; STATE
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla1_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla1_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1091,10 +1091,10 @@ mandreko$ mv monxla.decoded monxla.pdf
     
     <item>
       <title>OverTheWire Natas Level 15</title>
-      <link>https://www.mattandreko.com/2012/11/14/overthewire-natas-level-15/</link>
+      <link>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</link>
       <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/14/overthewire-natas-level-15/</guid>
+      <guid>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</guid>
       <description>&lt;p&gt;Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1104,7 +1104,7 @@ mandreko$ mv monxla.decoded monxla.pdf
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas15_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1166,7 +1166,7 @@ Username: &amp;lt;input name=&amp;quot;username&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas15_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1177,7 +1177,7 @@ Username: &amp;lt;input name=&amp;quot;username&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas15_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas15_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1261,10 +1261,10 @@ Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
     
     <item>
       <title>OverTheWire Natas Level 14</title>
-      <link>https://www.mattandreko.com/2012/11/13/overthewire-natas-level-14/</link>
+      <link>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</link>
       <pubDate>Tue, 13 Nov 2012 05:08:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/13/overthewire-natas-level-14/</guid>
+      <guid>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</guid>
       <description>&lt;p&gt;The next level of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas14.shtml&#34;&gt;Level 14&lt;/a&gt;, which introduces &lt;a href=&#34;https://www.owasp.org/index.php/SQL_Injection&#34;&gt;SQL Injection&lt;/a&gt;, a very popular subject as of late.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1274,7 +1274,7 @@ Current pass: 3VfCzgaWjEAcmCQphiEPoXi9HtlmVr3L
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas14_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1323,7 +1323,7 @@ Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas14_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1334,7 +1334,7 @@ Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas14_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas14_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1344,10 +1344,10 @@ Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;
     
     <item>
       <title>OverTheWire Natas Level 13</title>
-      <link>https://www.mattandreko.com/2012/11/12/overthewire-natas-level-13/</link>
+      <link>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</link>
       <pubDate>Mon, 12 Nov 2012 06:44:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/12/overthewire-natas-level-13/</guid>
+      <guid>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas13.shtml&#34;&gt;Level 13&lt;/a&gt; of &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&amp;rsquo;s&lt;/a&gt; Natas wargame is extremely similar to Level 12. The only difference now, is that it&amp;rsquo;s validating that the file is in fact an image. This however is flawed, as exif data can be faked.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1357,7 +1357,7 @@ Password: &amp;lt;input name=&amp;quot;password&amp;quot;&amp;gt;&amp;lt;br&amp;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas13_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1478,7 +1478,7 @@ echo &amp;quot;\n&amp;quot; . $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas13_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1489,7 +1489,7 @@ echo &amp;quot;\n&amp;quot; . $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas13_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas13_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1499,10 +1499,10 @@ echo &amp;quot;\n&amp;quot; . $file;
     
     <item>
       <title>OverTheWire Natas Level 12</title>
-      <link>https://www.mattandreko.com/2012/11/11/overthewire-natas-level-12/</link>
+      <link>http://test.andreko.net/2012/11/11/overthewire-natas-level-12/</link>
       <pubDate>Sun, 11 Nov 2012 06:27:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/11/overthewire-natas-level-12/</guid>
+      <guid>http://test.andreko.net/2012/11/11/overthewire-natas-level-12/</guid>
       <description>&lt;p&gt;The next level to attack in the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame, is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas12.shtml&#34;&gt;Level 12&lt;/a&gt;, which is more &amp;ldquo;real-world&amp;rdquo; as well, since developers often forget to limit file extensions.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1512,7 +1512,7 @@ echo &amp;quot;\n&amp;quot; . $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas12_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1615,7 +1615,7 @@ echo $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas12_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1626,7 +1626,7 @@ echo $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas12_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1637,7 +1637,7 @@ echo $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas12_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas12_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1647,10 +1647,10 @@ echo $file;
     
     <item>
       <title>OverTheWire Natas Level 11</title>
-      <link>https://www.mattandreko.com/2012/11/10/overthewire-natas-level-11/</link>
+      <link>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</link>
       <pubDate>Sat, 10 Nov 2012 05:34:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/10/overthewire-natas-level-11/</guid>
+      <guid>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas11.shtml&#34;&gt;Level 11&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargames is a good one. It wasn&amp;rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1660,7 +1660,7 @@ echo $file;
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas11_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1748,7 +1748,7 @@ Background&amp;amp;nbsp;color:&amp;amp;nbsp;&amp;amp;lt;input&amp;amp;nbsp;name=
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas11_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1822,7 +1822,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas11_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas11_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1832,10 +1832,10 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
     
     <item>
       <title>OverTheWire Natas Level 10</title>
-      <link>https://www.mattandreko.com/2012/11/09/overthewire-natas-level-10/</link>
+      <link>http://test.andreko.net/2012/11/09/overthewire-natas-level-10/</link>
       <pubDate>Fri, 09 Nov 2012 07:28:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/09/overthewire-natas-level-10/</guid>
+      <guid>http://test.andreko.net/2012/11/09/overthewire-natas-level-10/</guid>
       <description>&lt;p&gt;On to &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas10.shtml&#34;&gt;Level 10&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1845,7 +1845,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas10_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1856,7 +1856,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas10_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1867,7 +1867,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas10_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas10_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1877,10 +1877,10 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
     
     <item>
       <title>OverTheWire Natas Level 9</title>
-      <link>https://www.mattandreko.com/2012/11/08/overthewire-natas-level-9/</link>
+      <link>http://test.andreko.net/2012/11/08/overthewire-natas-level-9/</link>
       <pubDate>Thu, 08 Nov 2012 06:12:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/08/overthewire-natas-level-9/</guid>
+      <guid>http://test.andreko.net/2012/11/08/overthewire-natas-level-9/</guid>
       <description>&lt;p&gt;The next level of &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&amp;rsquo;s&lt;/a&gt; Nata challenge is &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas9.shtml&#34;&gt;Level 9&lt;/a&gt;. This is a command injection vulnerability.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1890,7 +1890,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas9_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1901,7 +1901,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas9_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1912,7 +1912,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas9_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas9_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1922,10 +1922,10 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
     
     <item>
       <title>OverTheWire Natas Level 8</title>
-      <link>https://www.mattandreko.com/2012/11/07/overthewire-natas-level-8/</link>
+      <link>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</link>
       <pubDate>Wed, 07 Nov 2012 05:56:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/07/overthewire-natas-level-8/</guid>
+      <guid>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas8.shtml&#34;&gt;Level 8&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWires&lt;/a&gt; Natas wargame was pretty simple, as a developer, but could prove more difficult if you don&amp;rsquo;t have similar background.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1935,7 +1935,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1946,7 +1946,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1959,7 +1959,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1970,7 +1970,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas8_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas8_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -1980,10 +1980,10 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
     
     <item>
       <title>OverTheWire Natas Level 7</title>
-      <link>https://www.mattandreko.com/2012/11/06/overthewire-natas-level-7/</link>
+      <link>http://test.andreko.net/2012/11/06/overthewire-natas-level-7/</link>
       <pubDate>Tue, 06 Nov 2012 05:32:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/06/overthewire-natas-level-7/</guid>
+      <guid>http://test.andreko.net/2012/11/06/overthewire-natas-level-7/</guid>
       <description>&lt;p&gt;Finally, with level 7 of OverTheWire&amp;rsquo;s Natas wargame, we start to get to more &amp;ldquo;real world&amp;rdquo; vulnerabilities. It&amp;rsquo;s still very easy, but it&amp;rsquo;s at least getting better.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1993,7 +1993,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas7_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2004,7 +2004,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas7_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2015,7 +2015,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas7_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas7_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2025,10 +2025,10 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
     
     <item>
       <title>OverTheWire Natas Level 6</title>
-      <link>https://www.mattandreko.com/2012/11/05/overthewire-natas-level-6/</link>
+      <link>http://test.andreko.net/2012/11/05/overthewire-natas-level-6/</link>
       <pubDate>Mon, 05 Nov 2012 05:12:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/05/overthewire-natas-level-6/</guid>
+      <guid>http://test.andreko.net/2012/11/05/overthewire-natas-level-6/</guid>
       <description>&lt;p&gt;The &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas6.shtml&#34;&gt;6th level&lt;/a&gt; of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame starts introducing us to PHP and server configuration issues.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2038,7 +2038,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas6_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2049,7 +2049,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas6_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2060,7 +2060,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas6_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2071,7 +2071,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas6_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas6_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2083,10 +2083,10 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
     
     <item>
       <title>OverTheWire Natas Level 5</title>
-      <link>https://www.mattandreko.com/2012/11/04/overthewire-natas-level-5/</link>
+      <link>http://test.andreko.net/2012/11/04/overthewire-natas-level-5/</link>
       <pubDate>Sun, 04 Nov 2012 18:34:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/04/overthewire-natas-level-5/</guid>
+      <guid>http://test.andreko.net/2012/11/04/overthewire-natas-level-5/</guid>
       <description>&lt;p&gt;Now that we&amp;rsquo;re about &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; through to the end of the &lt;a href=&#34;http://www.overthewire.org&#34;&gt;OverTheWire&lt;/a&gt; Natas wargame, I&amp;rsquo;m hoping that they start to get a little more tricky. &lt;a href=&#34;http://www.overthewire.org/wargames/natas/natas5.shtml&#34;&gt;Level 5&lt;/a&gt; unfortunately is still pretty easy.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2096,7 +2096,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas5_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas5_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2107,7 +2107,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas5_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas5_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -2118,7 +2118,7 @@ New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/natas5_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/natas5_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;

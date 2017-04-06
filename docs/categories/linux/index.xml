@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/linux/index.xml</link>
+    <link>http://test.andreko.net/categories/linux/index.xml</link>
     <description>Recent content in Linux on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
-      <link>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <link>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
       <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -238,10 +238,10 @@ drwxr-xr-x   13 0        0             119 .
     
     <item>
       <title>OverTheWire Monxla Part 3</title>
-      <link>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</link>
+      <link>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</link>
       <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</guid>
+      <guid>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</guid>
       <description>&lt;p&gt;Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -251,7 +251,7 @@ drwxr-xr-x   13 0        0             119 .
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla3_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla3_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -478,10 +478,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 2</title>
-      <link>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</link>
+      <link>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</link>
       <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</guid>
+      <guid>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</guid>
       <description>&lt;p&gt;In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -498,7 +498,7 @@ boris@monxla:~$
 &lt;li&gt;The HoneyLink site is, so far, just a convenience for the wargame, so you don&amp;rsquo;t have to setup your own HTTP server.  It gives you a prefix URL, that you can prepend anything you want to the end.  It will then show you the responses as they come in. 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_2.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_2.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -506,7 +506,7 @@ boris@monxla:~$
 &lt;li&gt;The Nasenko home page. This is what appears to be the main application that we are attacking. It has a Bookmark Service, and the Notes service, which were referenced in the PDF, immediately visible. 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -522,7 +522,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_3.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_3.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -543,7 +543,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_4.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_4.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -554,7 +554,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_5.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_5.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -565,7 +565,7 @@ boris@monxla:~$
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla2_6.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla2_6.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -575,10 +575,10 @@ boris@monxla:~$
     
     <item>
       <title>OverTheWire Monxla Part 1</title>
-      <link>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</link>
+      <link>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</link>
       <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</guid>
+      <guid>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</guid>
       <description>&lt;p&gt;I had a twitter &lt;a href=&#34;https://twitter.com/Mito125twit&#34;&gt;follower&lt;/a&gt; recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -622,7 +622,7 @@ PORT&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp; STATE
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/monxla1_1.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/monxla1_1.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -646,10 +646,10 @@ mandreko$ mv monxla.decoded monxla.pdf
     
     <item>
       <title>Exploit Exercises - Fusion 01</title>
-      <link>https://www.mattandreko.com/2012/07/03/exploit-exercises---fusion-01/</link>
+      <link>http://test.andreko.net/2012/07/03/exploit-exercises---fusion-01/</link>
       <pubDate>Tue, 03 Jul 2012 17:19:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/07/03/exploit-exercises---fusion-01/</guid>
+      <guid>http://test.andreko.net/2012/07/03/exploit-exercises---fusion-01/</guid>
       <description>&lt;p&gt;It&amp;rsquo;s been a while since I last did a write-up about &lt;a href=&#34;http://www.exploit-exercises.com&#34;&gt;Exploit Exercises&lt;/a&gt;. I&amp;rsquo;m starting to look back at it now, since I have some more free time again. I&amp;rsquo;ve now, as I&amp;rsquo;m sure you can guess by the title of this post, solved level 01.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -966,10 +966,10 @@ drwxr-xr-x 22 root  root  4096 2012-05-07 21:53 ..
     
     <item>
       <title>Exploit Exercises - Fusion 00</title>
-      <link>https://www.mattandreko.com/2012/04/09/exploit-exercises---fusion-00/</link>
+      <link>http://test.andreko.net/2012/04/09/exploit-exercises---fusion-00/</link>
       <pubDate>Mon, 09 Apr 2012 17:13:00 -0400</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/04/09/exploit-exercises---fusion-00/</guid>
+      <guid>http://test.andreko.net/2012/04/09/exploit-exercises---fusion-00/</guid>
       <description>&lt;p&gt;I was very excited to see the announcement on twitter, that &lt;a href=&#34;http://exploit-exercises.com/fusion&#34;&gt;Fusion&lt;/a&gt; was going to be released, even if it&amp;rsquo;s just the first 10 levels. I was a bit bummed, as I didn&amp;rsquo;t think I&amp;rsquo;d get to work on it much, until I complete &lt;a href=&#34;http://www.offensive-security.com/online-information-security-training/penetration-testing-backtrack/&#34;&gt;PWB&lt;/a&gt;, but I managed to find a little time to at least start it. I pulled up &lt;a href=&#34;http://exploit-exercises.com/fusion/level00&#34;&gt;level 00&lt;/a&gt;, which looks to be a basic stack overflow in an http server.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1151,10 +1151,10 @@ if __name__ == &amp;quot;__main__&amp;quot;:
     
     <item>
       <title>Kioptrix 4</title>
-      <link>https://www.mattandreko.com/2012/02/12/kioptrix-4/</link>
+      <link>http://test.andreko.net/2012/02/12/kioptrix-4/</link>
       <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/12/kioptrix-4/</guid>
+      <guid>http://test.andreko.net/2012/02/12/kioptrix-4/</guid>
       <description>&lt;p&gt;I know there are a few different methods to the new &lt;a href=&#34;http://www.kioptrix.com/blog/?p=604&#34;&gt;Kioptrix 4&lt;/a&gt; boot2root.  Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -1753,10 +1753,10 @@ root
     
     <item>
       <title>Exploit Exercises - Protostar Net 3</title>
-      <link>https://www.mattandreko.com/2012/02/11/exploit-exercises---protostar-net-3/</link>
+      <link>http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/</link>
       <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/11/exploit-exercises---protostar-net-3/</guid>
+      <guid>http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/</guid>
       <description>&lt;p&gt;The last in the Net series of &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt; is &lt;a href=&#34;http://exploit-exercises.com/protostar/net3&#34;&gt;Net 3&lt;/a&gt;.  It was of course the most difficult of all of them.  However, it still wasn&amp;rsquo;t too bad.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2040,10 +2040,10 @@ if __name__ == &amp;quot;__main__&amp;quot;:
     
     <item>
       <title>Exploit Exercises - Protostar Net 2</title>
-      <link>https://www.mattandreko.com/2012/02/10/exploit-exercises---protostar-net-2/</link>
+      <link>http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/</link>
       <pubDate>Fri, 10 Feb 2012 05:19:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/10/exploit-exercises---protostar-net-2/</guid>
+      <guid>http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/</guid>
       <description>&lt;p&gt;So far, these Net challenges in &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt; have been pretty easy.  This challenge, &lt;a href=&#34;http://exploit-exercises.com/protostar/net2&#34;&gt;Net 2&lt;/a&gt; got a small bit tougher.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2175,10 +2175,10 @@ you added them correctly
     
     <item>
       <title>Exploit Exercises - Protostar Net 1</title>
-      <link>https://www.mattandreko.com/2012/02/09/exploit-exercises---protostar-net-1/</link>
+      <link>http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/</link>
       <pubDate>Thu, 09 Feb 2012 05:43:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/09/exploit-exercises---protostar-net-1/</guid>
+      <guid>http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/</guid>
       <description>&lt;p&gt;Continuing with the &amp;ldquo;Net&amp;rdquo; series of &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt;, is Net 1.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2304,10 +2304,10 @@ you correctly sent the data
     
     <item>
       <title>Exploit Exercises - Protostar Net 0</title>
-      <link>https://www.mattandreko.com/2012/02/08/exploit-exercises---protostar-net-0/</link>
+      <link>http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/</link>
       <pubDate>Wed, 08 Feb 2012 18:31:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/08/exploit-exercises---protostar-net-0/</guid>
+      <guid>http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/</guid>
       <description>&lt;p&gt;I recently started looking at the &amp;ldquo;Net&amp;rdquo; problems in &lt;a href=&#34;http://exploit-exercises.com/protostar&#34;&gt;Protostar&lt;/a&gt;, and found them to be quite a fun change in pace.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2428,10 +2428,10 @@ Thank you sir/madam
     
     <item>
       <title>Exploit Exercises - Protostar Final 1</title>
-      <link>https://www.mattandreko.com/2012/02/05/exploit-exercises---protostar-final-1/</link>
+      <link>http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/</link>
       <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/05/exploit-exercises---protostar-final-1/</guid>
+      <guid>http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/</guid>
       <description>&lt;p&gt;Since I&amp;rsquo;ve been doing a lot of the format string exploits lately, I decided to do the &lt;a href=&#34;http://exploit-exercises.com/protostar/final1&#34;&gt;Final 1&lt;/a&gt; challenge.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -2855,10 +2855,10 @@ if __name__ == &amp;quot;__main__&amp;quot;:
     
     <item>
       <title>Exploit Exercises - Protostar Format 4</title>
-      <link>https://www.mattandreko.com/2012/02/02/exploit-exercises---protostar-format-4/</link>
+      <link>http://test.andreko.net/2012/02/02/exploit-exercises---protostar-format-4/</link>
       <pubDate>Thu, 02 Feb 2012 05:15:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/02/exploit-exercises---protostar-format-4/</guid>
+      <guid>http://test.andreko.net/2012/02/02/exploit-exercises---protostar-format-4/</guid>
       <description>&lt;p&gt;Next up is the last challenge in the Format String series, &lt;a href=&#34;http://exploit-exercises.com/protostar/format4&#34;&gt;Format 4&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -3037,10 +3037,10 @@ redirected! you win
     
     <item>
       <title>Exploit Exercises - Protostar Format 3</title>
-      <link>https://www.mattandreko.com/2012/02/01/exploit-exercises---protostar-format-3/</link>
+      <link>http://test.andreko.net/2012/02/01/exploit-exercises---protostar-format-3/</link>
       <pubDate>Wed, 01 Feb 2012 05:33:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/02/01/exploit-exercises---protostar-format-3/</guid>
+      <guid>http://test.andreko.net/2012/02/01/exploit-exercises---protostar-format-3/</guid>
       <description>&lt;p&gt;Continuing in the String Format section, the next challenge we run across is &lt;a href=&#34;http://exploit-exercises.com/protostar/format3&#34;&gt;Format 3&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!-- more --&gt;
@@ -3186,10 +3186,10 @@ you have modified the target :)
     
     <item>
       <title>Exploit Exercises - Protostar Format 2</title>
-      <link>https://www.mattandreko.com/2012/01/31/exploit-exercises---protostar-format-2/</link>
+      <link>http://test.andreko.net/2012/01/31/exploit-exercises---protostar-format-2/</link>
       <pubDate>Tue, 31 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>https://www.mattandreko.com/2012/01/31/exploit-exercises---protostar-format-2/</guid>
+      <guid>http://test.andreko.net/2012/01/31/exploit-exercises---protostar-format-2/</guid>
       <description>&lt;p&gt;Continuing from where we left off, we arrive at &lt;a href=&#34;http://exploit-exercises.com/protostar/format2&#34;&gt;Format 2&lt;/a&gt;.  It presents us with the following code:&lt;/p&gt;
 
 &lt;!-- more --&gt;

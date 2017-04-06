@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Brainpan on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/brainpan/index.xml</link>
+    <link>http://test.andreko.net/categories/brainpan/index.xml</link>
     <description>Recent content in Brainpan on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <atom:link href="https://www.mattandreko.com/categories/brainpan/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://test.andreko.net/categories/brainpan/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Brainpan2</title>
-      <link>https://www.mattandreko.com/2013/11/20/brainpan2/</link>
+      <link>http://test.andreko.net/2013/11/20/brainpan2/</link>
       <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://www.mattandreko.com/2013/11/20/brainpan2/</guid>
+      <guid>http://test.andreko.net/2013/11/20/brainpan2/</guid>
       <description>
 
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan.jpg#left&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan.jpg#left&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -38,7 +38,7 @@
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_vmware_booted.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan2_vmware_booted.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -107,7 +107,7 @@ DOWNLOADED: 4217 - FOUND: 2
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_firefox_bin_directory.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan2_firefox_bin_directory.png&#34; /&gt;
     
     
 &lt;/figure&gt;
@@ -135,7 +135,7 @@ brainpan.exe: JPEG image data, JFIF standard 1.01, comment: &amp;quot;CREATOR: g
 
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
-        &lt;img src=&#34;https://www.mattandreko.com/img/brainpan2_preview.png&#34; /&gt;
+        &lt;img src=&#34;http://test.andreko.net/img/brainpan2_preview.png&#34; /&gt;
     
     
 &lt;/figure&gt;
