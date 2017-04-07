@@ -26,8 +26,6 @@
                     {{ $halfStart := div $start 2 }}
 		    {{ $after := sub $pag.PageNumber $halfStart }}
 			
-		    {{ $.Scratch.Set "after" $after }}
-
 		    {{ if le $pag.PageNumber $halfStart }} 
                     {{ range first $start $pag.Pagers }}
                         {{ if eq . $pag }}
@@ -41,7 +39,7 @@
                         {{ end }}
                     {{ end }}
                     {{ else }}
-		    {{ range first $start (after ($.Scratch.Get "after") $pag.Pagers) }}
+		    {{ range first $start (after $after $pag.Pagers) }}
 		    	{{ if eq . $pag }}
 		    		<span class="pagecurrent">
 		    			{{ .PageNumber }}
@@ -53,6 +51,7 @@
 		    	{{ end }}		    	
 		    {{ end }}
                     {{ end }}
+
 		    {{ if $pag.HasNext }}
 		    	<span class="displaypageNum">
 		    		<a href="{{ if $pag.HasNext }}{{ $pag.Next.URL }}{{ end }}" aria-label="Next">
