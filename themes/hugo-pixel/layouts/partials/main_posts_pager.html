@@ -21,7 +21,17 @@
 		    	</span>
 		    {{ end }}
 
-		    {{ range $pag.Pagers }}
+
+		    {{ $start := $.Site.Params.Paginate }}
+		    {{ $after := sub $pag.PageNumber (div $start 2)}}
+			
+		    {{ $.Scratch.Set "after" $after }}
+		    {{ if le $after 0 }}
+		    	{{ $.Scratch.Set "after" 1 }}
+		    {{ end }}
+		    
+		    
+		    {{ range first $start (after ($.Scratch.Get "after") $pag.Pagers) }}
 		    	{{ if eq . $pag }}
 		    		<span class="pagecurrent">
 		    			{{ .PageNumber }}
