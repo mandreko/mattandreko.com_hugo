@@ -27,30 +27,30 @@
 		    {{ $after := sub $pag.PageNumber $halfStart }}
 			
 		    {{ if le $pag.PageNumber $halfStart }} 
-                    {{ range first $start $pag.Pagers }}
-                        {{ if eq . $pag }}
-                                <span class="pagecurrent">
-                                        {{ .PageNumber }}
-                                </span>
-                        {{ else }}
-                                <span class="displaypageNum">
-                                        <a href="{{ .URL }}">{{ .PageNumber }}</a>
-                                </span>
-                        {{ end }}
-                    {{ end }}
-                    {{ else }}
-		    {{ range first $start (after $after $pag.Pagers) }}
-		    	{{ if eq . $pag }}
-		    		<span class="pagecurrent">
-		    			{{ .PageNumber }}
-		    		</span>
-		    	{{ else }}
-		    		<span class="displaypageNum">
-			    		<a href="{{ .URL }}">{{ .PageNumber }}</a>
-		    		</span>
-		    	{{ end }}		    	
-		    {{ end }}
-                    {{ end }}
+				{{ range first $start $pag.Pagers }}
+					{{ if eq . $pag }}
+							<span class="pagecurrent">
+									{{ .PageNumber }}
+							</span>
+					{{ else }}
+							<span class="displaypageNum">
+									<a href="{{ .URL }}">{{ .PageNumber }}</a>
+							</span>
+					{{ end }}
+				{{ end }}
+			{{ else }}
+				{{ range first $start (after $after $pag.Pagers) }}
+					{{ if eq . $pag }}
+						<span class="pagecurrent">
+							{{ .PageNumber }}
+						</span>
+					{{ else }}
+						<span class="displaypageNum">
+							<a href="{{ .URL }}">{{ .PageNumber }}</a>
+						</span>
+					{{ end }}
+				{{ end }}
+			{{ end }}
 
 		    {{ if $pag.HasNext }}
 		    	<span class="displaypageNum">
