@@ -14,16 +14,7 @@
       <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
       
       <guid>http://test.andreko.net/2014/08/01/burp-icon-in-osx/</guid>
-      <description>
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/automator_burp.png#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
-
-&lt;p&gt;Recently, I on a Google Hangout with a coworker and saw him using the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;. I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google. I wanted a more &amp;lsquo;native&amp;rsquo; feeling to launching the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;, and this post should document the process I found that worked for me.&lt;/p&gt;
+      <description>&lt;p&gt;Recently, I on a Google Hangout with a coworker and saw him using the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;. I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google. I wanted a more &amp;lsquo;native&amp;rsquo; feeling to launching the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;, and this post should document the process I found that worked for me.&lt;/p&gt;
 
 &lt;!-- more --&gt;
 

@@ -16,15 +16,6 @@
       <guid>http://test.andreko.net/2013/11/20/brainpan2/</guid>
       <description>
 
-
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/brainpan.jpg#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
-
 &lt;p&gt;Over on #vulnhub, there has been quite a chatter about &lt;a href=&#34;http://vulnhub.com/entry/brainpan_2,56/&#34;&gt;Brainpan2&lt;/a&gt;, a &amp;ldquo;sequel&amp;rdquo; to Brainpan, by &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;. They&amp;rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&amp;rsquo;t cheat to win.&lt;/p&gt;
 
 &lt;!-- more --&gt;

@@ -16,15 +16,6 @@
       <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>
 
-
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
-
 &lt;p&gt;A week or so ago, I read the news of a new backdoor on several devices, including those made by &lt;a href=&#34;http://www.belkin.com/&#34;&gt;Belkin&lt;/a&gt;, &lt;a href=&#34;http://www.cisco.com/&#34;&gt;Cisco&lt;/a&gt;, &lt;a href=&#34;http://www.netgear.com&#34;&gt;NetGear&lt;/a&gt;, &lt;a href=&#34;http://www.linksys.com&#34;&gt;Linksys&lt;/a&gt;, and several others. A list of what seems to be affected devices can be found &lt;a href=&#34;http://wikidevi.com/w/index.php?title=Special%3AAsk&amp;amp;q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&amp;amp;po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&amp;amp;eq=yes&amp;amp;p%5Bformat%5D=broadtable&amp;amp;sort_num=&amp;amp;order_num=ASC&amp;amp;p%5Blimit%5D=500&amp;amp;p%5Boffset%5D=&amp;amp;p%5Blink%5D=all&amp;amp;p%5Bsort%5D=&amp;amp;p%5Bheaders%5D=show&amp;amp;p%5Bmainlabel%5D=&amp;amp;p%5Bintro%5D=&amp;amp;p%5Boutro%5D=&amp;amp;p%5Bsearchlabel%5D=%25E&#34;&gt;here&lt;/a&gt;. &lt;a href=&#34;https://twitter.com/elvanderb&#34;&gt;Eloi Vanderbeken&lt;/a&gt;, who posted his findings on &lt;a href=&#34;https://github.com/elvanderb/TCP-32764&#34;&gt;GitHub&lt;/a&gt; made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; integration.&lt;/p&gt;
 
 &lt;!-- more --&gt;

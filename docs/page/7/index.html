@@ -108,43 +108,39 @@
 
 				<div class='post-outer'>
 	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='http://test.andreko.net/2012/02/12/kioptrix-4/' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
 		<div class='post-header'></div>
 		<article>
 			<font class='retitle'>
 			<h2 class='post-title entry-title'>
-			<a href='http://test.andreko.net/2012/02/12/kioptrix-4/'>Kioptrix 4</a>
+			<a href='http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/'>Exploit Exercises - Protostar Heap 1</a>
 			</h2>
 			</font>
 			<div class='date-header'>
 				<div id='meta-post'>
-					25 minute read 
+					5 minute read 
 					<i class='fa fa-calendar-o'></i>
-					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 12, 2012</abbr>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 12, 2012</abbr>
 					 
 						<span class='post-comment-link'>
 							<i class='fa fa-comment'></i>
-							<a class="comment-link" href="http://test.andreko.net/2012/02/12/kioptrix-4/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/12/kioptrix-4/"/>Comments</a>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/"/>Comments</a>
 						</span>
 					
 				</div>
+				
 				<div class='resumo'>
 					<span>
 					
-						I know there are a few different methods to the new Kioptrix 4 boot2root. Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.
-Tools used:
- Backtrack 5 VM Nmap SqlMap  To start out, I had to find the machine on the network. I booted up my Backtrack VM and Kioptrix VM both using a NAT connection in my VMWare.
+						This challenge was different for me. The previous heap challenge was easy to pretend it was just a simple stack overflow. This one worked very different, and brought some different challenges with it.
+You first start out with the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;sys/types.h&gt; struct internet { int priority; char *name; }; void winner() { printf(&quot;and we have a winner @ %d\n&quot;, time(NULL)); } int main(int argc, char **argv) { struct internet *i1, *i2, *i3; i1 = malloc(sizeof(struct internet)); i1-&gt;priority = 1; i1-&gt;name = malloc(8); i2 = malloc(sizeof(struct internet)); i2-&gt;priority = 2; i2-&gt;name = malloc(8); strcpy(i1-&gt;name, argv[1]); strcpy(i2-&gt;name, argv[2]); printf(&quot;and that's a wrap folks!
 					
 					</span>
 				</div>
 				<div style='clear: both;'></div>
 			</div>
 			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/12/kioptrix-4/">Read more <i class='fa fa-chevron-right'></i></a>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/12/exploit-exercises---protostar-heap-1/">Read more <i class='fa fa-chevron-right'></i></a>
 				
 				<span class='post-labels'>
 					
@@ -152,10 +148,147 @@ Tools used:
 					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
 					
 					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
 					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
 					
 					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/kioptrix/">kioptrix </a>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/heap/">heap </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+
+				
+
+				<div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/'>Exploit Exercises - Protostar Heap 0</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					2 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 10, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Now that I&rsquo;ve completed all of the Stack section of protostar, I&rsquo;ve started to move onto Heap. The first of these challenges, is Heap 0.
+We are given the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;sys/types.h&gt; struct data { char name[64]; }; struct fp { int (*fp)(); }; void winner() { printf(&quot;level passed\n&quot;); } void nowinner() { printf(&quot;level has not been passed\n&quot;); } int main(int argc, char **argv) { struct data *d; struct fp *f; d = malloc(sizeof(struct data)); f = malloc(sizeof(struct fp)); f-&gt;fp = nowinner; printf(&quot;data is at %p, fp is at %p\n&quot;, d, f); strcpy(d-&gt;name, argv[1]); f-&gt;fp(); }  I first needed to find the offset to where I could overwrite the EIP, so I connected to my other machine with the Metasploit Framework installed, and generated a unique string.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/10/exploit-exercises---protostar-heap-0/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/heap/">heap </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+
+				
+
+				<div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/09/exploit-exercises---protostar-stack-7/'>Exploit Exercises - Protostar Stack 7</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					5 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 9, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/09/exploit-exercises---protostar-stack-7/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/09/exploit-exercises---protostar-stack-7/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.
+This challenge was very interesting to me. I figured it would build off of the previous one. However, it was its own standalone challenge.
+We are given the following code to the stack7 executable:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; char *getpath() { char buffer[64]; unsigned int ret; printf(&quot;input path please: &quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp;amp; 0xb0000000) == 0xb0000000) { printf(&quot;bzzzt (%p)\n&quot;, ret); _exit(1); } printf(&quot;got path %s\n&quot;, buffer); return strdup(buffer); } int main(int argc, char **argv) { getpath(); }  From tinkering with the stack7 executable, I knew I was going to do a stack overflow, and somehow needed to execute code from the stack.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/09/exploit-exercises---protostar-stack-7/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/ret2text/">ret2text </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
 					
 					<i class='fa fa-folder-open-o'></i>
 					<a class="label" href="http://test.andreko.net/categories/suid/">suid </a>
@@ -174,43 +307,110 @@ Tools used:
 
 				<div class='post-outer'>
 	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
 		<div class='post-header'></div>
 		<article>
 			<font class='retitle'>
 			<h2 class='post-title entry-title'>
-			<a href='http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/'>Exploit Exercises - Protostar Net 3</a>
+			<a href='http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/'>Exploit Exercises - Protostar Stack 6</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					7 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Dec 22, 2011</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						The Stack6 challenge was definitely a learning experience for me. This actually went beyond my existing skills, and made me learn some new stuff.
+We are given the following code.
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; void getpath() { char buffer[64]; unsigned int ret; printf(&quot;input path please: &quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp; 0xbf000000) == 0xbf000000) { printf(&quot;bzzzt (%p)\n&quot;, ret); _exit(1); } printf(&quot;got path %s\n&quot;, buffer); } int main(int argc, char **argv) { getpath(); }  The first thing I tried to do, was to set it up just like I did on Stack 5.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2011/12/22/exploit-exercises---protostar-stack-6/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/suid/">suid </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/rop/">rop </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/ret2libc/">ret2libc </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+
+				
+
+				<div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2011/12/17/exploit-exercises---protostar-stack-5/'>Exploit Exercises - Protostar Stack 5</a>
 			</h2>
 			</font>
 			<div class='date-header'>
 				<div id='meta-post'>
 					5 minute read 
 					<i class='fa fa-calendar-o'></i>
-					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 11, 2012</abbr>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Dec 17, 2011</abbr>
 					 
 						<span class='post-comment-link'>
 							<i class='fa fa-comment'></i>
-							<a class="comment-link" href="http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/"/>Comments</a>
+							<a class="comment-link" href="http://test.andreko.net/2011/12/17/exploit-exercises---protostar-stack-5/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2011/12/17/exploit-exercises---protostar-stack-5/"/>Comments</a>
 						</span>
 					
 				</div>
+				
 				<div class='resumo'>
 					<span>
 					
-						The last in the Net series of Protostar is Net 3. It was of course the most difficult of all of them. However, it still wasn&rsquo;t too bad.
-First, we&rsquo;re given the following code:
-#include &quot;../common/common.c&quot; #define NAME &quot;net3&quot; #define UID 996 #define GID 996 #define PORT 2996 /* * Extract a null terminated string from the buffer */ int get_string(char **result, unsigned char *buffer, u_int16_t len) { unsigned char byte; byte = *buffer; if(byte &gt; len) errx(1, &quot;badly formed packet&quot;); *result = malloc(byte); strcpy(*result, buffer + 1); return byte + 1; } /* * Check to see if we can log into the host */ int login(unsigned char *buffer, u_int16_t len) { char *resource, *username, *password; int deduct; int success; if(len &lt; 3) errx(1, &quot;invalid login packet length&quot;); resource = username = password = NULL; deduct = get_string(&amp;resource, buffer, len); deduct += get_string(&amp;username, buffer+deduct, len-deduct); deduct += get_string(&amp;password, buffer+deduct, len-deduct); success = 0; success |= strcmp(resource, &quot;net3&quot;); success |= strcmp(username, &quot;awesomesauce&quot;); success |= strcmp(password, &quot;password&quot;); free(resource); free(username); free(password); return !
+						Wow, this challenge was a tough one for me. I ran into some huge problems that I had to work out. Considering this is a &ldquo;standard buffer overflow&rdquo;, I figured it&rsquo;d be as easy as some of the others I&rsquo;ve done in the past. I&rsquo;ll explain my frustrations inline.
+First, we&rsquo;re given the following vulnerable program.
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; int main(int argc, char **argv) { char buffer[64]; gets(buffer); }  The first task with this challenge was to find the offset of the EIP.
 					
 					</span>
 				</div>
 				<div style='clear: both;'></div>
 			</div>
 			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/11/exploit-exercises---protostar-net-3/">Read more <i class='fa fa-chevron-right'></i></a>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2011/12/17/exploit-exercises---protostar-stack-5/">Read more <i class='fa fa-chevron-right'></i></a>
 				
 				<span class='post-labels'>
 					
@@ -227,7 +427,7 @@ First, we&rsquo;re given the following code:
 					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
 					
 					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/net/">net </a>
+					<a class="label" href="http://test.andreko.net/categories/suid/">suid </a>
 					
 					<i class='fa fa-folder-open-o'></i>
 					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
@@ -243,43 +443,39 @@ First, we&rsquo;re given the following code:
 
 				<div class='post-outer'>
 	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
 		<div class='post-header'></div>
 		<article>
 			<font class='retitle'>
 			<h2 class='post-title entry-title'>
-			<a href='http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/'>Exploit Exercises - Protostar Net 2</a>
+			<a href='http://test.andreko.net/2011/12/16/exploit-exercises---protostar-stack-4/'>Exploit Exercises - Protostar Stack 4</a>
 			</h2>
 			</font>
 			<div class='date-header'>
 				<div id='meta-post'>
 					2 minute read 
 					<i class='fa fa-calendar-o'></i>
-					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 10, 2012</abbr>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Dec 16, 2011</abbr>
 					 
 						<span class='post-comment-link'>
 							<i class='fa fa-comment'></i>
-							<a class="comment-link" href="http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/"/>Comments</a>
+							<a class="comment-link" href="http://test.andreko.net/2011/12/16/exploit-exercises---protostar-stack-4/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2011/12/16/exploit-exercises---protostar-stack-4/"/>Comments</a>
 						</span>
 					
 				</div>
+				
 				<div class='resumo'>
 					<span>
 					
-						So far, these Net challenges in Protostar have been pretty easy. This challenge, Net 2 got a small bit tougher.
-We are given the following code:
-#include &quot;../common/common.c&quot; #define NAME &quot;net2&quot; #define UID 997 #define GID 997 #define PORT 2997 void run() { unsigned int quad[4]; int i; unsigned int result, wanted; result = 0; for(i = 0; i &lt; 4; i++) { quad[i] = random(); result += quad[i]; if(write(0, &amp;(quad[i]), sizeof(result)) !
+						With this challenge, I think things really start to get fun, and more real-world.
+We are provided with the following C program:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; void win() { printf(&quot;code flow successfully changed\n&quot;); } int main(int argc, char **argv) { char buffer[64]; gets(buffer); }  This C app will simply read a value from user input, and store it in &ldquo;buffer&rdquo;. We then need to get it to somehow execute &ldquo;win()&rdquo;.
 					
 					</span>
 				</div>
 				<div style='clear: both;'></div>
 			</div>
 			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/10/exploit-exercises---protostar-net-2/">Read more <i class='fa fa-chevron-right'></i></a>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2011/12/16/exploit-exercises---protostar-stack-4/">Read more <i class='fa fa-chevron-right'></i></a>
 				
 				<span class='post-labels'>
 					
@@ -296,9 +492,6 @@ We are given the following code:
 					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
 					
 					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/net/">net </a>
-					
-					<i class='fa fa-folder-open-o'></i>
 					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
 					
 				</span>
@@ -312,43 +505,38 @@ We are given the following code:
 
 				<div class='post-outer'>
 	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
 		<div class='post-header'></div>
 		<article>
 			<font class='retitle'>
 			<h2 class='post-title entry-title'>
-			<a href='http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/'>Exploit Exercises - Protostar Net 1</a>
+			<a href='http://test.andreko.net/2011/12/15/exploit-exercises---protostar-stack-3/'>Exploit Exercises - Protostar Stack 3</a>
 			</h2>
 			</font>
 			<div class='date-header'>
 				<div id='meta-post'>
 					2 minute read 
 					<i class='fa fa-calendar-o'></i>
-					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 9, 2012</abbr>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Dec 15, 2011</abbr>
 					 
 						<span class='post-comment-link'>
 							<i class='fa fa-comment'></i>
-							<a class="comment-link" href="http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/"/>Comments</a>
+							<a class="comment-link" href="http://test.andreko.net/2011/12/15/exploit-exercises---protostar-stack-3/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2011/12/15/exploit-exercises---protostar-stack-3/"/>Comments</a>
 						</span>
 					
 				</div>
+				
 				<div class='resumo'>
 					<span>
 					
-						Continuing with the &ldquo;Net&rdquo; series of Protostar, is Net 1.
-We are given the following code:
-#include &quot;../common/common.c&quot; #define NAME &quot;net1&quot; #define UID 998 #define GID 998 #define PORT 2998 void run() { char buf[12]; char fub[12]; char *q; unsigned int wanted; wanted = random(); sprintf(fub, &quot;%d&quot;, wanted); if(write(0, &amp;wanted, sizeof(wanted)) != sizeof(wanted)) { errx(1, &quot;:(\n&quot;); } if(fgets(buf, sizeof(buf)-1, stdin) == NULL) { errx(1, &quot;:(\n&quot;); } q = strchr(buf, '\r'); if(q) *q = 0; q = strchr(buf, '\n'); if(q) *q = 0; if(strcmp(fub, buf) == 0) { printf(&quot;you correctly sent the data\n&quot;); } else { printf(&quot;you didn't send the data properly\n&quot;); } } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); /* Don't do this :&gt; */ srandom(time(NULL)); run(); }  Similar to Net 0, it looks like this is another network daemon, this time running on port 2998.
+						This challenge starts getting a little bit more involved than the previous ones. Instead of just providing a new value for the &ldquo;modified&rdquo; variable, we need to make the code jump to a method, changing the execution.
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; void win() { printf(&quot;code flow successfully changed\n&quot;); } int main(int argc, char **argv) { volatile int (*fp)(); char buffer[64]; fp = 0; gets(buffer); if(fp) { printf(&quot;calling function pointer, jumping to 0x%08x\n&quot;, fp); fp(); } }  This means that first of all, we need to find the address of where the &ldquo;win()&rdquo; function is located in the program.
 					
 					</span>
 				</div>
 				<div style='clear: both;'></div>
 			</div>
 			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/09/exploit-exercises---protostar-net-1/">Read more <i class='fa fa-chevron-right'></i></a>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2011/12/15/exploit-exercises---protostar-stack-3/">Read more <i class='fa fa-chevron-right'></i></a>
 				
 				<span class='post-labels'>
 					
@@ -365,9 +553,6 @@ We are given the following code:
 					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
 					
 					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/net/">net </a>
-					
-					<i class='fa fa-folder-open-o'></i>
 					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
 					
 				</span>
@@ -381,117 +566,40 @@ We are given the following code:
 
 				<div class='post-outer'>
 	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
 		<div class='post-header'></div>
 		<article>
 			<font class='retitle'>
 			<h2 class='post-title entry-title'>
-			<a href='http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/'>Exploit Exercises - Protostar Net 0</a>
+			<a href='http://test.andreko.net/2011/12/14/exploit-exercises---protostar-stack-2/'>Exploit Exercises - Protostar Stack 2</a>
 			</h2>
 			</font>
 			<div class='date-header'>
 				<div id='meta-post'>
-					2 minute read 
+					1 minute read 
 					<i class='fa fa-calendar-o'></i>
-					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 8, 2012</abbr>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Dec 14, 2011</abbr>
 					 
 						<span class='post-comment-link'>
 							<i class='fa fa-comment'></i>
-							<a class="comment-link" href="http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/"/>Comments</a>
+							<a class="comment-link" href="http://test.andreko.net/2011/12/14/exploit-exercises---protostar-stack-2/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2011/12/14/exploit-exercises---protostar-stack-2/"/>Comments</a>
 						</span>
 					
 				</div>
+				
 				<div class='resumo'>
 					<span>
 					
-						I recently started looking at the &ldquo;Net&rdquo; problems in Protostar, and found them to be quite a fun change in pace.
-Starting with Net 0, we are given the following code:
-#include &quot;../common/common.c&quot; #define NAME &quot;net0&quot; #define UID 999 #define GID 999 #define PORT 2999 void run() { unsigned int i; unsigned int wanted; wanted = random(); printf(&quot;Please send '%d' as a little endian 32bit int\n&quot;, wanted); if(fread(&amp;i, sizeof(i), 1, stdin) == NULL) { errx(1, &quot;:(\n&quot;); } if(i == wanted) { printf(&quot;Thank you sir/madam\n&quot;); } else { printf(&quot;I'm sorry, you sent %d instead\n&quot;, i); } } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); /* Don't do this :&gt; */ srandom(time(NULL)); run(); }  I started to analyze this program, to figure out what I was even supposed to do.
+						This challenge is pretty much the same as the previous challenge, except that the buffer comes from an environmental variable.
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; int main(int argc, char **argv) { volatile int modified; char buffer[64]; char *variable; variable = getenv(&quot;GREENIE&quot;); if(variable == NULL) { errx(1, &quot;please set the GREENIE environment variable\n&quot;); } modified = 0; strcpy(buffer, variable); if(modified == 0x0d0a0d0a) { printf(&quot;you have correctly modified the variable\n&quot;); } else { printf(&quot;Try again, you got 0x%08x\n&quot;, modified); } }  This problem can simply be solved by running these commands:
 					
 					</span>
 				</div>
 				<div style='clear: both;'></div>
 			</div>
 			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/08/exploit-exercises---protostar-net-0/">Read more <i class='fa fa-chevron-right'></i></a>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2011/12/14/exploit-exercises---protostar-stack-2/">Read more <i class='fa fa-chevron-right'></i></a>
 				
 				<span class='post-labels'>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/net/">net </a>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
-					
-				</span>
-				
-			</div>
-		</article>
-	</div>
-</div>
-
-				
-
-				<div class='post-outer'>
-	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
-		<div class='block-image'>
-			<div class='thumb'>
-				<a href='http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/' style="background:url('http://placehold.it/270x182') no-repeat center center;background-size:cover"></a>
-			</div>
-		</div>
-		<div class='post-header'></div>
-		<article>
-			<font class='retitle'>
-			<h2 class='post-title entry-title'>
-			<a href='http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/'>Exploit Exercises - Protostar Final 1</a>
-			</h2>
-			</font>
-			<div class='date-header'>
-				<div id='meta-post'>
-					11 minute read 
-					<i class='fa fa-calendar-o'></i>
-					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 5, 2012</abbr>
-					 
-						<span class='post-comment-link'>
-							<i class='fa fa-comment'></i>
-							<a class="comment-link" href="http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/"/>Comments</a>
-						</span>
-					
-				</div>
-				<div class='resumo'>
-					<span>
-					
-						Since I&rsquo;ve been doing a lot of the format string exploits lately, I decided to do the Final 1 challenge.
-We start out the challenge by being given the following code:
-#include &quot;../common/common.c&quot; #include &lt;syslog.h&gt; #define NAME &quot;final1&quot; #define UID 0 #define GID 0 #define PORT 2994 char username[128]; char hostname[64]; void logit(char *pw) { char buf[512]; snprintf(buf, sizeof(buf), &quot;Login from %s as [%s] with password [%s]\n&quot;, hostname, username, pw); syslog(LOG_USER|LOG_DEBUG, buf); } void trim(char *str) { char *q; q = strchr(str, '\r'); if(q) *q = 0; q = strchr(str, '\n'); if(q) *q = 0; } void parser() { char line[128]; printf(&quot;[final1] $ &quot;); while(fgets(line, sizeof(line)-1, stdin)) { trim(line); if(strncmp(line, &quot;username &quot;, 9) == 0) { strcpy(username, line+9); } else if(strncmp(line, &quot;login &quot;, 6) == 0) { if(username[0] == 0) { printf(&quot;invalid protocol\n&quot;); } else { logit(line + 6); printf(&quot;login failed\n&quot;); } } printf(&quot;[final1] $ &quot;); } } void getipport() { int l; struct sockaddr_in sin; l = sizeof(struct sockaddr_in); if(getpeername(0, &amp;sin, &amp;l) == -1) { err(1, &quot;you don't exist&quot;); } sprintf(hostname, &quot;%s:%d&quot;, inet_ntoa(sin.
-					
-					</span>
-				</div>
-				<div style='clear: both;'></div>
-			</div>
-			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/05/exploit-exercises---protostar-final-1/">Read more <i class='fa fa-chevron-right'></i></a>
-				
-				<span class='post-labels'>
-					
-					<i class='fa fa-folder-open-o'></i>
-					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
 					
 					<i class='fa fa-folder-open-o'></i>
 					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
@@ -524,7 +632,7 @@ We start out the challenge by being given the following code:
 
 	<div class='blog-pager' id='blog-pager'>
 		
-		<span class="showpageOf">Page 7 of 13</span>
+		<span class="showpageOf">Page 7 of 10</span>
 
 			
 				<span class="displaypageNum">
@@ -542,24 +650,12 @@ We start out the challenge by being given the following code:
 		    	</span>
 		    
 
+
 		    
-		    	
-		    		<span class="displaypageNum">
-			    		<a href="/">1</a>
-		    		</span>
-		    			    	
+                    
 		    
-		    	
-		    		<span class="displaypageNum">
-			    		<a href="/page/2/">2</a>
-		    		</span>
-		    			    	
+			
 		    
-		    	
-		    		<span class="displaypageNum">
-			    		<a href="/page/3/">3</a>
-		    		</span>
-		    			    	
 		    
 		    	
 		    		<span class="displaypageNum">
@@ -603,24 +699,7 @@ We start out the challenge by being given the following code:
 		    		</span>
 		    			    	
 		    
-		    	
-		    		<span class="displaypageNum">
-			    		<a href="/page/11/">11</a>
-		    		</span>
-		    			    	
-		    
-		    	
-		    		<span class="displaypageNum">
-			    		<a href="/page/12/">12</a>
-		    		</span>
-		    			    	
-		    
-		    	
-		    		<span class="displaypageNum">
-			    		<a href="/page/13/">13</a>
-		    		</span>
-		    			    	
-		    
+                    
 
 		    
 		    	<span class="displaypageNum">
@@ -632,12 +711,13 @@ We start out the challenge by being given the following code:
 
 		    
 		    	<span class="displaypageNum">
-		    		<a href="/page/13/">
+		    		<a href="/page/10/">
 		    			<i class="fa fa-angle-double-right fa-lg"></i>
 		    		</a>
 	    		</span>
 		    
 	</div>
+
  
 			<div class='clear'></div>
 			<div class='blog-feeds'></div>
@@ -731,401 +811,402 @@ We start out the challenge by being given the following code:
 				<div class='widget Label' data-version='1' id='Label1'>
 	<h2>Categories</h2>
 	<div class='widget-content cloud-label-widget-content'>
+
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/antivirus'>antivirus</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/aslr'>aslr</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/assembly'>assembly</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/brainpan'>brainpan</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/browsers'>browsers</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/burp'>burp</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/canon'>canon</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/certification'>certification</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/commandinjection'>commandinjection</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/cookies'>cookies</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/csharp'>csharp</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/ctp'>ctp</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/cucumber'>cucumber</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/directorytraversal'>directorytraversal</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/dos'>dos</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/dotnet'>dotnet</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/encoding'>encoding</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/exif'>exif</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/exploit'>exploit</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/fail'>fail</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/fogbugz'>fogbugz</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/food'>food</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/formatstring'>formatstring</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/fusion'>fusion</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/future'>future</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/gac'>gac</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/getoffmylawn'>getoffmylawn</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/greasemonkey'>greasemonkey</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/hacking'>hacking</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/heap'>heap</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/hexchat'>hexchat</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/hover'>hover</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/html'>html</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/http'>http</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/includes'>includes</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/injection'>injection</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/iphone'>iphone</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/kioptrix'>kioptrix</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/linux'>linux</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/metasploit'>metasploit</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/mips'>mips</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/monxla'>monxla</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/natas'>natas</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/nebula'>nebula</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/net'>net</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/offsec'>offsec</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/oscp'>oscp</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/osx'>osx</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/php'>php</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/printer'>printer</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/projects'>projects</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/protostar'>protostar</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/pwb'>pwb</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/pwcrack'>pwcrack</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/rails'>rails</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/rant'>rant</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/ret2libc'>ret2libc</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/ret2text'>ret2text</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/rop'>rop</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/rspec'>rspec</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/security'>security</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/shellcode'>shellcode</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/sprint'>sprint</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/sqlinjection'>sqlinjection</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/ssh'>ssh</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/suid'>suid</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/sysax'>sysax</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/tdd'>tdd</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/testing'>testing</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/til'>til</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/ui'>ui</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/userscript'>userscript</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/vim'>vim</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/wargames'>wargames</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/windows'>windows</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/xor'>xor</a>
 			</span>
-
+		
 		
 			<span class='label-size label-size-5'>
 				<a dir='ltr' href='/tags/xss'>xss</a>
 			</span>
-
 		
 		<div class='clear'></div>
 	</div>

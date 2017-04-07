@@ -26,15 +26,6 @@
       <guid>http://test.andreko.net/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/</guid>
       <description>
 
-
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/sslscan_apple.png#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
-
 &lt;p&gt;SSLScan is a tool that I often use when validating SSL findings on
 penetration tests. I had recently seen a new version come out, with
 color highlighting and more fanciness, but wanted it for OSX. When I
@@ -132,14 +123,14 @@ need to run this with sudo, as your user probably can not write to
 &lt;p&gt;After following these steps, it should now be possible to run SSLScan
 successfully. To test it, simply run:&lt;/p&gt;
 
-&lt;p&gt;
+
 &lt;figure class=&#34;img-responsive&#34;&gt;
     
         &lt;img src=&#34;http://test.andreko.net/img/sslscan_syncoutlook.png#center&#34; /&gt;
     
     
 &lt;/figure&gt;
-&lt;/p&gt;
+
 </description>
     </item>
     
@@ -149,16 +140,7 @@ successfully. To test it, simply run:&lt;/p&gt;
       <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
       
       <guid>http://test.andreko.net/2014/08/01/burp-icon-in-osx/</guid>
-      <description>
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/automator_burp.png#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
-
-&lt;p&gt;Recently, I on a Google Hangout with a coworker and saw him using the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;. I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google. I wanted a more &amp;lsquo;native&amp;rsquo; feeling to launching the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;, and this post should document the process I found that worked for me.&lt;/p&gt;
+      <description>&lt;p&gt;Recently, I on a Google Hangout with a coworker and saw him using the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;. I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google. I wanted a more &amp;lsquo;native&amp;rsquo; feeling to launching the &lt;a href=&#34;http://portswigger.net/burp/&#34;&gt;Burp Suite&lt;/a&gt;, and this post should document the process I found that worked for me.&lt;/p&gt;
 
 &lt;!-- more --&gt;
 
@@ -280,15 +262,6 @@ successfully. To test it, simply run:&lt;/p&gt;
       
       <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>
-
-
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/backdoor_all_the_routers.jpg#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
 
 &lt;p&gt;A week or so ago, I read the news of a new backdoor on several devices, including those made by &lt;a href=&#34;http://www.belkin.com/&#34;&gt;Belkin&lt;/a&gt;, &lt;a href=&#34;http://www.cisco.com/&#34;&gt;Cisco&lt;/a&gt;, &lt;a href=&#34;http://www.netgear.com&#34;&gt;NetGear&lt;/a&gt;, &lt;a href=&#34;http://www.linksys.com&#34;&gt;Linksys&lt;/a&gt;, and several others. A list of what seems to be affected devices can be found &lt;a href=&#34;http://wikidevi.com/w/index.php?title=Special%3AAsk&amp;amp;q=%5B%5BManuf%3A%3ASerComm%5D%5D+%5B%5BGlobal+type%3A%3A~embedded*%5D%5D&amp;amp;po=%3FFCC+ID%0D%0A%3FFCC+approval+date%3DFCC+date%0D%0A%3FEstimated+date+of+release%3DEst.+release+date%0D%0A%3FEmbedded+system+type%0D%0A%3FCPU1+brand%0D%0A%3FCPU1+model%3DCPU1+mdl.%0D%0A&amp;amp;eq=yes&amp;amp;p%5Bformat%5D=broadtable&amp;amp;sort_num=&amp;amp;order_num=ASC&amp;amp;p%5Blimit%5D=500&amp;amp;p%5Boffset%5D=&amp;amp;p%5Blink%5D=all&amp;amp;p%5Bsort%5D=&amp;amp;p%5Bheaders%5D=show&amp;amp;p%5Bmainlabel%5D=&amp;amp;p%5Bintro%5D=&amp;amp;p%5Boutro%5D=&amp;amp;p%5Bsearchlabel%5D=%25E&#34;&gt;here&lt;/a&gt;. &lt;a href=&#34;https://twitter.com/elvanderb&#34;&gt;Eloi Vanderbeken&lt;/a&gt;, who posted his findings on &lt;a href=&#34;https://github.com/elvanderb/TCP-32764&#34;&gt;GitHub&lt;/a&gt; made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted &lt;a href=&#34;http://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; integration.&lt;/p&gt;
 
@@ -508,15 +481,6 @@ drwxr-xr-x   13 0        0             119 .
       
       <guid>http://test.andreko.net/2013/11/20/brainpan2/</guid>
       <description>
-
-
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/brainpan.jpg#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
 
 &lt;p&gt;Over on #vulnhub, there has been quite a chatter about &lt;a href=&#34;http://vulnhub.com/entry/brainpan_2,56/&#34;&gt;Brainpan2&lt;/a&gt;, a &amp;ldquo;sequel&amp;rdquo; to Brainpan, by &lt;a href=&#34;https://twitter.com/@superkojiman&#34;&gt;superkojiman&lt;/a&gt;. They&amp;rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&amp;rsquo;t cheat to win.&lt;/p&gt;
 
@@ -1181,15 +1145,6 @@ uid=0(root ) gid=0(root ) groups=0(root )
       
       <guid>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</guid>
       <description>
-
-
-&lt;figure class=&#34;img-responsive&#34;&gt;
-    
-        &lt;img src=&#34;http://test.andreko.net/img/y-u-no-guy.jpg#left&#34; /&gt;
-    
-    
-&lt;/figure&gt;
-
 
 &lt;p&gt;I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a &lt;a href=&#34;https://www.amazon.com/dp/B00AVWKUJS/ref=as_li_ss_til?tag=mattandcom-20&amp;amp;camp=0&amp;amp;creative=0&amp;amp;linkCode=as4&amp;amp;creativeASIN=B00AVWKUJS&amp;amp;adid=07S04SQ3X3C73H5QDS7T&amp;amp;&#34;&gt;Canon MX922&lt;/a&gt;. It works awesome for her, and is connected over WiFi, so any device in the house can print to it. This got me thinking though, about how secure it was.&lt;/p&gt;
 
