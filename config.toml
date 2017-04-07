@@ -3,7 +3,6 @@ languageCode = "en-US"
 title = "Matt Andreko"
 
 theme = "hugo-pixel"
-Paginate = 6
 
 # to make it work with github pages
 publishDir = "docs"
@@ -12,6 +11,7 @@ publishDir = "docs"
   blog = "/:year/:month/:day/:slug/"
 
 [params]
+  Paginate = 8
   avatar = "mattandreko_photo.jpg"
   author = "Matt Andreko"
   author_description = "Security Consultant"

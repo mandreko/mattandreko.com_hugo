@@ -12,7 +12,7 @@
               <article class="hentry" role="article">
 
                 {{ .Scratch.Set "isHome" false }}
-                {{ partial "post_header.html" . }}
+                <!-- partial "post_header.html" . -->
 
                 <div class="entry-content">
                   {{ $.Scratch.Set "pagetoc" .TableOfContents }}
@@ -21,7 +21,7 @@
                   {{ end }}
                   {{ .Content }}
                 </div>
-                {{ partial "post_footer.html" . }}
+                <!-- partial "post_footer.html" . -->
               </article>
             </div>
           </div>

@@ -23,14 +23,24 @@
 
 
 		    {{ $start := $.Site.Params.Paginate }}
-		    {{ $after := sub $pag.PageNumber (div $start 2)}}
+                    {{ $halfStart := div $start 2 }}
+		    {{ $after := sub $pag.PageNumber $halfStart }}
 			
 		    {{ $.Scratch.Set "after" $after }}
-		    {{ if le $after 0 }}
-		    	{{ $.Scratch.Set "after" 1 }}
-		    {{ end }}
-		    
-		    
+
+		    {{ if le $pag.PageNumber $halfStart }} 
+                    {{ range first $start $pag.Pagers }}
+                        {{ if eq . $pag }}
+                                <span class="pagecurrent">
+                                        {{ .PageNumber }}
+                                </span>
+                        {{ else }}
+                                <span class="displaypageNum">
+                                        <a href="{{ .URL }}">{{ .PageNumber }}</a>
+                                </span>
+                        {{ end }}
+                    {{ end }}
+                    {{ else }}
 		    {{ range first $start (after ($.Scratch.Get "after") $pag.Pagers) }}
 		    	{{ if eq . $pag }}
 		    		<span class="pagecurrent">
@@ -42,7 +52,7 @@
 		    		</span>
 		    	{{ end }}		    	
 		    {{ end }}
-
+                    {{ end }}
 		    {{ if $pag.HasNext }}
 		    	<span class="displaypageNum">
 		    		<a href="{{ if $pag.HasNext }}{{ $pag.Next.URL }}{{ end }}" aria-label="Next">
