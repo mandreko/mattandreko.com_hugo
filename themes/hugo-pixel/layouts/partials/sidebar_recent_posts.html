@@ -1,0 +1,21 @@
+<div class='widget PopularPosts' data-version='1' id='PopularPosts1'>
+	<h2>Recent Posts</h2>
+	<div class='widget-content popular-posts'>
+		<ul>
+			{{ range first 5 (after 1 (where .Site.Pages.ByDate.Reverse "Type" "blog")) }}	
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='{{ .Permalink }}'>
+							<img alt='{{ .Title }}' border='0' height='72' src='{{ .Site.BaseURL }}img/{{ .Params.featured_image }}' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='{{ .Permalink }}'>{{ .Title}}</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			{{ end }}
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
