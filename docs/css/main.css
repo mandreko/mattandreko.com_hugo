@@ -1291,10 +1291,10 @@ text-decoration:none;
 .lowerbar li:hover {
 display:block;
 }
-.lowerbar .PopularPosts ul li a, .lowerbar .custom-widget .rcp-title a, .lowerbar {
+.lowerbar .RecentPosts ul li a, .lowerbar .custom-widget .rcp-title a, .lowerbar {
 color:#fff;
 }
-.lowerbar .PopularPosts .widget-content ul li, .lowerbar .custom-widget li {
+.lowerbar .RecentPosts .widget-content ul li, .lowerbar .custom-widget li {
 border-bottom: 1px solid #3e3e3e;
 border-top: 0;
 }
@@ -1522,18 +1522,18 @@ position: absolute;
 top: 9px;
 right: 0
 }
-.PopularPosts .item-thumbnail{margin:0 15px 0 0 !important;width:90px;height:65px;float:left;overflow:hidden;    position: relative}
-.PopularPosts .item-thumbnail a{position:relative;display:block;overflow:hidden;line-height:0}
-.PopularPosts ul li img{width:90px;height:65px;object-fit:cover;padding:0;transition:all .3s ease}
-.PopularPosts .widget-content ul li{overflow:hidden;padding:10px 0;border-top:1px solid #f2f2f2}
-.sidebar .PopularPosts .widget-content ul li:first-child,.sidebar .custom-widget li:first-child,.tab-widget .PopularPosts .widget-content ul li:first-child,.tab-widget .custom-widget li:first-child{padding-top:0;border-top:0}
-.sidebar .PopularPosts .widget-content ul li:last-child,.sidebar .custom-widget li:last-child,.tab-widget .PopularPosts .widget-content ul li:last-child,.tab-widget .custom-widget li:last-child{padding-bottom:0}
-.PopularPosts ul li a{color:#333333;font-weight:400;font-size:16px;line-height:1.4em;transition:color .3s;    font-family: 'Raleway', sans-serif;;}
-.PopularPosts ul li a:hover{color:#a0d3db}
-.PopularPosts .item-title{margin:0 0 4px;padding:0;line-height:0}
+.RecentPosts .item-thumbnail{margin:0 15px 0 0 !important;width:90px;height:65px;float:left;overflow:hidden;    position: relative}
+.RecentPosts .item-thumbnail a{position:relative;display:block;overflow:hidden;line-height:0}
+.RecentPosts ul li img{width:90px;height:65px;object-fit:cover;padding:0;transition:all .3s ease}
+.RecentPosts .widget-content ul li{overflow:hidden;padding:10px 0;border-top:1px solid #f2f2f2}
+.sidebar .RecentPosts .widget-content ul li:first-child,.sidebar .custom-widget li:first-child,.tab-widget .RecentPosts .widget-content ul li:first-child,.tab-widget .custom-widget li:first-child{padding-top:0;border-top:0}
+.sidebar .RecentPosts .widget-content ul li:last-child,.sidebar .custom-widget li:last-child,.tab-widget .RecentPosts .widget-content ul li:last-child,.tab-widget .custom-widget li:last-child{padding-bottom:0}
+.RecentPosts ul li a{color:#333333;font-weight:400;font-size:16px;line-height:1.4em;transition:color .3s;    font-family: 'Raleway', sans-serif;;}
+.RecentPosts ul li a:hover{color:#a0d3db}
+.RecentPosts .item-title{margin:0 0 4px;padding:0;line-height:0}
 .item-snippet{display:none;font-size:0;padding-top:0}
-.PopularPosts ul {
-counter-reset: popularcount;
+.RecentPosts ul {
+counter-reset: recentcount;
 margin: 0;
 padding: 0;
 }
