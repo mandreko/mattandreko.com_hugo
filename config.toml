@@ -11,7 +11,9 @@ publishDir = "docs"
   blog = "/:year/:month/:day/:slug/"
 
 [params]
-  Paginate = 8
+  paginate = 8
+  topCategoriesCount = 8
+
   avatar = "mattandreko_photo.jpg"
   author = "Matt Andreko"
   author_description = "Security Consultant"
@@ -21,7 +23,7 @@ publishDir = "docs"
   # Disable comments for a specific post by adding "comments: false" in its frontmatter
 
   generateTaxonomyList = true
-  sortTaxonomyAlphabetical = true
+  sortTaxonomyAlphabetical = false
 
   # Custom assets can be linked with their paths relative to static/
   custom_css = []
