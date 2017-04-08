@@ -18,12 +18,14 @@ publishDir = "docs"
   author = "Matt Andreko"
   author_description = "Security Consultant"
   googleAnalytics = "UA-25280110-1"
-  
+
   disqusShortname = "mattandreko"
   # Disable comments for a specific post by adding "comments: false" in its frontmatter
 
   generateTaxonomyList = true
   sortTaxonomyAlphabetical = false
+
+  sidebarLinksHeader = "Blog Roll"
 
   # Custom assets can be linked with their paths relative to static/
   custom_css = []
@@ -59,11 +61,72 @@ publishDir = "docs"
   weight = 300
   url = "/resume/"
 
-[[menu.sidebar]]
-  Name = "Google"
-  URL = "https://www.google.com"
-  weight = 0
-[[menu.sidebar]]
-  Name = "Hugo"
-  URL = "/categories/hugo/"
-  weight = 1
+[[menu.links]]
+	Name = "0x80"
+	URL = "https://blog.0x80.org/"
+	weight = 0
+
+[[menu.links]]
+	Name = "A Day With Tape"
+	URL = "http://adaywithtape.blogspot.com/"
+	weight = 1
+
+[[menu.links]]
+	Name = "Carnal0wnage Attack & Research"
+	URL = "http://carnal0wnage.attackresearch.com/"
+	weight = 2
+
+[[menu.links]]
+	Name = "Daft & Curious"
+	URL = "http://www.daftandcurious.com/"
+	weight = 2
+
+[[menu.links]]
+	Name = "Darknet"
+	URL = "http://www.darknet.org.uk/"
+	weight = 2
+
+[[menu.links]]
+  Name = "DiabloHorn"
+  URL = "https://diablohorn.com/"
+  weight = 2
+
+[[menu.links]]
+  Name = "Exploit-Monday"
+  URL = "http://www.exploit-monday.com/"
+  weight = 2
+
+[[menu.links]]
+  Name = "G0tmi1k"
+  URL = "http://blog.g0tmi1k.com/"
+  weight = 2
+
+[[menu.links]]
+  Name = "The Grey Corner"
+  URL = "http://www.thegreycorner.com/"
+  weight = 2
+
+[[menu.links]]
+  Name = "Grey Hat Hacker"
+  URL = "http://www.greyhathacker.net/"
+  weight = 2
+
+[[menu.links]]
+  Name = "Pentest Monkey"
+  URL = "http://pentestmonkey.net/"
+  weight = 2
+
+[[menu.links]]
+  Name = "Pwnag3"
+  URL = "http://www.pwnag3.com/"
+  weight = 2
+
+[[menu.links]]
+  Name = "Room 362"
+  URL = "https://room362.com/"
+  weight = 2
+
+[[menu.links]]
+  Name = "Security Sh3ll"
+  URL = "http://security-sh3ll.blogspot.com/"
+  weight = 2

@@ -1,0 +1,17 @@
+<div class='LinksSidebar' id='LinksSidebar'>
+  <h2>{{ $.Site.Params.sidebarLinksHeader }}</h2>
+	<div class='links-sidebar'>
+		<ul>
+			{{ range $.Site.Menus.links }}
+        <li>
+          <div class='item-thumbnail-only'>
+  					<div class='item-thumbnail'>
+              <div class='item-title'><a href="{{ .URL | absURL }}" title="{{ .Name }}" {{ if eq $.Site.Params.sidebarNewWindow true }} target="_blank" {{ end }}>{{ .Name }}</a></div>
+            </div>
+          </div>
+        </li>
+			{{ end }}
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>

@@ -1,8 +1,24 @@
 <div id='lowerbar-wrapper'>
 	<div class='lowerbar ready-widget section' id='lowerbar2'><div class='widget HTML' data-version='1' id='HTML86'>
 		<h2 class='title'>Recent</h2>
-		<div class='widget-content'>
-			<span class="recentposts" data-no="4"></span>
+		<div class='custom-widget widget-content'>
+			<span class="recentposts" data-no="4">
+				<ul>
+					{{ range first 5 (after 1 (where .Site.Pages.ByDate.Reverse "Type" "blog")) }}
+					<li>
+						<a class="rcthumb" href="{{ .Permalink }}" style="background:url({{ .Site.BaseURL }}img/{{ .Params.featured_image }}) no-repeat center center;background-size: cover">
+							<span class="img-overlay"></span>
+						</a>
+						<div class="post-panel">
+							<h3 class="rcp-title">
+								<a href="{{ .Permalink }}">{{ .Title}}</a>
+							</h3>
+							<span class="recent-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+						</div>
+					</li>
+					{{ end }}
+				</ul>
+			</span>
 		</div>
 		<div class='clear'></div>
 	</div></div>

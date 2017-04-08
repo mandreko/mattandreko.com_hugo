@@ -1,5 +1,3 @@
-<!-- Template for /tags/ and /categories/ -->
-
 {{ $page := . }}
 {{ $data := .Data }}
 {{ $.Scratch.Set "terms" $data.Terms.ByCount }}  <!-- default is ByCount -->
@@ -7,33 +5,49 @@
 {{ with .Site.Params.generateTaxonomyList }}
 
   {{ partial "header.html" $page }}
-  <div id="main">
-    <div id="content">
-      <div>
-        <article role="article">
-          <header>
-            <h1 class="entry-title">
-              {{ $.Title }}:
-            </h1>
-          </header>
-          <ul>
-            {{ with $.Site.Params.sortTaxonomyAlphabetical }}
-              {{ if eq . true }}
-                {{ $.Scratch.Set "terms" $data.Terms.Alphabetical }}
-              {{ end }}
-            {{ end }}
-            {{ range $key, $value := ($.Scratch.Get "terms") }}
-              <li><a href="{{ $.Site.BaseURL }}{{ $data.Plural }}/{{ $value.Name | urlize }}">{{ humanize $value.Name }}</a> {{ $value.Count }}</li>
-              <!-- <li><a href="{{ $value.Name | urlize }}">{{ humanize $value.Name }}</a> {{ $value.Count }}</li> -->
-            {{ end }}
-          </ul>
-        </article>
-      </div>
-
-      <!-- partial "sidebar.html" $page -->
-    </div>
-  </div>
-
+  	<div class='row' id='content-wrapper'>
+  		<div id='main-wrapper'>
+  			<div class='main section' id='main'>
+          <div class='blog-posts hfeed'>
+            <div class='post-outer'>
+            	<div class='post hentry'>
+            		<div class='post-header'></div>
+                <article role="article">
+                  <header>
+                    <font class='retitle'>
+                			<h2 class='post-title entry-title'>
+                			     {{ $.Title}}
+                			</h2>
+              			</font>
+                  </header>
+                  <ul>
+                    {{ with $.Site.Params.sortTaxonomyAlphabetical }}
+                      {{ if eq . true }}
+                        {{ $.Scratch.Set "terms" $data.Terms.Alphabetical }}
+                      {{ end }}
+                    {{ end }}
+                    {{ range $key, $value := ($.Scratch.Get "terms") }}
+                      <li><a href="{{ $.Site.BaseURL }}{{ $data.Plural }}/{{ $value.Name | urlize }}">{{ humanize $value.Name }}</a> [{{ $value.Count }}]</li>
+                      <!-- <li><a href="{{ $value.Name | urlize }}">{{ humanize $value.Name }}</a> {{ $value.Count }}</li> -->
+                    {{ end }}
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </div>
+  			</div>
+  		</div>
+  		<!-- Sidebar -->
+  		<div id='sidebar-wrapper'>
+  			<div class='sidebar ready-widget section' id='sidebar'>
+  				{{ partial "sidebar_about_me.html" $page }}
+  				{{ partial "sidebar_recent_posts.html" $page }}
+  				{{ partial "sidebar_categories.html" $page }}
+  			</div>
+  		</div>
+  		<div style='clear: both;'></div>
+  	</div>
+  	<!-- end content-wrapper -->
+  {{ partial "lower_navigation.html" $page }}
   {{ partial "footer.html" $page }}
-
 {{ end }}

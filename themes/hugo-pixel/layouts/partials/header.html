@@ -16,8 +16,10 @@
 		<meta content='YOUR KEYWORDS HERE' name='keywords'/>
 		<meta content='Facebook App ID here' property='fb:app_id'/>
 		<meta content='Facebook Admin ID here' property='fb:admins'/>
-		<meta content='@username' name='twitter:site'/>
-		<meta content='@username' name='twitter:creator'/>
+		{{ if .Site.Params.social.twitter }}
+		<meta content='@{{ .Site.Params.social.twitter }}' name='twitter:site'/>
+		<meta content='@{{ .Site.Params.social.twitter }}' name='twitter:creator'/>
+		{{ end }}
 		<link type="text/css" rel="stylesheet" href="/css/main.css" />
 		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' type='text/javascript'></script>
 		{{ if .Site.Params.GoogleAnalytics }}
@@ -52,11 +54,18 @@
 			<div class='widget LinkList' data-version='1' id='LinkList100'>
 				<div class='widget-content'>
 					<ul id='nav' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
-						<li itemprop='name'><a href='{{ .Site.BaseURL }}' itemprop='url'>Home</a></li>
-						<li itemprop='name'><a href='{{ .Site.BaseURL }}/categories' itemprop='url'>Categories</a></li>
-						<li itemprop='name'><a href='#' itemprop='url'>Archive</a></li>
-						<li itemprop='name'><a href='#' itemprop='url'>Resume</a></li>
+						<li itemprop='name'><a href='{{ .Site.BaseURL }}' itemprop='url'>HOME</a></li>
+						<li itemprop='name'><a href='{{ .Site.BaseURL }}/categories' itemprop='url'>CATEGORIES</a></li>
+						<li itemprop='name'><a href='#' itemprop='url'>ARCHIVE</a></li>
+						<li itemprop='name'><a href='#' itemprop='url'>RESUME</a></li>
 					</ul>
+					<select class="selectnav" id="selectnav2">
+						<option value="">Menu</option>
+						<option value="{{ .Site.BaseURL }}">HOME</option>
+						<option value="{{ .Site.BaseURL }}/categories">CATEGORIES</option>
+						<option value="#">ARCHIVE</option>
+						<option value="#">RESUME</option>
+					</select>
 				</div>
 			</div>
 		</div>

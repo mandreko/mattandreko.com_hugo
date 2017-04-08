@@ -1,6 +1,3 @@
-
-<!-- category page -->
-
 {{ partial "header.html" . }}
 
 <div id="main">
@@ -14,26 +11,26 @@
         </header>
         <div id="blog-archives" class="category">
           {{ range .Data.Pages }}
-          <h2>
-            {{ .Date | dateFormat "2006"}}
-          </h2>
-          <article>
-            <h1>
-              <a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a>
-            </h1>
-            <time>
-              <span class="month">{{ .Date | dateFormat "Jan" }}</span>
-              <span class="day">{{ .Date | dateFormat "2" }}</span>
-            </time>
-            <footer>
-              <span class="categories"> <!-- show tags -->
-                tags:
-                {{ if isset .Params "categories" }}
-                {{ range .Params.tags }} <a class="category" href="{{ "/tags/" | absURL }}{{ . | urlize | lower }}">{{ . }}</a>{{ end }}
-                {{ end }}
-              </span>
-            </footer>
-          </article>
+            <h2>
+              {{ .Date | dateFormat "2006"}}
+            </h2>
+            <article>
+              <h1>
+                <a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a>
+              </h1>
+              <time>
+                <span class="month">{{ .Date | dateFormat "Jan" }}</span>
+                <span class="day">{{ .Date | dateFormat "2" }}</span>
+              </time>
+              <footer>
+                <span class="categories">
+                  categories:
+                  {{ if isset .Params "categories" }}
+                    {{ range .Params.categories }} <a class="category" href="{{ "/categories/" | absURL }}{{ . | urlize | lower }}">{{ . }}</a>{{ end }}
+                  {{ end }}
+                </span>
+              </footer>
+            </article>
           {{ end }}
         </div>
       </article>
