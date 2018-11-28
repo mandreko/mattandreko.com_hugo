@@ -1,0 +1,52 @@
+<!-- Categories page -->
+{{ partial "header.html" . }}
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+        <div class='main section' id='main'>
+            <div class='blog-posts hfeed'>
+                <div class='post-outer'>
+                    <div class='post hentry'>
+                        <div class='post-header'></div>
+                        <article role="article">
+                            <header>
+                                <font class='retitle'>
+                                    <h2 class='post-title entry-title'>
+                                        Category: {{ $.Title}}
+                                    </h2>
+                                </font>
+                            </header>
+                                {{ range .Pages.ByDate.Reverse }}
+                                    {{ $dat := .Date.Year }}
+                                    {{ if ne $dat ($.Scratch.Get "odat")}}
+                                        {{ $.Scratch.Set "odat" $dat }}
+                                        <br />
+                                        <h2>{{ $dat }}</h2>
+                                    {{ end }}
+
+                                    {{ .Date.Format "Jan 2, 2006"  }}
+                                    <a href="{{ .Permalink }}">
+                                    {{ .Title }}
+                                    </a><br />
+
+
+                                 {{ end }}
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sidebar -->
+    <div id='sidebar-wrapper'>
+        <div class='sidebar ready-widget section' id='sidebar'>
+            {{ partial "sidebar_about_me.html" . }}
+            {{ partial "sidebar_recent_posts.html" . }}
+            {{ partial "sidebar_categories.html" . }}
+            {{ partial "sidebar_links.html" . }}
+        </div>
+    </div>
+    <div style='clear: both;'></div>
+</div>
+<!-- end content-wrapper -->
+{{ partial "lower_navigation.html" . }}
+{{ partial "footer.html" . }}
