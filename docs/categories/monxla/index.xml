@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Monxla on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/monxla/</link>
+    <description>Recent content in Monxla on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 26 Nov 2012 05:58:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/monxla/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OverTheWire Monxla Part 3</title>
+      <link>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</link>
+      <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</guid>
+      <description>Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.
+I started analyzing the source code, and noticed that the text that says &amp;ldquo;yes&amp;rdquo; or &amp;ldquo;no&amp;rdquo; in the table is actually an image being rendered from the hasnotes.php file. I started tinkering with that file, and found that it was vulnerable to SQL injection.</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Monxla Part 2</title>
+      <link>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</link>
+      <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</guid>
+      <description>In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.
+Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine. To configure my machine for these virtual hosts, I added these lines to my /etc/hosts file:
+192.168.188.134 nasenko.otw 192.168.188.134 honeylink.otw  There are 2 sites immediately available to you:</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Monxla Part 1</title>
+      <link>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</link>
+      <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</guid>
+      <description>I had a twitter follower recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.
+I booted up the image, and proceeded to do some preliminary nmap scans. &amp;nbsp;I found a few services runinng:
+mandreko$ nmap -sV -p1-65535 -T4&amp;amp;nbsp;192.168.188.134 Starting Nmap 6.01 ( http://nmap.org ) at 2012-11-15 10:28 EST Nmap scan report for 192.</description>
+    </item>
+    
+  </channel>
+</rss>

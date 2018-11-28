@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Brainpan on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/brainpan/</link>
+    <description>Recent content in Brainpan on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 20 Nov 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/brainpan/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Brainpan2</title>
+      <link>http://test.andreko.net/2013/11/20/brainpan2/</link>
+      <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/2013/11/20/brainpan2/</guid>
+      <description>Over on #vulnhub, there has been quite a chatter about Brainpan2, a &amp;ldquo;sequel&amp;rdquo; to Brainpan, by superkojiman. They&amp;rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&amp;rsquo;t cheat to win.
+ The trolling, it begins early&amp;hellip; I imported the VM into VMWare Fusion, and started finding the host.</description>
+    </item>
+    
+  </channel>
+</rss>

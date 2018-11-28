@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/</link>
+    <description>Recent content in Categories on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 23 Feb 2012 18:19:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Antivirus</title>
+      <link>http://test.andreko.net/categories/antivirus/</link>
+      <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/antivirus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Aslr</title>
+      <link>http://test.andreko.net/categories/aslr/</link>
+      <pubDate>Tue, 03 Jul 2012 17:19:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/aslr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Assembly</title>
+      <link>http://test.andreko.net/categories/assembly/</link>
+      <pubDate>Fri, 14 Oct 2011 07:20:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/assembly/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Brainpan</title>
+      <link>http://test.andreko.net/categories/brainpan/</link>
+      <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/brainpan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Browsers</title>
+      <link>http://test.andreko.net/categories/browsers/</link>
+      <pubDate>Wed, 17 Aug 2011 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/browsers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Burp</title>
+      <link>http://test.andreko.net/categories/burp/</link>
+      <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/burp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Canon</title>
+      <link>http://test.andreko.net/categories/canon/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/canon/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Certification</title>
+      <link>http://test.andreko.net/categories/certification/</link>
+      <pubDate>Sun, 08 Jul 2012 17:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/certification/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Commandinjection</title>
+      <link>http://test.andreko.net/categories/commandinjection/</link>
+      <pubDate>Fri, 09 Nov 2012 07:28:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/commandinjection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cookies</title>
+      <link>http://test.andreko.net/categories/cookies/</link>
+      <pubDate>Sun, 04 Nov 2012 18:34:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/cookies/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Csharp</title>
+      <link>http://test.andreko.net/categories/csharp/</link>
+      <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/csharp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ctp</title>
+      <link>http://test.andreko.net/categories/ctp/</link>
+      <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/ctp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cucumber</title>
+      <link>http://test.andreko.net/categories/cucumber/</link>
+      <pubDate>Thu, 18 Aug 2011 09:14:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/cucumber/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Directorytraversal</title>
+      <link>http://test.andreko.net/categories/directorytraversal/</link>
+      <pubDate>Mon, 25 Feb 2013 15:32:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/directorytraversal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dos</title>
+      <link>http://test.andreko.net/categories/dos/</link>
+      <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/dos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dotnet</title>
+      <link>http://test.andreko.net/categories/dotnet/</link>
+      <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Encoding</title>
+      <link>http://test.andreko.net/categories/encoding/</link>
+      <pubDate>Wed, 07 Nov 2012 05:56:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/encoding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exif</title>
+      <link>http://test.andreko.net/categories/exif/</link>
+      <pubDate>Mon, 12 Nov 2012 06:44:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/exif/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exploit</title>
+      <link>http://test.andreko.net/categories/exploit/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/exploit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises</title>
+      <link>http://test.andreko.net/categories/exploit-exercises/</link>
+      <pubDate>Mon, 09 Apr 2012 17:13:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/exploit-exercises/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fail</title>
+      <link>http://test.andreko.net/categories/fail/</link>
+      <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/fail/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fogbugz</title>
+      <link>http://test.andreko.net/categories/fogbugz/</link>
+      <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/fogbugz/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Food</title>
+      <link>http://test.andreko.net/categories/food/</link>
+      <pubDate>Sun, 16 Oct 2011 10:22:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/food/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Formatstring</title>
+      <link>http://test.andreko.net/categories/formatstring/</link>
+      <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/formatstring/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fusion</title>
+      <link>http://test.andreko.net/categories/fusion/</link>
+      <pubDate>Tue, 03 Jul 2012 17:19:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/fusion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Future</title>
+      <link>http://test.andreko.net/categories/future/</link>
+      <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/future/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gac</title>
+      <link>http://test.andreko.net/categories/gac/</link>
+      <pubDate>Fri, 14 Oct 2011 07:20:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/gac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Getoffmylawn</title>
+      <link>http://test.andreko.net/categories/getoffmylawn/</link>
+      <pubDate>Sun, 16 Oct 2011 10:22:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/getoffmylawn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Greasemonkey</title>
+      <link>http://test.andreko.net/categories/greasemonkey/</link>
+      <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/greasemonkey/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hacking</title>
+      <link>http://test.andreko.net/categories/hacking/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/hacking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Heap</title>
+      <link>http://test.andreko.net/categories/heap/</link>
+      <pubDate>Thu, 12 Jan 2012 18:28:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/heap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hexchat</title>
+      <link>http://test.andreko.net/categories/hexchat/</link>
+      <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/hexchat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hover</title>
+      <link>http://test.andreko.net/categories/hover/</link>
+      <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/hover/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Html</title>
+      <link>http://test.andreko.net/categories/html/</link>
+      <pubDate>Sun, 04 Nov 2012 18:34:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Http</title>
+      <link>http://test.andreko.net/categories/http/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/http/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Includes</title>
+      <link>http://test.andreko.net/categories/includes/</link>
+      <pubDate>Mon, 05 Nov 2012 05:12:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/includes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Injection</title>
+      <link>http://test.andreko.net/categories/injection/</link>
+      <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/injection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Iphone</title>
+      <link>http://test.andreko.net/categories/iphone/</link>
+      <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/iphone/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kioptrix</title>
+      <link>http://test.andreko.net/categories/kioptrix/</link>
+      <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/kioptrix/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>http://test.andreko.net/categories/linux/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Metasploit</title>
+      <link>http://test.andreko.net/categories/metasploit/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/metasploit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mips</title>
+      <link>http://test.andreko.net/categories/mips/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/mips/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Monxla</title>
+      <link>http://test.andreko.net/categories/monxla/</link>
+      <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/monxla/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Natas</title>
+      <link>http://test.andreko.net/categories/natas/</link>
+      <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/natas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nebula</title>
+      <link>http://test.andreko.net/categories/nebula/</link>
+      <pubDate>Sun, 11 Dec 2011 07:48:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/nebula/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Net</title>
+      <link>http://test.andreko.net/categories/net/</link>
+      <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/net/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Offsec</title>
+      <link>http://test.andreko.net/categories/offsec/</link>
+      <pubDate>Sun, 08 Jul 2012 17:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/offsec/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Oscp</title>
+      <link>http://test.andreko.net/categories/oscp/</link>
+      <pubDate>Sun, 08 Jul 2012 17:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/oscp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Osx</title>
+      <link>http://test.andreko.net/categories/osx/</link>
+      <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/osx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Overthewire</title>
+      <link>http://test.andreko.net/categories/overthewire/</link>
+      <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/overthewire/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Php</title>
+      <link>http://test.andreko.net/categories/php/</link>
+      <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Printer</title>
+      <link>http://test.andreko.net/categories/printer/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/printer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>http://test.andreko.net/categories/projects/</link>
+      <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Protostar</title>
+      <link>http://test.andreko.net/categories/protostar/</link>
+      <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/protostar/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Pwb</title>
+      <link>http://test.andreko.net/categories/pwb/</link>
+      <pubDate>Sun, 08 Jul 2012 17:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/pwb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Pwcrack</title>
+      <link>http://test.andreko.net/categories/pwcrack/</link>
+      <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/pwcrack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rails</title>
+      <link>http://test.andreko.net/categories/rails/</link>
+      <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/rails/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rant</title>
+      <link>http://test.andreko.net/categories/rant/</link>
+      <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/rant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ret2libc</title>
+      <link>http://test.andreko.net/categories/ret2libc/</link>
+      <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/ret2libc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ret2text</title>
+      <link>http://test.andreko.net/categories/ret2text/</link>
+      <pubDate>Mon, 09 Jan 2012 18:36:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/ret2text/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rop</title>
+      <link>http://test.andreko.net/categories/rop/</link>
+      <pubDate>Sat, 28 Jul 2012 22:56:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/rop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rspec</title>
+      <link>http://test.andreko.net/categories/rspec/</link>
+      <pubDate>Thu, 18 Aug 2011 09:14:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/rspec/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>http://test.andreko.net/categories/security/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Shellcode</title>
+      <link>http://test.andreko.net/categories/shellcode/</link>
+      <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/shellcode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sprint</title>
+      <link>http://test.andreko.net/categories/sprint/</link>
+      <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/sprint/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sqlinjection</title>
+      <link>http://test.andreko.net/categories/sqlinjection/</link>
+      <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/sqlinjection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ssh</title>
+      <link>http://test.andreko.net/categories/ssh/</link>
+      <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/ssh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Suid</title>
+      <link>http://test.andreko.net/categories/suid/</link>
+      <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/suid/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sysax</title>
+      <link>http://test.andreko.net/categories/sysax/</link>
+      <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/sysax/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tdd</title>
+      <link>http://test.andreko.net/categories/tdd/</link>
+      <pubDate>Tue, 16 Aug 2011 22:47:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/tdd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Testing</title>
+      <link>http://test.andreko.net/categories/testing/</link>
+      <pubDate>Wed, 17 Aug 2011 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Til</title>
+      <link>http://test.andreko.net/categories/til/</link>
+      <pubDate>Fri, 02 Sep 2011 09:35:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/til/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ui</title>
+      <link>http://test.andreko.net/categories/ui/</link>
+      <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/ui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Userscript</title>
+      <link>http://test.andreko.net/categories/userscript/</link>
+      <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/userscript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vim</title>
+      <link>http://test.andreko.net/categories/vim/</link>
+      <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wargames</title>
+      <link>http://test.andreko.net/categories/wargames/</link>
+      <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/categories/wargames/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Windows</title>
+      <link>http://test.andreko.net/categories/windows/</link>
+      <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/categories/windows/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xor</title>
+      <link>http://test.andreko.net/categories/xor/</link>
+      <pubDate>Sat, 10 Nov 2012 05:34:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/xor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xss</title>
+      <link>http://test.andreko.net/categories/xss/</link>
+      <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/categories/xss/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

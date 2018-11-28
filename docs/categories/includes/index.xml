@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Includes on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/includes/</link>
+    <description>Recent content in Includes on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 05 Nov 2012 05:12:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/includes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OverTheWire Natas Level 6</title>
+      <link>http://test.andreko.net/2012/11/05/overthewire-natas-level-6/</link>
+      <pubDate>Mon, 05 Nov 2012 05:12:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/05/overthewire-natas-level-6/</guid>
+      <description>The 6th level of the OverTheWire Natas wargame starts introducing us to PHP and server configuration issues.
+It starts out with a secret password prompt.
+ I took a look at the sourcecode, via the link provided.
+ I decided I would try and see if I could request the &amp;ldquo;secret.inc&amp;rdquo; file, and it worked perfectly.
+ After I put in the secret value into the input box, it showed me the password for the next level.</description>
+    </item>
+    
+  </channel>
+</rss>

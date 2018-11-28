@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hexchat on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/hexchat/</link>
+    <description>Recent content in Hexchat on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 06 Apr 2013 14:55:00 -0400</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/hexchat/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Buffer Overflow in HexChat 2.9.4</title>
+      <link>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
+      <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
+      <description>A buddy of mine, Mulitia, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.
+I contacted HexChat, by initialling going into the #hexchat channel on irc.freenode.net and trying to find a security contact.</description>
+    </item>
+    
+  </channel>
+</rss>

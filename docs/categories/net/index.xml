@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Net on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/net/</link>
+    <description>Recent content in Net on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 11 Feb 2012 10:11:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/net/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 3</title>
+      <link>http://test.andreko.net/2012/02/11/exploit-exercises-protostar-net-3/</link>
+      <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/02/11/exploit-exercises-protostar-net-3/</guid>
+      <description>The last in the Net series of Protostar is Net 3. It was of course the most difficult of all of them. However, it still wasn&amp;rsquo;t too bad.
+First, we&amp;rsquo;re given the following code:
+#include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net3&amp;quot; #define UID 996 #define GID 996 #define PORT 2996 /* * Extract a null terminated string from the buffer */ int get_string(char **result, unsigned char *buffer, u_int16_t len) { unsigned char byte; byte = *buffer; if(byte &amp;gt; len) errx(1, &amp;quot;badly formed packet&amp;quot;); *result = malloc(byte); strcpy(*result, buffer + 1); return byte + 1; } /* * Check to see if we can log into the host */ int login(unsigned char *buffer, u_int16_t len) { char *resource, *username, *password; int deduct; int success; if(len &amp;lt; 3) errx(1, &amp;quot;invalid login packet length&amp;quot;); resource = username = password = NULL; deduct = get_string(&amp;amp;resource, buffer, len); deduct += get_string(&amp;amp;username, buffer+deduct, len-deduct); deduct += get_string(&amp;amp;password, buffer+deduct, len-deduct); success = 0; success |= strcmp(resource, &amp;quot;net3&amp;quot;); success |= strcmp(username, &amp;quot;awesomesauce&amp;quot;); success |= strcmp(password, &amp;quot;password&amp;quot;); free(resource); free(username); free(password); return !</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 2</title>
+      <link>http://test.andreko.net/2012/02/10/exploit-exercises-protostar-net-2/</link>
+      <pubDate>Fri, 10 Feb 2012 05:19:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/02/10/exploit-exercises-protostar-net-2/</guid>
+      <description>So far, these Net challenges in Protostar have been pretty easy. This challenge, Net 2 got a small bit tougher.
+We are given the following code:
+#include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net2&amp;quot; #define UID 997 #define GID 997 #define PORT 2997 void run() { unsigned int quad[4]; int i; unsigned int result, wanted; result = 0; for(i = 0; i &amp;lt; 4; i++) { quad[i] = random(); result += quad[i]; if(write(0, &amp;amp;(quad[i]), sizeof(result)) !</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 1</title>
+      <link>http://test.andreko.net/2012/02/09/exploit-exercises-protostar-net-1/</link>
+      <pubDate>Thu, 09 Feb 2012 05:43:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/02/09/exploit-exercises-protostar-net-1/</guid>
+      <description>Continuing with the &amp;ldquo;Net&amp;rdquo; series of Protostar, is Net 1.
+We are given the following code:
+#include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net1&amp;quot; #define UID 998 #define GID 998 #define PORT 2998 void run() { char buf[12]; char fub[12]; char *q; unsigned int wanted; wanted = random(); sprintf(fub, &amp;quot;%d&amp;quot;, wanted); if(write(0, &amp;amp;wanted, sizeof(wanted)) != sizeof(wanted)) { errx(1, &amp;quot;:(\n&amp;quot;); } if(fgets(buf, sizeof(buf)-1, stdin) == NULL) { errx(1, &amp;quot;:(\n&amp;quot;); } q = strchr(buf, &#39;\r&#39;); if(q) *q = 0; q = strchr(buf, &#39;\n&#39;); if(q) *q = 0; if(strcmp(fub, buf) == 0) { printf(&amp;quot;you correctly sent the data\n&amp;quot;); } else { printf(&amp;quot;you didn&#39;t send the data properly\n&amp;quot;); } } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); /* Don&#39;t do this :&amp;gt; */ srandom(time(NULL)); run(); }  Similar to Net 0, it looks like this is another network daemon, this time running on port 2998.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Net 0</title>
+      <link>http://test.andreko.net/2012/02/08/exploit-exercises-protostar-net-0/</link>
+      <pubDate>Wed, 08 Feb 2012 18:31:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/02/08/exploit-exercises-protostar-net-0/</guid>
+      <description>I recently started looking at the &amp;ldquo;Net&amp;rdquo; problems in Protostar, and found them to be quite a fun change in pace.
+Starting with Net 0, we are given the following code:
+#include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net0&amp;quot; #define UID 999 #define GID 999 #define PORT 2999 void run() { unsigned int i; unsigned int wanted; wanted = random(); printf(&amp;quot;Please send &#39;%d&#39; as a little endian 32bit int\n&amp;quot;, wanted); if(fread(&amp;amp;i, sizeof(i), 1, stdin) == NULL) { errx(1, &amp;quot;:(\n&amp;quot;); } if(i == wanted) { printf(&amp;quot;Thank you sir/madam\n&amp;quot;); } else { printf(&amp;quot;I&#39;m sorry, you sent %d instead\n&amp;quot;, i); } } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); /* Don&#39;t do this :&amp;gt; */ srandom(time(NULL)); run(); }  I started to analyze this program, to figure out what I was even supposed to do.</description>
+    </item>
+    
+  </channel>
+</rss>

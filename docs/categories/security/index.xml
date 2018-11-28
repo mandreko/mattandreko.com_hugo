@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/security/</link>
+    <description>Recent content in Security on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 13 Jan 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
+      <link>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <description>A week or so ago, I read the news of a new backdoor on several devices, including those made by Belkin, Cisco, NetGear, Linksys, and several others. A list of what seems to be affected devices can be found here. Eloi Vanderbeken, who posted his findings on GitHub made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted Metasploit integration.</description>
+    </item>
+    
+    <item>
+      <title>Brainpan2</title>
+      <link>http://test.andreko.net/2013/11/20/brainpan2/</link>
+      <pubDate>Wed, 20 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/2013/11/20/brainpan2/</guid>
+      <description>Over on #vulnhub, there has been quite a chatter about Brainpan2, a &amp;ldquo;sequel&amp;rdquo; to Brainpan, by superkojiman. They&amp;rsquo;re even offering a 50 GBP award to whoever submits the best write-up! Since I enjoy challenges like this, I took a look at the machine. However, the writeup had to wait until the contest was complete, so that people didn&amp;rsquo;t cheat to win.
+ The trolling, it begins early&amp;hellip; I imported the VM into VMWare Fusion, and started finding the host.</description>
+    </item>
+    
+    <item>
+      <title>Canon, Y U NO Security?</title>
+      <link>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</guid>
+      <description>I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a Canon MX922. It works awesome for her, and is connected over WiFi, so any device in the house can print to it.</description>
+    </item>
+    
+    <item>
+      <title>Buffer Overflow in HexChat 2.9.4</title>
+      <link>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
+      <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
+      <description>A buddy of mine, Mulitia, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.
+I contacted HexChat, by initialling going into the #hexchat channel on irc.freenode.net and trying to find a security contact.</description>
+    </item>
+    
+    <item>
+      <title>Multiple Hover.com Security Issues</title>
+      <link>http://test.andreko.net/2013/02/28/multiple-hover.com-security-issues/</link>
+      <pubDate>Thu, 28 Feb 2013 12:05:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2013/02/28/multiple-hover.com-security-issues/</guid>
+      <description>I&amp;rsquo;m a customer of Hover for my domain name needs. However, that will be changing because I don&amp;rsquo;t believe that they take issues seriously.
+The first security issue I was browsing their site, looking for a new domain, and being the constant tinkerer I am, I entered a single quote into the textfield. I noticed an error, and eventually crafted this url:
+ https://www.hover.com/domains/results?q=%27%3E%3Cscript%3Ealert%28%27xss%27%29%3B%3C%2Fscript%3E
+ There&amp;rsquo;s nothing magical in that URL, however it demonstrated a real vulnerability in their code:</description>
+    </item>
+    
+    <item>
+      <title>HSTS Metasploit Module</title>
+      <link>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</link>
+      <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</guid>
+      <description>I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an HSTS (HTTP Strict Transport Security) implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at Accuvant, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Directorytraversal on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/directorytraversal/</link>
+    <description>Recent content in Directorytraversal on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 25 Feb 2013 15:32:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/directorytraversal/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>XBMC Traversal Metasploit Module</title>
+      <link>http://test.andreko.net/2013/02/25/xbmc-traversal-metasploit-module/</link>
+      <pubDate>Mon, 25 Feb 2013 15:32:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2013/02/25/xbmc-traversal-metasploit-module/</guid>
+      <description>Background I was talking in Intern0t several months ago. AcidGen, from IOActive mentioned that he found a bug in XBMC. I use XBMC quite a bit at home, on various platforms, since it&amp;rsquo;s extremely wife-friendly. I hit him up, and we started talking. We had a nice Skype conversation, where we discussed possible platforms that were affected, and future exploits that we&amp;rsquo;d like to find. Since I had a jailbroken Apple TV 2 and RaspberryPi, I told him that I could test those platforms and help out.</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 7</title>
+      <link>http://test.andreko.net/2012/11/06/overthewire-natas-level-7/</link>
+      <pubDate>Tue, 06 Nov 2012 05:32:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/06/overthewire-natas-level-7/</guid>
+      <description>Finally, with level 7 of OverTheWire&amp;rsquo;s Natas wargame, we start to get to more &amp;ldquo;real world&amp;rdquo; vulnerabilities. It&amp;rsquo;s still very easy, but it&amp;rsquo;s at least getting better.
+We start with a single page, that has 2 navigation links.
+ I noted that the URLs had a &amp;ldquo;page=&amp;rdquo; parameter. I thought maybe this would be the file it was including. Viewing the source gave a nice reminder of where the password for the next level would be stored.</description>
+    </item>
+    
+  </channel>
+</rss>

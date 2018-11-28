@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Greasemonkey on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/greasemonkey/</link>
+    <description>Recent content in Greasemonkey on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 30 Nov 2011 06:24:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/greasemonkey/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Fogbugz VIM Scrolling</title>
+      <link>http://test.andreko.net/2011/11/30/fogbugz-vim-scrolling/</link>
+      <pubDate>Wed, 30 Nov 2011 06:24:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/11/30/fogbugz-vim-scrolling/</guid>
+      <description>At work, we use FogBugz for our trouble tickets, and internal tracking. We sometimes have some really long cases, so to make it easier to navigate through them, we wanted to be able to push a button to go to the next action event on the ticket.
+I started writing a GreaseMonkey userscript, and with some suggestions from coworkers, made one that used the vim up and down navigation keys (j and k) to navigate and highlight through all the action events.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Suid on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/suid/</link>
+    <description>Recent content in Suid on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sun, 12 Feb 2012 22:27:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/suid/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kioptrix 4</title>
+      <link>http://test.andreko.net/2012/02/12/kioptrix-4/</link>
+      <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/02/12/kioptrix-4/</guid>
+      <description>I know there are a few different methods to the new Kioptrix 4 boot2root. Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.
+Tools used:
+ Backtrack 5 VM Nmap SqlMap  To start out, I had to find the machine on the network. I booted up my Backtrack VM and Kioptrix VM both using a NAT connection in my VMWare.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Stack 7</title>
+      <link>http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/</link>
+      <pubDate>Mon, 09 Jan 2012 18:36:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/</guid>
+      <description>Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.
+This challenge was very interesting to me. I figured it would build off of the previous one. However, it was its own standalone challenge.
+We are given the following code to the stack7 executable:
+#include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; char *getpath() { char buffer[64]; unsigned int ret; printf(&amp;quot;input path please: &amp;quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp;amp;amp; 0xb0000000) == 0xb0000000) { printf(&amp;quot;bzzzt (%p)\n&amp;quot;, ret); _exit(1); } printf(&amp;quot;got path %s\n&amp;quot;, buffer); return strdup(buffer); } int main(int argc, char **argv) { getpath(); }  From tinkering with the stack7 executable, I knew I was going to do a stack overflow, and somehow needed to execute code from the stack.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Stack 6</title>
+      <link>http://test.andreko.net/2011/12/22/exploit-exercises-protostar-stack-6/</link>
+      <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/12/22/exploit-exercises-protostar-stack-6/</guid>
+      <description>The Stack6 challenge was definitely a learning experience for me. This actually went beyond my existing skills, and made me learn some new stuff.
+We are given the following code.
+#include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void getpath() { char buffer[64]; unsigned int ret; printf(&amp;quot;input path please: &amp;quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp;amp; 0xbf000000) == 0xbf000000) { printf(&amp;quot;bzzzt (%p)\n&amp;quot;, ret); _exit(1); } printf(&amp;quot;got path %s\n&amp;quot;, buffer); } int main(int argc, char **argv) { getpath(); }  The first thing I tried to do, was to set it up just like I did on Stack 5.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Protostar Stack 5</title>
+      <link>http://test.andreko.net/2011/12/17/exploit-exercises-protostar-stack-5/</link>
+      <pubDate>Sat, 17 Dec 2011 12:23:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/12/17/exploit-exercises-protostar-stack-5/</guid>
+      <description>Wow, this challenge was a tough one for me. I ran into some huge problems that I had to work out. Considering this is a &amp;ldquo;standard buffer overflow&amp;rdquo;, I figured it&amp;rsquo;d be as easy as some of the others I&amp;rsquo;ve done in the past. I&amp;rsquo;ll explain my frustrations inline.
+First, we&amp;rsquo;re given the following vulnerable program.
+#include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(int argc, char **argv) { char buffer[64]; gets(buffer); }  The first task with this challenge was to find the offset of the EIP.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Nebula 09</title>
+      <link>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</link>
+      <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</guid>
+      <description>Challenge 09 gave me the most issues out of any other challenge so far. This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out. However, it is based on a dangerous function, known as preg_replace(). There are several more dangerous functions, some of which can be seen here.
+The challenge starts by giving us the source code of the program we will be exploiting.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Nebula 07</title>
+      <link>http://test.andreko.net/2011/12/08/exploit-exercises-nebula-07/</link>
+      <pubDate>Thu, 08 Dec 2011 06:10:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/12/08/exploit-exercises-nebula-07/</guid>
+      <description>This next challenge is a little bit more tricky than some of the previous ones. There&amp;rsquo;s a lot more code involved, but it&amp;rsquo;s not too bad.
+In the flag07 home directory, you&amp;rsquo;ll find the configuration for a simple http server, thttpd.conf. Inside, you&amp;rsquo;ll find that it&amp;rsquo;s running an HTTP server on port 7007 as the flag07 user. This is where the perl script that is provided comes in.
+#!/usr/bin/perl use CGI qw{param}; print &amp;quot;Content-type: text/html\n\n&amp;quot;; sub ping { $host = $_[0]; print(&amp;quot;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Ping results&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;pre&amp;gt;&amp;quot;); @output = `ping -c 3 $host 2&amp;gt;&amp;amp;1`; foreach $line (@output) { print &amp;quot;$line&amp;quot;; } print(&amp;quot;&amp;lt;/pre&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;quot;); } # check if Host set.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Nebula 03</title>
+      <link>http://test.andreko.net/2011/12/04/exploit-exercises-nebula-03/</link>
+      <pubDate>Sun, 04 Dec 2011 15:22:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/12/04/exploit-exercises-nebula-03/</guid>
+      <description>In this challenge, we can see that there&amp;rsquo;s no code for us to exploit, it&amp;rsquo;s something in the system. I log in to the system, and look in the /home/flag03 folder, as all the other challenges have started. I see there&amp;rsquo;s a writable.sh script, which I was guessing was the script getting called on a crontab every couple minutes.
+It contained:
+#!/bin/sh for i in /home/flag03/writable.d/* ; do (ulimit -t 5; bash -x &amp;quot;$i&amp;quot;) rm -f &amp;quot;$i&amp;quot; done  So this script looks like it will execute anything in the writable.</description>
+    </item>
+    
+    <item>
+      <title>Exploit Exercises - Nebula 00</title>
+      <link>http://test.andreko.net/2011/12/01/exploit-exercises-nebula-00/</link>
+      <pubDate>Thu, 01 Dec 2011 06:40:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2011/12/01/exploit-exercises-nebula-00/</guid>
+      <description>Recently, I&amp;rsquo;ve been getting more and more back into computer security, one of my favorite topics. Part of this is research, and part is more practical, such as wargames or labs. One newer wargame that I&amp;rsquo;ve been playing is called &amp;ldquo;Nebula&amp;rdquo;, from the guys over at Exploit-Exercises. If you&amp;rsquo;re interested in security, please check out their site, as well as many other wargames. If this goes successfully, perhaps I&amp;rsquo;ll start going through my notes of otherwargames, publishing them as well.</description>
+    </item>
+    
+  </channel>
+</rss>

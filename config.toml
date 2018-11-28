@@ -46,20 +46,21 @@ publishDir = "docs"
 
 ## Main Menu
 [[menu.main]]
-  name = "blog"
-  weight = 100
-  identifier = "blog"
-  url = "/blog/"
+  Name = "HOME"
+  URL = "/"
+  weight = -1
 [[menu.main]]
-  name = "projects"
-  identifier = "projects"
-  weight = 200
-  url = "/projects/"
+  Name = "CATEGORIES"
+  URL = "/categories"
+  weight = 1
 [[menu.main]]
-  name = "resume"
-  identifier = "resume"
-  weight = 300
-  url = "/resume/"
+  Name = "ARCHIVES"
+  URL = "/archives"
+  weight = 2
+[[menu.main]]
+  Name = "RESUME"
+  URL = "/resume.pdf"
+  weight = 3
 
 [[menu.links]]
 	Name = "0x80"

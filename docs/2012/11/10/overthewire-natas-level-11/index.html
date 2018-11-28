@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport'/>
+		<link href="//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic" media="all" rel="stylesheet" type="text/css">
+		<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet'/>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+		<meta content='blogger' name='generator'/>
+		<link href='http://test.andreko.net//favicon.ico' rel='icon' type='image/x-icon'/>
+		<link href='http://test.andreko.net/' rel='canonical'/>
+		
+		
+		<title>OverTheWire Natas Level 11</title>
+		<meta content='YOUR DESCRIPTION HERE' name='description'/>
+		<meta content='YOUR KEYWORDS HERE' name='keywords'/>
+		
+		<meta content='@mandreko' name='twitter:site'/>
+		<meta content='@mandreko' name='twitter:creator'/>
+		
+		<link type="text/css" rel="stylesheet" href="/css/main.css" />
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' type='text/javascript'></script>
+		
+		<script type="text/javascript">
+			var _gaq=[['_setAccount','UA-25280110-1'],['_trackPageview']];
+			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+			s.parentNode.insertBefore(g,s)}(document,'script'));
+		</script>
+		
+	</head>
+	<body class='index'>
+	
+	<div class='head-wrap'>
+		<div class='row' id='header-wrappers'>
+			<div class='headerleft'>
+				<div class='headerleft section' id='headerleft'>
+					<div class='widget Header' data-version='1' id='Header1'>
+						<div id='header-inner'>
+							<a href='/' style='display: block'><h1 style='display:none'></h1>
+								<img alt="Logo" height="55px; " id="Header1_headerimg" src="/img/logo.png" style="display: block" width="311px; ">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style='clear: both;'></div>
+		</div>
+	</div>
+	<div class='navi-menu'>
+		<div class='nav-menu section' id='Navigation Menu' name='Navigation Menu'>
+			<div class='widget LinkList' data-version='1' id='LinkList100'>
+				<div class='widget-content'>
+					<ul id='nav' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
+						<li itemprop='name'><a href='http://test.andreko.net/' itemprop='url'>HOME</a></li>
+						<li itemprop='name'><a href='http://test.andreko.net/categories' itemprop='url'>CATEGORIES</a></li>
+						<li itemprop='name'><a href='#' itemprop='url'>ARCHIVE</a></li>
+						<li itemprop='name'><a href='http://test.andreko.net/resume.pdf' itemprop='url'>RESUME</a></li>
+					</ul>
+					<select class="selectnav" id="selectnav2">
+						<option value="">Menu</option>
+						<option value="http://test.andreko.net/">HOME</option>
+						<option value="http://test.andreko.net/categories">CATEGORIES</option>
+						<option value="#">ARCHIVE</option>
+						<option value="http://test.andreko.net/resume.pdf">RESUME</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class='top-bar-social blue section' id='header social widget' name='Top Social Widget'>
+			<div class='widget LinkList' data-version='1' id='LinkList230'>
+				<div class='widget-content'>
+					<ul id='social'>
+						
+							<li><a class='facebook' href='https://www.facebook.com/mattandreko' title='facebook'></a></li>
+						
+						
+							<li><a class='twitter' href='https://www.twitter.com/mandreko' title='twitter'></a></li>
+						
+						
+							<li><a class='gplus' href='https://plus.google.com/mandreko' title='gplus'></a></li>
+						
+						
+							<li><a class='linkedin' href='https://www.linkedin.com/mattandreko' title='linkedin'></a></li>
+						
+						
+							<li><a class='stack-overflow' href='http://stackoverflow.com/story/mattandreko' title='stack-overflow'></a></li>
+						
+						
+							<li><a class='github' href='https://www.github.com/mandreko' title='github'></a></li>
+						
+						
+							<li><a class='instagram' href='https://www.instagram.com/mandreko' title='instagram'></a></li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div style='clear: both;'></div>
+	</div>
+	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
+
+
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
+
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p><a href="http://www.overthewire.org/wargames/natas/natas11.shtml">Level 11</a> of the <a href="http://www.overthewire.org">OverTheWire</a> Natas wargames is a good one. It wasn&rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!</p>
+
+<!-- more -->
+
+<p>It started with a dialog to set the background color. When you click the &ldquo;Set Color&rdquo; button, it sets a cookie in your browser. But as the dialog says, the cookie is protected.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas11_1.png"/> 
+</figure>
+
+
+<p>I looked at the source code, as I always do. It was a little more lengthy than previous levels.</p>
+
+<pre><code>&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;&amp;lt;link&amp;nbsp;rel=&quot;stylesheet&quot;&amp;nbsp;type=&quot;text/css&quot;&amp;nbsp;href=&quot;http://www.overthewire.org/wargames/natas/level.css&quot;&amp;gt;&amp;lt;/head&amp;gt;
+&amp;lt;?
+
+$defaultdata&amp;nbsp;=&amp;nbsp;array(&amp;nbsp;&quot;showpassword&quot;=&amp;gt;&quot;no&quot;,&amp;nbsp;&quot;bgcolor&quot;=&amp;gt;&quot;#ffffff&quot;);
+
+function&amp;nbsp;xor_encrypt($in)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$key&amp;nbsp;=&amp;nbsp;'&amp;lt;censored&amp;gt;';
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$text&amp;nbsp;=&amp;nbsp;$in;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;=&amp;nbsp;'';
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;//&amp;nbsp;Iterate&amp;nbsp;through&amp;nbsp;each&amp;nbsp;character
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;for($i=0;$i&amp;lt;strlen($text);$i++)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;.=&amp;nbsp;$text[$i]&amp;nbsp;^&amp;nbsp;$key[$i&amp;nbsp;%&amp;nbsp;strlen($key)];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;return&amp;nbsp;$outText;
+}
+
+function&amp;nbsp;loadData($def)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;global&amp;nbsp;$_COOKIE;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$mydata&amp;nbsp;=&amp;nbsp;$def;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if(array_key_exists(&quot;data&quot;,&amp;nbsp;$_COOKIE))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$tempdata&amp;nbsp;=&amp;nbsp;json_decode(xor_encrypt(base64_decode($_COOKIE[&quot;data&quot;])),&amp;nbsp;true);
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if(is_array($tempdata)&amp;nbsp;&amp;amp;&amp;amp;&amp;nbsp;array_key_exists(&quot;showpassword&quot;,&amp;nbsp;$tempdata)&amp;nbsp;&amp;amp;&amp;amp;&amp;nbsp;array_key_exists(&quot;bgcolor&quot;,&amp;nbsp;$tempdata))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if&amp;nbsp;(preg_match('/^#(?:[a-f\d]{6})$/i',&amp;nbsp;$tempdata['bgcolor']))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$mydata['showpassword']&amp;nbsp;=&amp;nbsp;$tempdata['showpassword'];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$mydata['bgcolor']&amp;nbsp;=&amp;nbsp;$tempdata['bgcolor'];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;return&amp;nbsp;$mydata;
+}
+
+function&amp;nbsp;saveData($d)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;setcookie(&quot;data&quot;,&amp;nbsp;base64_encode(xor_encrypt(json_encode($d))));
+}
+
+$data&amp;nbsp;=&amp;nbsp;loadData($defaultdata);
+
+if(array_key_exists(&quot;bgcolor&quot;,$_REQUEST))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;if&amp;nbsp;(preg_match('/^#(?:[a-f\d]{6})$/i',&amp;nbsp;$_REQUEST['bgcolor']))&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$data['bgcolor']&amp;nbsp;=&amp;nbsp;$_REQUEST['bgcolor'];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+}
+
+saveData($data);
+
+
+
+?&amp;gt;
+
+&amp;lt;h1&amp;gt;natas11&amp;lt;/h1&amp;gt;
+&amp;lt;div&amp;nbsp;id=&quot;content&quot;&amp;gt;
+&amp;lt;body&amp;nbsp;style=&quot;background:&amp;nbsp;&amp;lt;?=$data['bgcolor']?&amp;gt;;&quot;&amp;gt;
+Cookies&amp;nbsp;are&amp;nbsp;protected&amp;nbsp;with&amp;nbsp;XOR&amp;nbsp;encryption&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
+
+&amp;lt;?
+if($data[&quot;showpassword&quot;]&amp;nbsp;==&amp;nbsp;&quot;yes&quot;)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;print&amp;nbsp;&quot;The&amp;nbsp;password&amp;nbsp;for&amp;nbsp;natas12&amp;nbsp;is&amp;nbsp;&amp;lt;censored&amp;gt;&amp;lt;br&amp;gt;&quot;;
+}
+
+?&amp;gt;
+
+&amp;lt;form&amp;gt;
+Background&amp;nbsp;color:&amp;nbsp;&amp;lt;input&amp;nbsp;name=bgcolor&amp;nbsp;value=&quot;&amp;lt;?=$data['bgcolor']?&amp;gt;&quot;&amp;gt;
+&amp;lt;input&amp;nbsp;type=submit&amp;nbsp;value=&quot;Set&amp;nbsp;color&quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+
+&amp;lt;div&amp;nbsp;id=&quot;viewsource&quot;&amp;gt;&amp;lt;a&amp;nbsp;href=&quot;index-source.html&quot;&amp;gt;View&amp;nbsp;sourcecode&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+</code></pre>
+
+<p>I viewed my cookie, using the amazing, <a href="https://chrome.google.com/webstore/detail/edit-this-cookie/fngmhnnpilhplaeedifhccceomclgfbg">Edit This Cookie</a>, Chrome extension. Note that the last character is a &ldquo;=&rdquo;, but it&rsquo;s encoded in the cookie as &ldquo;%3D&rdquo; due to encoding.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas11_2.png"/> 
+</figure>
+
+
+<p>I then took this cookie value and figured that maybe I could decode it. XOR encryption is reversible if you know <sup>2</sup>&frasl;<sub>3</sub> parts. You have A XOR KEY = C, for example. If you know A and C, you can derive KEY by XORing A and C together the same way. I ended up writing some code in PHP (since the original was in PHP)</p>
+
+<pre><code>&amp;lt;?php
+
+function find_xor_key($decrypted, $encrypted) {
+ // This value should be the return of xor_encrypt with a base64 decode
+ $base64_decoded = base64_decode($encrypted);
+
+ // Before xoring, get the decrypted value into the same state it was
+ $json_encoded = json_encode($decrypted);
+
+ $outText = '';
+
+ for($i=0; $i &amp;lt; strlen($json_encoded); $i++) {
+  $outText .= $json_encoded[$i] ^ $base64_decoded[$i % strlen($base64_decoded)];
+ } 
+
+ return $outText;
+}
+
+$cookie = array(&quot;showpassword&quot;=&amp;gt;&quot;no&quot;, &quot;bgcolor&quot;=&amp;gt;&quot;#ffffff&quot;);
+
+$key = find_xor_key($cookie, &quot;ClVLIh4ASCsCBE8lAxMacFMZV2hdVVotEhhUJQNVAmhSEV4sFxFeaAw=&quot;) . &quot;\n&quot;;
+
+print &quot;XOR Key: &quot; . $key . &quot;\n&quot;;
+
+?&amp;gt;
+</code></pre>
+
+<p>When ran, this produces the following.</p>
+
+<pre><code>mandreko$ php natas11_decode.php 
+XOR Key: qw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jqw8Jq
+</code></pre>
+
+<p>So now I know that the XOR key is &ldquo;qw8J&rdquo;.  It&rsquo;s repeated over and over, because the string it&rsquo;s encoding is longer than the key, so it gets repeated, otherwise it&rsquo;d be XOR to nothing.</p>
+
+<p>I then took this XOR key and tried to use it to encode a new cookie value, so that I could switch the &ldquo;showpassword&rdquo; value to &ldquo;yes&rdquo;.  I wrote the following script to do so.</p>
+
+<pre><code>&amp;lt;?php
+
+function&amp;nbsp;custom_xor($key,&amp;nbsp;$in)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;=&amp;nbsp;'';
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;for($i&amp;nbsp;=&amp;nbsp;0;&amp;nbsp;$i&amp;nbsp;&amp;lt;&amp;nbsp;strlen($in);&amp;nbsp;$i++)&amp;nbsp;{
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$outText&amp;nbsp;.=&amp;nbsp;$in[$i]&amp;nbsp;^&amp;nbsp;$key[$i&amp;nbsp;%&amp;nbsp;strlen($key)];
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;return&amp;nbsp;$outText;
+}
+
+$cookie&amp;nbsp;=&amp;nbsp;array(&quot;showpassword&quot;=&amp;gt;&quot;yes&quot;,&amp;nbsp;&quot;bgcolor&quot;=&amp;gt;&quot;#ffffff&quot;);
+$key&amp;nbsp;=&amp;nbsp;&quot;qw8J&quot;;
+
+print&amp;nbsp;&quot;New&amp;nbsp;Cookie&amp;nbsp;Value:&amp;nbsp;&quot;&amp;nbsp;.&amp;nbsp;base64_encode(custom_xor($key,&amp;nbsp;json_encode($cookie)))&amp;nbsp;.&amp;nbsp;&quot;\n&quot;;
+
+?&amp;gt;
+</code></pre>
+
+<p>When ran, it produced the following.</p>
+
+<pre><code>mandreko$ php natas11_encode.php 
+New Cookie Value: ClVLIh4ASCsCBE8lAxMacFMOXTlTWxooFhRXJh4FGnBTVF4sFxFeLFMK
+</code></pre>
+
+<p>I then pasted that cookie value into my Edit This Cookie extension, and refreshed the page.  It then presented me with the password to the next level.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas11_3.png"/> 
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
+
+
+      
+      </div>
+    </div>
+    
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="http://test.andreko.net/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
+</div>
+        <div class='RecentPosts' data-version='1' id='RecentPosts1'>
+	<h2>Recent Posts</h2>
+	<div class='widget-content recent-posts'>
+		<ul>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/'>
+							<img alt='Compiling SSLScan with SSLv2 support on OSX' border='0' height='72' src='http://test.andreko.net/img/sslscan_apple.png' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/'>Compiling SSLScan with SSLv2 support on OSX</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2014/08/01/burp-icon-in-osx/'>
+							<img alt='Burp Icon in OSX' border='0' height='72' src='http://test.andreko.net/img/automator_burp.png' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2014/08/01/burp-icon-in-osx/'>Burp Icon in OSX</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/'>
+							<img alt='Backdoor Modules for Netgear, Linksys, and Other Routers' border='0' height='72' src='http://test.andreko.net/img/backdoor_all_the_routers.jpg' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/'>Backdoor Modules for Netgear, Linksys, and Other Routers</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2013/11/20/brainpan2/'>
+							<img alt='Brainpan2' border='0' height='72' src='http://test.andreko.net/img/brainpan.jpg' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2013/11/20/brainpan2/'>Brainpan2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2013/06/18/canon-y-u-no-security/'>
+							<img alt='Canon, Y U NO Security?' border='0' height='72' src='http://test.andreko.net/img/y-u-no-guy.jpg' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2013/06/18/canon-y-u-no-security/'>Canon, Y U NO Security?</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Top Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
+		
+		<div id='w2t_footer'>
+			<div class='w2t-copy-container row'>
+				<div class='w2t_footer_copyright'>
+					Copyright &copy;
+					<script type='text/javascript'>
+						var creditsyear = new Date();
+						document.write(creditsyear.getFullYear());
+					</script>
+					Matt Andreko. All Rights Reserved
+				</div>
+			</div>
+		</div>
+		
+		
+			
+				<script type="text/javascript">
+	var disqus_shortname = 'mattandreko';
+	var disqus_script = 'count.js';
+
+	(function () {
+		var dsq = document.createElement('script'); 
+		dsq.type = 'text/javascript'; 
+		dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+</script>
+			
+		
+	</body>
+</html>
+

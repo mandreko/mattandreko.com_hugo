@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ui on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/ui/</link>
+    <description>Recent content in Ui on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 07 Oct 2011 08:09:00 -0400</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/ui/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sprint iPhone 4S pre-order fiasco</title>
+      <link>http://test.andreko.net/2011/10/07/sprint-iphone-4s-pre-order-fiasco/</link>
+      <pubDate>Fri, 07 Oct 2011 08:09:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/2011/10/07/sprint-iphone-4s-pre-order-fiasco/</guid>
+      <description>So like many people, I wanted the new iPhone 4S. Since the wife unit is on Sprint, and I&amp;rsquo;m on AT&amp;amp;T, we started looking at plans. Sprint offers a nicer family plan and lets her upgrade to a smartphone, while letting me have the iPhone. So we decided to make the switch, and do the pre-order. I called last night to verify the ordering process, and make sure that I could still get the $200 price while not using her upgrade credit.</description>
+    </item>
+    
+    <item>
+      <title>Poor UI Experience</title>
+      <link>http://test.andreko.net/2011/08/17/poor-ui-experience/</link>
+      <pubDate>Wed, 17 Aug 2011 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/2011/08/17/poor-ui-experience/</guid>
+      <description>I was recently signing up for about.me because it sounded like a neat little simple blurb about yourself. When trying to sign up, after entering my email address, and password, I was brought to a page asking for some basic info. However, I couldn&amp;rsquo;t figure out how to submit it. I was given this error:
+ I filled out all the required data, and left the optional parts empty. However, it wouldn&amp;rsquo;t submit.</description>
+    </item>
+    
+  </channel>
+</rss>

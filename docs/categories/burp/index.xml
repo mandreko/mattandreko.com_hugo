@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Burp on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/burp/</link>
+    <description>Recent content in Burp on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 01 Aug 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/burp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Burp Icon in OSX</title>
+      <link>http://test.andreko.net/2014/08/01/burp-icon-in-osx/</link>
+      <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://test.andreko.net/2014/08/01/burp-icon-in-osx/</guid>
+      <description>Recently, I on a Google Hangout with a coworker and saw him using the Burp Suite. I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google.</description>
+    </item>
+    
+  </channel>
+</rss>

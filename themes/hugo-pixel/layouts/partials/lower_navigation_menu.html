@@ -5,10 +5,9 @@
 			<div class='widget LinkList' data-version='1' id='LinkList940'>
 				<div class='widget-content'>
 					<ul id='nav1' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
-						<li itemprop='name'><a href='{{ .Site.BaseURL }}' itemprop='url'>HOME</a></li>
-						<li itemprop='name'><a href='{{ .Site.BaseURL }}categories' itemprop='url'>CATEGORIES</a></li>
-						<li itemprop='name'><a href='#' itemprop='url'>ARCHIVE</a></li>
-						<li itemprop='name'><a href='{{ .Site.BaseURL }}resume.pdf' itemprop='url'>RESUME</a></li>
+						{{ range $.Site.Menus.main }}
+							<li itemprop='name'><a href='{{ .URL }}' itemprop='url'>{{ .Name }}</a></li>
+						{{ end }}
 					</ul>
 				</div>
 			</div>

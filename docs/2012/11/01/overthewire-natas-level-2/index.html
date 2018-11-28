@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport'/>
+		<link href="//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic" media="all" rel="stylesheet" type="text/css">
+		<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet'/>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+		<meta content='blogger' name='generator'/>
+		<link href='http://test.andreko.net//favicon.ico' rel='icon' type='image/x-icon'/>
+		<link href='http://test.andreko.net/' rel='canonical'/>
+		
+		
+		<title>OverTheWire Natas Level 2</title>
+		<meta content='YOUR DESCRIPTION HERE' name='description'/>
+		<meta content='YOUR KEYWORDS HERE' name='keywords'/>
+		
+		<meta content='@mandreko' name='twitter:site'/>
+		<meta content='@mandreko' name='twitter:creator'/>
+		
+		<link type="text/css" rel="stylesheet" href="/css/main.css" />
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' type='text/javascript'></script>
+		
+		<script type="text/javascript">
+			var _gaq=[['_setAccount','UA-25280110-1'],['_trackPageview']];
+			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+			s.parentNode.insertBefore(g,s)}(document,'script'));
+		</script>
+		
+	</head>
+	<body class='index'>
+	
+	<div class='head-wrap'>
+		<div class='row' id='header-wrappers'>
+			<div class='headerleft'>
+				<div class='headerleft section' id='headerleft'>
+					<div class='widget Header' data-version='1' id='Header1'>
+						<div id='header-inner'>
+							<a href='/' style='display: block'><h1 style='display:none'></h1>
+								<img alt="Logo" height="55px; " id="Header1_headerimg" src="/img/logo.png" style="display: block" width="311px; ">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style='clear: both;'></div>
+		</div>
+	</div>
+	<div class='navi-menu'>
+		<div class='nav-menu section' id='Navigation Menu' name='Navigation Menu'>
+			<div class='widget LinkList' data-version='1' id='LinkList100'>
+				<div class='widget-content'>
+					<ul id='nav' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
+						<li itemprop='name'><a href='http://test.andreko.net/' itemprop='url'>HOME</a></li>
+						<li itemprop='name'><a href='http://test.andreko.net/categories' itemprop='url'>CATEGORIES</a></li>
+						<li itemprop='name'><a href='#' itemprop='url'>ARCHIVE</a></li>
+						<li itemprop='name'><a href='http://test.andreko.net/resume.pdf' itemprop='url'>RESUME</a></li>
+					</ul>
+					<select class="selectnav" id="selectnav2">
+						<option value="">Menu</option>
+						<option value="http://test.andreko.net/">HOME</option>
+						<option value="http://test.andreko.net/categories">CATEGORIES</option>
+						<option value="#">ARCHIVE</option>
+						<option value="http://test.andreko.net/resume.pdf">RESUME</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class='top-bar-social blue section' id='header social widget' name='Top Social Widget'>
+			<div class='widget LinkList' data-version='1' id='LinkList230'>
+				<div class='widget-content'>
+					<ul id='social'>
+						
+							<li><a class='facebook' href='https://www.facebook.com/mattandreko' title='facebook'></a></li>
+						
+						
+							<li><a class='twitter' href='https://www.twitter.com/mandreko' title='twitter'></a></li>
+						
+						
+							<li><a class='gplus' href='https://plus.google.com/mandreko' title='gplus'></a></li>
+						
+						
+							<li><a class='linkedin' href='https://www.linkedin.com/mattandreko' title='linkedin'></a></li>
+						
+						
+							<li><a class='stack-overflow' href='http://stackoverflow.com/story/mattandreko' title='stack-overflow'></a></li>
+						
+						
+							<li><a class='github' href='https://www.github.com/mandreko' title='github'></a></li>
+						
+						
+							<li><a class='instagram' href='https://www.instagram.com/mandreko' title='instagram'></a></li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div style='clear: both;'></div>
+	</div>
+	
+	<div style='clear: both;'></div>
+	<div id="outer-wrapper" class="index home">
+
+
+<div class='row' id='content-wrapper'>
+    <div id='main-wrapper'>
+      <div class='main section' id='main'>
+      
+
+
+        <div id="main">
+          <div id="content">
+            <div>
+              <article class="hentry" role="article">
+
+                
+                
+
+                <div class="entry-content">
+                  
+                  
+                  <p><a href="http://www.overthewire.org/wargames/natas/natas2.shtml">Level 2</a> of <a href="http://www.overthewire.org">OverTheWire&rsquo;s</a> Natas wargame is a little more fun than the previous two. It&rsquo;s also pretty simple, though.</p>
+
+<!-- more -->
+
+<p>You start out on a page that tells you that there is nothing on it.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas2_1.png"/> 
+</figure>
+
+
+<p>Like previous levels, I then viewed the source to see what was in the code.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas2_2.png"/> 
+</figure>
+
+
+<p>It appears that there&rsquo;s a 1x1 pixel image present on the page. It&rsquo;s located in a &ldquo;files&rdquo; directory of the webserver. I decided to see if there was anything else in that folder, and found a &ldquo;users.txt&rdquo; file.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas2_3.png"/> 
+</figure>
+
+
+<p>Once I viewed the &ldquo;users.txt&rdquo; file, it displayed the next level&rsquo;s password.</p>
+
+<figure class="img-responsive">
+    <img src="/img/natas2_4.png"/> 
+</figure>
+
+
+                </div>
+                
+              </article>
+            </div>
+          </div>
+        </div>
+
+
+      
+      </div>
+    </div>
+    
+    <div id='sidebar-wrapper'>
+      <div class='sidebar ready-widget section' id='sidebar'>
+        <div class='widget HTML' data-version='1' id='HTML3'>
+	<h2 class='title'>Author</h2>
+	<div class='widget-content'>
+		<div class="sidebar_about_author">
+			<div class="inner_wrapper">
+				<div class="aboutme-img">
+					<img alt="Author" class="img-responsive" height="388px" src="http://test.andreko.net/img/mattandreko_photo.jpg" title="Author (Matt Andreko)" width="300px">
+				</div>
+			</div>
+			<div class="aboutme-info">
+				<h4>Matt Andreko</h4>
+				<p>Security Consultant</p>
+			</div>
+		</div>
+	</div>
+	<div class='clear'></div>
+</div>
+        <div class='RecentPosts' data-version='1' id='RecentPosts1'>
+	<h2>Recent Posts</h2>
+	<div class='widget-content recent-posts'>
+		<ul>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/'>
+							<img alt='Compiling SSLScan with SSLv2 support on OSX' border='0' height='72' src='http://test.andreko.net/img/sslscan_apple.png' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/'>Compiling SSLScan with SSLv2 support on OSX</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2014/08/01/burp-icon-in-osx/'>
+							<img alt='Burp Icon in OSX' border='0' height='72' src='http://test.andreko.net/img/automator_burp.png' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2014/08/01/burp-icon-in-osx/'>Burp Icon in OSX</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/'>
+							<img alt='Backdoor Modules for Netgear, Linksys, and Other Routers' border='0' height='72' src='http://test.andreko.net/img/backdoor_all_the_routers.jpg' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/'>Backdoor Modules for Netgear, Linksys, and Other Routers</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2013/11/20/brainpan2/'>
+							<img alt='Brainpan2' border='0' height='72' src='http://test.andreko.net/img/brainpan.jpg' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2013/11/20/brainpan2/'>Brainpan2</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+			<li>
+				<div class='item-thumbnail-only'>
+					<div class='item-thumbnail'>
+						<a href='http://test.andreko.net/2013/06/18/canon-y-u-no-security/'>
+							<img alt='Canon, Y U NO Security?' border='0' height='72' src='http://test.andreko.net/img/y-u-no-guy.jpg' width='72'/>
+						</a>
+					</div>
+					<div class='item-title'><a href='http://test.andreko.net/2013/06/18/canon-y-u-no-security/'>Canon, Y U NO Security?</a></div>
+				</div>
+				<div style='clear: both;'></div>
+			</li>
+			
+		</ul>
+		<div class='clear'></div>
+	</div>
+</div>
+
+        <div class='widget Label' data-version='1' id='Label1'>
+	<h2>Top Categories</h2>
+	<div class='widget-content cloud-label-widget-content'>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/hacking'>hacking</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/wargames'>wargames</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/linux'>linux</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/exploit-exercises'>exploit-exercises</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/protostar'>protostar</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/overthewire'>overthewire</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/natas'>natas</a>
+			</span>
+		
+			<span class='label-size label-size-5'>
+				<a dir='ltr' href='/tags/nebula'>nebula</a>
+			</span>
+		
+		<div class='clear'></div>
+	</div>
+</div>
+      </div>
+    </div>
+    <div style='clear: both;'></div>
+  </div>
+
+
+
+
+
+		</div>
+		
+		<div id='w2t_footer'>
+			<div class='w2t-copy-container row'>
+				<div class='w2t_footer_copyright'>
+					Copyright &copy;
+					<script type='text/javascript'>
+						var creditsyear = new Date();
+						document.write(creditsyear.getFullYear());
+					</script>
+					Matt Andreko. All Rights Reserved
+				</div>
+			</div>
+		</div>
+		
+		
+			
+				<script type="text/javascript">
+	var disqus_shortname = 'mattandreko';
+	var disqus_script = 'count.js';
+
+	(function () {
+		var dsq = document.createElement('script'); 
+		dsq.type = 'text/javascript'; 
+		dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+</script>
+			
+		
+	</body>
+</html>
+

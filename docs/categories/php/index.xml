@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Php on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/php/</link>
+    <description>Recent content in Php on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 14 Nov 2012 06:29:00 -0500</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/php/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OverTheWire Natas Level 15</title>
+      <link>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</link>
+      <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</guid>
+      <description>Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.
+It starts out with a username check dialog, which pretty much only gives you a binary value as to if a username exists or not.
+ I looked at the source code, and couldn&amp;rsquo;t see any way to inject some SQL to get it to retrieve the password for me.</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 14</title>
+      <link>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</link>
+      <pubDate>Tue, 13 Nov 2012 05:08:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</guid>
+      <description>The next level of the OverTheWire Natas wargame is Level 14, which introduces SQL Injection, a very popular subject as of late.
+The level starts out with a login dialog.
+ The source code is fairly straight forward. It&amp;rsquo;s doing a basic authentication query. It however, does have a handy &amp;ldquo;debug&amp;rdquo; flag, that if set, will print the query used to the screen.
+&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;natas14&amp;lt;/h1&amp;gt; &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; &amp;lt;?</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 13</title>
+      <link>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</link>
+      <pubDate>Mon, 12 Nov 2012 06:44:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</guid>
+      <description>Level 13 of OverTheWire&amp;rsquo;s Natas wargame is extremely similar to Level 12. The only difference now, is that it&amp;rsquo;s validating that the file is in fact an image. This however is flawed, as exif data can be faked.
+It starts out with a similar upload prompt as last time.
+ The source code is super similar to last time.
+&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;natas13&amp;lt;/h1&amp;gt; &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; For security reasons, we now only accept image files!</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 12</title>
+      <link>http://test.andreko.net/2012/11/11/overthewire-natas-level-12/</link>
+      <pubDate>Sun, 11 Nov 2012 06:27:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/11/overthewire-natas-level-12/</guid>
+      <description>The next level to attack in the OverTheWire Natas wargame, is Level 12, which is more &amp;ldquo;real-world&amp;rdquo; as well, since developers often forget to limit file extensions.
+It starts out giving you the option to upload a &amp;lt;1KB file to the server.
+ As with any other challenge, I viewed the source, to analyze it.
+&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;http://www.overthewire.org/wargames/natas/level.css&amp;quot;&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;natas12&amp;lt;/h1&amp;gt; &amp;lt;div id=&amp;quot;content&amp;quot;&amp;gt; &amp;lt;? function genRandomString() { $length = 10; $characters = &amp;quot;0123456789abcdefghijklmnopqrstuvwxyz&amp;quot;; $string = &amp;quot;&amp;quot;; for ($p = 0; $p &amp;lt; $length; $p++) { $string .</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 11</title>
+      <link>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</link>
+      <pubDate>Sat, 10 Nov 2012 05:34:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</guid>
+      <description>Level 11 of the OverTheWire Natas wargames is a good one. It wasn&amp;rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!
+It started with a dialog to set the background color. When you click the &amp;ldquo;Set Color&amp;rdquo; button, it sets a cookie in your browser. But as the dialog says, the cookie is protected.
+ I looked at the source code, as I always do.</description>
+    </item>
+    
+    <item>
+      <title>OverTheWire Natas Level 8</title>
+      <link>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</link>
+      <pubDate>Wed, 07 Nov 2012 05:56:00 -0500</pubDate>
+      
+      <guid>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</guid>
+      <description>Level 8 of the OverTheWires Natas wargame was pretty simple, as a developer, but could prove more difficult if you don&amp;rsquo;t have similar background.
+It starts out with a secret password input.
+ Like other levels, I looked at the source code to see what was going on in the background.
+ Based on this code, you can see that it has a stored secret value, that is base64 encoded, then reversed, and then converted to a hex string.</description>
+    </item>
+    
+  </channel>
+</rss>

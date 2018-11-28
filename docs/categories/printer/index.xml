@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Printer on Matt Andreko</title>
+    <link>http://test.andreko.net/categories/printer/</link>
+    <description>Recent content in Printer on Matt Andreko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 18 Jun 2013 08:23:00 -0400</lastBuildDate>
+    
+	<atom:link href="http://test.andreko.net/categories/printer/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Canon, Y U NO Security?</title>
+      <link>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</link>
+      <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
+      
+      <guid>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</guid>
+      <description>I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a Canon MX922. It works awesome for her, and is connected over WiFi, so any device in the house can print to it.</description>
+    </item>
+    
+  </channel>
+</rss>
