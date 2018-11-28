@@ -14,8 +14,6 @@
 		<title>{{ .Title }}</title>
 		<meta content='YOUR DESCRIPTION HERE' name='description'/>
 		<meta content='YOUR KEYWORDS HERE' name='keywords'/>
-		<meta content='Facebook App ID here' property='fb:app_id'/>
-		<meta content='Facebook Admin ID here' property='fb:admins'/>
 		{{ if .Site.Params.social.twitter }}
 		<meta content='@{{ .Site.Params.social.twitter }}' name='twitter:site'/>
 		<meta content='@{{ .Site.Params.social.twitter }}' name='twitter:creator'/>
@@ -55,16 +53,16 @@
 				<div class='widget-content'>
 					<ul id='nav' itemscope='' itemtype='http://schema.org/SiteNavigationElement'>
 						<li itemprop='name'><a href='{{ .Site.BaseURL }}' itemprop='url'>HOME</a></li>
-						<li itemprop='name'><a href='{{ .Site.BaseURL }}/categories' itemprop='url'>CATEGORIES</a></li>
+						<li itemprop='name'><a href='{{ .Site.BaseURL }}categories' itemprop='url'>CATEGORIES</a></li>
 						<li itemprop='name'><a href='#' itemprop='url'>ARCHIVE</a></li>
-						<li itemprop='name'><a href='#' itemprop='url'>RESUME</a></li>
+						<li itemprop='name'><a href='{{ .Site.BaseURL }}resume.pdf' itemprop='url'>RESUME</a></li>
 					</ul>
 					<select class="selectnav" id="selectnav2">
 						<option value="">Menu</option>
 						<option value="{{ .Site.BaseURL }}">HOME</option>
-						<option value="{{ .Site.BaseURL }}/categories">CATEGORIES</option>
+						<option value="{{ .Site.BaseURL }}categories">CATEGORIES</option>
 						<option value="#">ARCHIVE</option>
-						<option value="#">RESUME</option>
+						<option value="{{ .Site.BaseURL }}resume.pdf">RESUME</option>
 					</select>
 				</div>
 			</div>
