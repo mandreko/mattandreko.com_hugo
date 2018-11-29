@@ -57,8 +57,6 @@
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
 						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
-						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						
 					</ul>
@@ -68,8 +66,6 @@
 						<option value='/'>HOME</option>
 						
 						<option value='/categories'>CATEGORIES</option>
-						
-						<option value='/archives'>ARCHIVES</option>
 						
 						<option value='/resume.pdf'>RESUME</option>
 						
@@ -116,56 +112,183 @@
     <div id='main-wrapper'>
         <div class='main section' id='main'>
             <div class='blog-posts hfeed'>
-                <div class='post-outer'>
-                    <div class='post hentry'>
-                        <div class='post-header'></div>
-                        <article role="article">
-                            <header>
-                                <font class='retitle'>
-                                    <h2 class='post-title entry-title'>
-                                        Category: Monxla
-                                    </h2>
-                                </font>
-                            </header>
-                                
-                                    
-                                    
-                                        
-                                        <br />
-                                        <h2>2012</h2>
-                                    
-
-                                    Nov 26, 2012
-                                    <a href="http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/">
-                                    OverTheWire Monxla Part 3
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Nov 25, 2012
-                                    <a href="http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/">
-                                    OverTheWire Monxla Part 2
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Nov 24, 2012
-                                    <a href="http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/">
-                                    OverTheWire Monxla Part 1
-                                    </a><br />
-
-
-                                 
-                        </article>
-                    </div>
-                </div>
+                
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/'>OverTheWire Monxla Part 3</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					7 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Nov 26, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.
+I started analyzing the source code, and noticed that the text that says &ldquo;yes&rdquo; or &ldquo;no&rdquo; in the table is actually an image being rendered from the hasnotes.php file. I started tinkering with that file, and found that it was vulnerable to SQL injection.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/overthewire/">overthewire </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/monxla/">monxla </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/'>OverTheWire Monxla Part 2</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					3 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Nov 25, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.
+Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine. To configure my machine for these virtual hosts, I added these lines to my /etc/hosts file:
+192.168.188.134 nasenko.otw 192.168.188.134 honeylink.otw  There are 2 sites immediately available to you:
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/overthewire/">overthewire </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/monxla/">monxla </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/'>OverTheWire Monxla Part 1</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					2 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Nov 24, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						I had a twitter follower recently inform me that OverTheWire had a new wargame up and running. &nbsp;I was immediately excited and downloaded it. &nbsp;Several days later, I actually was able to start tinkering with it.
+I booted up the image, and proceeded to do some preliminary nmap scans. &nbsp;I found a few services runinng:
+mandreko$ nmap -sV -p1-65535 -T4&amp;nbsp;192.168.188.134 Starting Nmap 6.01 ( http://nmap.org ) at 2012-11-15 10:28 EST Nmap scan report for 192.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/overthewire/">overthewire </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/monxla/">monxla </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
             </div>
+            
+
+ 
+            <div class='clear'></div>
         </div>
     </div>
     
@@ -529,8 +652,6 @@
 							<li itemprop='name'><a href='/' itemprop='url'>HOME</a></li>
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
-						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
 						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						

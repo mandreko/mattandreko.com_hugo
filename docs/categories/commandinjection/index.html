@@ -57,8 +57,6 @@
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
 						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
-						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						
 					</ul>
@@ -68,8 +66,6 @@
 						<option value='/'>HOME</option>
 						
 						<option value='/categories'>CATEGORIES</option>
-						
-						<option value='/archives'>ARCHIVES</option>
 						
 						<option value='/resume.pdf'>RESUME</option>
 						
@@ -116,46 +112,134 @@
     <div id='main-wrapper'>
         <div class='main section' id='main'>
             <div class='blog-posts hfeed'>
-                <div class='post-outer'>
-                    <div class='post hentry'>
-                        <div class='post-header'></div>
-                        <article role="article">
-                            <header>
-                                <font class='retitle'>
-                                    <h2 class='post-title entry-title'>
-                                        Category: Commandinjection
-                                    </h2>
-                                </font>
-                            </header>
-                                
-                                    
-                                    
-                                        
-                                        <br />
-                                        <h2>2012</h2>
-                                    
-
-                                    Nov 9, 2012
-                                    <a href="http://test.andreko.net/2012/11/09/overthewire-natas-level-10/">
-                                    OverTheWire Natas Level 10
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Nov 8, 2012
-                                    <a href="http://test.andreko.net/2012/11/08/overthewire-natas-level-9/">
-                                    OverTheWire Natas Level 9
-                                    </a><br />
-
-
-                                 
-                        </article>
-                    </div>
-                </div>
+                
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/11/09/overthewire-natas-level-10/'>OverTheWire Natas Level 10</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					1 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Nov 9, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/11/09/overthewire-natas-level-10/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/11/09/overthewire-natas-level-10/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						On to Level 10 of the OverTheWire Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.
+It starts out just like the last level, with a search dialog.
+ Again, as always, I review the code since it&rsquo;s available.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/11/09/overthewire-natas-level-10/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/overthewire/">overthewire </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/commandinjection/">commandinjection </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/natas/">natas </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/11/08/overthewire-natas-level-9/'>OverTheWire Natas Level 9</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					1 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Nov 8, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/11/08/overthewire-natas-level-9/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/11/08/overthewire-natas-level-9/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						The next level of OverTheWire&rsquo;s Nata challenge is Level 9. This is a command injection vulnerability.
+Initially, you are given a search box.
+ Just like in previous levels, I looked at the available source code. You can see the vulnerability is that the user input is not sanitized. Due to this, you can inject code into the &ldquo;grep&rdquo; command it is running to do the search.
+ I simply put in the search box, &ldquo;; cat /etc/natas_webpass/natas10&rdquo;, since that is where the password file is located.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/11/08/overthewire-natas-level-9/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/overthewire/">overthewire </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/commandinjection/">commandinjection </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/natas/">natas </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
             </div>
+            
+
+ 
+            <div class='clear'></div>
         </div>
     </div>
     
@@ -519,8 +603,6 @@
 							<li itemprop='name'><a href='/' itemprop='url'>HOME</a></li>
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
-						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
 						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						

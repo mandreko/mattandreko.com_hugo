@@ -57,8 +57,6 @@
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
 						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
-						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						
 					</ul>
@@ -68,8 +66,6 @@
 						<option value='/'>HOME</option>
 						
 						<option value='/categories'>CATEGORIES</option>
-						
-						<option value='/archives'>ARCHIVES</option>
 						
 						<option value='/resume.pdf'>RESUME</option>
 						
@@ -116,86 +112,391 @@
     <div id='main-wrapper'>
         <div class='main section' id='main'>
             <div class='blog-posts hfeed'>
-                <div class='post-outer'>
-                    <div class='post hentry'>
-                        <div class='post-header'></div>
-                        <article role="article">
-                            <header>
-                                <font class='retitle'>
-                                    <h2 class='post-title entry-title'>
-                                        Category: Formatstring
-                                    </h2>
-                                </font>
-                            </header>
-                                
-                                    
-                                    
-                                        
-                                        <br />
-                                        <h2>2012</h2>
-                                    
-
-                                    Feb 5, 2012
-                                    <a href="http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/">
-                                    Exploit Exercises - Protostar Final 1
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Feb 2, 2012
-                                    <a href="http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/">
-                                    Exploit Exercises - Protostar Format 4
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Feb 1, 2012
-                                    <a href="http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/">
-                                    Exploit Exercises - Protostar Format 3
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Jan 31, 2012
-                                    <a href="http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/">
-                                    Exploit Exercises - Protostar Format 2
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Jan 30, 2012
-                                    <a href="http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/">
-                                    Exploit Exercises - Protostar Format 1
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Jan 24, 2012
-                                    <a href="http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/">
-                                    Exploit Exercises - Protostar Format 0
-                                    </a><br />
-
-
-                                 
-                        </article>
-                    </div>
-                </div>
+                
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/'>Exploit Exercises - Protostar Final 1</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					11 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 5, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Since I&rsquo;ve been doing a lot of the format string exploits lately, I decided to do the Final 1 challenge.
+We start out the challenge by being given the following code:
+#include &quot;../common/common.c&quot; #include &lt;syslog.h&gt; #define NAME &quot;final1&quot; #define UID 0 #define GID 0 #define PORT 2994 char username[128]; char hostname[64]; void logit(char *pw) { char buf[512]; snprintf(buf, sizeof(buf), &quot;Login from %s as [%s] with password [%s]\n&quot;, hostname, username, pw); syslog(LOG_USER|LOG_DEBUG, buf); } void trim(char *str) { char *q; q = strchr(str, '\r'); if(q) *q = 0; q = strchr(str, '\n'); if(q) *q = 0; } void parser() { char line[128]; printf(&quot;[final1] $ &quot;); while(fgets(line, sizeof(line)-1, stdin)) { trim(line); if(strncmp(line, &quot;username &quot;, 9) == 0) { strcpy(username, line+9); } else if(strncmp(line, &quot;login &quot;, 6) == 0) { if(username[0] == 0) { printf(&quot;invalid protocol\n&quot;); } else { logit(line + 6); printf(&quot;login failed\n&quot;); } } printf(&quot;[final1] $ &quot;); } } void getipport() { int l; struct sockaddr_in sin; l = sizeof(struct sockaddr_in); if(getpeername(0, &amp;sin, &amp;l) == -1) { err(1, &quot;you don't exist&quot;); } sprintf(hostname, &quot;%s:%d&quot;, inet_ntoa(sin.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/'>Exploit Exercises - Protostar Format 4</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					5 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 2, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Next up is the last challenge in the Format String series, Format 4.
+It starts out with the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; int target; void hello() { printf(&quot;code execution redirected! you win\n&quot;); _exit(1); } void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printf(buffer); exit(1); } int main(int argc, char **argv) { vuln(); }  What initially caught my eye was the fact that there was a call to &ldquo;exit()&rdquo; as well as &ldquo;_exit()&ldquo;.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/'>Exploit Exercises - Protostar Format 3</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					5 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Feb 1, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Continuing in the String Format section, the next challenge we run across is Format 3.
+We&rsquo;re first given the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; int target; void printbuffer(char *string) { printf(string); } void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printbuffer(buffer); if(target == 0x01025544) { printf(&quot;you have modified the target :)\n&quot;); } else { printf(&quot;target is %08x :(\n&quot;, target); } } int main(int argc, char **argv) { vuln(); }  This seems to be just like Format 2, except that we have to modify all 8 bytes instead of just 2.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/'>Exploit Exercises - Protostar Format 2</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					2 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 31, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Continuing from where we left off, we arrive at Format 2. It presents us with the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; int target; void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printf(buffer); if(target == 64) { printf(&quot;you have modified the target :)\n&quot;); } else { printf(&quot;target is %d :(\n&quot;, target); } } int main(int argc, char **argv) { vuln(); }  This challenge seems very similar to Format 1, in all but 2 ways:
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/'>Exploit Exercises - Protostar Format 1</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					3 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 30, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Following the Format 0 challenge, I&rsquo;ve had to do a bunch of reading on how format string exploits work on a very low level.
+Some resources that I&rsquo;ve found greatly useful:
+ Hacking: The Art of Exploitation, 2nd Edition Exploiting Format String Vulnerabilities SecurityTube.net Format String Vulnerabilities Megaprimer  With this challenge, we&rsquo;re given some c code in which we are to find the vulnerability.
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/'>Exploit Exercises - Protostar Format 0</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					3 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 24, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						I&rsquo;ll be honest, I&rsquo;m new to format string exploits. I&rsquo;ve been more experienced with stack overflows, and a little with heap overflows. So hopefully this information is correct, as it&rsquo;s from my current understanding.
+Protostar Format 0 starts us off with the following vulnerable code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; void vuln(char *string) { volatile int target; char buffer[64]; target = 0; sprintf(buffer, string); if(target == 0xdeadbeef) { printf(&quot;you have hit the target correctly :)\n&quot;); } } int main(int argc, char **argv) { vuln(argv[1]); }  Looking at this code, somehow we have to get the variable, &ldquo;target&rdquo;, which is never set anywhere other than to &ldquo;0&rdquo;, to equal &ldquo;0xdeadbeef&rdquo;.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/formatstring/">formatstring </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
             </div>
+            
+
+ 
+            <div class='clear'></div>
         </div>
     </div>
     
@@ -559,8 +860,6 @@
 							<li itemprop='name'><a href='/' itemprop='url'>HOME</a></li>
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
-						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
 						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						

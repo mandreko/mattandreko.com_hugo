@@ -57,8 +57,6 @@
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
 						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
-						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						
 					</ul>
@@ -68,8 +66,6 @@
 						<option value='/'>HOME</option>
 						
 						<option value='/categories'>CATEGORIES</option>
-						
-						<option value='/archives'>ARCHIVES</option>
 						
 						<option value='/resume.pdf'>RESUME</option>
 						
@@ -116,36 +112,80 @@
     <div id='main-wrapper'>
         <div class='main section' id='main'>
             <div class='blog-posts hfeed'>
-                <div class='post-outer'>
-                    <div class='post hentry'>
-                        <div class='post-header'></div>
-                        <article role="article">
-                            <header>
-                                <font class='retitle'>
-                                    <h2 class='post-title entry-title'>
-                                        Category: Ret2text
-                                    </h2>
-                                </font>
-                            </header>
-                                
-                                    
-                                    
-                                        
-                                        <br />
-                                        <h2>2012</h2>
-                                    
-
-                                    Jan 9, 2012
-                                    <a href="http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/">
-                                    Exploit Exercises - Protostar Stack 7
-                                    </a><br />
-
-
-                                 
-                        </article>
-                    </div>
-                </div>
+                
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/'>Exploit Exercises - Protostar Stack 7</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					5 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 9, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.
+This challenge was very interesting to me. I figured it would build off of the previous one. However, it was its own standalone challenge.
+We are given the following code to the stack7 executable:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;stdio.h&gt; #include &lt;string.h&gt; char *getpath() { char buffer[64]; unsigned int ret; printf(&quot;input path please: &quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp;amp; 0xb0000000) == 0xb0000000) { printf(&quot;bzzzt (%p)\n&quot;, ret); _exit(1); } printf(&quot;got path %s\n&quot;, buffer); return strdup(buffer); } int main(int argc, char **argv) { getpath(); }  From tinkering with the stack7 executable, I knew I was going to do a stack overflow, and somehow needed to execute code from the stack.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/ret2text/">ret2text </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/suid/">suid </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
             </div>
+            
+
+ 
+            <div class='clear'></div>
         </div>
     </div>
     
@@ -509,8 +549,6 @@
 							<li itemprop='name'><a href='/' itemprop='url'>HOME</a></li>
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
-						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
 						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						

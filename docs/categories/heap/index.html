@@ -57,8 +57,6 @@
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
 						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
-						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						
 					</ul>
@@ -68,8 +66,6 @@
 						<option value='/'>HOME</option>
 						
 						<option value='/categories'>CATEGORIES</option>
-						
-						<option value='/archives'>ARCHIVES</option>
 						
 						<option value='/resume.pdf'>RESUME</option>
 						
@@ -116,46 +112,139 @@
     <div id='main-wrapper'>
         <div class='main section' id='main'>
             <div class='blog-posts hfeed'>
-                <div class='post-outer'>
-                    <div class='post hentry'>
-                        <div class='post-header'></div>
-                        <article role="article">
-                            <header>
-                                <font class='retitle'>
-                                    <h2 class='post-title entry-title'>
-                                        Category: Heap
-                                    </h2>
-                                </font>
-                            </header>
-                                
-                                    
-                                    
-                                        
-                                        <br />
-                                        <h2>2012</h2>
-                                    
-
-                                    Jan 12, 2012
-                                    <a href="http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/">
-                                    Exploit Exercises - Protostar Heap 1
-                                    </a><br />
-
-
-                                 
-                                    
-                                    
-
-                                    Jan 10, 2012
-                                    <a href="http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/">
-                                    Exploit Exercises - Protostar Heap 0
-                                    </a><br />
-
-
-                                 
-                        </article>
-                    </div>
-                </div>
+                
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/'>Exploit Exercises - Protostar Heap 1</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					5 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 12, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						This challenge was different for me. The previous heap challenge was easy to pretend it was just a simple stack overflow. This one worked very different, and brought some different challenges with it.
+You first start out with the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;sys/types.h&gt; struct internet { int priority; char *name; }; void winner() { printf(&quot;and we have a winner @ %d\n&quot;, time(NULL)); } int main(int argc, char **argv) { struct internet *i1, *i2, *i3; i1 = malloc(sizeof(struct internet)); i1-&gt;priority = 1; i1-&gt;name = malloc(8); i2 = malloc(sizeof(struct internet)); i2-&gt;priority = 2; i2-&gt;name = malloc(8); strcpy(i1-&gt;name, argv[1]); strcpy(i2-&gt;name, argv[2]); printf(&quot;and that's a wrap folks!
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/heap/">heap </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
+                    <div class='post-outer'>
+	<div class='post hentry' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+		<div class='post-header'></div>
+		<article>
+			<font class='retitle'>
+			<h2 class='post-title entry-title'>
+			<a href='http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/'>Exploit Exercises - Protostar Heap 0</a>
+			</h2>
+			</font>
+			<div class='date-header'>
+				<div id='meta-post'>
+					2 minute read 
+					<i class='fa fa-calendar-o'></i>
+					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>Jan 10, 2012</abbr>
+					 
+						<span class='post-comment-link'>
+							<i class='fa fa-comment'></i>
+							<a class="comment-link" href="http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/#disqus_thread" data-disqus-identifier="http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/"/>Comments</a>
+						</span>
+					
+				</div>
+				
+				<div class='resumo'>
+					<span>
+					
+						Now that I&rsquo;ve completed all of the Stack section of protostar, I&rsquo;ve started to move onto Heap. The first of these challenges, is Heap 0.
+We are given the following code:
+#include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;sys/types.h&gt; struct data { char name[64]; }; struct fp { int (*fp)(); }; void winner() { printf(&quot;level passed\n&quot;); } void nowinner() { printf(&quot;level has not been passed\n&quot;); } int main(int argc, char **argv) { struct data *d; struct fp *f; d = malloc(sizeof(struct data)); f = malloc(sizeof(struct fp)); f-&gt;fp = nowinner; printf(&quot;data is at %p, fp is at %p\n&quot;, d, f); strcpy(d-&gt;name, argv[1]); f-&gt;fp(); }  I first needed to find the offset to where I could overwrite the EIP, so I connected to my other machine with the Metasploit Framework installed, and generated a unique string.
+					
+					</span>
+				</div>
+				<div style='clear: both;'></div>
+			</div>
+			<div class='second-meta'>
+				<a class='read-more anchor-hover' href="http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/">Read more <i class='fa fa-chevron-right'></i></a>
+				
+				<span class='post-labels'>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/wargames/">wargames </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/protostar/">Protostar </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/linux/">linux </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/exploit-exercises/">exploit-exercises </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/hacking/">hacking </a>
+					
+					<i class='fa fa-folder-open-o'></i>
+					<a class="label" href="http://test.andreko.net/categories/heap/">heap </a>
+					
+				</span>
+				
+			</div>
+		</article>
+	</div>
+</div>
+                
             </div>
+            
+
+ 
+            <div class='clear'></div>
         </div>
     </div>
     
@@ -519,8 +608,6 @@
 							<li itemprop='name'><a href='/' itemprop='url'>HOME</a></li>
 						
 							<li itemprop='name'><a href='/categories' itemprop='url'>CATEGORIES</a></li>
-						
-							<li itemprop='name'><a href='/archives' itemprop='url'>ARCHIVES</a></li>
 						
 							<li itemprop='name'><a href='/resume.pdf' itemprop='url'>RESUME</a></li>
 						

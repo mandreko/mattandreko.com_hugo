@@ -3,11 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://test.andreko.net/projects/</loc>
-    <lastmod>2016-10-02T22:55:05-04:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://test.andreko.net/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/</loc>
     <lastmod>2014-12-17T00:00:00+00:00</lastmod>
   </url>
@@ -646,7 +641,7 @@
   
   <url>
     <loc>http://test.andreko.net/</loc>
-    <lastmod>2016-10-02T22:55:05-04:00</lastmod>
+    <lastmod>2014-12-17T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -719,12 +714,6 @@
   <url>
     <loc>http://test.andreko.net/categories/printer/</loc>
     <lastmod>2013-06-18T08:23:00-04:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://test.andreko.net/categories/projects/</loc>
-    <lastmod>2016-10-02T22:55:05-04:00</lastmod>
     <priority>0</priority>
   </url>
   
