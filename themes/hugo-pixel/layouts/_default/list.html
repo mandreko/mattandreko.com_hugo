@@ -4,36 +4,13 @@
     <div id='main-wrapper'>
         <div class='main section' id='main'>
             <div class='blog-posts hfeed'>
-                <div class='post-outer'>
-                    <div class='post hentry'>
-                        <div class='post-header'></div>
-                        <article role="article">
-                            <header>
-                                <font class='retitle'>
-                                    <h2 class='post-title entry-title'>
-                                        Category: {{ $.Title}}
-                                    </h2>
-                                </font>
-                            </header>
-                                {{ range .Pages.ByDate.Reverse }}
-                                    {{ $dat := .Date.Year }}
-                                    {{ if ne $dat ($.Scratch.Get "odat")}}
-                                        {{ $.Scratch.Set "odat" $dat }}
-                                        <br />
-                                        <h2>{{ $dat }}</h2>
-                                    {{ end }}
-
-                                    {{ .Date.Format "Jan 2, 2006"  }}
-                                    <a href="{{ .Permalink }}">
-                                    {{ .Title }}
-                                    </a><br />
-
-
-                                 {{ end }}
-                        </article>
-                    </div>
-                </div>
+                {{ $paginator := .Pages.ByDate.Reverse }}
+                {{ range .Paginator.Pages }}
+                    {{ partial "post_preview.html" . }}
+                {{ end }}
             </div>
+            {{ partial "main_posts_pager.html" . }} <!-- even -->
+            <div class='clear'></div>
         </div>
     </div>
     <!-- Sidebar -->

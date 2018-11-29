@@ -54,13 +54,9 @@ publishDir = "docs"
   URL = "/categories"
   weight = 1
 [[menu.main]]
-  Name = "ARCHIVES"
-  URL = "/archives"
-  weight = 2
-[[menu.main]]
   Name = "RESUME"
   URL = "/resume.pdf"
-  weight = 3
+  weight = 2
 
 [[menu.links]]
 	Name = "0x80"
