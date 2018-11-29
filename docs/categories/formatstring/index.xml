@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Formatstring on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/formatstring/</link>
+    <link>https://www.mattandreko.com/categories/formatstring/</link>
     <description>Recent content in Formatstring on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 05 Feb 2012 15:15:00 -0500</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/formatstring/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/formatstring/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Exploit Exercises - Protostar Final 1</title>
-      <link>http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/</link>
+      <link>https://www.mattandreko.com/2012/02/05/exploit-exercises-protostar-final-1/</link>
       <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/</guid>
+      <guid>https://www.mattandreko.com/2012/02/05/exploit-exercises-protostar-final-1/</guid>
       <description>Since I&amp;rsquo;ve been doing a lot of the format string exploits lately, I decided to do the Final 1 challenge.
 We start out the challenge by being given the following code:
 #include &amp;quot;../common/common.c&amp;quot; #include &amp;lt;syslog.h&amp;gt; #define NAME &amp;quot;final1&amp;quot; #define UID 0 #define GID 0 #define PORT 2994 char username[128]; char hostname[64]; void logit(char *pw) { char buf[512]; snprintf(buf, sizeof(buf), &amp;quot;Login from %s as [%s] with password [%s]\n&amp;quot;, hostname, username, pw); syslog(LOG_USER|LOG_DEBUG, buf); } void trim(char *str) { char *q; q = strchr(str, &#39;\r&#39;); if(q) *q = 0; q = strchr(str, &#39;\n&#39;); if(q) *q = 0; } void parser() { char line[128]; printf(&amp;quot;[final1] $ &amp;quot;); while(fgets(line, sizeof(line)-1, stdin)) { trim(line); if(strncmp(line, &amp;quot;username &amp;quot;, 9) == 0) { strcpy(username, line+9); } else if(strncmp(line, &amp;quot;login &amp;quot;, 6) == 0) { if(username[0] == 0) { printf(&amp;quot;invalid protocol\n&amp;quot;); } else { logit(line + 6); printf(&amp;quot;login failed\n&amp;quot;); } } printf(&amp;quot;[final1] $ &amp;quot;); } } void getipport() { int l; struct sockaddr_in sin; l = sizeof(struct sockaddr_in); if(getpeername(0, &amp;amp;sin, &amp;amp;l) == -1) { err(1, &amp;quot;you don&#39;t exist&amp;quot;); } sprintf(hostname, &amp;quot;%s:%d&amp;quot;, inet_ntoa(sin.</description>
@@ -24,10 +24,10 @@ We start out the challenge by being given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Format 4</title>
-      <link>http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/</link>
+      <link>https://www.mattandreko.com/2012/02/02/exploit-exercises-protostar-format-4/</link>
       <pubDate>Thu, 02 Feb 2012 05:15:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/</guid>
+      <guid>https://www.mattandreko.com/2012/02/02/exploit-exercises-protostar-format-4/</guid>
       <description>Next up is the last challenge in the Format String series, Format 4.
 It starts out with the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int target; void hello() { printf(&amp;quot;code execution redirected! you win\n&amp;quot;); _exit(1); } void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printf(buffer); exit(1); } int main(int argc, char **argv) { vuln(); }  What initially caught my eye was the fact that there was a call to &amp;ldquo;exit()&amp;rdquo; as well as &amp;ldquo;_exit()&amp;ldquo;.</description>
@@ -35,10 +35,10 @@ It starts out with the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Format 3</title>
-      <link>http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/</link>
+      <link>https://www.mattandreko.com/2012/02/01/exploit-exercises-protostar-format-3/</link>
       <pubDate>Wed, 01 Feb 2012 05:33:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/</guid>
+      <guid>https://www.mattandreko.com/2012/02/01/exploit-exercises-protostar-format-3/</guid>
       <description>Continuing in the String Format section, the next challenge we run across is Format 3.
 We&amp;rsquo;re first given the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int target; void printbuffer(char *string) { printf(string); } void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printbuffer(buffer); if(target == 0x01025544) { printf(&amp;quot;you have modified the target :)\n&amp;quot;); } else { printf(&amp;quot;target is %08x :(\n&amp;quot;, target); } } int main(int argc, char **argv) { vuln(); }  This seems to be just like Format 2, except that we have to modify all 8 bytes instead of just 2.</description>
@@ -46,20 +46,20 @@ We&amp;rsquo;re first given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Format 2</title>
-      <link>http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/</link>
+      <link>https://www.mattandreko.com/2012/01/31/exploit-exercises-protostar-format-2/</link>
       <pubDate>Tue, 31 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/</guid>
+      <guid>https://www.mattandreko.com/2012/01/31/exploit-exercises-protostar-format-2/</guid>
       <description>Continuing from where we left off, we arrive at Format 2. It presents us with the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int target; void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printf(buffer); if(target == 64) { printf(&amp;quot;you have modified the target :)\n&amp;quot;); } else { printf(&amp;quot;target is %d :(\n&amp;quot;, target); } } int main(int argc, char **argv) { vuln(); }  This challenge seems very similar to Format 1, in all but 2 ways:</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Protostar Format 1</title>
-      <link>http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/</link>
+      <link>https://www.mattandreko.com/2012/01/30/exploit-exercises-protostar-format-1/</link>
       <pubDate>Mon, 30 Jan 2012 18:12:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/</guid>
+      <guid>https://www.mattandreko.com/2012/01/30/exploit-exercises-protostar-format-1/</guid>
       <description>Following the Format 0 challenge, I&amp;rsquo;ve had to do a bunch of reading on how format string exploits work on a very low level.
 Some resources that I&amp;rsquo;ve found greatly useful:
  Hacking: The Art of Exploitation, 2nd Edition Exploiting Format String Vulnerabilities SecurityTube.net Format String Vulnerabilities Megaprimer  With this challenge, we&amp;rsquo;re given some c code in which we are to find the vulnerability.
@@ -68,10 +68,10 @@ Some resources that I&amp;rsquo;ve found greatly useful:
     
     <item>
       <title>Exploit Exercises - Protostar Format 0</title>
-      <link>http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/</link>
+      <link>https://www.mattandreko.com/2012/01/24/exploit-exercises-protostar-format-0/</link>
       <pubDate>Tue, 24 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/</guid>
+      <guid>https://www.mattandreko.com/2012/01/24/exploit-exercises-protostar-format-0/</guid>
       <description>I&amp;rsquo;ll be honest, I&amp;rsquo;m new to format string exploits. I&amp;rsquo;ve been more experienced with stack overflows, and a little with heap overflows. So hopefully this information is correct, as it&amp;rsquo;s from my current understanding.
 Protostar Format 0 starts us off with the following vulnerable code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void vuln(char *string) { volatile int target; char buffer[64]; target = 0; sprintf(buffer, string); if(target == 0xdeadbeef) { printf(&amp;quot;you have hit the target correctly :)\n&amp;quot;); } } int main(int argc, char **argv) { vuln(argv[1]); }  Looking at this code, somehow we have to get the variable, &amp;ldquo;target&amp;rdquo;, which is never set anywhere other than to &amp;ldquo;0&amp;rdquo;, to equal &amp;ldquo;0xdeadbeef&amp;rdquo;.</description>

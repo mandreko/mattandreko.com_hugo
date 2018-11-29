@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/linux/</link>
+    <link>https://www.mattandreko.com/categories/linux/</link>
     <description>Recent content in Linux on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 13 Jan 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
-      <link>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <link>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
       <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <guid>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>A week or so ago, I read the news of a new backdoor on several devices, including those made by Belkin, Cisco, NetGear, Linksys, and several others. A list of what seems to be affected devices can be found here. Eloi Vanderbeken, who posted his findings on GitHub made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted Metasploit integration.</description>
     </item>
     
     <item>
       <title>OverTheWire Monxla Part 3</title>
-      <link>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</link>
+      <link>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</link>
       <pubDate>Mon, 26 Nov 2012 05:58:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/26/overthewire-monxla-part-3/</guid>
+      <guid>https://www.mattandreko.com/2012/11/26/overthewire-monxla-part-3/</guid>
       <description>Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.
 I started analyzing the source code, and noticed that the text that says &amp;ldquo;yes&amp;rdquo; or &amp;ldquo;no&amp;rdquo; in the table is actually an image being rendered from the hasnotes.php file. I started tinkering with that file, and found that it was vulnerable to SQL injection.</description>
     </item>
     
     <item>
       <title>OverTheWire Monxla Part 2</title>
-      <link>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</link>
+      <link>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</link>
       <pubDate>Sun, 25 Nov 2012 05:05:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/25/overthewire-monxla-part-2/</guid>
+      <guid>https://www.mattandreko.com/2012/11/25/overthewire-monxla-part-2/</guid>
       <description>In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.
 Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine. To configure my machine for these virtual hosts, I added these lines to my /etc/hosts file:
 192.168.188.134 nasenko.otw 192.168.188.134 honeylink.otw  There are 2 sites immediately available to you:</description>
@@ -43,10 +43,10 @@ Firstly, the PDF explains that there are 2 virtual hosts enabled on the machine.
     
     <item>
       <title>OverTheWire Monxla Part 1</title>
-      <link>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</link>
+      <link>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</link>
       <pubDate>Sat, 24 Nov 2012 15:54:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/24/overthewire-monxla-part-1/</guid>
+      <guid>https://www.mattandreko.com/2012/11/24/overthewire-monxla-part-1/</guid>
       <description>I had a twitter follower recently inform me that OverTheWire had a new wargame up and running. &amp;nbsp;I was immediately excited and downloaded it. &amp;nbsp;Several days later, I actually was able to start tinkering with it.
 I booted up the image, and proceeded to do some preliminary nmap scans. &amp;nbsp;I found a few services runinng:
 mandreko$ nmap -sV -p1-65535 -T4&amp;amp;nbsp;192.168.188.134 Starting Nmap 6.01 ( http://nmap.org ) at 2012-11-15 10:28 EST Nmap scan report for 192.</description>
@@ -54,29 +54,29 @@ mandreko$ nmap -sV -p1-65535 -T4&amp;amp;nbsp;192.168.188.134 Starting Nmap 6.01
     
     <item>
       <title>Exploit Exercises - Fusion 01</title>
-      <link>http://test.andreko.net/2012/07/03/exploit-exercises-fusion-01/</link>
+      <link>https://www.mattandreko.com/2012/07/03/exploit-exercises-fusion-01/</link>
       <pubDate>Tue, 03 Jul 2012 17:19:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/07/03/exploit-exercises-fusion-01/</guid>
+      <guid>https://www.mattandreko.com/2012/07/03/exploit-exercises-fusion-01/</guid>
       <description>It&amp;rsquo;s been a while since I last did a write-up about Exploit Exercises. I&amp;rsquo;m starting to look back at it now, since I have some more free time again. I&amp;rsquo;ve now, as I&amp;rsquo;m sure you can guess by the title of this post, solved level 01.
 So this level is very similar to the first, except that it has ASLR and doesn&amp;rsquo;t tell us where the buffer is on every execution.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Fusion 00</title>
-      <link>http://test.andreko.net/2012/04/09/exploit-exercises-fusion-00/</link>
+      <link>https://www.mattandreko.com/2012/04/09/exploit-exercises-fusion-00/</link>
       <pubDate>Mon, 09 Apr 2012 17:13:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/04/09/exploit-exercises-fusion-00/</guid>
+      <guid>https://www.mattandreko.com/2012/04/09/exploit-exercises-fusion-00/</guid>
       <description>I was very excited to see the announcement on twitter, that Fusion was going to be released, even if it&amp;rsquo;s just the first 10 levels. I was a bit bummed, as I didn&amp;rsquo;t think I&amp;rsquo;d get to work on it much, until I complete PWB, but I managed to find a little time to at least start it. I pulled up level 00, which looks to be a basic stack overflow in an http server.</description>
     </item>
     
     <item>
       <title>Kioptrix 4</title>
-      <link>http://test.andreko.net/2012/02/12/kioptrix-4/</link>
+      <link>https://www.mattandreko.com/2012/02/12/kioptrix-4/</link>
       <pubDate>Sun, 12 Feb 2012 22:27:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/12/kioptrix-4/</guid>
+      <guid>https://www.mattandreko.com/2012/02/12/kioptrix-4/</guid>
       <description>I know there are a few different methods to the new Kioptrix 4 boot2root. Unfortunately, I could not find the remote root exploit that is mentioned, but my method used several tools, and privilege escalation.
 Tools used:
  Backtrack 5 VM Nmap SqlMap  To start out, I had to find the machine on the network. I booted up my Backtrack VM and Kioptrix VM both using a NAT connection in my VMWare.</description>
@@ -84,10 +84,10 @@ Tools used:
     
     <item>
       <title>Exploit Exercises - Protostar Net 3</title>
-      <link>http://test.andreko.net/2012/02/11/exploit-exercises-protostar-net-3/</link>
+      <link>https://www.mattandreko.com/2012/02/11/exploit-exercises-protostar-net-3/</link>
       <pubDate>Sat, 11 Feb 2012 10:11:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/11/exploit-exercises-protostar-net-3/</guid>
+      <guid>https://www.mattandreko.com/2012/02/11/exploit-exercises-protostar-net-3/</guid>
       <description>The last in the Net series of Protostar is Net 3. It was of course the most difficult of all of them. However, it still wasn&amp;rsquo;t too bad.
 First, we&amp;rsquo;re given the following code:
 #include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net3&amp;quot; #define UID 996 #define GID 996 #define PORT 2996 /* * Extract a null terminated string from the buffer */ int get_string(char **result, unsigned char *buffer, u_int16_t len) { unsigned char byte; byte = *buffer; if(byte &amp;gt; len) errx(1, &amp;quot;badly formed packet&amp;quot;); *result = malloc(byte); strcpy(*result, buffer + 1); return byte + 1; } /* * Check to see if we can log into the host */ int login(unsigned char *buffer, u_int16_t len) { char *resource, *username, *password; int deduct; int success; if(len &amp;lt; 3) errx(1, &amp;quot;invalid login packet length&amp;quot;); resource = username = password = NULL; deduct = get_string(&amp;amp;resource, buffer, len); deduct += get_string(&amp;amp;username, buffer+deduct, len-deduct); deduct += get_string(&amp;amp;password, buffer+deduct, len-deduct); success = 0; success |= strcmp(resource, &amp;quot;net3&amp;quot;); success |= strcmp(username, &amp;quot;awesomesauce&amp;quot;); success |= strcmp(password, &amp;quot;password&amp;quot;); free(resource); free(username); free(password); return !</description>
@@ -95,10 +95,10 @@ First, we&amp;rsquo;re given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Net 2</title>
-      <link>http://test.andreko.net/2012/02/10/exploit-exercises-protostar-net-2/</link>
+      <link>https://www.mattandreko.com/2012/02/10/exploit-exercises-protostar-net-2/</link>
       <pubDate>Fri, 10 Feb 2012 05:19:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/10/exploit-exercises-protostar-net-2/</guid>
+      <guid>https://www.mattandreko.com/2012/02/10/exploit-exercises-protostar-net-2/</guid>
       <description>So far, these Net challenges in Protostar have been pretty easy. This challenge, Net 2 got a small bit tougher.
 We are given the following code:
 #include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net2&amp;quot; #define UID 997 #define GID 997 #define PORT 2997 void run() { unsigned int quad[4]; int i; unsigned int result, wanted; result = 0; for(i = 0; i &amp;lt; 4; i++) { quad[i] = random(); result += quad[i]; if(write(0, &amp;amp;(quad[i]), sizeof(result)) !</description>
@@ -106,10 +106,10 @@ We are given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Net 1</title>
-      <link>http://test.andreko.net/2012/02/09/exploit-exercises-protostar-net-1/</link>
+      <link>https://www.mattandreko.com/2012/02/09/exploit-exercises-protostar-net-1/</link>
       <pubDate>Thu, 09 Feb 2012 05:43:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/09/exploit-exercises-protostar-net-1/</guid>
+      <guid>https://www.mattandreko.com/2012/02/09/exploit-exercises-protostar-net-1/</guid>
       <description>Continuing with the &amp;ldquo;Net&amp;rdquo; series of Protostar, is Net 1.
 We are given the following code:
 #include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net1&amp;quot; #define UID 998 #define GID 998 #define PORT 2998 void run() { char buf[12]; char fub[12]; char *q; unsigned int wanted; wanted = random(); sprintf(fub, &amp;quot;%d&amp;quot;, wanted); if(write(0, &amp;amp;wanted, sizeof(wanted)) != sizeof(wanted)) { errx(1, &amp;quot;:(\n&amp;quot;); } if(fgets(buf, sizeof(buf)-1, stdin) == NULL) { errx(1, &amp;quot;:(\n&amp;quot;); } q = strchr(buf, &#39;\r&#39;); if(q) *q = 0; q = strchr(buf, &#39;\n&#39;); if(q) *q = 0; if(strcmp(fub, buf) == 0) { printf(&amp;quot;you correctly sent the data\n&amp;quot;); } else { printf(&amp;quot;you didn&#39;t send the data properly\n&amp;quot;); } } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); /* Don&#39;t do this :&amp;gt; */ srandom(time(NULL)); run(); }  Similar to Net 0, it looks like this is another network daemon, this time running on port 2998.</description>
@@ -117,10 +117,10 @@ We are given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Net 0</title>
-      <link>http://test.andreko.net/2012/02/08/exploit-exercises-protostar-net-0/</link>
+      <link>https://www.mattandreko.com/2012/02/08/exploit-exercises-protostar-net-0/</link>
       <pubDate>Wed, 08 Feb 2012 18:31:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/08/exploit-exercises-protostar-net-0/</guid>
+      <guid>https://www.mattandreko.com/2012/02/08/exploit-exercises-protostar-net-0/</guid>
       <description>I recently started looking at the &amp;ldquo;Net&amp;rdquo; problems in Protostar, and found them to be quite a fun change in pace.
 Starting with Net 0, we are given the following code:
 #include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;net0&amp;quot; #define UID 999 #define GID 999 #define PORT 2999 void run() { unsigned int i; unsigned int wanted; wanted = random(); printf(&amp;quot;Please send &#39;%d&#39; as a little endian 32bit int\n&amp;quot;, wanted); if(fread(&amp;amp;i, sizeof(i), 1, stdin) == NULL) { errx(1, &amp;quot;:(\n&amp;quot;); } if(i == wanted) { printf(&amp;quot;Thank you sir/madam\n&amp;quot;); } else { printf(&amp;quot;I&#39;m sorry, you sent %d instead\n&amp;quot;, i); } } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); /* Don&#39;t do this :&amp;gt; */ srandom(time(NULL)); run(); }  I started to analyze this program, to figure out what I was even supposed to do.</description>
@@ -128,10 +128,10 @@ Starting with Net 0, we are given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Final 1</title>
-      <link>http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/</link>
+      <link>https://www.mattandreko.com/2012/02/05/exploit-exercises-protostar-final-1/</link>
       <pubDate>Sun, 05 Feb 2012 15:15:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/05/exploit-exercises-protostar-final-1/</guid>
+      <guid>https://www.mattandreko.com/2012/02/05/exploit-exercises-protostar-final-1/</guid>
       <description>Since I&amp;rsquo;ve been doing a lot of the format string exploits lately, I decided to do the Final 1 challenge.
 We start out the challenge by being given the following code:
 #include &amp;quot;../common/common.c&amp;quot; #include &amp;lt;syslog.h&amp;gt; #define NAME &amp;quot;final1&amp;quot; #define UID 0 #define GID 0 #define PORT 2994 char username[128]; char hostname[64]; void logit(char *pw) { char buf[512]; snprintf(buf, sizeof(buf), &amp;quot;Login from %s as [%s] with password [%s]\n&amp;quot;, hostname, username, pw); syslog(LOG_USER|LOG_DEBUG, buf); } void trim(char *str) { char *q; q = strchr(str, &#39;\r&#39;); if(q) *q = 0; q = strchr(str, &#39;\n&#39;); if(q) *q = 0; } void parser() { char line[128]; printf(&amp;quot;[final1] $ &amp;quot;); while(fgets(line, sizeof(line)-1, stdin)) { trim(line); if(strncmp(line, &amp;quot;username &amp;quot;, 9) == 0) { strcpy(username, line+9); } else if(strncmp(line, &amp;quot;login &amp;quot;, 6) == 0) { if(username[0] == 0) { printf(&amp;quot;invalid protocol\n&amp;quot;); } else { logit(line + 6); printf(&amp;quot;login failed\n&amp;quot;); } } printf(&amp;quot;[final1] $ &amp;quot;); } } void getipport() { int l; struct sockaddr_in sin; l = sizeof(struct sockaddr_in); if(getpeername(0, &amp;amp;sin, &amp;amp;l) == -1) { err(1, &amp;quot;you don&#39;t exist&amp;quot;); } sprintf(hostname, &amp;quot;%s:%d&amp;quot;, inet_ntoa(sin.</description>
@@ -139,10 +139,10 @@ We start out the challenge by being given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Format 4</title>
-      <link>http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/</link>
+      <link>https://www.mattandreko.com/2012/02/02/exploit-exercises-protostar-format-4/</link>
       <pubDate>Thu, 02 Feb 2012 05:15:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/02/exploit-exercises-protostar-format-4/</guid>
+      <guid>https://www.mattandreko.com/2012/02/02/exploit-exercises-protostar-format-4/</guid>
       <description>Next up is the last challenge in the Format String series, Format 4.
 It starts out with the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int target; void hello() { printf(&amp;quot;code execution redirected! you win\n&amp;quot;); _exit(1); } void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printf(buffer); exit(1); } int main(int argc, char **argv) { vuln(); }  What initially caught my eye was the fact that there was a call to &amp;ldquo;exit()&amp;rdquo; as well as &amp;ldquo;_exit()&amp;ldquo;.</description>
@@ -150,10 +150,10 @@ It starts out with the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Format 3</title>
-      <link>http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/</link>
+      <link>https://www.mattandreko.com/2012/02/01/exploit-exercises-protostar-format-3/</link>
       <pubDate>Wed, 01 Feb 2012 05:33:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/01/exploit-exercises-protostar-format-3/</guid>
+      <guid>https://www.mattandreko.com/2012/02/01/exploit-exercises-protostar-format-3/</guid>
       <description>Continuing in the String Format section, the next challenge we run across is Format 3.
 We&amp;rsquo;re first given the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int target; void printbuffer(char *string) { printf(string); } void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printbuffer(buffer); if(target == 0x01025544) { printf(&amp;quot;you have modified the target :)\n&amp;quot;); } else { printf(&amp;quot;target is %08x :(\n&amp;quot;, target); } } int main(int argc, char **argv) { vuln(); }  This seems to be just like Format 2, except that we have to modify all 8 bytes instead of just 2.</description>
@@ -161,20 +161,20 @@ We&amp;rsquo;re first given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Format 2</title>
-      <link>http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/</link>
+      <link>https://www.mattandreko.com/2012/01/31/exploit-exercises-protostar-format-2/</link>
       <pubDate>Tue, 31 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/31/exploit-exercises-protostar-format-2/</guid>
+      <guid>https://www.mattandreko.com/2012/01/31/exploit-exercises-protostar-format-2/</guid>
       <description>Continuing from where we left off, we arrive at Format 2. It presents us with the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int target; void vuln() { char buffer[512]; fgets(buffer, sizeof(buffer), stdin); printf(buffer); if(target == 64) { printf(&amp;quot;you have modified the target :)\n&amp;quot;); } else { printf(&amp;quot;target is %d :(\n&amp;quot;, target); } } int main(int argc, char **argv) { vuln(); }  This challenge seems very similar to Format 1, in all but 2 ways:</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Protostar Format 1</title>
-      <link>http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/</link>
+      <link>https://www.mattandreko.com/2012/01/30/exploit-exercises-protostar-format-1/</link>
       <pubDate>Mon, 30 Jan 2012 18:12:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/30/exploit-exercises-protostar-format-1/</guid>
+      <guid>https://www.mattandreko.com/2012/01/30/exploit-exercises-protostar-format-1/</guid>
       <description>Following the Format 0 challenge, I&amp;rsquo;ve had to do a bunch of reading on how format string exploits work on a very low level.
 Some resources that I&amp;rsquo;ve found greatly useful:
  Hacking: The Art of Exploitation, 2nd Edition Exploiting Format String Vulnerabilities SecurityTube.net Format String Vulnerabilities Megaprimer  With this challenge, we&amp;rsquo;re given some c code in which we are to find the vulnerability.
@@ -183,10 +183,10 @@ Some resources that I&amp;rsquo;ve found greatly useful:
     
     <item>
       <title>Exploit Exercises - Protostar Format 0</title>
-      <link>http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/</link>
+      <link>https://www.mattandreko.com/2012/01/24/exploit-exercises-protostar-format-0/</link>
       <pubDate>Tue, 24 Jan 2012 05:13:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/24/exploit-exercises-protostar-format-0/</guid>
+      <guid>https://www.mattandreko.com/2012/01/24/exploit-exercises-protostar-format-0/</guid>
       <description>I&amp;rsquo;ll be honest, I&amp;rsquo;m new to format string exploits. I&amp;rsquo;ve been more experienced with stack overflows, and a little with heap overflows. So hopefully this information is correct, as it&amp;rsquo;s from my current understanding.
 Protostar Format 0 starts us off with the following vulnerable code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void vuln(char *string) { volatile int target; char buffer[64]; target = 0; sprintf(buffer, string); if(target == 0xdeadbeef) { printf(&amp;quot;you have hit the target correctly :)\n&amp;quot;); } } int main(int argc, char **argv) { vuln(argv[1]); }  Looking at this code, somehow we have to get the variable, &amp;ldquo;target&amp;rdquo;, which is never set anywhere other than to &amp;ldquo;0&amp;rdquo;, to equal &amp;ldquo;0xdeadbeef&amp;rdquo;.</description>
@@ -194,10 +194,10 @@ Protostar Format 0 starts us off with the following vulnerable code:
     
     <item>
       <title>Exploit Exercises - Protostar Final 0</title>
-      <link>http://test.andreko.net/2012/01/22/exploit-exercises-protostar-final-0/</link>
+      <link>https://www.mattandreko.com/2012/01/22/exploit-exercises-protostar-final-0/</link>
       <pubDate>Sun, 22 Jan 2012 22:08:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/22/exploit-exercises-protostar-final-0/</guid>
+      <guid>https://www.mattandreko.com/2012/01/22/exploit-exercises-protostar-final-0/</guid>
       <description>I for some reason decided to look at the set of &amp;ldquo;final&amp;rdquo; challenges, and found the first one to be not too difficult.
 We start with the following code being given to us:
 #include &amp;quot;../common/common.c&amp;quot; #define NAME &amp;quot;final0&amp;quot; #define UID 0 #define GID 0 #define PORT 2995 /* * Read the username in from the network */ char *get_username() { char buffer[512]; char *q; int i; memset(buffer, 0, sizeof(buffer)); gets(buffer); /* Strip off trailing new line characters */ q = strchr(buffer, &#39;\n&#39;); if(q) *q = 0; q = strchr(buffer, &#39;\r&#39;); if(q) *q = 0; /* Convert to lower case */ for(i = 0; i &amp;amp;lt; strlen(buffer); i++) { buffer[i] = toupper(buffer[i]); } /* Duplicate the string and return it */ return strdup(buffer); } int main(int argc, char **argv, char **envp) { int fd; char *username; /* Run the process as a daemon */ background_process(NAME, UID, GID); /* Wait for socket activity and return */ fd = serve_forever(PORT); /* Set the client socket to STDIN, STDOUT, and STDERR */ set_io(fd); username = get_username(); printf(&amp;quot;No such user %s\n&amp;quot;, username); }  This is a somewhat standard buffer overflow.</description>
@@ -205,10 +205,10 @@ We start with the following code being given to us:
     
     <item>
       <title>Exploit Exercises - Protostar Heap 1</title>
-      <link>http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/</link>
+      <link>https://www.mattandreko.com/2012/01/12/exploit-exercises-protostar-heap-1/</link>
       <pubDate>Thu, 12 Jan 2012 18:28:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/12/exploit-exercises-protostar-heap-1/</guid>
+      <guid>https://www.mattandreko.com/2012/01/12/exploit-exercises-protostar-heap-1/</guid>
       <description>This challenge was different for me. The previous heap challenge was easy to pretend it was just a simple stack overflow. This one worked very different, and brought some different challenges with it.
 You first start out with the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; struct internet { int priority; char *name; }; void winner() { printf(&amp;quot;and we have a winner @ %d\n&amp;quot;, time(NULL)); } int main(int argc, char **argv) { struct internet *i1, *i2, *i3; i1 = malloc(sizeof(struct internet)); i1-&amp;gt;priority = 1; i1-&amp;gt;name = malloc(8); i2 = malloc(sizeof(struct internet)); i2-&amp;gt;priority = 2; i2-&amp;gt;name = malloc(8); strcpy(i1-&amp;gt;name, argv[1]); strcpy(i2-&amp;gt;name, argv[2]); printf(&amp;quot;and that&#39;s a wrap folks!</description>
@@ -216,10 +216,10 @@ You first start out with the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Heap 0</title>
-      <link>http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/</link>
+      <link>https://www.mattandreko.com/2012/01/10/exploit-exercises-protostar-heap-0/</link>
       <pubDate>Tue, 10 Jan 2012 05:34:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/10/exploit-exercises-protostar-heap-0/</guid>
+      <guid>https://www.mattandreko.com/2012/01/10/exploit-exercises-protostar-heap-0/</guid>
       <description>Now that I&amp;rsquo;ve completed all of the Stack section of protostar, I&amp;rsquo;ve started to move onto Heap. The first of these challenges, is Heap 0.
 We are given the following code:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; struct data { char name[64]; }; struct fp { int (*fp)(); }; void winner() { printf(&amp;quot;level passed\n&amp;quot;); } void nowinner() { printf(&amp;quot;level has not been passed\n&amp;quot;); } int main(int argc, char **argv) { struct data *d; struct fp *f; d = malloc(sizeof(struct data)); f = malloc(sizeof(struct fp)); f-&amp;gt;fp = nowinner; printf(&amp;quot;data is at %p, fp is at %p\n&amp;quot;, d, f); strcpy(d-&amp;gt;name, argv[1]); f-&amp;gt;fp(); }  I first needed to find the offset to where I could overwrite the EIP, so I connected to my other machine with the Metasploit Framework installed, and generated a unique string.</description>
@@ -227,10 +227,10 @@ We are given the following code:
     
     <item>
       <title>Exploit Exercises - Protostar Stack 7</title>
-      <link>http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/</link>
+      <link>https://www.mattandreko.com/2012/01/09/exploit-exercises-protostar-stack-7/</link>
       <pubDate>Mon, 09 Jan 2012 18:36:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/01/09/exploit-exercises-protostar-stack-7/</guid>
+      <guid>https://www.mattandreko.com/2012/01/09/exploit-exercises-protostar-stack-7/</guid>
       <description>Welcome everyone to 2012! I took a bit of a break during these holidays, and am just starting to get back going.
 This challenge was very interesting to me. I figured it would build off of the previous one. However, it was its own standalone challenge.
 We are given the following code to the stack7 executable:
@@ -239,10 +239,10 @@ We are given the following code to the stack7 executable:
     
     <item>
       <title>Exploit Exercises - Protostar Stack 6</title>
-      <link>http://test.andreko.net/2011/12/22/exploit-exercises-protostar-stack-6/</link>
+      <link>https://www.mattandreko.com/2011/12/22/exploit-exercises-protostar-stack-6/</link>
       <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/22/exploit-exercises-protostar-stack-6/</guid>
+      <guid>https://www.mattandreko.com/2011/12/22/exploit-exercises-protostar-stack-6/</guid>
       <description>The Stack6 challenge was definitely a learning experience for me. This actually went beyond my existing skills, and made me learn some new stuff.
 We are given the following code.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void getpath() { char buffer[64]; unsigned int ret; printf(&amp;quot;input path please: &amp;quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp;amp; 0xbf000000) == 0xbf000000) { printf(&amp;quot;bzzzt (%p)\n&amp;quot;, ret); _exit(1); } printf(&amp;quot;got path %s\n&amp;quot;, buffer); } int main(int argc, char **argv) { getpath(); }  The first thing I tried to do, was to set it up just like I did on Stack 5.</description>
@@ -250,10 +250,10 @@ We are given the following code.
     
     <item>
       <title>Exploit Exercises - Protostar Stack 5</title>
-      <link>http://test.andreko.net/2011/12/17/exploit-exercises-protostar-stack-5/</link>
+      <link>https://www.mattandreko.com/2011/12/17/exploit-exercises-protostar-stack-5/</link>
       <pubDate>Sat, 17 Dec 2011 12:23:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/17/exploit-exercises-protostar-stack-5/</guid>
+      <guid>https://www.mattandreko.com/2011/12/17/exploit-exercises-protostar-stack-5/</guid>
       <description>Wow, this challenge was a tough one for me. I ran into some huge problems that I had to work out. Considering this is a &amp;ldquo;standard buffer overflow&amp;rdquo;, I figured it&amp;rsquo;d be as easy as some of the others I&amp;rsquo;ve done in the past. I&amp;rsquo;ll explain my frustrations inline.
 First, we&amp;rsquo;re given the following vulnerable program.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(int argc, char **argv) { char buffer[64]; gets(buffer); }  The first task with this challenge was to find the offset of the EIP.</description>
@@ -261,10 +261,10 @@ First, we&amp;rsquo;re given the following vulnerable program.
     
     <item>
       <title>Exploit Exercises - Protostar Stack 4</title>
-      <link>http://test.andreko.net/2011/12/16/exploit-exercises-protostar-stack-4/</link>
+      <link>https://www.mattandreko.com/2011/12/16/exploit-exercises-protostar-stack-4/</link>
       <pubDate>Fri, 16 Dec 2011 05:52:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/16/exploit-exercises-protostar-stack-4/</guid>
+      <guid>https://www.mattandreko.com/2011/12/16/exploit-exercises-protostar-stack-4/</guid>
       <description>With this challenge, I think things really start to get fun, and more real-world.
 We are provided with the following C program:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void win() { printf(&amp;quot;code flow successfully changed\n&amp;quot;); } int main(int argc, char **argv) { char buffer[64]; gets(buffer); }  This C app will simply read a value from user input, and store it in &amp;ldquo;buffer&amp;rdquo;. We then need to get it to somehow execute &amp;ldquo;win()&amp;rdquo;.</description>
@@ -272,40 +272,40 @@ We are provided with the following C program:
     
     <item>
       <title>Exploit Exercises - Protostar Stack 3</title>
-      <link>http://test.andreko.net/2011/12/15/exploit-exercises-protostar-stack-3/</link>
+      <link>https://www.mattandreko.com/2011/12/15/exploit-exercises-protostar-stack-3/</link>
       <pubDate>Thu, 15 Dec 2011 05:52:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/15/exploit-exercises-protostar-stack-3/</guid>
+      <guid>https://www.mattandreko.com/2011/12/15/exploit-exercises-protostar-stack-3/</guid>
       <description>This challenge starts getting a little bit more involved than the previous ones. Instead of just providing a new value for the &amp;ldquo;modified&amp;rdquo; variable, we need to make the code jump to a method, changing the execution.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void win() { printf(&amp;quot;code flow successfully changed\n&amp;quot;); } int main(int argc, char **argv) { volatile int (*fp)(); char buffer[64]; fp = 0; gets(buffer); if(fp) { printf(&amp;quot;calling function pointer, jumping to 0x%08x\n&amp;quot;, fp); fp(); } }  This means that first of all, we need to find the address of where the &amp;ldquo;win()&amp;rdquo; function is located in the program.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Protostar Stack 2</title>
-      <link>http://test.andreko.net/2011/12/14/exploit-exercises-protostar-stack-2/</link>
+      <link>https://www.mattandreko.com/2011/12/14/exploit-exercises-protostar-stack-2/</link>
       <pubDate>Wed, 14 Dec 2011 05:08:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/14/exploit-exercises-protostar-stack-2/</guid>
+      <guid>https://www.mattandreko.com/2011/12/14/exploit-exercises-protostar-stack-2/</guid>
       <description>This challenge is pretty much the same as the previous challenge, except that the buffer comes from an environmental variable.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(int argc, char **argv) { volatile int modified; char buffer[64]; char *variable; variable = getenv(&amp;quot;GREENIE&amp;quot;); if(variable == NULL) { errx(1, &amp;quot;please set the GREENIE environment variable\n&amp;quot;); } modified = 0; strcpy(buffer, variable); if(modified == 0x0d0a0d0a) { printf(&amp;quot;you have correctly modified the variable\n&amp;quot;); } else { printf(&amp;quot;Try again, you got 0x%08x\n&amp;quot;, modified); } }  This problem can simply be solved by running these commands:</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Protostar Stack 1</title>
-      <link>http://test.andreko.net/2011/12/13/exploit-exercises-protostar-stack-1/</link>
+      <link>https://www.mattandreko.com/2011/12/13/exploit-exercises-protostar-stack-1/</link>
       <pubDate>Tue, 13 Dec 2011 06:12:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/13/exploit-exercises-protostar-stack-1/</guid>
+      <guid>https://www.mattandreko.com/2011/12/13/exploit-exercises-protostar-stack-1/</guid>
       <description>This challenge is very similar to the previous one. The main difference is that instead of just validating that the &amp;ldquo;modified&amp;rdquo; value was changed, it validates that it was changed to a specific value, 0x61626364, or &amp;ldquo;dcba&amp;rdquo; in ASCII.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(int argc, char **argv) { volatile int modified; char buffer[64]; if(argc == 1) { errx(1, &amp;quot;please specify an argument\n&amp;quot;); } modified = 0; strcpy(buffer, argv[1]); if(modified == 0x61626364) { printf(&amp;quot;you have correctly got the variable to the right value\n&amp;quot;); } else { printf(&amp;quot;Try again, you got 0x%08x\n&amp;quot;, modified); } }  To complete this, we simply run:</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Protostar Stack 0</title>
-      <link>http://test.andreko.net/2011/12/12/exploit-exercises-protostar-stack-0/</link>
+      <link>https://www.mattandreko.com/2011/12/12/exploit-exercises-protostar-stack-0/</link>
       <pubDate>Mon, 12 Dec 2011 05:17:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/12/exploit-exercises-protostar-stack-0/</guid>
+      <guid>https://www.mattandreko.com/2011/12/12/exploit-exercises-protostar-stack-0/</guid>
       <description>I&amp;rsquo;m still working on the Nebula chain of challenges, however, I&amp;rsquo;ve been stuck on Nebula 11 for a bit now, as well as busy outside work.
 In the meantime, I still have other challenges that can be solved while I learn how to do more advanced ones. Protostar is another challenge made by Exploit-Exercises, the same people who brought you Nebula.
 Protostar Stack 0 is a very easy challenge. After doing a bunch of these challenges, and seeing nobody else doing them, I finally found someone, Mito125.</description>
@@ -313,10 +313,10 @@ Protostar Stack 0 is a very easy challenge. After doing a bunch of these challen
     
     <item>
       <title>Exploit Exercises - Nebula 10</title>
-      <link>http://test.andreko.net/2011/12/11/exploit-exercises-nebula-10/</link>
+      <link>https://www.mattandreko.com/2011/12/11/exploit-exercises-nebula-10/</link>
       <pubDate>Sun, 11 Dec 2011 07:48:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/11/exploit-exercises-nebula-10/</guid>
+      <guid>https://www.mattandreko.com/2011/12/11/exploit-exercises-nebula-10/</guid>
       <description>Challenge 10 is another nostalgic one for me. Back when I was first starting with linux, I remember reading about overflows and race conditions. This challenge is the latter, a race condition.
 We&amp;rsquo;re given a C/C++ app to exploit:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; #include &amp;lt;errno.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;netinet/in.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(int argc, char **argv) { char *file; char *host; if(argc &amp;lt; 3) { printf(&amp;quot;%s file host\n\tsends file to host if you have access to it\n&amp;quot;, argv[0]); exit(1); } file = argv[1]; host = argv[2]; if(access(argv[1], R_OK) == 0) { int fd; int ffd; int rc; struct sockaddr_in sin; char buffer[4096]; printf(&amp;quot;Connecting to %s:18211 .</description>
@@ -324,30 +324,30 @@ We&amp;rsquo;re given a C/C++ app to exploit:
     
     <item>
       <title>Exploit Exercises - Nebula 09</title>
-      <link>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</link>
+      <link>https://www.mattandreko.com/2011/12/10/exploit-exercises-nebula-09/</link>
       <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</guid>
+      <guid>https://www.mattandreko.com/2011/12/10/exploit-exercises-nebula-09/</guid>
       <description>Challenge 09 gave me the most issues out of any other challenge so far. This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out. However, it is based on a dangerous function, known as preg_replace(). There are several more dangerous functions, some of which can be seen here.
 The challenge starts by giving us the source code of the program we will be exploiting.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 08</title>
-      <link>http://test.andreko.net/2011/12/09/exploit-exercises-nebula-08/</link>
+      <link>https://www.mattandreko.com/2011/12/09/exploit-exercises-nebula-08/</link>
       <pubDate>Fri, 09 Dec 2011 05:38:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/09/exploit-exercises-nebula-08/</guid>
+      <guid>https://www.mattandreko.com/2011/12/09/exploit-exercises-nebula-08/</guid>
       <description>Challenge 08 is more of a real-world challenge than some of the others have been. It&amp;rsquo;s also very dear to my heart, getting back to my networking roots.
 You are instructed simply to check out what the level08 user has been up to. This is fairly easy, since when you login as level08, you see a &amp;ldquo;capture.pcap&amp;rdquo; file in their home folder. A pcap file is a standard packet capture file format.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 07</title>
-      <link>http://test.andreko.net/2011/12/08/exploit-exercises-nebula-07/</link>
+      <link>https://www.mattandreko.com/2011/12/08/exploit-exercises-nebula-07/</link>
       <pubDate>Thu, 08 Dec 2011 06:10:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/08/exploit-exercises-nebula-07/</guid>
+      <guid>https://www.mattandreko.com/2011/12/08/exploit-exercises-nebula-07/</guid>
       <description>This next challenge is a little bit more tricky than some of the previous ones. There&amp;rsquo;s a lot more code involved, but it&amp;rsquo;s not too bad.
 In the flag07 home directory, you&amp;rsquo;ll find the configuration for a simple http server, thttpd.conf. Inside, you&amp;rsquo;ll find that it&amp;rsquo;s running an HTTP server on port 7007 as the flag07 user. This is where the perl script that is provided comes in.
 #!/usr/bin/perl use CGI qw{param}; print &amp;quot;Content-type: text/html\n\n&amp;quot;; sub ping { $host = $_[0]; print(&amp;quot;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Ping results&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;pre&amp;gt;&amp;quot;); @output = `ping -c 3 $host 2&amp;gt;&amp;amp;1`; foreach $line (@output) { print &amp;quot;$line&amp;quot;; } print(&amp;quot;&amp;lt;/pre&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;quot;); } # check if Host set.</description>
@@ -355,29 +355,29 @@ In the flag07 home directory, you&amp;rsquo;ll find the configuration for a simp
     
     <item>
       <title>Exploit Exercises - Nebula 06</title>
-      <link>http://test.andreko.net/2011/12/07/exploit-exercises-nebula-06/</link>
+      <link>https://www.mattandreko.com/2011/12/07/exploit-exercises-nebula-06/</link>
       <pubDate>Wed, 07 Dec 2011 06:10:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/07/exploit-exercises-nebula-06/</guid>
+      <guid>https://www.mattandreko.com/2011/12/07/exploit-exercises-nebula-06/</guid>
       <description>Nebula 06 is a retro challenge. The description of the problem says &amp;ldquo;The flag06 account credentials came from a legacy unix system.&amp;rdquo; This instantly made me think to check out the password file, /etc/passwd. Back in &amp;ldquo;the old days&amp;rdquo;, unix systems stored their passwords in /etc/passwd. But due to having the passwords where everyone could see them, they ended up moving towards password shadowing, where they stored the actual passwords in /etc/shadow, but kept the same user data in /etc/passwd.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 05</title>
-      <link>http://test.andreko.net/2011/12/06/exploit-exercises-nebula-05/</link>
+      <link>https://www.mattandreko.com/2011/12/06/exploit-exercises-nebula-05/</link>
       <pubDate>Tue, 06 Dec 2011 05:24:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/06/exploit-exercises-nebula-05/</guid>
+      <guid>https://www.mattandreko.com/2011/12/06/exploit-exercises-nebula-05/</guid>
       <description>So going forward to the Nebula 05, we now have to find some sort of weak permissions somewhere to escalate from level05 to flag05. In searching through the flag05 home directory, I saw a &amp;ldquo;.backup&amp;rdquo; folder containing a copy of the user&amp;rsquo;s old ssh keys. I extracted the archive to the level05 user&amp;rsquo;s directory, so they could be used.
 level05@nebula:/home/flag05$ cd .backup level05@nebula:/home/flag05/.backup$ tar -xzvf backup-19072011.tgz -C /home/level05 .ssh/ .ssh/id_rsa.pub .</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 04</title>
-      <link>http://test.andreko.net/2011/12/05/exploit-exercises-nebula-04/</link>
+      <link>https://www.mattandreko.com/2011/12/05/exploit-exercises-nebula-04/</link>
       <pubDate>Mon, 05 Dec 2011 05:45:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/05/exploit-exercises-nebula-04/</guid>
+      <guid>https://www.mattandreko.com/2011/12/05/exploit-exercises-nebula-04/</guid>
       <description>I really like Nebula 04, because it is really easy, but still a commonly missed thing in programming.
 The object of this challenge is to find a vulnerability and exploit this C++ program.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; int main(int argc, char **argv, char **envp) { char buf[1024]; int fd, rc; if(argc == 1) { printf(&amp;quot;%s [file to read]\n&amp;quot;, argv[0]); exit(EXIT_FAILURE); } if(strstr(argv[1], &amp;quot;token&amp;quot;) !</description>
@@ -385,10 +385,10 @@ The object of this challenge is to find a vulnerability and exploit this C++ pro
     
     <item>
       <title>Exploit Exercises - Nebula 03</title>
-      <link>http://test.andreko.net/2011/12/04/exploit-exercises-nebula-03/</link>
+      <link>https://www.mattandreko.com/2011/12/04/exploit-exercises-nebula-03/</link>
       <pubDate>Sun, 04 Dec 2011 15:22:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/04/exploit-exercises-nebula-03/</guid>
+      <guid>https://www.mattandreko.com/2011/12/04/exploit-exercises-nebula-03/</guid>
       <description>In this challenge, we can see that there&amp;rsquo;s no code for us to exploit, it&amp;rsquo;s something in the system. I log in to the system, and look in the /home/flag03 folder, as all the other challenges have started. I see there&amp;rsquo;s a writable.sh script, which I was guessing was the script getting called on a crontab every couple minutes.
 It contained:
 #!/bin/sh for i in /home/flag03/writable.d/* ; do (ulimit -t 5; bash -x &amp;quot;$i&amp;quot;) rm -f &amp;quot;$i&amp;quot; done  So this script looks like it will execute anything in the writable.</description>
@@ -396,30 +396,30 @@ It contained:
     
     <item>
       <title>Exploit Exercises - Nebula 02</title>
-      <link>http://test.andreko.net/2011/12/03/exploit-exercises-nebula-02/</link>
+      <link>https://www.mattandreko.com/2011/12/03/exploit-exercises-nebula-02/</link>
       <pubDate>Sat, 03 Dec 2011 08:13:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/03/exploit-exercises-nebula-02/</guid>
+      <guid>https://www.mattandreko.com/2011/12/03/exploit-exercises-nebula-02/</guid>
       <description>In this challenge, we&amp;rsquo;re again provided with the source code to the vulnerable program. Only this time, they&amp;rsquo;re not loading the &amp;ldquo;echo&amp;rdquo; program from the environment&amp;rsquo;s path.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; int main(int argc, char **argv, char **envp) { char *buffer; gid_t gid; uid_t uid; gid = getegid(); uid = geteuid(); setresgid(gid, gid, gid); setresuid(uid, uid, uid); buffer = NULL; asprintf(&amp;amp;buffer, &amp;quot;/bin/echo %s is cool&amp;quot;, getenv(&amp;quot;USER&amp;quot;)); printf(&amp;quot;about to call system(\&amp;quot;%s\&amp;quot;)\n&amp;quot;, buffer); system(buffer); }  What I did initially notice here, is that the &amp;ldquo;USER&amp;rdquo; variable is being called directly from the environment.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 01</title>
-      <link>http://test.andreko.net/2011/12/02/exploit-exercises-nebula-01/</link>
+      <link>https://www.mattandreko.com/2011/12/02/exploit-exercises-nebula-01/</link>
       <pubDate>Fri, 02 Dec 2011 06:18:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/02/exploit-exercises-nebula-01/</guid>
+      <guid>https://www.mattandreko.com/2011/12/02/exploit-exercises-nebula-01/</guid>
       <description>Continuing from my previous post, I started tinkering with the next Nebula wargame: Nebula 01. This one gives you some C code, which has a bug in it. You have to exploit that bug.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; int main(int argc, char **argv, char **envp) { gid_t gid; uid_t uid; gid = getegid(); uid = geteuid(); setresgid(gid, gid, gid); setresuid(uid, uid, uid); system(&amp;quot;/usr/bin/env echo and now what?</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 00</title>
-      <link>http://test.andreko.net/2011/12/01/exploit-exercises-nebula-00/</link>
+      <link>https://www.mattandreko.com/2011/12/01/exploit-exercises-nebula-00/</link>
       <pubDate>Thu, 01 Dec 2011 06:40:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/01/exploit-exercises-nebula-00/</guid>
+      <guid>https://www.mattandreko.com/2011/12/01/exploit-exercises-nebula-00/</guid>
       <description>Recently, I&amp;rsquo;ve been getting more and more back into computer security, one of my favorite topics. Part of this is research, and part is more practical, such as wargames or labs. One newer wargame that I&amp;rsquo;ve been playing is called &amp;ldquo;Nebula&amp;rdquo;, from the guys over at Exploit-Exercises. If you&amp;rsquo;re interested in security, please check out their site, as well as many other wargames. If this goes successfully, perhaps I&amp;rsquo;ll start going through my notes of otherwargames, publishing them as well.</description>
     </item>
     

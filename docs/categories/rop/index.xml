@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rop on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/rop/</link>
+    <link>https://www.mattandreko.com/categories/rop/</link>
     <description>Recent content in Rop on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 28 Jul 2012 22:56:00 -0400</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/rop/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/rop/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Sysax 5.64 HTTP Remote Buffer Overflow</title>
-      <link>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
+      <link>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
       <pubDate>Sat, 28 Jul 2012 22:56:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
+      <guid>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
       <description>I have discovered a bug in the Sysax Multi-Server application. More specifically, it&amp;rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.
 In the Sysax service, the configuration would look like this:
  To trigger this vulnerability is pretty simple. Log into the HTTP File Server:</description>
@@ -24,10 +24,10 @@ In the Sysax service, the configuration would look like this:
     
     <item>
       <title>Exploit Exercises - Protostar Stack 6</title>
-      <link>http://test.andreko.net/2011/12/22/exploit-exercises-protostar-stack-6/</link>
+      <link>https://www.mattandreko.com/2011/12/22/exploit-exercises-protostar-stack-6/</link>
       <pubDate>Thu, 22 Dec 2011 06:02:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/22/exploit-exercises-protostar-stack-6/</guid>
+      <guid>https://www.mattandreko.com/2011/12/22/exploit-exercises-protostar-stack-6/</guid>
       <description>The Stack6 challenge was definitely a learning experience for me. This actually went beyond my existing skills, and made me learn some new stuff.
 We are given the following code.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;string.h&amp;gt; void getpath() { char buffer[64]; unsigned int ret; printf(&amp;quot;input path please: &amp;quot;); fflush(stdout); gets(buffer); ret = __builtin_return_address(0); if((ret &amp;amp; 0xbf000000) == 0xbf000000) { printf(&amp;quot;bzzzt (%p)\n&amp;quot;, ret); _exit(1); } printf(&amp;quot;got path %s\n&amp;quot;, buffer); } int main(int argc, char **argv) { getpath(); }  The first thing I tried to do, was to set it up just like I did on Stack 5.</description>

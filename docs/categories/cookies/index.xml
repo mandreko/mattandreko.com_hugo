@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cookies on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/cookies/</link>
+    <link>https://www.mattandreko.com/categories/cookies/</link>
     <description>Recent content in Cookies on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 04 Nov 2012 18:34:00 -0500</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/cookies/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/cookies/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>OverTheWire Natas Level 5</title>
-      <link>http://test.andreko.net/2012/11/04/overthewire-natas-level-5/</link>
+      <link>https://www.mattandreko.com/2012/11/04/overthewire-natas-level-5/</link>
       <pubDate>Sun, 04 Nov 2012 18:34:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/04/overthewire-natas-level-5/</guid>
+      <guid>https://www.mattandreko.com/2012/11/04/overthewire-natas-level-5/</guid>
       <description>Now that we&amp;rsquo;re about 1&amp;frasl;3 through to the end of the OverTheWire Natas wargame, I&amp;rsquo;m hoping that they start to get a little more tricky. Level 5 unfortunately is still pretty easy.
 It starts by simply telling you that you&amp;rsquo;re not logged in.
  Logins often hand out cookies, so I viewed my cookies for the site. I then used the wonderful Chrome extension, Edit This Cookie, to modify the cookie that I saw it assign, from a &amp;ldquo;0&amp;rdquo; to a &amp;ldquo;1&amp;rdquo;, signifying that I was logged on.</description>

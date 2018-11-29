@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tdd on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/tdd/</link>
+    <link>https://www.mattandreko.com/categories/tdd/</link>
     <description>Recent content in Tdd on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Tue, 16 Aug 2011 22:47:00 -0400</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/tdd/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/tdd/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Cucumber testing woes - spaces</title>
-      <link>http://test.andreko.net/2011/08/16/cucumber-testing-woes-spaces/</link>
+      <link>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes-spaces/</link>
       <pubDate>Tue, 16 Aug 2011 22:47:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2011/08/16/cucumber-testing-woes-spaces/</guid>
+      <guid>https://www.mattandreko.com/2011/08/16/cucumber-testing-woes-spaces/</guid>
       <description>So I&amp;rsquo;m working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:
  I&amp;rsquo;ve slightly outlined the relevant data in yellow. I went back, and copy/pasted the data from the creation from my factories, to the expectation of text. It still gave the same error. I was dumbfounded, as I can clearly see the exact same text in my &amp;ldquo;And I should see&amp;rdquo; as well as the actual results.</description>
     </item>

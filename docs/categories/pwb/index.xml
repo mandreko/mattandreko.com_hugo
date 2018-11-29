@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pwb on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/pwb/</link>
+    <link>https://www.mattandreko.com/categories/pwb/</link>
     <description>Recent content in Pwb on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 08 Jul 2012 17:27:00 -0400</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/pwb/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/pwb/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>OSCP Certification in the mail</title>
-      <link>http://test.andreko.net/2012/07/08/oscp-certification-in-the-mail/</link>
+      <link>https://www.mattandreko.com/2012/07/08/oscp-certification-in-the-mail/</link>
       <pubDate>Sun, 08 Jul 2012 17:27:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/07/08/oscp-certification-in-the-mail/</guid>
+      <guid>https://www.mattandreko.com/2012/07/08/oscp-certification-in-the-mail/</guid>
       <description>So previously, I had blogged about recently getting OSCP certified. I came home from my vacation to find a package from Offensive Security in my mailbox all the way from Israel.
 After getting settled down, I opened the package and found some my certificate, wrapped in a nice folder, that I have filed away to keep forever.
 Here is the front:  The back of the folder had me laughing for several minutes.</description>
@@ -24,20 +24,20 @@ Here is the front:  The back of the folder had me laughing for several minutes.<
     
     <item>
       <title>PWB Conclusions and the Future</title>
-      <link>http://test.andreko.net/2012/06/24/pwb-conclusions-and-the-future/</link>
+      <link>https://www.mattandreko.com/2012/06/24/pwb-conclusions-and-the-future/</link>
       <pubDate>Sun, 24 Jun 2012 17:41:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/06/24/pwb-conclusions-and-the-future/</guid>
+      <guid>https://www.mattandreko.com/2012/06/24/pwb-conclusions-and-the-future/</guid>
       <description>The results As I posted previously, I was taking the PWB course from Offensive Security. I am happy to report that I passed with flying colors (100%)! This is the best email I&amp;rsquo;ve ever received:
  Advice for new students During the course, I learned several things, including many things about myself. * Do the PDF/Video work first. If you wait until the end, you will hate your life. It&amp;rsquo;s so droll and boring.</description>
     </item>
     
     <item>
       <title>PWB Progress and Impressions</title>
-      <link>http://test.andreko.net/2012/03/27/pwb-progress-and-impressions/</link>
+      <link>https://www.mattandreko.com/2012/03/27/pwb-progress-and-impressions/</link>
       <pubDate>Tue, 27 Mar 2012 16:45:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/03/27/pwb-progress-and-impressions/</guid>
+      <guid>https://www.mattandreko.com/2012/03/27/pwb-progress-and-impressions/</guid>
       <description>I recently decided to take Offensive Security&amp;rsquo;s course, Penetration Testing with Backtrack. I&amp;rsquo;m now 30 days in, of my 90 day allotment. I figured I would share my impressions and what I&amp;rsquo;ve learned up to now, without being specific enough to give anything away to future students.
 The Wait So I decided to take the class, and submitted the order on February 16th 2012. Offensive Security starts new classes each Sunday, and apparently the one starting on February 18th was already full, so I ended up waiting until February 25th.</description>
     </item>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mips on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/mips/</link>
+    <link>https://www.mattandreko.com/categories/mips/</link>
     <description>Recent content in Mips on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 13 Jan 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/mips/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/mips/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Backdoor Modules for Netgear, Linksys, and Other Routers</title>
-      <link>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
+      <link>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</link>
       <pubDate>Mon, 13 Jan 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://test.andreko.net/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
+      <guid>https://www.mattandreko.com/2014/01/13/backdoor-modules-for-netgear-linksys-and-other-routers/</guid>
       <description>A week or so ago, I read the news of a new backdoor on several devices, including those made by Belkin, Cisco, NetGear, Linksys, and several others. A list of what seems to be affected devices can be found here. Eloi Vanderbeken, who posted his findings on GitHub made the original discovery. He also wrote a useful python proof-of-concept exploit, which allowed command injection, but I wanted Metasploit integration.</description>
     </item>
     

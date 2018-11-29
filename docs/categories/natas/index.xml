@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Natas on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/natas/</link>
+    <link>https://www.mattandreko.com/categories/natas/</link>
     <description>Recent content in Natas on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Wed, 14 Nov 2012 06:29:00 -0500</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/natas/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/natas/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>OverTheWire Natas Level 15</title>
-      <link>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</link>
+      <link>https://www.mattandreko.com/2012/11/14/overthewire-natas-level-15/</link>
       <pubDate>Wed, 14 Nov 2012 06:29:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/14/overthewire-natas-level-15/</guid>
+      <guid>https://www.mattandreko.com/2012/11/14/overthewire-natas-level-15/</guid>
       <description>Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability.
 It starts out with a username check dialog, which pretty much only gives you a binary value as to if a username exists or not.
  I looked at the source code, and couldn&amp;rsquo;t see any way to inject some SQL to get it to retrieve the password for me.</description>
@@ -24,10 +24,10 @@ It starts out with a username check dialog, which pretty much only gives you a b
     
     <item>
       <title>OverTheWire Natas Level 14</title>
-      <link>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</link>
+      <link>https://www.mattandreko.com/2012/11/13/overthewire-natas-level-14/</link>
       <pubDate>Tue, 13 Nov 2012 05:08:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/13/overthewire-natas-level-14/</guid>
+      <guid>https://www.mattandreko.com/2012/11/13/overthewire-natas-level-14/</guid>
       <description>The next level of the OverTheWire Natas wargame is Level 14, which introduces SQL Injection, a very popular subject as of late.
 The level starts out with a login dialog.
  The source code is fairly straight forward. It&amp;rsquo;s doing a basic authentication query. It however, does have a handy &amp;ldquo;debug&amp;rdquo; flag, that if set, will print the query used to the screen.
@@ -36,10 +36,10 @@ The level starts out with a login dialog.
     
     <item>
       <title>OverTheWire Natas Level 13</title>
-      <link>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</link>
+      <link>https://www.mattandreko.com/2012/11/12/overthewire-natas-level-13/</link>
       <pubDate>Mon, 12 Nov 2012 06:44:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/12/overthewire-natas-level-13/</guid>
+      <guid>https://www.mattandreko.com/2012/11/12/overthewire-natas-level-13/</guid>
       <description>Level 13 of OverTheWire&amp;rsquo;s Natas wargame is extremely similar to Level 12. The only difference now, is that it&amp;rsquo;s validating that the file is in fact an image. This however is flawed, as exif data can be faked.
 It starts out with a similar upload prompt as last time.
  The source code is super similar to last time.
@@ -48,10 +48,10 @@ It starts out with a similar upload prompt as last time.
     
     <item>
       <title>OverTheWire Natas Level 12</title>
-      <link>http://test.andreko.net/2012/11/11/overthewire-natas-level-12/</link>
+      <link>https://www.mattandreko.com/2012/11/11/overthewire-natas-level-12/</link>
       <pubDate>Sun, 11 Nov 2012 06:27:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/11/overthewire-natas-level-12/</guid>
+      <guid>https://www.mattandreko.com/2012/11/11/overthewire-natas-level-12/</guid>
       <description>The next level to attack in the OverTheWire Natas wargame, is Level 12, which is more &amp;ldquo;real-world&amp;rdquo; as well, since developers often forget to limit file extensions.
 It starts out giving you the option to upload a &amp;lt;1KB file to the server.
  As with any other challenge, I viewed the source, to analyze it.
@@ -60,10 +60,10 @@ It starts out giving you the option to upload a &amp;lt;1KB file to the server.
     
     <item>
       <title>OverTheWire Natas Level 11</title>
-      <link>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</link>
+      <link>https://www.mattandreko.com/2012/11/10/overthewire-natas-level-11/</link>
       <pubDate>Sat, 10 Nov 2012 05:34:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/10/overthewire-natas-level-11/</guid>
+      <guid>https://www.mattandreko.com/2012/11/10/overthewire-natas-level-11/</guid>
       <description>Level 11 of the OverTheWire Natas wargames is a good one. It wasn&amp;rsquo;t one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!
 It started with a dialog to set the background color. When you click the &amp;ldquo;Set Color&amp;rdquo; button, it sets a cookie in your browser. But as the dialog says, the cookie is protected.
  I looked at the source code, as I always do.</description>
@@ -71,10 +71,10 @@ It started with a dialog to set the background color. When you click the &amp;ld
     
     <item>
       <title>OverTheWire Natas Level 10</title>
-      <link>http://test.andreko.net/2012/11/09/overthewire-natas-level-10/</link>
+      <link>https://www.mattandreko.com/2012/11/09/overthewire-natas-level-10/</link>
       <pubDate>Fri, 09 Nov 2012 07:28:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/09/overthewire-natas-level-10/</guid>
+      <guid>https://www.mattandreko.com/2012/11/09/overthewire-natas-level-10/</guid>
       <description>On to Level 10 of the OverTheWire Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.
 It starts out just like the last level, with a search dialog.
  Again, as always, I review the code since it&amp;rsquo;s available.</description>
@@ -82,10 +82,10 @@ It starts out just like the last level, with a search dialog.
     
     <item>
       <title>OverTheWire Natas Level 9</title>
-      <link>http://test.andreko.net/2012/11/08/overthewire-natas-level-9/</link>
+      <link>https://www.mattandreko.com/2012/11/08/overthewire-natas-level-9/</link>
       <pubDate>Thu, 08 Nov 2012 06:12:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/08/overthewire-natas-level-9/</guid>
+      <guid>https://www.mattandreko.com/2012/11/08/overthewire-natas-level-9/</guid>
       <description>The next level of OverTheWire&amp;rsquo;s Nata challenge is Level 9. This is a command injection vulnerability.
 Initially, you are given a search box.
  Just like in previous levels, I looked at the available source code. You can see the vulnerability is that the user input is not sanitized. Due to this, you can inject code into the &amp;ldquo;grep&amp;rdquo; command it is running to do the search.
@@ -94,10 +94,10 @@ Initially, you are given a search box.
     
     <item>
       <title>OverTheWire Natas Level 8</title>
-      <link>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</link>
+      <link>https://www.mattandreko.com/2012/11/07/overthewire-natas-level-8/</link>
       <pubDate>Wed, 07 Nov 2012 05:56:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/07/overthewire-natas-level-8/</guid>
+      <guid>https://www.mattandreko.com/2012/11/07/overthewire-natas-level-8/</guid>
       <description>Level 8 of the OverTheWires Natas wargame was pretty simple, as a developer, but could prove more difficult if you don&amp;rsquo;t have similar background.
 It starts out with a secret password input.
  Like other levels, I looked at the source code to see what was going on in the background.
@@ -106,10 +106,10 @@ It starts out with a secret password input.
     
     <item>
       <title>OverTheWire Natas Level 7</title>
-      <link>http://test.andreko.net/2012/11/06/overthewire-natas-level-7/</link>
+      <link>https://www.mattandreko.com/2012/11/06/overthewire-natas-level-7/</link>
       <pubDate>Tue, 06 Nov 2012 05:32:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/06/overthewire-natas-level-7/</guid>
+      <guid>https://www.mattandreko.com/2012/11/06/overthewire-natas-level-7/</guid>
       <description>Finally, with level 7 of OverTheWire&amp;rsquo;s Natas wargame, we start to get to more &amp;ldquo;real world&amp;rdquo; vulnerabilities. It&amp;rsquo;s still very easy, but it&amp;rsquo;s at least getting better.
 We start with a single page, that has 2 navigation links.
  I noted that the URLs had a &amp;ldquo;page=&amp;rdquo; parameter. I thought maybe this would be the file it was including. Viewing the source gave a nice reminder of where the password for the next level would be stored.</description>
@@ -117,10 +117,10 @@ We start with a single page, that has 2 navigation links.
     
     <item>
       <title>OverTheWire Natas Level 6</title>
-      <link>http://test.andreko.net/2012/11/05/overthewire-natas-level-6/</link>
+      <link>https://www.mattandreko.com/2012/11/05/overthewire-natas-level-6/</link>
       <pubDate>Mon, 05 Nov 2012 05:12:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/05/overthewire-natas-level-6/</guid>
+      <guid>https://www.mattandreko.com/2012/11/05/overthewire-natas-level-6/</guid>
       <description>The 6th level of the OverTheWire Natas wargame starts introducing us to PHP and server configuration issues.
 It starts out with a secret password prompt.
  I took a look at the sourcecode, via the link provided.
@@ -130,10 +130,10 @@ It starts out with a secret password prompt.
     
     <item>
       <title>OverTheWire Natas Level 5</title>
-      <link>http://test.andreko.net/2012/11/04/overthewire-natas-level-5/</link>
+      <link>https://www.mattandreko.com/2012/11/04/overthewire-natas-level-5/</link>
       <pubDate>Sun, 04 Nov 2012 18:34:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/04/overthewire-natas-level-5/</guid>
+      <guid>https://www.mattandreko.com/2012/11/04/overthewire-natas-level-5/</guid>
       <description>Now that we&amp;rsquo;re about 1&amp;frasl;3 through to the end of the OverTheWire Natas wargame, I&amp;rsquo;m hoping that they start to get a little more tricky. Level 5 unfortunately is still pretty easy.
 It starts by simply telling you that you&amp;rsquo;re not logged in.
  Logins often hand out cookies, so I viewed my cookies for the site. I then used the wonderful Chrome extension, Edit This Cookie, to modify the cookie that I saw it assign, from a &amp;ldquo;0&amp;rdquo; to a &amp;ldquo;1&amp;rdquo;, signifying that I was logged on.</description>
@@ -141,20 +141,20 @@ It starts by simply telling you that you&amp;rsquo;re not logged in.
     
     <item>
       <title>OverTheWire Natas Level 4</title>
-      <link>http://test.andreko.net/2012/11/03/overthewire-natas-level-4/</link>
+      <link>https://www.mattandreko.com/2012/11/03/overthewire-natas-level-4/</link>
       <pubDate>Sat, 03 Nov 2012 10:39:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/03/overthewire-natas-level-4/</guid>
+      <guid>https://www.mattandreko.com/2012/11/03/overthewire-natas-level-4/</guid>
       <description>Level 4 of OverTheWire&amp;rsquo;s Natas wargame starts a little different than the previous levels. It immediately presents you with an error message.
  I figured this was going to be due to the HTTP Referer. I guessed that one could solve this by using a proxy or a browser addon, such as Referer Control, but I simply didn&amp;rsquo;t want to install anything new. I opened a bash window, and simulated my original HTTP GET.</description>
     </item>
     
     <item>
       <title>OverTheWire Natas Level 3</title>
-      <link>http://test.andreko.net/2012/11/02/overthewire-natas-level-3/</link>
+      <link>https://www.mattandreko.com/2012/11/02/overthewire-natas-level-3/</link>
       <pubDate>Fri, 02 Nov 2012 06:54:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/02/overthewire-natas-level-3/</guid>
+      <guid>https://www.mattandreko.com/2012/11/02/overthewire-natas-level-3/</guid>
       <description>Continuing on with Level 3 of OverTheWire&amp;rsquo;s Natas wargame, I found the first page, like previous levels, saying that there was nothing on the page.
  I viewed the source and saw the strange comment about &amp;ldquo;Not even Google will find it&amp;rdquo;.
  After thinking about that for a minute, it clicked that maybe it was because of a &amp;ldquo;robots.txt&amp;rdquo; file, which would prevent search engines from finding any files. I then browsed to the &amp;ldquo;robots.</description>
@@ -162,10 +162,10 @@ It starts by simply telling you that you&amp;rsquo;re not logged in.
     
     <item>
       <title>OverTheWire Natas Level 2</title>
-      <link>http://test.andreko.net/2012/11/01/overthewire-natas-level-2/</link>
+      <link>https://www.mattandreko.com/2012/11/01/overthewire-natas-level-2/</link>
       <pubDate>Thu, 01 Nov 2012 06:36:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/11/01/overthewire-natas-level-2/</guid>
+      <guid>https://www.mattandreko.com/2012/11/01/overthewire-natas-level-2/</guid>
       <description>Level 2 of OverTheWire&amp;rsquo;s Natas wargame is a little more fun than the previous two. It&amp;rsquo;s also pretty simple, though.
 You start out on a page that tells you that there is nothing on it.
  Like previous levels, I then viewed the source to see what was in the code.
@@ -174,10 +174,10 @@ You start out on a page that tells you that there is nothing on it.
     
     <item>
       <title>OverTheWire Natas Level 1</title>
-      <link>http://test.andreko.net/2012/10/31/overthewire-natas-level-1/</link>
+      <link>https://www.mattandreko.com/2012/10/31/overthewire-natas-level-1/</link>
       <pubDate>Wed, 31 Oct 2012 06:17:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/10/31/overthewire-natas-level-1/</guid>
+      <guid>https://www.mattandreko.com/2012/10/31/overthewire-natas-level-1/</guid>
       <description>In continuing with the Natas wargame from OverTheWire, I tried my hand at level 1. It too was pretty easy. It was just like the level 0, except that right-clicking was disabled via javascript.
 You start out by being told that the password can be found on the page that you&amp;rsquo;re on, just like the last one.
  If you do try to right-click to view the source, you get a shiny error message stating that it has been blocked.</description>
@@ -185,10 +185,10 @@ You start out by being told that the password can be found on the page that you&
     
     <item>
       <title>OverTheWire Natas Level 0</title>
-      <link>http://test.andreko.net/2012/10/30/overthewire-natas-level-0/</link>
+      <link>https://www.mattandreko.com/2012/10/30/overthewire-natas-level-0/</link>
       <pubDate>Tue, 30 Oct 2012 17:40:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/10/30/overthewire-natas-level-0/</guid>
+      <guid>https://www.mattandreko.com/2012/10/30/overthewire-natas-level-0/</guid>
       <description>I recently read that OverTheWire had released a new wargame, so I decided to play for fun.
 The first level is extremely easy. You are presented with a page that tells you that you are able to find the password on this page.
  If you then view the source, you can see the password to the next level is in plain text, in an HTML comment.

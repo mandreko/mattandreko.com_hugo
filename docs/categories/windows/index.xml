@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Windows on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/windows/</link>
+    <link>https://www.mattandreko.com/categories/windows/</link>
     <description>Recent content in Windows on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 08 Apr 2013 08:27:00 -0400</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/windows/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/windows/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Sysax Multi Server 6.10 SSH DoS</title>
-      <link>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
+      <link>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</link>
       <pubDate>Mon, 08 Apr 2013 08:27:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
+      <guid>https://www.mattandreko.com/2013/04/08/sysax-multi-server-6.10-ssh-dos/</guid>
       <description>I was recently fuzzing a bunch of SSH servers, hoping to find some remote code execution in a non-mainstream server. I ended up finding no code execution in the several that I tried, but I did find one pre-auth denial of service in Syax Multi Server 6.10.
 Try this at home! The vulnerable version can be downloaded here for anyone that would like to duplicate the DoS conditions.
 Understanding the Key Exchange I found that during the key exchange, where the SSH client and SSH server negotiate which ciphers to use, if you messed up just a single specific byte, the server would crash.</description>
@@ -24,20 +24,20 @@ Understanding the Key Exchange I found that during the key exchange, where the S
     
     <item>
       <title>Buffer Overflow in HexChat 2.9.4</title>
-      <link>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
+      <link>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</link>
       <pubDate>Sat, 06 Apr 2013 14:55:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
+      <guid>https://www.mattandreko.com/2013/04/06/buffer-overflow-in-hexchat-2.9.4/</guid>
       <description>A buddy of mine, Mulitia, and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered &amp;ldquo;/server &amp;rdquo; followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.
 I contacted HexChat, by initialling going into the #hexchat channel on irc.freenode.net and trying to find a security contact.</description>
     </item>
     
     <item>
       <title>Sysax 5.64 HTTP Remote Buffer Overflow</title>
-      <link>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
+      <link>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</link>
       <pubDate>Sat, 28 Jul 2012 22:56:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
+      <guid>https://www.mattandreko.com/2012/07/28/sysax-5.64-http-remote-buffer-overflow/</guid>
       <description>I have discovered a bug in the Sysax Multi-Server application. More specifically, it&amp;rsquo;s in the HTTP File Server service, which is not enabled by default. It has to be turned on by the admin for this exploit to properly function. The user in question also needs permission to create a directory.
 In the Sysax service, the configuration would look like this:
  To trigger this vulnerability is pretty simple. Log into the HTTP File Server:</description>
@@ -45,10 +45,10 @@ In the Sysax service, the configuration would look like this:
     
     <item>
       <title>Using .net to bypass AV</title>
-      <link>http://test.andreko.net/2012/02/23/using-.net-to-bypass-av/</link>
+      <link>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</link>
       <pubDate>Thu, 23 Feb 2012 18:19:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2012/02/23/using-.net-to-bypass-av/</guid>
+      <guid>https://www.mattandreko.com/2012/02/23/using-.net-to-bypass-av/</guid>
       <description>I&amp;rsquo;ve read a ton of articles on bypassing Antivirus software when trying to run shellcode on machines. There&amp;rsquo;s just a ton available. These are just a few examples:
  http://dev.metasploit.com/redmine/projects/framework/wiki/Using_a_Custom_Executable_to_Bypass_AV http://www.offensive-security.com/metasploit-unleashed/Antivirus_Bypass http://www.irongeek.com/i.php?page=videos/bypassing-anti-virus-with-metasploit http://clshack.com/metasploit-shellcodeexec-bypassing-any-anti-virus.html http://carnal0wnage.attackresearch.com/2011/07/process-injection-outside-of-metasploit.html  I was recently working with some Windows web-servers, which had ASP.net enabled, but not any other useful language. I had recently read about PowerSyringe, so I started tinkering with making some shellcode run similarly.
 I ended up finding out that I couldn&amp;rsquo;t do what I was wanting to do in ASP.</description>
@@ -56,10 +56,10 @@ I ended up finding out that I couldn&amp;rsquo;t do what I was wanting to do in 
     
     <item>
       <title>Finding DLL files in the GAC</title>
-      <link>http://test.andreko.net/2011/10/14/finding-dll-files-in-the-gac/</link>
+      <link>https://www.mattandreko.com/2011/10/14/finding-dll-files-in-the-gac/</link>
       <pubDate>Fri, 14 Oct 2011 07:20:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2011/10/14/finding-dll-files-in-the-gac/</guid>
+      <guid>https://www.mattandreko.com/2011/10/14/finding-dll-files-in-the-gac/</guid>
       <description>So last night I was working on a project where I needed a specific version of a .net assembly that was installed somewhere on my system, but I could not locate it by a common search. Whenever I would open up C:\Windows\Assembly\ I could see the file and the multiple versions that I had installed. However, from that window, you can not copy the files out. All I wanted, was to copy the file to my local source branch, and include it in source control.</description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nebula on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/nebula/</link>
+    <link>https://www.mattandreko.com/categories/nebula/</link>
     <description>Recent content in Nebula on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 11 Dec 2011 07:48:00 -0500</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/nebula/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/nebula/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Exploit Exercises - Nebula 10</title>
-      <link>http://test.andreko.net/2011/12/11/exploit-exercises-nebula-10/</link>
+      <link>https://www.mattandreko.com/2011/12/11/exploit-exercises-nebula-10/</link>
       <pubDate>Sun, 11 Dec 2011 07:48:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/11/exploit-exercises-nebula-10/</guid>
+      <guid>https://www.mattandreko.com/2011/12/11/exploit-exercises-nebula-10/</guid>
       <description>Challenge 10 is another nostalgic one for me. Back when I was first starting with linux, I remember reading about overflows and race conditions. This challenge is the latter, a race condition.
 We&amp;rsquo;re given a C/C++ app to exploit:
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; #include &amp;lt;errno.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;netinet/in.h&amp;gt; #include &amp;lt;string.h&amp;gt; int main(int argc, char **argv) { char *file; char *host; if(argc &amp;lt; 3) { printf(&amp;quot;%s file host\n\tsends file to host if you have access to it\n&amp;quot;, argv[0]); exit(1); } file = argv[1]; host = argv[2]; if(access(argv[1], R_OK) == 0) { int fd; int ffd; int rc; struct sockaddr_in sin; char buffer[4096]; printf(&amp;quot;Connecting to %s:18211 .</description>
@@ -24,30 +24,30 @@ We&amp;rsquo;re given a C/C++ app to exploit:
     
     <item>
       <title>Exploit Exercises - Nebula 09</title>
-      <link>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</link>
+      <link>https://www.mattandreko.com/2011/12/10/exploit-exercises-nebula-09/</link>
       <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</guid>
+      <guid>https://www.mattandreko.com/2011/12/10/exploit-exercises-nebula-09/</guid>
       <description>Challenge 09 gave me the most issues out of any other challenge so far. This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out. However, it is based on a dangerous function, known as preg_replace(). There are several more dangerous functions, some of which can be seen here.
 The challenge starts by giving us the source code of the program we will be exploiting.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 08</title>
-      <link>http://test.andreko.net/2011/12/09/exploit-exercises-nebula-08/</link>
+      <link>https://www.mattandreko.com/2011/12/09/exploit-exercises-nebula-08/</link>
       <pubDate>Fri, 09 Dec 2011 05:38:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/09/exploit-exercises-nebula-08/</guid>
+      <guid>https://www.mattandreko.com/2011/12/09/exploit-exercises-nebula-08/</guid>
       <description>Challenge 08 is more of a real-world challenge than some of the others have been. It&amp;rsquo;s also very dear to my heart, getting back to my networking roots.
 You are instructed simply to check out what the level08 user has been up to. This is fairly easy, since when you login as level08, you see a &amp;ldquo;capture.pcap&amp;rdquo; file in their home folder. A pcap file is a standard packet capture file format.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 07</title>
-      <link>http://test.andreko.net/2011/12/08/exploit-exercises-nebula-07/</link>
+      <link>https://www.mattandreko.com/2011/12/08/exploit-exercises-nebula-07/</link>
       <pubDate>Thu, 08 Dec 2011 06:10:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/08/exploit-exercises-nebula-07/</guid>
+      <guid>https://www.mattandreko.com/2011/12/08/exploit-exercises-nebula-07/</guid>
       <description>This next challenge is a little bit more tricky than some of the previous ones. There&amp;rsquo;s a lot more code involved, but it&amp;rsquo;s not too bad.
 In the flag07 home directory, you&amp;rsquo;ll find the configuration for a simple http server, thttpd.conf. Inside, you&amp;rsquo;ll find that it&amp;rsquo;s running an HTTP server on port 7007 as the flag07 user. This is where the perl script that is provided comes in.
 #!/usr/bin/perl use CGI qw{param}; print &amp;quot;Content-type: text/html\n\n&amp;quot;; sub ping { $host = $_[0]; print(&amp;quot;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Ping results&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;pre&amp;gt;&amp;quot;); @output = `ping -c 3 $host 2&amp;gt;&amp;amp;1`; foreach $line (@output) { print &amp;quot;$line&amp;quot;; } print(&amp;quot;&amp;lt;/pre&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;quot;); } # check if Host set.</description>
@@ -55,29 +55,29 @@ In the flag07 home directory, you&amp;rsquo;ll find the configuration for a simp
     
     <item>
       <title>Exploit Exercises - Nebula 06</title>
-      <link>http://test.andreko.net/2011/12/07/exploit-exercises-nebula-06/</link>
+      <link>https://www.mattandreko.com/2011/12/07/exploit-exercises-nebula-06/</link>
       <pubDate>Wed, 07 Dec 2011 06:10:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/07/exploit-exercises-nebula-06/</guid>
+      <guid>https://www.mattandreko.com/2011/12/07/exploit-exercises-nebula-06/</guid>
       <description>Nebula 06 is a retro challenge. The description of the problem says &amp;ldquo;The flag06 account credentials came from a legacy unix system.&amp;rdquo; This instantly made me think to check out the password file, /etc/passwd. Back in &amp;ldquo;the old days&amp;rdquo;, unix systems stored their passwords in /etc/passwd. But due to having the passwords where everyone could see them, they ended up moving towards password shadowing, where they stored the actual passwords in /etc/shadow, but kept the same user data in /etc/passwd.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 05</title>
-      <link>http://test.andreko.net/2011/12/06/exploit-exercises-nebula-05/</link>
+      <link>https://www.mattandreko.com/2011/12/06/exploit-exercises-nebula-05/</link>
       <pubDate>Tue, 06 Dec 2011 05:24:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/06/exploit-exercises-nebula-05/</guid>
+      <guid>https://www.mattandreko.com/2011/12/06/exploit-exercises-nebula-05/</guid>
       <description>So going forward to the Nebula 05, we now have to find some sort of weak permissions somewhere to escalate from level05 to flag05. In searching through the flag05 home directory, I saw a &amp;ldquo;.backup&amp;rdquo; folder containing a copy of the user&amp;rsquo;s old ssh keys. I extracted the archive to the level05 user&amp;rsquo;s directory, so they could be used.
 level05@nebula:/home/flag05$ cd .backup level05@nebula:/home/flag05/.backup$ tar -xzvf backup-19072011.tgz -C /home/level05 .ssh/ .ssh/id_rsa.pub .</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 04</title>
-      <link>http://test.andreko.net/2011/12/05/exploit-exercises-nebula-04/</link>
+      <link>https://www.mattandreko.com/2011/12/05/exploit-exercises-nebula-04/</link>
       <pubDate>Mon, 05 Dec 2011 05:45:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/05/exploit-exercises-nebula-04/</guid>
+      <guid>https://www.mattandreko.com/2011/12/05/exploit-exercises-nebula-04/</guid>
       <description>I really like Nebula 04, because it is really easy, but still a commonly missed thing in programming.
 The object of this challenge is to find a vulnerability and exploit this C++ program.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; int main(int argc, char **argv, char **envp) { char buf[1024]; int fd, rc; if(argc == 1) { printf(&amp;quot;%s [file to read]\n&amp;quot;, argv[0]); exit(EXIT_FAILURE); } if(strstr(argv[1], &amp;quot;token&amp;quot;) !</description>
@@ -85,10 +85,10 @@ The object of this challenge is to find a vulnerability and exploit this C++ pro
     
     <item>
       <title>Exploit Exercises - Nebula 03</title>
-      <link>http://test.andreko.net/2011/12/04/exploit-exercises-nebula-03/</link>
+      <link>https://www.mattandreko.com/2011/12/04/exploit-exercises-nebula-03/</link>
       <pubDate>Sun, 04 Dec 2011 15:22:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/04/exploit-exercises-nebula-03/</guid>
+      <guid>https://www.mattandreko.com/2011/12/04/exploit-exercises-nebula-03/</guid>
       <description>In this challenge, we can see that there&amp;rsquo;s no code for us to exploit, it&amp;rsquo;s something in the system. I log in to the system, and look in the /home/flag03 folder, as all the other challenges have started. I see there&amp;rsquo;s a writable.sh script, which I was guessing was the script getting called on a crontab every couple minutes.
 It contained:
 #!/bin/sh for i in /home/flag03/writable.d/* ; do (ulimit -t 5; bash -x &amp;quot;$i&amp;quot;) rm -f &amp;quot;$i&amp;quot; done  So this script looks like it will execute anything in the writable.</description>
@@ -96,30 +96,30 @@ It contained:
     
     <item>
       <title>Exploit Exercises - Nebula 02</title>
-      <link>http://test.andreko.net/2011/12/03/exploit-exercises-nebula-02/</link>
+      <link>https://www.mattandreko.com/2011/12/03/exploit-exercises-nebula-02/</link>
       <pubDate>Sat, 03 Dec 2011 08:13:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/03/exploit-exercises-nebula-02/</guid>
+      <guid>https://www.mattandreko.com/2011/12/03/exploit-exercises-nebula-02/</guid>
       <description>In this challenge, we&amp;rsquo;re again provided with the source code to the vulnerable program. Only this time, they&amp;rsquo;re not loading the &amp;ldquo;echo&amp;rdquo; program from the environment&amp;rsquo;s path.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; int main(int argc, char **argv, char **envp) { char *buffer; gid_t gid; uid_t uid; gid = getegid(); uid = geteuid(); setresgid(gid, gid, gid); setresuid(uid, uid, uid); buffer = NULL; asprintf(&amp;amp;buffer, &amp;quot;/bin/echo %s is cool&amp;quot;, getenv(&amp;quot;USER&amp;quot;)); printf(&amp;quot;about to call system(\&amp;quot;%s\&amp;quot;)\n&amp;quot;, buffer); system(buffer); }  What I did initially notice here, is that the &amp;ldquo;USER&amp;rdquo; variable is being called directly from the environment.</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 01</title>
-      <link>http://test.andreko.net/2011/12/02/exploit-exercises-nebula-01/</link>
+      <link>https://www.mattandreko.com/2011/12/02/exploit-exercises-nebula-01/</link>
       <pubDate>Fri, 02 Dec 2011 06:18:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/02/exploit-exercises-nebula-01/</guid>
+      <guid>https://www.mattandreko.com/2011/12/02/exploit-exercises-nebula-01/</guid>
       <description>Continuing from my previous post, I started tinkering with the next Nebula wargame: Nebula 01. This one gives you some C code, which has a bug in it. You have to exploit that bug.
 #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;string.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;stdio.h&amp;gt; int main(int argc, char **argv, char **envp) { gid_t gid; uid_t uid; gid = getegid(); uid = geteuid(); setresgid(gid, gid, gid); setresuid(uid, uid, uid); system(&amp;quot;/usr/bin/env echo and now what?</description>
     </item>
     
     <item>
       <title>Exploit Exercises - Nebula 00</title>
-      <link>http://test.andreko.net/2011/12/01/exploit-exercises-nebula-00/</link>
+      <link>https://www.mattandreko.com/2011/12/01/exploit-exercises-nebula-00/</link>
       <pubDate>Thu, 01 Dec 2011 06:40:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/01/exploit-exercises-nebula-00/</guid>
+      <guid>https://www.mattandreko.com/2011/12/01/exploit-exercises-nebula-00/</guid>
       <description>Recently, I&amp;rsquo;ve been getting more and more back into computer security, one of my favorite topics. Part of this is research, and part is more practical, such as wargames or labs. One newer wargame that I&amp;rsquo;ve been playing is called &amp;ldquo;Nebula&amp;rdquo;, from the guys over at Exploit-Exercises. If you&amp;rsquo;re interested in security, please check out their site, as well as many other wargames. If this goes successfully, perhaps I&amp;rsquo;ll start going through my notes of otherwargames, publishing them as well.</description>
     </item>
     

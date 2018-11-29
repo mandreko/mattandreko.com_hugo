@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Til on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/til/</link>
+    <link>https://www.mattandreko.com/categories/til/</link>
     <description>Recent content in Til on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Fri, 02 Sep 2011 09:35:00 -0400</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/til/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/til/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Origin of the name &#34;Pentium&#34;</title>
-      <link>http://test.andreko.net/2011/09/02/origin-of-the-name-pentium/</link>
+      <link>https://www.mattandreko.com/2011/09/02/origin-of-the-name-pentium/</link>
       <pubDate>Fri, 02 Sep 2011 09:35:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2011/09/02/origin-of-the-name-pentium/</guid>
+      <guid>https://www.mattandreko.com/2011/09/02/origin-of-the-name-pentium/</guid>
       <description>I was reading about x86 assembly, and stumbled upon the origin of the name &amp;ldquo;Pentium&amp;rdquo;. I never knew it was due to course disallowing the trademarking of the term &amp;ldquo;80586&amp;rdquo;. Tons of good info can be read here: http://en.wikipedia.org/wiki/Pentium</description>
     </item>
     

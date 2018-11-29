@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Injection on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/injection/</link>
+    <link>https://www.mattandreko.com/categories/injection/</link>
     <description>Recent content in Injection on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 10 Dec 2011 05:46:00 -0500</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/injection/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/injection/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Exploit Exercises - Nebula 09</title>
-      <link>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</link>
+      <link>https://www.mattandreko.com/2011/12/10/exploit-exercises-nebula-09/</link>
       <pubDate>Sat, 10 Dec 2011 05:46:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2011/12/10/exploit-exercises-nebula-09/</guid>
+      <guid>https://www.mattandreko.com/2011/12/10/exploit-exercises-nebula-09/</guid>
       <description>Challenge 09 gave me the most issues out of any other challenge so far. This may just be because I haven&amp;rsquo;t touched PHP since version 3 was just coming out. However, it is based on a dangerous function, known as preg_replace(). There are several more dangerous functions, some of which can be seen here.
 The challenge starts by giving us the source code of the program we will be exploiting.</description>
     </item>

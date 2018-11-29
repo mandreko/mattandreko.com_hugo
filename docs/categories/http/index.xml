@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Http on Matt Andreko</title>
-    <link>http://test.andreko.net/categories/http/</link>
+    <link>https://www.mattandreko.com/categories/http/</link>
     <description>Recent content in Http on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Tue, 18 Jun 2013 08:23:00 -0400</lastBuildDate>
     
-	<atom:link href="http://test.andreko.net/categories/http/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/http/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Canon, Y U NO Security?</title>
-      <link>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</link>
+      <link>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</link>
       <pubDate>Tue, 18 Jun 2013 08:23:00 -0400</pubDate>
       
-      <guid>http://test.andreko.net/2013/06/18/canon-y-u-no-security/</guid>
+      <guid>https://www.mattandreko.com/2013/06/18/canon-y-u-no-security/</guid>
       <description>I recently bought a new printer at home, so my wife could print coupons without manually attaching to my office printer each time (Thanks coupons.com and all the other shady sites that require spyware-like software to print coupons, and often don&amp;rsquo;t support network printers). I ended up picking up a Canon MX922. It works awesome for her, and is connected over WiFi, so any device in the house can print to it.</description>
     </item>
     
     <item>
       <title>HSTS Metasploit Module</title>
-      <link>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</link>
+      <link>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</link>
       <pubDate>Thu, 21 Feb 2013 13:20:00 -0500</pubDate>
       
-      <guid>http://test.andreko.net/2013/02/21/hsts-metasploit-module/</guid>
+      <guid>https://www.mattandreko.com/2013/02/21/hsts-metasploit-module/</guid>
       <description>I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an HSTS (HTTP Strict Transport Security) implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at Accuvant, I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it.</description>
     </item>
     
