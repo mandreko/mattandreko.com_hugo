@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="465"
+   height="75"
+   viewBox="0 0 123.03124 19.843751"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="logo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="363.65565"
+     inkscape:cy="102.62542"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1524"
+     inkscape:window-height="819"
+     inkscape:window-x="336"
+     inkscape:window-y="12"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-277.15624)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.75807095px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.09395177"
+       x="104.0536"
+       y="290.43988"
+       id="text5115"
+       transform="scale(0.99637201,1.0036412)"
+       inkscape:label="Subtitle Line 3"><tspan
+         sodipodi:role="line"
+         id="tspan5113"
+         x="104.0536"
+         y="290.43988"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Bebas;-inkscape-font-specification:Bebas;fill:#3f4040;fill-opacity:1;stroke-width:0.09395177">Research</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.59969521px;line-height:1.25;font-family:Bebas;-inkscape-font-specification:Bebas;letter-spacing:0px;word-spacing:0px;fill:#3f4040;fill-opacity:1;stroke:none;stroke-width:0.08999237"
+       x="102.5234"
+       y="286.91275"
+       id="text5105"
+       inkscape:label="Subtitle Line 1"
+       transform="scale(1.0112901,0.98883595)"><tspan
+         sodipodi:role="line"
+         id="tspan5103"
+         x="102.5234"
+         y="286.91275"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Bebas;-inkscape-font-specification:Bebas;fill:#3f4040;fill-opacity:1;stroke:none;stroke-width:0.08999237;stroke-opacity:1">Blog</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.59969544px;line-height:1.25;font-family:Bebas;-inkscape-font-specification:Bebas;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.08999239"
+       x="102.5234"
+       y="290.83075"
+       id="text5109"
+       inkscape:label="Subtitle Line 2"
+       transform="scale(1.0112901,0.98883595)"><tspan
+         sodipodi:role="line"
+         id="tspan5107"
+         x="102.5234"
+         y="290.83075"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Bebas;-inkscape-font-specification:Bebas;fill:#3f4040;fill-opacity:1;stroke-width:0.08999239">Thoughts</tspan></text>
+    <rect
+       style="opacity:1;fill:#f46508;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+       id="rect5111"
+       width="2.9293153"
+       height="2.9293153"
+       x="103.84895"
+       y="292.17429"
+       inkscape:label="Orange Period" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.26173401px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#3f4040;fill-opacity:1;stroke:none;stroke-width:0.40654334"
+       x="0.51592332"
+       y="294.73108"
+       id="text5678"><tspan
+         sodipodi:role="line"
+         id="tspan5676"
+         x="0.51592332"
+         y="294.73108"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Bebas;-inkscape-font-specification:Bebas;fill:#3f4040;fill-opacity:1;stroke-width:0.40654334">Matt Andreko</tspan></text>
+  </g>
+</svg>
