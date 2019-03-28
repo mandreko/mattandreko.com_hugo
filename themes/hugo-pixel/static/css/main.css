@@ -322,59 +322,26 @@ font-weight: 400;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-.top-bar-social .facebook:before {
-content: "\f09a";
-}
 .top-bar-social #social a.facebook {
 background-color: #3b5998;
-}
-.top-bar-social .twitter:before {
-content: "\f099";
 }
 .top-bar-social #social a.twitter {
 background-color: #55acee;
 }
-.top-bar-social .github:before {
-content: "\f09b";
-}
 .top-bar-social #social a.github {
 background-color: #4078c0;
-}
-.top-bar-social .linkedin:before {
-content: "\f0e1";
 }
 .top-bar-social #social a.linkedin {
 background-color: #0073b1;
 }
-.top-bar-social .stack-overflow:before {
-content: "\f16c";
-}
 .top-bar-social #social a.stack-overflow {
 background-color: #F48024;
-}
-.top-bar-social .gplus:before {
-content: "\f0d5";
-}
-.top-bar-social #social a.gplus {
-background-color: #dd4b39;
-}
-.top-bar-social .linkedin:before {
-content: "\f0e1";
 }
 .top-bar-social ul#social a.linkedin {
 background-color: #0976b4;
 }
-.top-bar-social .instagram:before {
-content: "\f16d";
-}
 .top-bar-social ul#social a.instagram {
 background-color: #3f729b;
-}
-.top-bar-social .pinterest:before {
-content: "\f0d2";
-}
-.top-bar-social ul#social a.pinterest {
-background-color: #cc2127;
 }
 .top-bar-social ul#social a:hover {
 color: #fff;
@@ -513,18 +480,6 @@ opacity: 0.5;
 }
 .featured li:hover .post-panel {
 padding-bottom: 35px;
-}
-.featured-date:before {
-content: '\f133';
-font-family: fontawesome;
-color: #bbb;
-margin-right: 5px;
-}
-.featured-author::before {
-content: '\f007';
-font-family: fontawesome;
-color: #bbb;
-margin-right: 5px;
 }
 .featured-author {
 margin-right: 10px;
@@ -1136,11 +1091,6 @@ color: #222;
 font-size: 12px;
 font-weight: 400;
 }
-.recent-date:before, .p-date:before {
-content: '\f017';
-font-family: fontawesome;
-margin-right: 5px;
-}
 .item .post-label-title, span.entry-cat-label, span.featured-comments, .item .post-labels a {
 color: #fff;
 padding: 3px 8px;
@@ -1357,23 +1307,11 @@ background-color: rgba(40, 35, 40, 0.3);
 .recent-author {
 margin-right: 10px;
 }
-.recent-author::before {
-content: '\f007';
-font-family: fontawesome;
-color: #bbb;
-margin-right: 5px;
-}
 .recent-author,
 .recent-date {
 color: #bdbdbd;
 font-size: 12px;
 font-weight: 400;
-}
-.recent-date:before {
-content: '\f133';
-font-family: fontawesome;
-color: #bbb;
-margin-right: 5px;
 }
 .sidebar .FollowByEmail > h3.title,
 .sidebar .FollowByEmail .title-wrap {

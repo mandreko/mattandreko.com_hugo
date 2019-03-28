@@ -10,11 +10,11 @@
 			<div class='date-header'>
 				<div id='meta-post'>
 					{{ if not .Site.Params.disableReadingTime }}{{ .ReadingTime }} minute read {{ end }}
-					<i class='fa fa-calendar-o'></i>
+					<i class='fas fa-calendar'></i>
 					<abbr class='published timeago' title='2015-03-06T23:09:00-08:00'>{{ .Date.Format "Jan 2, 2006" }}</abbr>
 					{{ if .Site.Params.disqusShortname }} 
 						<span class='post-comment-link'>
-							<i class='fa fa-comment'></i>
+							<i class='fas fa-comment'></i>
 							<a class="comment-link" href="{{ .Permalink }}#disqus_thread" data-disqus-identifier="{{ .Permalink }}"/>Comments</a>
 						</span>
 					{{ end }}
@@ -38,11 +38,11 @@
 				<div style='clear: both;'></div>
 			</div>
 			<div class='second-meta'>
-				<a class='read-more anchor-hover' href="{{ .Permalink }}">Read more <i class='fa fa-chevron-right'></i></a>
+				<a class='read-more anchor-hover' href="{{ .Permalink }}">Read more <i class='fas fa-chevron-right'></i></a>
 				{{ if isset .Params "categories" }}
 				<span class='post-labels'>
 					{{ range .Params.categories }}
-					<i class='fa fa-folder-open-o'></i>
+					<i class='fas fa-folder-open'></i>
 					<a class="label" href="{{ "/categories/" | absURL }}{{ . | urlize | lower }}/">{{ . }} </a>
 					{{ end }}
 				</span>

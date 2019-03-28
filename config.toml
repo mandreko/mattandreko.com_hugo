@@ -18,6 +18,8 @@ publishDir = "docs"
   author = "Matt Andreko"
   author_description = "Security Consultant"
   googleAnalytics = "UA-25280110-1"
+  description = "MattAndreko.com"
+  keywords = "matt,andreko,mandreko,hostess,h0stess,hacking,exploitation,wargames"
 
   disqusShortname = "mattandreko"
   # Disable comments for a specific post by adding "comments: false" in its frontmatter
