@@ -13,10 +13,6 @@
 		<link href='https://www.mattandreko.com/' rel='canonical'/>
 		<title>OverTheWire Natas Level 12</title>
 
-		<link href="//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic" media="all" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css" integrity="sha256-2YN65RPLgK7PP1NpH0YKIgYwPo7o/96HqVXBH7lQ3MU=" crossorigin="anonymous" />
-		<link type="text/css" rel="stylesheet" href="/css/main.css" />
-
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" defer async></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/fontawesome.min.js" integrity="sha256-p1rugc6vQ3W1M+J8xcHsQA07SkKvpGJlz4Uo+mxPP7Q=" crossorigin="anonymous" defer async></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/brands.min.js" integrity="sha256-oAJXCqY95Tu+gAhKEFrSyNb8MZw8QLH7M7DZnPvySmk=" crossorigin="anonymous" defer async></script>
@@ -32,11 +28,28 @@
 		
 
 		
+		<script type="text/javascript">
+			function writeCSS(url) {
+				var stylesheet = document.createElement('link');
+				stylesheet.href = url;
+				stylesheet.rel = 'stylesheet';
+				stylesheet.type = 'text/css';
+				document.getElementsByTagName('head')[0].appendChild(stylesheet);
+			}
+			
+			writeCSS('//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic');
+			writeCSS('//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css');
+			writeCSS('/css/main.css');
+	  	</script>
+
+		
 		<script>
-			if (! $.fn.jquery) {
+			
+			if(typeof jQuery!=='undefined'){
 				document.write('<script src="/js/jquery.min.js"><\/script>');
 			}
-			if (! FontAwesome) {
+			
+			if(typeof FontAwesome!=='undefined'){
 				document.write('<script src="/js/fontawesome.min.js"><\/script>');
 				document.write('<script src="/js/brands.min.js"><\/script>');
 				document.write('<script src="/js/solid.min.js"><\/script>');
@@ -53,7 +66,7 @@
 					<div class='widget Header' data-version='1' id='Header1'>
 						<div id='header-inner'>
 							<a href='/' style='display: block'><h1 style='display:none'></h1>
-								<img alt="Logo" height="55px; " id="Header1_headerimg" src="/img/logo.svg" style="display: block" width="311px; ">
+								<img alt="Logo" height="55px; " id="Header1_headerimg" src="/img/logo.png" style="display: block" width="311px; ">
 							</a>
 						</div>
 					</div>
@@ -437,6 +450,11 @@ echo $file;
 </script>
 			
 		
+		
 	</body>
 </html>
-
+<noscript>
+	<link href="//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic" media="all" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css" integrity="sha256-2YN65RPLgK7PP1NpH0YKIgYwPo7o/96HqVXBH7lQ3MU=" crossorigin="anonymous" />
+	<link type="text/css" rel="stylesheet" href="/css/main.css" />
+</noscript>
