@@ -13,8 +13,6 @@
 		<link href='{{ .Site.BaseURL }}' rel='canonical'/>
 		<title>{{ .Title }}</title>
 
-		
-
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" defer async></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/fontawesome.min.js" integrity="sha256-p1rugc6vQ3W1M+J8xcHsQA07SkKvpGJlz4Uo+mxPP7Q=" crossorigin="anonymous" defer async></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/brands.min.js" integrity="sha256-oAJXCqY95Tu+gAhKEFrSyNb8MZw8QLH7M7DZnPvySmk=" crossorigin="anonymous" defer async></script>
@@ -31,33 +29,27 @@
 
 		<!-- Defer CSS -->
 		<script type="text/javascript">
-			var stylesheet = document.createElement('link');
-			stylesheet.href = '//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic';
-			stylesheet.rel = 'stylesheet';
-			stylesheet.type = 'text/css';
-			document.getElementsByTagName('head')[0].appendChild(stylesheet);
-		  </script>
-		  <script type="text/javascript">
-			var stylesheet = document.createElement('link');
-			stylesheet.href = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css';
-			stylesheet.rel = 'stylesheet';
-			stylesheet.type = 'text/css';
-			document.getElementsByTagName('head')[0].appendChild(stylesheet);
-		  </script>
-		  <script type="text/javascript">
-			var stylesheet = document.createElement('link');
-			stylesheet.href = '/css/main.css';
-			stylesheet.rel = 'stylesheet';
-			stylesheet.type = 'text/css';
-			document.getElementsByTagName('head')[0].appendChild(stylesheet);
+			function writeCSS(url) {
+				var stylesheet = document.createElement('link');
+				stylesheet.href = url;
+				stylesheet.rel = 'stylesheet';
+				stylesheet.type = 'text/css';
+				document.getElementsByTagName('head')[0].appendChild(stylesheet);
+			}
+			
+			writeCSS('//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic');
+			writeCSS('//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css');
+			writeCSS('/css/main.css');
 	  	</script>
 
 		<!-- Script local fallback -->
 		<script>
-			if (! $.fn.jquery) {
+			//if (! $.fn.jquery) {
+			if(typeof jQuery!=='undefined'){
 				document.write('<script src="/js/jquery.min.js"><\/script>');
 			}
-			if (! FontAwesome) {
+			//if (! FontAwesome) {
+			if(typeof FontAwesome!=='undefined'){
 				document.write('<script src="/js/fontawesome.min.js"><\/script>');
 				document.write('<script src="/js/brands.min.js"><\/script>');
 				document.write('<script src="/js/solid.min.js"><\/script>');
