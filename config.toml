@@ -39,7 +39,6 @@ publishDir = "docs"
 [params.social]
   Facebook      = "mattandreko"
   Twitter       = "mandreko"
-  GooglePlus    = "mandreko"
   LinkedIn      = "mattandreko"
   StackOverflow = "mattandreko"
   Github        = "mandreko"
