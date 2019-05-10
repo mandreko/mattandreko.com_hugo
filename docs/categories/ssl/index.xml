@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Osx on Matt Andreko</title>
-    <link>https://www.mattandreko.com/categories/osx/</link>
-    <description>Recent content in Osx on Matt Andreko</description>
+    <title>Ssl on Matt Andreko</title>
+    <link>https://www.mattandreko.com/categories/ssl/</link>
+    <description>Recent content in Ssl on Matt Andreko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Wed, 17 Dec 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.mattandreko.com/categories/osx/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mattandreko.com/categories/ssl/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       <guid>https://www.mattandreko.com/2014/12/17/compiling-sslscan-with-sslv2-support-on-osx/</guid>
       <description>SSLScan is a tool that I often use when validating SSL findings on penetration tests. I had recently seen a new version come out, with color highlighting and more fanciness, but wanted it for OSX. When I tried to compile it, I noticed that it did not support SSLv2, which is something I often screenshot, so I dived into getting it all working.
 This guide will outline how to compile the newer versions of SSLScan with color highlighting, on OSX while retaining SSLv2 capabilities.</description>
-    </item>
-    
-    <item>
-      <title>Burp Icon in OSX</title>
-      <link>https://www.mattandreko.com/2014/08/01/burp-icon-in-osx/</link>
-      <pubDate>Fri, 01 Aug 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.mattandreko.com/2014/08/01/burp-icon-in-osx/</guid>
-      <description>Recently, I on a Google Hangout with a coworker and saw him using the Burp Suite. I noticed that he opened a text file containing the command to run burp with extra memory, so he could remember the shell command easily. I personally just ran the burp jar file by double-clicking the jar file. The only exception was when I did need that extra memory. In that situation, I had to look up the arguments on Google.</description>
     </item>
     
   </channel>
