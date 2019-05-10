@@ -2,7 +2,6 @@
 title: "Cricut Payment Bypass Vulnerability"
 linktitle: Cricut Payment Bypass Vulnerability
 date: 2019-05-10T14:50:25-04:00
-draft: true
 highlight: "true"
 featured_image: cricut_hack_the_planet.png
 categories:
