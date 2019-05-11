@@ -3,6 +3,8 @@ title: "Buffer Overflow in HexChat 2.9.4"
 date: "2013-04-06T14:55:00-04:00"
 comments: true
 highlight: "true"
+aliases:
+ - "/2013/04/06/buffer-overflow-in-hexchat-294/"
 categories:
  - windows
  - hexchat
