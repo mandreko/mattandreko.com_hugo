@@ -3,6 +3,9 @@ title: "Using .net to bypass AV"
 date: "2012-02-23T18:19:00-05:00"
 comments: true
 highlight: "true"
+aliases: [
+    "2012/02/23/using-net-to-bypass-av/"
+]
 categories:
  - antivirus
  - windows
