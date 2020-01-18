@@ -16,7 +16,7 @@ publishDir = "docs"
 
   avatar = "mattandreko_photo.jpg"
   author = "Matt Andreko"
-  author_description = "Security Consultant"
+  author_description = "Senior Security Consultant"
   googleAnalytics = "UA-25280110-1"
   description = "MattAndreko.com"
   keywords = "matt,andreko,mandreko,hostess,h0stess,hacking,exploitation,wargames"
@@ -128,3 +128,9 @@ publishDir = "docs"
   Name = "Security Sh3ll"
   URL = "http://security-sh3ll.blogspot.com/"
   weight = 2
+
+# Until classes can be added via Goldmark
+# See here: https://gohugo.io/getting-started/configuration-markup#goldmark
+[markup]
+  defaultMarkdownHandler = "blackFriday"
+  

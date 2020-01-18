@@ -4,7 +4,7 @@
 		<div class='custom-widget widget-content'>
 			<span class="recentposts" data-no="4">
 				<ul>
-					{{ range first 5 (after 1 (where .Site.Pages.ByDate.Reverse "Type" "blog")) }}
+					{{ range first 5 ( where (where .Site.Pages.ByDate.Reverse "Type" "blog") ".Kind" "!=" "section") }}
 					<li>
 						<a class="rcthumb" href="{{ .Permalink }}" style="background:url({{ .Site.BaseURL }}img/{{ .Params.featured_image }}) no-repeat center center;background-size: cover">
 							<span class="img-overlay"></span>

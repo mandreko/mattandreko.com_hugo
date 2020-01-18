@@ -3,7 +3,7 @@
 			<div class='blog-posts hfeed'>
 
 
-				{{ $paginator := .Paginate (where .Data.Pages "Type" "blog") }}
+				{{ $paginator := .Paginate ( where (where .Site.Pages.ByDate.Reverse "Type" "blog") ".Kind" "!=" "section") }}
 				{{ range $paginator.Pages }}
 
 				{{ partial "post_preview.html" . }}

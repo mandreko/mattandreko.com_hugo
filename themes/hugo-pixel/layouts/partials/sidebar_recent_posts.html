@@ -2,7 +2,8 @@
 	<h2>Recent Posts</h2>
 	<div class='widget-content recent-posts'>
 		<ul>
-			{{ range first 5 (after 1 (where .Site.Pages.ByDate.Reverse "Type" "blog")) }}
+			{{ range first 5 ( where (where .Site.Pages.ByDate.Reverse "Type" "blog") ".Kind" "!=" "section") }}
+	
 			<li>
 				<div class='item-thumbnail-only'>
 					<div class='item-thumbnail'>

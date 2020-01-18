@@ -3,7 +3,6 @@
 
 name = "Hugo Pixel"
 license = "MIT"
-licenselink = "https://github.com/mandreko/hugo-pixel/blob/master/LICENSE.md"
 description = ""
 homepage = "http://www.mattandreko.com/"
 tags = []
@@ -13,9 +12,3 @@ min_version = 0.19
 [author]
   name = "Matt Andreko"
   homepage = "http://www.mattandreko.com/"
-
-# If porting an existing theme
-[original]
-  name = ""
-  homepage = ""
-  repo = ""
