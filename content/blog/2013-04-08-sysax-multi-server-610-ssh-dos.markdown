@@ -10,6 +10,8 @@ categories:
  - sysax
  - exploit
  - metasploit
+aliases:
+ - "/2013/04/sysax-multi-server-610-ssh-dos.html"
 ---
 
 I was recently fuzzing a bunch of SSH servers, hoping to find some remote code execution in a non-mainstream server. I ended up finding no code execution in the several that I tried, but I did find one pre-auth denial of service in Syax Multi Server 6.10.
