@@ -12,6 +12,10 @@ categories:
  - security
 aliases:
  - "/2013/04/buffer-overflow-in-hexchat-294.html"
+ - "/2013/04/06/buffer-overflow-in-hexchat-2.94"
+ - "/2013/04/06/buffer-overflow-in-hexchat-294"
+ - "/2013/04/buffer-overflow-in-hexchat-294"
+
 ---
 
 A buddy of mine, [Mulitia](https://twitter.com/imulitia), and I were talking about 0-days, and he mentioned finding one in Hex-Chat, a popular IRC client. It was super low severity, but still neat. If you entered "/server " followed by 20,000 random characters, the application died. I decided to try to make a working exploit out of this for fun.

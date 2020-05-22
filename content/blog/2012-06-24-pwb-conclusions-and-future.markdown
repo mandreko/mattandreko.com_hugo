@@ -9,6 +9,9 @@ categories:
  - ctp
  - future
  - hacking
+aliases:
+ - "/2012/06/24/pwb-conclusions-and-future"
+ - "/2012/06/pwb-conclusions-and-future.html"
 ---
 
 The results

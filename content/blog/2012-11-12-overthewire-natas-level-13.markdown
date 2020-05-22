@@ -10,6 +10,10 @@ categories:
  - natas
  - php
  - hacking
+aliases:
+ - "/2012/11/10/overthewire-natas-level-13"
+ - "/2012/11/11/overthewire-natas-level-13"
+ - "/2012/11/overthewire-natas-level-13.html"
 ---
 
 [Level 13](http://www.overthewire.org/wargames/natas/natas13.shtml) of [OverTheWire's](http://www.overthewire.org) Natas wargame is extremely similar to Level 12. The only difference now, is that it's validating that the file is in fact an image. This however is flawed, as exif data can be faked.

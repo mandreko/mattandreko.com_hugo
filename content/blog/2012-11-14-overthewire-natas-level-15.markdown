@@ -10,6 +10,10 @@ categories:
  - php
  - sqlinjection
  - hacking
+aliases:
+ - "/2012/11/11/overthewire-natas-level-15"
+ - "/2012/11/13/overthewire-natas-level-15"
+ - "/2012/11/overthewire-natas-level-15.html"
 ---
 
 Up until now, none of the OverTheWire Natas challenges really gave me that much of an issue. This one however, took me a couple hours to complete. Level 15 is a fun blind sql-injection vulnerability. 

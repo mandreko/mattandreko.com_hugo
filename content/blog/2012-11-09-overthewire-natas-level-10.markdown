@@ -9,6 +9,12 @@ categories:
  - commandinjection
  - natas
  - hacking
+aliases:
+ - "/2012/11/07/overthewire-natas-level-10"
+ - "/2012/11/08/overthewire-natas-level-10"
+ - "/2012/11/10/overthewire-natas-level-10"
+ - "/2012/11/14/overthewire-natas-level-10"
+ - "/2012/11/overthewire-natas-level-10.html"
 ---
 
 On to [Level 10](http://www.overthewire.org/wargames/natas/natas10.shtml) of the [OverTheWire](http://www.overthewire.org) Natas wargame! This level is extremely similar to level 9, except that now they are implementing a basic filtering, to prevent you from entering certain characters that could cause changes in the execution of the program. However, their filter is flawed.

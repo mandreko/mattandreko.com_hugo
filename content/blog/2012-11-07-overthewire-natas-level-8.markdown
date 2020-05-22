@@ -10,6 +10,8 @@ categories:
  - natas
  - php
  - hacking
+aliases:
+ - "/2012/11/overthewire-natas-level-8.html"
 ---
 
 [Level 8](http://www.overthewire.org/wargames/natas/natas8.shtml) of the [OverTheWires](http://www.overthewire.org) Natas wargame was pretty simple, as a developer, but could prove more difficult if you don't have similar background.

@@ -9,6 +9,10 @@ categories:
  - natas
  - html
  - hacking
+aliases:
+ - "/2012/10/30/overthewire-natas-level-1"
+ - "/2012/11/11/overthewire-natas-level-1"
+ - "/2012/11/14/overthewire-natas-level-1"
 ---
 
 In continuing with the Natas wargame from [OverTheWire](http://www.overthewire.org), I tried my hand at [level 1](http://www.overthewire.org/wargames/natas/natas1.shtml). It too was pretty easy. It was just like the level 0, except that right-clicking was disabled via javascript.

@@ -9,6 +9,9 @@ categories:
  - wargames
  - natas
  - hacking
+aliases:
+ - "/2012/11/03/overthewire-natas-level-7"
+ - "/2012/11/overthewire-natas-level-7.html"
 ---
 
 Finally, with level 7 of OverTheWire's Natas wargame, we start to get to more "real world" vulnerabilities. It's still very easy, but it's at least getting better.

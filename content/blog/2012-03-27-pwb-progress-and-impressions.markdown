@@ -6,6 +6,8 @@ categories:
  - pwb
  - offsec
  - hacking
+aliases:
+ - "/2012/03/pwb-progress-and-impressions.html"
 ---
 
 I recently decided to take [Offensive Security's course, Penetration Testing with Backtrack](http://www.offensive-security.com/information-security-training/penetration-testing-with-backtrack/).  I'm now 30 days in, of my 90 day allotment.  I figured I would share my impressions and what I've learned up to now, without being specific enough to give anything away to future students. 

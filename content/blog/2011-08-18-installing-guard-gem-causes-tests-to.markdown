@@ -7,6 +7,9 @@ categories:
  - rspec
  - rails
  - cucumber
+aliases:
+ - "/2011/08/18/installing-guard-gem-causes-tests-to"
+ - "/2011/08/18/installing-guard-gem-causes-tests-to-fail-solved"
 ---
 
 I was tinkering with a new rails application, using [RSpec2](http://relishapp.com/rspec) and [Cucumber](http://cukes.info) for my testing. I was able to run all my tests by typing:

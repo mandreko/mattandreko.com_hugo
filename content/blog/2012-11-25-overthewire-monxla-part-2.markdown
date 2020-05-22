@@ -8,6 +8,9 @@ categories:
  - wargames
  - linux
  - monxla
+aliases:
+ - "/2012/11/26/overthewire-monxla-part-2"
+ - "/2012/11/overthewire-monxla-part-2.html"
 ---
 
 In the previous post, I showed how to get the PDF that outlines the services running on the Monxla VM image. This article will continue where that one left off.

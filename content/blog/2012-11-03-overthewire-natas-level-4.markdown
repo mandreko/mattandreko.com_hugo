@@ -8,6 +8,10 @@ categories:
  - wargames
  - natas
  - hacking
+aliases:
+ - "/2012/10/30/overthewire-natas-level-4"
+ - "/2012/11/02/overthewire-natas-level-4"
+ - "/2012/11/overthewire-natas-level-4.html"
 ---
 
 [Level 4](http://www.overthewire.org/wargames/natas/natas4.shtml) of [OverTheWire's](http://www.overthewire.org) Natas wargame starts a little different than the previous levels. It immediately presents you with an error message.

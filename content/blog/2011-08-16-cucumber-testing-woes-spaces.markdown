@@ -8,6 +8,9 @@ categories:
  - cucumber
  - tdd
  - html
+aliases:
+ - "/2011/08/16/cucumber-testing-woes-spaces"
+ - "/2011/08/cucumber-testing-woes-spaces.html"
 ---
 
 So I'm working along, writing my tests, and I run into an issue where my Cucumber test is failing. I go to check it out, and see why. This is what I see:

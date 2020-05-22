@@ -9,6 +9,9 @@ categories:
  - natas
  - includes
  - hacking
+aliases:
+ - "/2012/11/04/overthewire-natas-level-6"
+ - "/2012/11/overthewire-natas-level-6.html"
 ---
 
 The [6th level](http://www.overthewire.org/wargames/natas/natas6.shtml) of the [OverTheWire](http://www.overthewire.org) Natas wargame starts introducing us to PHP and server configuration issues.

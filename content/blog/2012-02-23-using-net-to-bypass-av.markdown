@@ -14,6 +14,7 @@ categories:
  - dotnet
 aliases:
  - "/2012/02/using-net-to-bypass-av.html"
+ - "/2020/02/using-net-to-bypass-av.html"
 ---
 
 I've read a ton of articles on bypassing Antivirus software when trying to run shellcode on machines.  There's just a ton available.  These are just a few examples: 

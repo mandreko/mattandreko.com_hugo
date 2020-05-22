@@ -9,6 +9,10 @@ categories:
  - natas
  - html
  - hacking
+aliases:
+ - "/2012/10/30/overthewire-natas-level-2"
+ - "/2012/10/31/overthewire-natas-level-2"
+ - "/2012/11/overthewire-natas-level-2.html"
 ---
 
 [Level 2](http://www.overthewire.org/wargames/natas/natas2.shtml) of [OverTheWire's](http://www.overthewire.org) Natas wargame is a little more fun than the previous two. It's also pretty simple, though.

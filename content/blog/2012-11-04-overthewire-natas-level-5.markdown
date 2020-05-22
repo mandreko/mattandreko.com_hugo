@@ -10,6 +10,9 @@ categories:
  - natas
  - html
  - hacking
+aliases:
+ - "/2012/11/03/overthewire-natas-level-5"
+ - "/2012/11/overthewire-natas-level-5.html"
 ---
 
 Now that we're about 1/3 through to the end of the [OverTheWire](http://www.overthewire.org) Natas wargame, I'm hoping that they start to get a little more tricky. [Level 5](http://www.overthewire.org/wargames/natas/natas5.shtml) unfortunately is still pretty easy.

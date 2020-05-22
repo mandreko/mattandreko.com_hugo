@@ -9,6 +9,9 @@ categories:
  - natas
  - php
  - hacking
+aliases:
+ - "/2012/11/12/overthewire-natas-level-12"
+ - "/2012/11/overthewire-natas-level-12.html"
 ---
 
 The next level to attack in the [OverTheWire](http://www.overthewire.org) Natas wargame, is [Level 12](http://www.overthewire.org/wargames/natas/natas12.shtml), which is more "real-world" as well, since developers often forget to limit file extensions.

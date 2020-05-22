@@ -8,6 +8,9 @@ categories:
  - wargames
  - linux
  - monxla
+aliases:
+ - "/2012/11/25/overthewire-monxla-part-3"
+ - "/2012/11/overthewire-monxla-part-3.html"
 ---
 
 Continuing from the last post, we are now logged in as a user. The next step on the PDF from the agent, that we can access, is the Notes Service.

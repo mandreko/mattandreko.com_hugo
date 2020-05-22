@@ -8,6 +8,8 @@ categories:
  - metasploit
  - hacking
  - exploit
+aliases:
+ - "/2013/02/xbmc-traversal-metasploit-module.html"
 ---
 
 ## Background

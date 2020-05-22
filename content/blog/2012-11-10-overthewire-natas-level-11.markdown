@@ -10,6 +10,9 @@ categories:
  - php
  - xor
  - hacking
+aliases:
+ - "/2012/11/11/overthewire-natas-level-11"
+ - "/2012/11/overthewire-natas-level-11.html"
 ---
 
 [Level 11](http://www.overthewire.org/wargames/natas/natas11.shtml) of the [OverTheWire](http://www.overthewire.org) Natas wargames is a good one. It wasn't one that could instantly be solved either. It involved programming, encryption, and HTTP. All fun!

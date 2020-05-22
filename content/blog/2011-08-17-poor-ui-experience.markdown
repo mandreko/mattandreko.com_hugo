@@ -6,6 +6,8 @@ categories:
  - browsers
  - testing
  - ui
+aliases:
+ - "/2011/08/poor-ui-experience.html"
 ---
 
 I was recently signing up for [about.me](http://about.me) because it sounded like a neat little simple blurb about yourself. When trying to sign up, after entering my email address, and password, I was brought to a page asking for some basic info. However, I couldn't figure out how to submit it. I was given this error:

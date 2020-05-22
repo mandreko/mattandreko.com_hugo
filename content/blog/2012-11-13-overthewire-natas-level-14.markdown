@@ -10,6 +10,10 @@ categories:
  - php
  - sqlinjection
  - hacking
+aliases:
+ - "/2012/11/11/overthewire-natas-level-14"
+ - "/2012/11/12/overthewire-natas-level-14"
+ - "/2012/11/overthewire-natas-level-14.html"
 ---
 
 The next level of the [OverTheWire](http://www.overthewire.org) Natas wargame is [Level 14](http://www.overthewire.org/wargames/natas/natas14.shtml), which introduces [SQL Injection](https://www.owasp.org/index.php/SQL_Injection), a very popular subject as of late.

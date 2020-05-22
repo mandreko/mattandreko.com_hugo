@@ -7,6 +7,8 @@ categories:
  - http
  - security
  - metasploit
+aliases:
+ - "/2013/02/hsts-metasploit-module.html"
 ---
 
 I have been working as a security consultant for a few months now, and one finding that is on almost every webserver I come across, is the lack of an [HSTS (HTTP Strict Transport Security)](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) implementation. This is understandable, since HSTS is still fairly new. In fact, before starting at [Accuvant](http://www.accuvant.com), I had never heard of it either! However, since most browsers support it now, I wanted to be able to report on it. As of the time of this post, [Nexpose](https://www.rapid7.com/products/nexpose) does not have a finding for this item, but I believe [Nessus](http://www.tenable.com/products/nessus) does. To report on this finding, and provide a screenshot evidence to customers, we were often resorting to manually looking at the headers, or implementing home-made scripts to do it.

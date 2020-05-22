@@ -9,6 +9,9 @@ categories:
  - commandinjection
  - natas
  - hacking
+aliases:
+ - "/2012/11/07/overthewire-natas-level-9"
+ - "/2012/11/overthewire-natas-level-9.html"
 ---
 
 The next level of [OverTheWire's](http://www.overthewire.org) Nata challenge is [Level 9](http://www.overthewire.org/wargames/natas/natas9.shtml). This is a command injection vulnerability.

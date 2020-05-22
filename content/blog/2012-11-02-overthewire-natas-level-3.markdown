@@ -9,6 +9,10 @@ categories:
  - natas
  - html
  - hacking
+aliases:
+ - "/2012/11/01/overthewire-natas-level-3"
+ - "/2012/11/03/overthewire-natas-level-3"
+ - "/2012/11/overthewire-natas-level-3.html"
 ---
 
 Continuing on with Level 3 of OverTheWire's Natas wargame, I found the first page, like previous levels, saying that there was nothing on the page.

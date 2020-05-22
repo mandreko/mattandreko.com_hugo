@@ -8,6 +8,8 @@ categories:
  - ui
  - sprint
  - iphone
+aliases:
+ - "/2011/10/sprint-iphone-4s-pre-order-fiasco.html"
 ---
 
 So like many people, I wanted the new iPhone 4S.  Since the wife unit is on Sprint, and I'm on AT&T, we started looking at plans.  Sprint offers a nicer family plan and lets her upgrade to a smartphone, while letting me have the iPhone.  So we decided to make the switch, and do the pre-order.  I called last night to verify the ordering process, and make sure that I could still get the $200 price while not using her upgrade credit.  I was told that the phone would become available at 12:01 AM PST.  I woke up at 5 AM (No way am I waking up at 3 AM) to put in the pre-order.  I tried clicking the massive preorder button: 

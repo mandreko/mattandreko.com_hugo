@@ -7,6 +7,9 @@ categories:
  - hover
  - xss
  - security
+aliases:
+ - "/2013/02/28/multiple-hovercom-security-issues"
+ - "/2013/02/multiple-hovercom-security-issues.html"
 ---
 
 I'm a customer of [Hover](http://www.hover.com) for my domain name needs. However, that will be changing because I don't believe that they take issues seriously.

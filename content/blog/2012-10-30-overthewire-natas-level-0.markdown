@@ -9,6 +9,8 @@ categories:
  - natas
  - html
  - hacking
+aliases:
+ - "/2012/10/overthewire-natas-level-0.html"
 ---
 
 I recently read that [OverTheWire](http://www.overthewire.org) had released a new wargame, so I decided to play for fun.
