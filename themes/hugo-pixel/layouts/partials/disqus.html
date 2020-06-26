@@ -9,7 +9,9 @@
 
     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
     var disqus_shortname = '{{ .Site.Params.disqusShortname }}';
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.integriy = 'RNW5W+OO4SroQED+qQ2fQEC04KhvHNgKXF/3/7XufVGD8C3QdJqcTM7uaAHjCJlI';
+    dsq.crossOrigin = 'anonymous';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 })();
 </script>
