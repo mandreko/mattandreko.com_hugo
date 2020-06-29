@@ -30,12 +30,12 @@
 		<link href='{{ .Site.BaseURL }}' rel='canonical'/>
 		<title>{{ .Title }}</title>
 
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" defer async></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/fontawesome.min.js" integrity="sha256-p1rugc6vQ3W1M+J8xcHsQA07SkKvpGJlz4Uo+mxPP7Q=" crossorigin="anonymous" defer async></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/brands.min.js" integrity="sha256-oAJXCqY95Tu+gAhKEFrSyNb8MZw8QLH7M7DZnPvySmk=" crossorigin="anonymous" defer async></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/solid.min.js" integrity="sha256-VBkx1KuWMQsCMY3ShxVk5WyYNVcQYKNUpjF13YWP5ZE=" crossorigin="anonymous" defer async></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous" defer async></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/fontawesome.min.js" integrity="sha384-EMmnH+Njn8umuoSMZ3Ae3bC9hDknHKOWL2e9WJD/cN6XLeAN7tr5ZQ0Hx5HDHtkS" crossorigin="anonymous" defer async></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/brands.min.js" integrity="sha384-rUOIFHM3HXni/WG5pzDhA1e2Js5nn4bWudTYujHbbI9ztBIxK54CL4ZNZWwcBQeD" crossorigin="anonymous" defer async></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/solid.min.js" integrity="sha384-IA6YnujJIO+z1m4NKyAGvZ9Wmxrd4Px8WFqhFcgRmwLaJaiwijYgApVpo1MV8p77" crossorigin="anonymous" defer async></script>
 		{{ if .Site.Params.GoogleAnalytics }}
-		<script async src="//www.googletagmanager.com/gtag/js?id={{ .Site.Params.GoogleAnalytics }}"></script>
+		<script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.GoogleAnalytics }}" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
@@ -45,34 +45,7 @@
 		{{ end }}
 
 		<!-- Defer CSS -->
-		<script type="text/javascript">
-			function writeCSS(url) {
-				var stylesheet = document.createElement('link');
-				stylesheet.href = url;
-				stylesheet.rel = 'stylesheet';
-				stylesheet.type = 'text/css';
-				document.getElementsByTagName('head')[0].appendChild(stylesheet);
-			}
-			
-			writeCSS('//fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic');
-			writeCSS('//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css');
-			writeCSS('/css/main.css');
-	  	</script>
-
-		<!-- Script local fallback -->
-		<script>
-			//if (! $.fn.jquery) {
-			if(typeof jQuery!=='undefined'){
-				document.write('<script src="/js/jquery.min.js"><\/script>');
-			}
-			//if (! FontAwesome) {
-			if(typeof FontAwesome!=='undefined'){
-				document.write('<script src="/js/fontawesome.min.js"><\/script>');
-				document.write('<script src="/js/brands.min.js"><\/script>');
-				document.write('<script src="/js/solid.min.js"><\/script>');
-				document.write('<link rel="stylesheet" href="/css/fontawesome.min.css">');
-			}
-		</script>
+		<script type="text/javascript" src="/js/defer.js" integrity="sha384-nEe5BjNaNo6TLJeOlDWyWZ4xqcJthA6ruIATxGudzu/fTGcWWDVjjR8IKluk1teY" crossorigin="anonymous"></script>
 	</head>
 	<body class='index'>
 	<!-- Start of top menu -->
