@@ -10,8 +10,8 @@
     }
     
     writeCSS('https://fonts.googleapis.com/css?family=Raleway:400,700%7COpen+Sans:400,700,400italic', 'sha384-RSQ9NS1fkHbnW9v603KaA4y7+nE4lqvtUJvzw5FySE5uxR4mFt850VrEILW2ZsHm');
-    writeCSS('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css', 'sha384-vd1e11sR28tEK9YANUtpIOdjGW14pS87bUBuOIoBILVWLFnS+MCX9T6MMf0VdPGq');
-    writeCSS('/css/main.css', 'sha256-TXw+V9w1h2TNy7p6lCpUNTIXHFSrii9swFyGIiSKdkA=');
+    writeCSS('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css', 'sha256-+NADVoWZmHhL2ibh0U8tmBUVkhuW3tUNXW9vDnW6wVw=');
+    writeCSS('/css/main.css', 'sha256-XSCkg3ZwX7titBz6C+W+xWqUq5wq1NVY0k4CRSwhxcI=');
 
     //if (! $.fn.jquery) {
     if(typeof jQuery!=='undefined'){
