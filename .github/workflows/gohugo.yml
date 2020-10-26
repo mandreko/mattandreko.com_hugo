@@ -10,7 +10,7 @@ jobs:
     - name: Build the site in the gohugo/builder container
       run: |
         docker run \
-        -v ${{ github.workspace }}:/src/ gohugoio/hugo:latest -s /src -d deploy   
+        -v ${{ github.workspace }}:/src/ envimate/hugo:latest -s /src -d deploy   
     - uses: jakejarvis/s3-sync-action@master
       with:
         args: --delete
