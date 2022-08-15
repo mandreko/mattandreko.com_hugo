@@ -132,5 +132,5 @@ publishDir = "docs"
 # Until classes can be added via Goldmark
 # See here: https://gohugo.io/getting-started/configuration-markup#goldmark
 [markup]
-  defaultMarkdownHandler = "blackFriday"
+  defaultMarkdownHandler = "goldmark"
   
