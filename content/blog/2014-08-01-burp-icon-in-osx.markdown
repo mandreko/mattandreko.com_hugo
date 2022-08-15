@@ -40,7 +40,7 @@ The problem arises, that when [Burp Suite](http://portswigger.net/burp/) auto-up
 java -Xmx1024m -jar $(ls -t ~/Downloads/burp/burpsuite_pro_*.jar | head -1)
 ```
 
-{{% figure class="img-responsive" src="/img/burp_004_jva_load_jar_options.png" %}}
+{{% figure class="img-responsive" src="/img/burp_004_java_load_jar_options.png" %}}
 
 Now that the application is configured, you'll want to save it, so you can run it later. Do this by going to File->Save, or hitting Command-S on your keyboard. You can save the application to the "Applications" folder, or anywhere you want. I put mine in "~/Documents" for now.
 
