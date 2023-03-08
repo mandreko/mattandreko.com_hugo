@@ -59,9 +59,13 @@ I then created a PCB, trying to keep the USB port of the Arduino at one end, and
 
 {{% figure class="img-responsive" src="/img/kicad_pcb.png#center" %}}
 
-I've placed the KiCad files into [GitHub](https://github.com/mandreko/PC_Volume_Knob_PCB). If you're downloading the PCB files to make some of your own, I'd highly recommend checking out [PCBWay](https://www.pcbway.com/). I used them for my boards, and they came out excellent. They were also very inexpensive. I picked the white PCBs:
+I've placed the KiCad files into [GitHub](https://github.com/mandreko/PC_Volume_Knob_PCB). If you're downloading the PCB files to make some of your own, I'd highly recommend checking out [PCBWay](https://www.pcbway.com/). I used them for my boards, and they came out excellent. They were also very inexpensive. In addition to custom PCBs, they can also do 3D Printing and CNC/Machining. I have a couple projects that require aluminum, so I look forward to trying out the CNC projects in the future.
+
+I picked the white PCBs:
 
 {{% figure class="img-responsive" src="/img/pc-volume-boards.jpg#center" %}}
+
+If you're designing a circuit in KiCad, PCBWay now has a [one-click plugin](https://www.pcbway.com/blog/News/PCBWay_Plug_In_for_KiCad_3ea6219c.html) to automatically submit your PCB design and create an order. I *wish* I would have known about this plugin earlier. 
 
 ## Modifying the Arduino Code
 
