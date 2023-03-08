@@ -60,11 +60,6 @@ publishDir = "docs"
   weight = 2
 
 [[menu.links]]
-	Name = "0x80"
-	URL = "https://blog.0x80.org/"
-	weight = 0
-
-[[menu.links]]
 	Name = "A Day With Tape"
 	URL = "http://adaywithtape.blogspot.com/"
 	weight = 1
@@ -75,11 +70,6 @@ publishDir = "docs"
 	weight = 2
 
 [[menu.links]]
-	Name = "Daft & Curious"
-	URL = "http://www.daftandcurious.com/"
-	weight = 2
-
-[[menu.links]]
 	Name = "Darknet"
 	URL = "http://www.darknet.org.uk/"
 	weight = 2
@@ -87,11 +77,6 @@ publishDir = "docs"
 [[menu.links]]
   Name = "DiabloHorn"
   URL = "https://diablohorn.com/"
-  weight = 2
-
-[[menu.links]]
-  Name = "Exploit-Monday"
-  URL = "http://www.exploit-monday.com/"
   weight = 2
 
 [[menu.links]]
@@ -124,13 +109,5 @@ publishDir = "docs"
   URL = "https://room362.com/"
   weight = 2
 
-[[menu.links]]
-  Name = "Security Sh3ll"
-  URL = "http://security-sh3ll.blogspot.com/"
-  weight = 2
-
-# Until classes can be added via Goldmark
-# See here: https://gohugo.io/getting-started/configuration-markup#goldmark
-[markup]
-  defaultMarkdownHandler = "goldmark"
-  
+[markup.goldmark.renderer]
+  unsafe = true
