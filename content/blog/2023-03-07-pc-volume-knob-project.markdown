@@ -1,7 +1,6 @@
 ---
 title: "Custom PC Volume Knob Project"
 date: 2023-03-07T16:55:01-05:00
-draft: true
 highlight: "true"
 featured_image: pc-volume-finished-x3.jpg
 categories:
